@@ -179,3 +179,68 @@ function toggleMobileMenu() {
 // Console easter egg
 console.log('%c BADMAN EVOLUTION ARCHIVE ', 'background: #39FF14; color: #000; font-size: 20px; font-weight: bold;');
 console.log('%c Reality Architect Edition ', 'background: #552583; color: #FDB927; font-size: 16px;');
+// ================================
+// CITATION SYSTEM
+// ================================
+
+// Citation data - populate this with your sources
+const citations = {
+    1: {
+        short: "Roberts, <em>From Trickster to Badman</em>, pp. 171-215",
+        full: "Roberts, John W. <em>From Trickster to Badman: The Black Folk Hero in Slavery and Freedom</em>. Philadelphia: University of Pennsylvania Press, 1989. pp. 171-215."
+    },
+    2: {
+        short: "Levine, <em>Black Culture and Black Consciousness</em>, pp. 407-420",
+        full: "Levine, Lawrence W. <em>Black Culture and Black Consciousness: Afro-American Folk Thought from Slavery to Freedom</em>. Oxford: Oxford University Press, 1977. pp. 407-420."
+    },
+    // Add more citations as needed
+};
+
+// Initialize citation system
+function initCitations() {
+    const citationElements = document.querySelectorAll('.citation');
+    const popup = document.getElementById('citation-popup');
+    
+    citationElements.forEach(citation => {
+        // Add citation number
+        const citeNum = citation.getAttribute('data-cite');
+        citation.textContent = `[${citeNum}]`;
+        
+        // Hover functionality
+        citation.addEventListener('mouseenter', (e) => {
+            const citeData = citations[citeNum];
+            if (citeData) {
+                popup.innerHTML = citeData.short;
+                popup.classList.add('active');
+                
+                // Position popup above citation
+                const rect = citation.getBoundingClientRect();
+                popup.style.left = rect.left + 'px';
+                popup.style.top = (rect.top - popup.offsetHeight - 10) + 'px';
+            }
+        });
+        
+        citation.addEventListener('mouseleave', () => {
+            popup.classList.remove('active');
+        });
+        
+        // Click to go to full source
+        citation.addEventListener('click', () => {
+            const sourceElement = document.getElementById(`source-${citeNum}`);
+            if (sourceElement) {
+                sourceElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                sourceElement.style.backgroundColor = 'rgba(57, 255, 20, 0.1)';
+                setTimeout(() => {
+                    sourceElement.style.backgroundColor = '';
+                }, 2000);
+            }
+        });
+    });
+}
+
+// Initialize when DOM is loaded
+document.addEventListener('DOMContentLoaded', initCitations);
+
+
+/* NAVIGATION UPDATE - Add this to your nav HTML */
+<li><a href="#sources">Sources</a></li>
