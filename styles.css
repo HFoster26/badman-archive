@@ -728,3 +728,97 @@ footer .mamba-tribute {
     color: var(--reality-green);
     font-style: italic;
 }
+/* ================================
+   V2 ADDITIONS - WELCOME OVERLAY
+   ================================ */
+
+.welcome-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #000000 0%, #1a1a1a 100%);
+    z-index: 10000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.welcome-overlay.active {
+    opacity: 1;
+}
+
+.welcome-overlay.exiting {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.welcome-content {
+    text-align: center;
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.welcome-content h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 4rem;
+    color: #39FF14;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    text-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+}
+
+.welcome-content h2 {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.5rem;
+    color: #FDB927;
+    margin-bottom: 2rem;
+    font-weight: 300;
+}
+
+.welcome-info p {
+    color: #ffffff;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.archive-stats {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    color: #39FF14;
+}
+
+.welcome-note {
+    margin: 2rem 0;
+    padding: 1rem;
+    border: 1px solid #39FF14;
+    border-radius: 5px;
+    background: rgba(57, 255, 20, 0.05);
+}
+
+.enter-btn {
+    background: linear-gradient(135deg, #39FF14 0%, #32d912 100%);
+    color: #000;
+    border: none;
+    padding: 1rem 3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 2rem;
+    font-family: 'Bebas Neue', cursive;
+}
+
+.enter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgba(57, 255, 20, 0.3);
+}
