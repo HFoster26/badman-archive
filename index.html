@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badman Evolution: Interactive Digital Archive</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <!-- External CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Mystical Particles -->
+    <div class="particles" id="particles"></div>
+
+    <div class="citation-popup" id="citation-popup"></div>
+    <div class="citation-popup-content" id="citation-popup-content">
+        <h3>Source Citation</h3>
+        <p id="citation-text"></p>
+        <button class="close-btn" id="close-btn">Close</button>
+    <!-- Navigation -->
+    <div class="nav-container">
+        <nav>
+            <a href="#" class="logo">BADMAN ARCHIVE</a>
+            <ul class="nav-links">
+                <li><a href="#timeline">Timeline</a></li>
+                <li><a href="#analysis">Analysis</a></li>
+                <li><a href="#community">Community</a></li>
+                <li><a href="#about">About</a></li>
+            </ul>
+        </nav>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h1>The Badman Evolution</h1>
+        <p>From Stagolee to Kang The Conqueror: Tracking 160 Years of Black Resistance Through Cultural Memory</p>
+        <p class="hero-tagline">A Living Digital Archive</p>
+    </section>
+
+    <!-- Timeline Section -->
+    <section class="timeline-container" id="timeline">
+        <div class="timeline-header">
+            <h2>Historical Evolution</h2>
+            <p>Five phases of transformation, overlapping and evolving</p>
+        </div>
+
+        <!-- Phase Selector -->
+        <div class="phase-selector">
+            <button class="phase-btn active" data-phase="all">All Phases</button>
+            <button class="phase-btn" data-phase="folk">Folk Hero-Outlaw</button>
+            <button class="phase-btn" data-phase="detective">Detective</button>
+            <button class="phase-btn" data-phase="revolutionary">Revolutionary</button>
+            <button class="phase-btn" data-phase="gangsta">Gangsta</button>
+            <button class="phase-btn" data-phase="superhero">Superhero/Villain</button>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline" id="timeline-content">
+            <!-- Folk Hero-Outlaw Phase -->
+            <div class="timeline-item" data-phase="folk">
+                <div class="timeline-content">
+                    <div class="timeline-date">1865-1920s
+                        <!-- Footer -->
+                    </div>
+                    <section class="sources-section" id="sources">
+    <div class="sources-container">
+        <h2>Sources & References</h2>
+        <div class="sources-list">
+            <div class="source-entry" id="source-1">
+                <span class="source-number">[1]</span>
+                <span class="source-text">Roberts, John W. <em>From Trickster to Badman: The Black Folk Hero in Slavery and Freedom</em>. Philadelphia: University of Pennsylvania Press, 1989. pp. 171-215.</span>
+            </div>
+            <div class="source-entry" id="source-2">
+                <span class="source-number">[2]</span>
+                <span class="source-text">Levine, Lawrence W. <em>Black Culture and Black Consciousness: Afro-American Folk Thought from Slavery to Freedom</em>. Oxford: Oxford University Press, 1977. pp. 407-420.</span>
+            </div>
+<footer>
+    <p>&copy; 2025 Badman Evolution Archive | A CHI Digital Heritage Project</p>
+    <p>Created by Harry Foster | Michigan State University</p>
+</footer>
+<script src="script-v2.js"></script>
