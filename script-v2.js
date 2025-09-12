@@ -153,7 +153,7 @@ class DigitalArchive {
                 <h2>Interactive Digital Archive</h2>
                 
                 <div class="welcome-info">
-                    <p>Tracing 150 years of Black heroic evolution through primary sources and cultural analysis</p>
+                    <p>Tracing 160 years of Black heroic evolution through primary sources and cultural analysis</p>
                     
                     <div class="archive-stats">
                         <span>${this.countTotalEntries()} documented figures</span>
@@ -166,7 +166,7 @@ class DigitalArchive {
                 
                 <div class="welcome-note">
                     <p>This archive is actively being built. Primary sources are drawn from public archives, 
-                    scholarly databases, and cultural institutions.</p>
+                    scholarly sources and databases, and cultural institutional data.</p>
                 </div>
                 
                 <button class="enter-archive" onclick="archive.enterArchive()">
