@@ -277,6 +277,14 @@ class DigitalArchive {
         });
         return total;
     }
+
+    //=============================
+    // DATA MANAGEMENT METHODS
+    // For loading and saving archive data
+    //=============================
+
+    // [INSERT ALL THE DATA MANAGEMENT METHODS HERE]
+    
 }
 
 // ================================
