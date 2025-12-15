@@ -11115,3 +11115,30 @@ p, .intro-text {
 .intro, .cta-inner {
     background-color: #1a472a !important;
 }
+/* Fix header title to gold */
+.site-heading-upper {
+    color: #d4af37 !important;
+}
+
+/* Make sure the top header area is dark */
+header.masthead {
+    background-color: #0d2818 !important;
+}
+
+/* Navigation bar darker */
+#mainNav {
+    background-color: #0a1f12 !important;
+}
+
+/* Button outline style like mockup */
+.btn-primary {
+    background-color: transparent !important;
+    border: 2px solid #50c878 !important;
+    color: #e8e8e8 !important;
+    border-radius: 0 !important;
+}
+
+.btn-primary:hover {
+    background-color: #1a472a !important;
+    color: #ffffff !important;
+}
