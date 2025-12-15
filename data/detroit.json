@@ -118,6 +118,487 @@
           }
         ]
       }
+    },
+    {
+      "id": "kenyatta",
+      "name": "Kenyatta",
+      "type": "fictional",
+      "modality": "detective",
+      "medium": "print",
+      "years": {
+        "material_start": 1974,
+        "material_end": 1975
+      },
+      "adaptations": [],
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Operates entirely outside legal systems as leader of a paramilitary organization. Wages war against both drug dealers and racist police. No pretense of legitimacy within state structures."
+        },
+        "community_authorization": {
+          "score": 5,
+          "justification": "Commands an army of community members who follow him willingly. His mission—ridding the ghetto of drugs and corrupt cops—directly serves community interests. Named after Jomo Kenyatta, father of Kenyan independence."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Violence is his primary mode of operation. Organizes assassinations, armed raids, and paramilitary strikes. The novels are structured around escalating violent confrontations."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "Represents the revolutionary aspirations of the Black Power era. Preserves and transmits ideology of armed self-defense and community control. However, his fictional status limits direct community engagement."
+        },
+        "hypermasculine_performance": {
+          "score": 3,
+          "justification": "Commands respect through tactical brilliance and organizational leadership more than personal physical dominance. Masculinity expressed through control of territory and people rather than individual combat."
+        }
+      },
+      "biography": {
+        "description": "Kenyatta is the protagonist of Donald Goines's four-novel series published under the pseudonym Al C. Clark. Named after Jomo Kenyatta, the father of Kenyan independence, he leads a militant organization of Black men and women dedicated to cleansing Detroit's ghettos of drug dealers and racist police officers. Operating from a fortified farm outside the city where he trains his soldiers, Kenyatta wages a systematic war against the forces destroying his community. The series follows his escalating conflict with both the criminal underworld and law enforcement, culminating in a cross-country chase that ends in Las Vegas. Kenyatta represents Goines's vision of what organized Black resistance might look like—a disciplined, armed, community-authorized force operating outside the law to protect those the law refuses to serve.",
+        "key_events": [
+          {
+            "year": 1974,
+            "event": "First appearance in Crime Partners, introduced as leader of militant Black organization",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1974,
+            "event": "Death List published, following Kenyatta's systematic elimination of drug suppliers",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1974,
+            "event": "Kenyatta's Escape published, depicting hijacking and cross-country flight",
+            "location": "Nevada/Los Angeles (fictional)"
+          },
+          {
+            "year": 1975,
+            "event": "Kenyatta's Last Hit published posthumously, concluding series in Las Vegas showdown",
+            "location": "Las Vegas, NV (fictional)"
+          }
+        ],
+        "creator": "Donald Goines (as Al C. Clark)",
+        "source_text": "Crime Partners (1974)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Detroit (fictional)",
+          "coordinates": {
+            "lat": 42.3314,
+            "lng": -83.0458
+          }
+        },
+        "territory": {
+          "description": "Kenyatta operates from a fortified training farm outside Detroit while conducting operations throughout the city's Black neighborhoods. His territory extends wherever drug dealers and corrupt police operate, making the entire ghetto his zone of operation. The series eventually expands his territory westward through Nevada to Los Angeles as he flees law enforcement.",
+          "polygon": [
+            [42.4000, -83.1000],
+            [42.4000, -82.9500],
+            [42.3000, -82.9500],
+            [42.3000, -83.1000]
+          ]
+        }
+      },
+      "connections": [
+        {
+          "target_id": "goines_donald",
+          "relationship": "creator_to_creation",
+          "direction": "one-way",
+          "description": "Created by Donald Goines under the pseudonym Al C. Clark. Kenyatta represents Goines's revolutionary aspirations—the disciplined militant he imagined but never became."
+        },
+        {
+          "target_id": "scott_ron",
+          "relationship": "ideological_alignment",
+          "direction": "two-way",
+          "description": "Kenyatta's fictional militant organization parallels the real-world Detroit Black Panther Party that Ron Scott co-founded. Both emphasize armed community defense and systematic resistance to police brutality."
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Crime Partners",
+            "url": "https://www.goodreads.com/book/show/115038.Crime_Partners"
+          },
+          {
+            "title": "Death List",
+            "url": "https://www.goodreads.com/book/show/115035.Death_List"
+          },
+          {
+            "title": "Kenyatta's Escape",
+            "url": "https://www.goodreads.com/book/show/115036.Kenyatta_s_Escape"
+          },
+          {
+            "title": "Kenyatta's Last Hit",
+            "url": "https://www.goodreads.com/book/show/115037.Kenyatta_s_Last_Hit"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Low Road: The Life and Legacy of Donald Goines",
+            "url": "https://www.goodreads.com/book/show/115048.Low_Road"
+          }
+        ]
+      }
+    },
+    {
+      "id": "action_jackson",
+      "name": "Jericho 'Action' Jackson",
+      "type": "fictional",
+      "modality": "detective",
+      "medium": "film",
+      "years": {
+        "material_start": 1988,
+        "material_end": 1988
+      },
+      "adaptations": [],
+      "scores": {
+        "outlaw_relationship": {
+          "score": 4,
+          "justification": "Operates within legal system as Detroit police sergeant but was demoted for excessive force. Goes fully vigilante after being framed for murder, operating outside law to clear his name and bring down Dellaplane."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Protects auto workers union members against corporate assassination. Partners with Sydney Ash, representing protection of vulnerable community members. However, his authorization comes more from institutional badge than grassroots community."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Violence defines his character from opening scene. Demoted for nearly tearing off a man's arm. The film is structured around escalating physical confrontations, car chases, explosions, and hand-to-hand combat."
+        },
+        "cultural_preservation": {
+          "score": 3,
+          "justification": "Preserves and updates blaxploitation tradition for 1980s audiences. Carl Weathers explicitly conceived the character from his love of 1970s blaxploitation films. However, the film prioritizes action spectacle over cultural commentary."
+        },
+        "hypermasculine_performance": {
+          "score": 5,
+          "justification": "Peak hypermasculinity: Harvard-educated but physically dominant, witty but brutal. Carl Weathers's physique is central to the character. Reputation precedes him—criminals faint at the mention of his name."
+        }
+      },
+      "biography": {
+        "description": "Jericho 'Action' Jackson is a Detroit Police Department sergeant who combines Ivy League education with street-level brutality. A Harvard Law graduate, Jackson was demoted from lieutenant after nearly tearing the arm off of Sean Dellaplane, son of powerful auto industry magnate Peter Dellaplane. When Dellaplane Sr. begins systematically murdering union officials to consolidate political power, Jackson investigates—only to be framed for the murder of Dellaplane's wife. Going vigilante with the help of Sydney Ash, a nightclub singer Dellaplane has addicted to heroin, Jackson wages a one-man war against the industrial conspiracy. The character emerged from Carl Weathers's conversations with producer Joel Silver about their shared love of 1970s blaxploitation films, updating that tradition for Reagan-era action cinema.",
+        "key_events": [
+          {
+            "year": 1988,
+            "event": "Film released February 12, 1988 by Lorimar Film Entertainment",
+            "location": "Detroit, MI (setting)"
+          },
+          {
+            "year": 1988,
+            "event": "Jackson demoted from lieutenant for excessive force against Sean Dellaplane",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1988,
+            "event": "Framed for murder of Patrice Dellaplane, goes vigilante",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1988,
+            "event": "Final confrontation with Peter Dellaplane",
+            "location": "Detroit, MI (fictional)"
+          }
+        ],
+        "creator": "Carl Weathers (story), Robert Reneau (screenplay)",
+        "source_text": "Action Jackson (1988 film)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Detroit (fictional)",
+          "coordinates": {
+            "lat": 42.3314,
+            "lng": -83.0458
+          }
+        },
+        "territory": {
+          "description": "Jackson operates throughout Detroit's industrial landscape, from auto plants to executive offices to nightclubs. His territory encompasses both the working-class union halls and the elite spaces where Dellaplane's conspiracy unfolds. Though filmed primarily in Los Angeles, the film establishes Detroit's auto industry as central to its setting.",
+          "polygon": [
+            [42.3800, -83.1200],
+            [42.3800, -83.0000],
+            [42.2800, -83.0000],
+            [42.2800, -83.1200]
+          ]
+        }
+      },
+      "connections": [
+        {
+          "target_id": "goines_donald",
+          "relationship": "inspiration",
+          "direction": "one-way",
+          "description": "Action Jackson inherits the Detroit-based Black detective tradition that Goines's work helped establish, updating it for 1980s action cinema while maintaining the city's significance as setting."
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Action Jackson (1988)",
+            "url": "https://www.imdb.com/title/tt0094612/"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+            "url": "https://iupress.org/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scott_ron",
+      "name": "Ron Scott",
+      "type": "real",
+      "meta_badman": false,
+      "modality": "revolutionary",
+      "years": {
+        "birth": 1947,
+        "death": 2015,
+        "active_start": 1968,
+        "active_end": 2015
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Co-founded Detroit's Black Panther Party, an organization explicitly positioned outside and against state authority. Subject of FBI COINTELPRO surveillance and suppression. Organized armed resistance to police brutality."
+        },
+        "community_authorization": {
+          "score": 5,
+          "justification": "Lifelong community organizer. Founded Peace Zones for Life to address community violence. Spokesperson for Detroit Coalition Against Police Brutality. Received Congressional Black Caucus Unsung Hero award and National Academy of Television Arts Silver Circle Award."
+        },
+        "violence_as_language": {
+          "score": 4,
+          "justification": "Armed self-defense was central to Panther ideology. However, Scott's later work emphasized de-escalation and peace-building, representing evolution from violent resistance to community reconciliation."
+        },
+        "cultural_preservation": {
+          "score": 5,
+          "justification": "Preserved and transmitted Black radical tradition through decades of organizing, media work, and mentorship. Hosted 'For My People' on Detroit PBS affiliate. Participated in Detroit Black Journal. Educated new generations about Panther legacy."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Embodied revolutionary Black masculinity as Panther leader. Public speaker and confrontational presence at police commission meetings. However, later work emphasized community healing over masculine dominance."
+        }
+      },
+      "biography": {
+        "description": "Ron Scott grew up in Detroit's Jeffries Projects, where his politically astute single mother shaped his worldview. Accepted to the University of Michigan in 1965 before affirmative action, Scott's trajectory shifted after hearing Kathleen Cleaver speak at St. Matthew/St. Joseph Church, leading him to co-found Detroit's Black Panther Party chapter in 1968. For nearly five decades, Scott remained on the front lines of Detroit's struggle for justice—from Panther organizing to police accountability advocacy to community peace-building. As spokesperson for the Detroit Coalition Against Police Brutality and founder of Peace Zones for Life, Scott evolved from revolutionary militant to 'Transformational Anthropologist,' as he called himself, dedicated to changing human behavior toward peace and reconciliation. He died of cancer on November 29, 2015, working until his final days.",
+        "key_events": [
+          {
+            "year": 1963,
+            "event": "Participated in Detroit March where Dr. Martin Luther King Jr. delivered early version of 'I Have a Dream' speech",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1965,
+            "event": "Accepted to University of Michigan before affirmative action policies",
+            "location": "Ann Arbor, MI"
+          },
+          {
+            "year": 1968,
+            "event": "Co-founded Detroit chapter of Black Panther Party after hearing Kathleen Cleaver speak",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1968,
+            "event": "Detroit Black Panther Party chapter established with Eric Bell, Jackie Spicer, George Gillis, and Victor Stewart",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2010,
+            "event": "Spoke at Allied Media Conference presenting Peace Zones for Life vision",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2015,
+            "event": "Died November 29 after battle with cancer, working until final days",
+            "location": "Detroit, MI"
+          }
+        ]
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Jeffries Projects",
+          "coordinates": {
+            "lat": 42.3361,
+            "lng": -83.0719
+          }
+        },
+        "territory": {
+          "description": "Scott's territory encompassed Detroit's Black neighborhoods from his childhood in Jeffries Projects through decades of organizing. His work with Peace Zones for Life focused on specific neighborhoods plagued by violence, while his advocacy reached citywide through police commission meetings and media appearances. St. Matthew/St. Joseph Church, where he first encountered Kathleen Cleaver, marked a key location in his political awakening.",
+          "polygon": [
+            [42.3600, -83.1000],
+            [42.3600, -83.0400],
+            [42.3100, -83.0400],
+            [42.3100, -83.1000]
+          ]
+        }
+      },
+      "connections": [
+        {
+          "target_id": "baker_gordon",
+          "relationship": "ideological_alignment",
+          "direction": "two-way",
+          "description": "Both were revolutionary contemporaries in late 1960s Detroit, representing parallel streams of Black radical organizing—Scott through the Panthers, Baker through labor organizing. Both spoke together at 2010 U.S. Social Forum."
+        },
+        {
+          "target_id": "kenyatta",
+          "relationship": "inspiration",
+          "direction": "one-way",
+          "description": "Scott's real-world Panther organizing provided the template for Goines's fictional Kenyatta—a disciplined, armed organization defending Black communities against drugs and police violence."
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Ron Scott personal webpage",
+            "url": "https://about.me/ronscott"
+          },
+          {
+            "title": "Allied Media Conference 2010 Video",
+            "url": "https://alliedmedia.org/news/remembering-ron-scott-watch-video-amc2010"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "The Legacy of Detroit Activist Ron Scott (ACLU Michigan)",
+            "url": "https://www.aclumich.org/en/news/legacy-detroit-activist-ron-scott"
+          },
+          {
+            "title": "The Rise and Fall of Detroit's Dynamic Black Panther Party (Michigan Chronicle)",
+            "url": "https://michiganchronicle.com/the-rise-and-fall-of-detroits-dynamic-black-panther-party/"
+          }
+        ]
+      }
+    },
+    {
+      "id": "baker_gordon",
+      "name": "General Gordon Baker Jr.",
+      "type": "real",
+      "meta_badman": false,
+      "modality": "revolutionary",
+      "years": {
+        "birth": 1941,
+        "death": 2014,
+        "active_start": 1963,
+        "active_end": 2014
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Publicly refused Vietnam draft in 1965, two years before Muhammad Ali. Organized wildcat strikes outside union authorization. Founded revolutionary organizations explicitly opposed to capitalist state. Arrested during 1967 Detroit rebellion."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Led 4,000 workers in wildcat strikes. Founded DRUM and League of Revolutionary Black Workers with broad worker support. However, authorization came primarily from workers rather than broader Black community, and LRBW eventually split over strategic disagreements."
+        },
+        "violence_as_language": {
+          "score": 3,
+          "justification": "Rhetoric was militant and confrontational. Draft refusal letter declared willingness to fight for Black liberation. However, primary tactics were labor organizing and political education rather than armed resistance."
+        },
+        "cultural_preservation": {
+          "score": 5,
+          "justification": "Preserved and transmitted Marxist-Black nationalist synthesis through decades of organizing and education. Co-founded UHURU student organization. Maintained revolutionary theory through League of Revolutionaries for a New America. His papers are preserved at Wayne State's Reuther Library."
+        },
+        "hypermasculine_performance": {
+          "score": 2,
+          "justification": "Leadership style emphasized collective organizing and ideological discipline over individual masculine dominance. Revolutionary identity derived from intellectual and organizational capacity rather than physical confrontation or personal bravado."
+        }
+      },
+      "biography": {
+        "description": "General Gordon Baker Jr.—'General' was his given name—was born in Detroit to parents who had migrated from Georgia seeking auto industry work. After graduating from Southwestern High School at 16, Baker studied Marx at Wayne State University and co-founded UHURU, an African-American student organization, in 1963. He traveled to Cuba in 1964 to study the Castro government. In 1965, Baker wrote an open letter refusing the Vietnam draft, declaring 'when the call is made to FREE 12TH STREET HERE IN DETROIT, when these calls are made, send for me, for these shall be Historical Struggles in which it shall be an honor to serve!' This was two years before Muhammad Ali's famous refusal. After working at Chrysler's Dodge Main plant, Baker led 4,000 workers in a wildcat strike on May 2, 1968, founding the Dodge Revolutionary Union Movement (DRUM). DRUM spawned the League of Revolutionary Black Workers in 1969, combining Black Power politics with labor organizing at the point of production. Baker remained a revolutionary organizer until his death on May 18, 2014.",
+        "key_events": [
+          {
+            "year": 1958,
+            "event": "Graduated from Southwestern High School at age 16",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1963,
+            "event": "Co-founded UHURU student organization at Wayne State University",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1964,
+            "event": "Traveled to Cuba to study Castro government",
+            "location": "Cuba"
+          },
+          {
+            "year": 1965,
+            "event": "Wrote open letter refusing Vietnam draft, organized September 10th Movement protest",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1967,
+            "event": "Arrested on first day of Detroit rebellion, July 23",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1968,
+            "event": "Led wildcat strike of 4,000 workers at Dodge Main plant, founded DRUM",
+            "location": "Hamtramck, MI"
+          },
+          {
+            "year": 1968,
+            "event": "Led second wildcat strike July 8, shutting down plant for two days",
+            "location": "Hamtramck, MI"
+          },
+          {
+            "year": 1969,
+            "event": "Co-founded League of Revolutionary Black Workers",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2014,
+            "event": "Died May 18, memorial held at UAW Local 600",
+            "location": "Detroit, MI"
+          }
+        ]
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Dodge Main Plant",
+          "coordinates": {
+            "lat": 42.3954,
+            "lng": -83.0569
+          }
+        },
+        "territory": {
+          "description": "Baker's territory centered on Detroit's auto plants, particularly Chrysler's Dodge Main in Hamtramck where DRUM was founded. His organizing extended throughout the auto industry across Detroit, including Ford's River Rouge plant and Chrysler's Eldon Avenue facility. Wayne State University, where he studied and founded UHURU, represented another key node. The 12th Street corridor, which he referenced in his draft refusal letter, became the epicenter of the 1967 rebellion.",
+          "polygon": [
+            [42.4100, -83.1000],
+            [42.4100, -83.0300],
+            [42.3300, -83.0300],
+            [42.3300, -83.1000]
+          ]
+        }
+      },
+      "connections": [
+        {
+          "target_id": "scott_ron",
+          "relationship": "ideological_alignment",
+          "direction": "two-way",
+          "description": "Revolutionary contemporaries representing parallel streams of Black radical organizing in late 1960s Detroit. Both spoke at 2010 U.S. Social Forum panel on their experiences."
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Letter to the Local Draft Board (1965)",
+            "url": "https://viewpointmag.com/2015/06/30/letter-to-the-local-draft-board-1965/"
+          },
+          {
+            "title": "Finally Got the News (documentary film)",
+            "url": "https://www.imdb.com/title/tt0068588/"
+          },
+          {
+            "title": "Detroit Revolutionary Movements Records (Wayne State Reuther Library)",
+            "url": "https://archives.wayne.edu/repositories/2/resources/1425"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Detroit: I Do Mind Dying by Dan Georgakas and Marvin Surkin",
+            "url": "https://www.haymarketbooks.org/books/436-detroit-i-do-mind-dying"
+          },
+          {
+            "title": "General Gordon Baker, Jr.: A Detroit Revolutionary to the Core (Reuther Library)",
+            "url": "https://reuther.wayne.edu/node/12263"
+          }
+        ]
+      }
     }
   ]
 }
