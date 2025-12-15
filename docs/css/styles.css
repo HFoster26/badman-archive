@@ -11142,3 +11142,11 @@ header.masthead {
     background-color: #1a472a !important;
     color: #ffffff !important;
 }
+/* Remove background images */
+header.masthead,
+.page-section,
+section,
+.intro,
+.cta {
+    background-image: none !important;
+}
