@@ -1,0 +1,123 @@
+{
+  "city": "detroit",
+  "figures": [
+    {
+      "id": "goines_donald",
+      "name": "Donald Goines",
+      "type": "real",
+      "meta_badman": true,
+      "modality": "detective",
+      "years": {
+        "birth": 1936,
+        "death": 1974,
+        "active_start": 1955,
+        "active_end": 1974
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Seven prison sentences for robbery, theft, and drug-related offenses. Never sought legitimacy within legal systems. Career criminal from age 15 until death."
+        },
+        "community_authorization": {
+          "score": 5,
+          "justification": "Novels achieved massive circulation in Black communities through barbershops, beauty salons, and street vendors. Holloway House reported millions of copies sold. Recognized as authentic voice of street life."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Both lived and wrote violence as primary mode of expression. Characters resolve conflicts through physical confrontation. His own death—murdered alongside his partner—embodied this principle."
+        },
+        "cultural_preservation": {
+          "score": 5,
+          "justification": "Documented Black urban street life with ethnographic detail. Preserved vernacular, survival strategies, and community dynamics that official records ignored. Created literary archive of underclass experience."
+        },
+        "hypermasculine_performance": {
+          "score": 5,
+          "justification": "Embodied and narrated Black masculine bravado, sexual prowess, and physical dominance. Characters perform masculinity through control of territory, women, and rival men."
+        }
+      },
+      "biography": {
+        "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan's prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
+        "key_events": [
+          {
+            "year": 1952,
+            "event": "Falsified age to join U.S. Air Force at 15",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1955,
+            "event": "Returned from Korea with heroin addiction, began criminal career",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1969,
+            "event": "Wrote first novel Dopefiend while incarcerated",
+            "location": "Jackson State Prison, MI"
+          },
+          {
+            "year": 1971,
+            "event": "Dopefiend published by Holloway House",
+            "location": "Los Angeles, CA"
+          },
+          {
+            "year": 1974,
+            "event": "Published Crime Partners, first Kenyatta novel, under pseudonym Al C. Clark",
+            "location": "Los Angeles, CA"
+          },
+          {
+            "year": 1974,
+            "event": "Murdered alongside Shirley Sailor in Highland Park home",
+            "location": "Highland Park, MI"
+          }
+        ]
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Black Bottom",
+          "coordinates": {
+            "lat": 42.3355,
+            "lng": -83.0370
+          }
+        },
+        "territory": {
+          "description": "Goines operated primarily in Black Bottom and the surrounding East Side of Detroit, with significant presence in Highland Park where he lived and died. His territory spanned the traditional Black neighborhoods along Hastings Street before urban renewal destroyed the community, and later the areas around Highland Park that absorbed displaced residents.",
+          "polygon": [
+            [42.3450, -83.0550],
+            [42.3450, -83.0250],
+            [42.3200, -83.0250],
+            [42.3200, -83.0550]
+          ]
+        }
+      },
+      "connections": [
+        {
+          "target_id": "kenyatta",
+          "relationship": "creator_to_creation",
+          "direction": "one-way",
+          "description": "Goines created Kenyatta as a fictional extension of revolutionary Black masculinity, publishing four novels under the pseudonym Al C. Clark."
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Dopefiend",
+            "url": "https://www.hollowayhouse.com/"
+          },
+          {
+            "title": "Crime Partners (Kenyatta Series #1)",
+            "url": "https://www.hollowayhouse.com/"
+          },
+          {
+            "title": "Never Die Alone",
+            "url": "https://www.hollowayhouse.com/"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+            "url": "https://iupress.org/"
+          }
+        ]
+      }
+    }
+  ]
+}
