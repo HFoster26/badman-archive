@@ -11027,3 +11027,91 @@ p {
 .address strong {
   font-size: 1.2rem;
 }
+/* ============================================
+   DETROIT BADMAN ARCHIVE - CUSTOM COLOR SCHEME
+   ============================================ */
+
+/* Base dark green background */
+body {
+    background-color: #0d2818 !important;
+    color: #e8e8e8 !important;
+}
+
+/* Header area */
+header {
+    background-color: #0d2818 !important;
+}
+
+.site-heading-upper {
+    color: #d4af37 !important; /* Gold */
+}
+
+.site-heading-lower {
+    color: #e8e8e8 !important;
+}
+
+/* Navigation */
+.navbar {
+    background-color: #143d26 !important;
+}
+
+.navbar-nav .nav-link {
+    color: #e8e8e8 !important;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #d4af37 !important; /* Gold on hover */
+}
+
+/* Section backgrounds */
+.page-section {
+    background-color: #0d2818 !important;
+}
+
+section.cta {
+    background-color: #143d26 !important;
+}
+
+/* Cards and content boxes */
+.bg-faded {
+    background-color: #1a472a !important;
+    border: 2px solid #2a623d !important;
+    color: #e8e8e8 !important;
+}
+
+.section-heading-upper {
+    color: #50c878 !important; /* Emerald */
+}
+
+.section-heading-lower {
+    color: #e8e8e8 !important;
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: transparent !important;
+    border: 2px solid #2a623d !important;
+    color: #e8e8e8 !important;
+}
+
+.btn-primary:hover {
+    background-color: #2a623d !important;
+    border-color: #50c878 !important;
+    color: #ffffff !important;
+}
+
+/* Footer */
+footer {
+    background-color: #0d2818 !important;
+    color: #e8e8e8 !important;
+}
+
+/* Text colors */
+p, .intro-text {
+    color: #c8c8c8 !important;
+}
+
+/* Remove any tan/brown backgrounds */
+.intro, .cta-inner {
+    background-color: #1a472a !important;
+}
