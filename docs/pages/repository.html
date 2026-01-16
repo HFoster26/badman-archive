@@ -3,27 +3,29 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Business Casual - Start Bootstrap Theme</title>
+        <meta name="description" content="Submit a badman figure to the Detroit Badman Archive community repository." />
+        <meta name="author" content="Harry Foster" />
+        <title>Repository | Detroit Badman Archive</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Custom Archive Styles -->
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body>
         <header>
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
-                <span class="site-heading-upper text-primary mb-3">A Free Bootstrap Business Theme</span>
-                <span class="site-heading-lower">Business Casual</span>
+                <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
+                <span class="site-heading-lower">Community Repository</span>
             </h1>
         </header>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
             <div class="container">
-                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Start Bootstrap</a>
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
@@ -38,31 +40,79 @@
                 </div>
             </div>
         </nav>
-        <section class="page-section about-heading">
+        
+        <!-- Introduction Section -->
+        <section class="page-section">
             <div class="container">
-                <img class="img-fluid rounded about-heading-img mb-3 mb-lg-0" src="assets/img/about.jpg" alt="..." />
-                <div class="about-heading-content">
-                    <div class="row">
-                        <div class="col-xl-9 col-lg-10 mx-auto">
-                            <div class="bg-faded rounded p-5">
-                                <h2 class="section-heading mb-4">
-                                    <span class="section-heading-upper">Strong Coffee, Strong Roots</span>
-                                    <span class="section-heading-lower">About Our Cafe</span>
-                                </h2>
-                                <p>Founded in 1987 by the Hernandez brothers, our establishment has been serving up rich coffee sourced from artisan farmers in various regions of South and Central America. We are dedicated to travelling the world, finding the best coffee, and bringing back to you here in our cafe.</p>
-                                <p class="mb-0">
-                                    We guarantee that you will fall in
-                                    <em>lust</em>
-                                    with our decadent blends the moment you walk inside until you finish your last sip. Join us for your daily routine, an outing with friends, or simply just to enjoy some alone time.
-                                </p>
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <div class="bg-faded rounded p-5">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-upper">Contribute to the Archive</span>
+                                <span class="section-heading-lower">Submit a Badman</span>
+                            </h2>
+                            <p>The Detroit Badman Archive grows through community contributions. If you know of a figure—real or fictional—who embodies the badman tradition in Detroit, we want to hear from you.</p>
+                            <p>Your submission serves as a research lead. Our team will conduct independent verification and in-depth research before adding approved figures to the archive. This process ensures scholarly rigor while honoring community knowledge.</p>
+                            <p class="mb-0"><strong>What happens after you submit:</strong> You'll receive an email confirming whether your submission has been approved for research. Once the figure is live in the archive, you'll receive a second notification with a direct link to the entry.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Criteria Section -->
+        <section class="page-section cta">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <div class="cta-inner bg-faded text-center rounded">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-upper">Evaluation Framework</span>
+                                <span class="section-heading-lower">The Five Criteria</span>
+                            </h2>
+                            <p>Submissions are evaluated against five criteria that define the badman tradition:</p>
+                            <p><strong>1. Outlaw Relationship to Law:</strong> Does the figure operate outside or against legal systems?</p>
+                            <p><strong>2. Community Authorization:</strong> Does the figure have recognition and support from Black communities?</p>
+                            <p><strong>3. Violence as Language:</strong> Does the figure use force as a mode of expression or resistance?</p>
+                            <p><strong>4. Cultural Preservation Function:</strong> Does the figure play a role in maintaining Black cultural knowledge?</p>
+                            <p class="mb-0"><strong>5. Hypermasculine Performance:</strong> Does the figure embody Black masculine heroic ideals?</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Submission Section -->
+        <section class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+                        <div class="bg-faded rounded p-5 text-center">
+                            <h2 class="section-heading mb-4">
+                                <span class="section-heading-upper">Ready to Contribute?</span>
+                                <span class="section-heading-lower">Submission Form</span>
+                            </h2>
+                            <p>Click the button below to access the submission form. You'll be asked to provide:</p>
+                            <ul class="text-start" style="display: inline-block;">
+                                <li>Your name and email (for notification purposes only—never displayed publicly)</li>
+                                <li>Your city (limited to metropolitan area for privacy)</li>
+                                <li>The badman's name</li>
+                                <li>Whether the figure is real or fictional</li>
+                                <li>How you encountered this badman (book, film, family story, etc.)</li>
+                                <li>Any sources or documentation you can provide</li>
+                            </ul>
+                            <div class="mt-4">
+                                <a class="btn btn-primary btn-xl" href="#" target="_blank">Submit a Badman</a>
+                                <p class="mt-3 small" style="color: #c8c8c8;"><em>Google Form link coming soon</em></p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+
         <footer class="footer text-faded text-center py-5">
-            <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
+            <div class="container"><p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
