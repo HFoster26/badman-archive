@@ -1,1 +1,378 @@
+# HTML Templates Documentation
 
+## Overview
+
+The Detroit Badman Archive consists of seven HTML pages sharing a common structure. This document explains the template architecture and how to modify each page.
+
+---
+
+## Common Structure (All Pages)
+
+Every HTML file follows this structure:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- Meta tags, title, stylesheets -->
+    </head>
+    <body>
+        <header>
+            <!-- Site heading (desktop only) -->
+        </header>
+        <nav>
+            <!-- Navigation bar -->
+        </nav>
+        <section class="page-section">
+            <!-- Main content sections -->
+        </section>
+        <footer>
+            <!-- Copyright -->
+        </footer>
+        <!-- JavaScript includes -->
+    </body>
+</html>
+```
+
+---
+
+## Head Section (Lines 1-16, all pages)
+
+```html
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="Page-specific description" />
+    <meta name="author" content="Harry Foster" />
+    <title>Page Title | Detroit Badman Archive</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+    <!-- Google fonts-->
+    <link href="https://fonts.googleapis.com/css?family=Raleway:..." rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Lora:..." rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="css/styles.css" rel="stylesheet" />
+</head>
+```
+
+**To modify:**
+- **Line 4** — Update `description` for SEO
+- **Line 6** — Update `<title>` for browser tab text
+- **Add page-specific CSS** — Add `<style>` block after the stylesheet link (see map.html, network.html for examples)
+- **Add page-specific libraries** — Add before `styles.css` (see map.html for Leaflet, network.html for D3)
+
+---
+
+## Header Section (Lines 17-22)
+
+```html
+<header>
+    <h1 class="site-heading text-center text-faded d-none d-lg-block">
+        <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
+        <span class="site-heading-lower">Page Subtitle</span>
+    </h1>
+</header>
+```
+
+**Classes explained:**
+- `d-none d-lg-block` — Hidden on mobile, visible on large screens
+- `text-faded` — Applies cream/off-white color from CSS
+- `text-primary` — Applies gold color from CSS
+
+**To modify:**
+- **Line 20** — Change subtitle for each page (e.g., "Geospatial Map", "Network Analysis")
+
+---
+
+## Navigation Section (Lines 23-42)
+
+```html
+<nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+    <div class="container">
+        <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
+        <button class="navbar-toggler">...</button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mx-auto">
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Home</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="how-to-use.html">How to Use</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="map.html">Map</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="network.html">Network</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="repository.html">Repository</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="about.html">About</a></li>
+                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="resources.html">Resources</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+```
+
+**Key elements:**
+- `navbar-brand` — Mobile-only site title (visible when nav is collapsed)
+- `navbar-toggler` — Hamburger menu button for mobile
+- `navbar-nav` — The actual navigation links
+
+**To modify:**
+- **Adding a page** — Add new `<li>` element matching the pattern
+- **Renaming a page** — Update both the `href` and link text
+- **IMPORTANT:** Navigation must be identical across all pages. Edit all 7 files when making changes.
+
+---
+
+## Content Sections
+
+### Standard Content Block (bg-faded)
+```html
+<section class="page-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="bg-faded rounded p-5">
+                    <h2 class="section-heading mb-4">
+                        <span class="section-heading-upper">Small Heading</span>
+                        <span class="section-heading-lower">Large Heading</span>
+                    </h2>
+                    <p>Content goes here...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+**Classes explained:**
+- `page-section` — Adds vertical margin (5rem top and bottom)
+- `col-xl-9 mx-auto` — 75% width on extra-large screens, centered
+- `bg-faded` — Green background box (`#1a472a`)
+- `rounded` — Rounded corners
+- `p-5` — Padding (3rem)
+
+### Call-to-Action Block (cta)
+```html
+<section class="page-section cta">
+    <div class="container">
+        <div class="row">
+            <div class="col-xl-9 mx-auto">
+                <div class="cta-inner bg-faded text-center rounded">
+                    <!-- Content -->
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+**Difference from standard:** The `cta` class adds a different background color to the section itself, creating visual alternation between sections.
+
+---
+
+## Footer Section
+
+```html
+<footer class="footer text-faded text-center py-5">
+    <div class="container">
+        <p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p>
+    </div>
+</footer>
+```
+
+**To modify:**
+- Update copyright year
+- Add additional footer content (links, contact info)
+
+---
+
+## JavaScript Includes (End of Body)
+
+```html
+<!-- Bootstrap core JS-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Core theme JS-->
+<script src="js/scripts.js"></script>
+```
+
+**To add page-specific JavaScript:**
+Add a `<script>` block after `scripts.js`:
+```html
+<script>
+    // Page-specific code here
+</script>
+```
+
+See map.html and network.html for examples.
+
+---
+
+## Page-Specific Documentation
+
+### index.html (Home Page)
+
+**Unique structure:** Uses the `intro` class for the hero section with overlapping image and text box.
+
+```html
+<section class="page-section clearfix">
+    <div class="container">
+        <div class="intro">
+            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="..." alt="..." />
+            <div class="intro-text left-0 text-center bg-faded p-5 rounded">
+                <!-- Content overlapping the image -->
+            </div>
+        </div>
+    </div>
+</section>
+```
+
+**To modify:**
+- **Line with `src="..."`** — Update image path
+- The intro-text box overlaps the image on desktop (see CSS for positioning)
+
+---
+
+### map.html
+
+**Additional head elements:**
+```html
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" ... />
+```
+
+**Page-specific styles (in `<style>` block):**
+- `#map-container` — Map dimensions and border
+- `.map-legend` — Legend box styling
+- `.legend-marker` — Colored circles in legend
+
+**JavaScript includes:**
+```html
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" ...></script>
+```
+
+**Map initialization script:**
+```javascript
+var map = L.map('map-container').setView([42.3314, -83.0458], 12);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {...}).addTo(map);
+```
+
+**To modify:**
+- **`[42.3314, -83.0458]`** — Default center coordinates (Detroit)
+- **`12`** — Default zoom level (higher = more zoomed in)
+- **Tile layer URL** — Change to use different map tiles
+
+---
+
+### network.html
+
+**Additional head elements:**
+```html
+<!-- No additional CSS needed - D3 renders to SVG -->
+```
+
+**Page-specific styles:**
+- `#network-container` — Visualization container
+- `#timeline-container` — Timeline slider wrapper
+- `.legend-line` — Colored lines in relationship legend
+
+**JavaScript includes:**
+```html
+<!-- D3.js -->
+<script src="https://d3js.org/d3.v7.min.js"></script>
+```
+
+**Timeline slider:**
+```html
+<input type="range" id="timeline-slider" min="1930" max="2020" value="2020" step="5">
+```
+
+**To modify:**
+- **`min="1930"`** — Earliest year in timeline
+- **`max="2020"`** — Latest year in timeline
+- **`step="5"`** — Year increments
+
+---
+
+### repository.html
+
+**Key section:** The submission button (currently placeholder)
+
+```html
+<a class="btn btn-primary btn-xl" href="#" target="_blank">Submit a Badman</a>
+```
+
+**To modify:**
+- Replace `href="#"` with actual Google Form URL
+- Remove the "Google Form link coming soon" note
+
+---
+
+### resources.html
+
+**Bibliography structure:**
+```html
+<h4 style="color: #50c878;">Theoretical</h4>
+<p>Author. <em>Title</em>. Publisher, Year.</p>
+
+<h4 style="color: #50c878;">Detective Modality</h4>
+<!-- Sources for this modality -->
+```
+
+**To add new sources:**
+1. Find the correct section (Theoretical, Detective, Revolutionary, etc.)
+2. Add new `<p>` element with citation in Chicago format
+3. Maintain alphabetical order within each section
+
+---
+
+### about.html
+
+**Sections:**
+1. Project Background — General archive description
+2. Methodology — Five modalities + five criteria (full detail)
+3. About the Creator — Bio placeholder
+4. Acknowledgments — CHI + community partners
+
+**To modify methodology:**
+- Update the five modalities descriptions if your framework evolves
+- Update five criteria explanations
+
+---
+
+### how-to-use.html
+
+**Sections:**
+1. Getting Started — Overview
+2. Using the Map — Markers, colors, polygons, navigation
+3. Using the Network — Nodes, edges, timeline, interaction
+4. Reading Profiles — Designation, scores, sources
+
+**To modify:**
+- Update instructions once actual visualizations are complete
+- Add screenshots/GIFs when available
+
+---
+
+## Adding a New Page
+
+1. Copy an existing page (e.g., `about.html`)
+2. Update `<title>` and `<meta description>`
+3. Update header subtitle
+4. Replace content sections
+5. Add navigation link to ALL 7 existing pages
+6. Add navigation link to the new page
+
+---
+
+## Bootstrap Classes Quick Reference
+
+| Class | Effect |
+|-------|--------|
+| `container` | Centered, max-width container |
+| `row` | Flexbox row |
+| `col-xl-9` | 75% width on XL screens |
+| `mx-auto` | Center horizontally |
+| `mb-4` | Margin bottom (1.5rem) |
+| `mt-2` | Margin top (0.5rem) |
+| `p-5` | Padding all sides (3rem) |
+| `text-center` | Center text |
+| `text-uppercase` | UPPERCASE TEXT |
+| `rounded` | Rounded corners |
+| `d-none` | Hidden |
+| `d-lg-block` | Visible on large screens |
+| `img-fluid` | Responsive image |
