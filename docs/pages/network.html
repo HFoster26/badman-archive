@@ -3,27 +3,78 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
-        <title>Business Casual - Start Bootstrap Theme</title>
+        <meta name="description" content="Network visualization showing relationships between Detroit's badman figures across time." />
+        <meta name="author" content="Harry Foster" />
+        <title>Network | Detroit Badman Archive</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Google fonts-->
         <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet" />
         <link href="https://fonts.googleapis.com/css?family=Lora:400,400i,700,700i" rel="stylesheet" />
-        <!-- Core theme CSS (includes Bootstrap)-->
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <!-- Custom Archive Styles -->
         <link href="css/styles.css" rel="stylesheet" />
+        <style>
+            #network-container {
+                height: 600px;
+                width: 100%;
+                border-radius: 0.5rem;
+                border: 2px solid #2a623d;
+                background-color: #0d2818;
+            }
+            .network-legend {
+                background-color: #1a472a;
+                padding: 1rem;
+                border-radius: 0.5rem;
+                border: 2px solid #2a623d;
+            }
+            .legend-item {
+                display: flex;
+                align-items: center;
+                margin-bottom: 0.5rem;
+            }
+            .legend-line {
+                width: 30px;
+                height: 3px;
+                margin-right: 10px;
+            }
+            .legend-creator { background-color: #d4af37; }
+            .legend-ideological { background-color: #50c878; }
+            .legend-geographic { background-color: #3388ff; }
+            .legend-inspiration { background-color: #dc3545; }
+            
+            /* Timeline slider styling */
+            #timeline-container {
+                padding: 1rem;
+                background-color: #1a472a;
+                border-radius: 0.5rem;
+                border: 2px solid #2a623d;
+                margin-top: 1rem;
+            }
+            #timeline-slider {
+                width: 100%;
+                accent-color: #50c878;
+            }
+            .timeline-labels {
+                display: flex;
+                justify-content: space-between;
+                color: #c8c8c8;
+                font-size: 0.85rem;
+                margin-top: 0.5rem;
+            }
+        </style>
     </head>
     <body>
         <header>
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
-                <span class="site-heading-upper text-primary mb-3">A Free Bootstrap Business Theme</span>
-                <span class="site-heading-lower">Business Casual</span>
+                <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
+                <span class="site-heading-lower">Network Analysis</span>
             </h1>
         </header>
         <!-- Navigation-->
         <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
             <div class="container">
-                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Start Bootstrap</a>
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
@@ -38,91 +89,81 @@
                 </div>
             </div>
         </nav>
-        <section class="page-section cta">
+        
+        <!-- Network Section -->
+        <section class="page-section">
             <div class="container">
                 <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <div class="cta-inner bg-faded text-center rounded">
-                            <h2 class="section-heading mb-5">
-                                <span class="section-heading-upper">Come On In</span>
-                                <span class="section-heading-lower">We're Open</span>
-                            </h2>
-                            <ul class="list-unstyled list-hours mb-5 text-left mx-auto">
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Sunday
-                                    <span class="ms-auto">Closed</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Monday
-                                    <span class="ms-auto">7:00 AM to 8:00 PM</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Tuesday
-                                    <span class="ms-auto">7:00 AM to 8:00 PM</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Wednesday
-                                    <span class="ms-auto">7:00 AM to 8:00 PM</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Thursday
-                                    <span class="ms-auto">7:00 AM to 8:00 PM</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Friday
-                                    <span class="ms-auto">7:00 AM to 8:00 PM</span>
-                                </li>
-                                <li class="list-unstyled-item list-hours-item d-flex">
-                                    Saturday
-                                    <span class="ms-auto">9:00 AM to 5:00 PM</span>
-                                </li>
-                            </ul>
-                            <p class="address mb-5">
-                                <em>
-                                    <strong>1116 Orchard Street</strong>
-                                    <br />
-                                    Golden Valley, Minnesota
-                                </em>
-                            </p>
-                            <p class="mb-0">
-                                <small><em>Call Anytime</em></small>
-                                <br />
-                                (317) 585-8468
-                            </p>
+                    <!-- Network Container -->
+                    <div class="col-lg-9 mb-4">
+                        <div id="network-container">
+                            <!-- D3 network visualization will be initialized here -->
+                            <p style="color: #c8c8c8; text-align: center; padding-top: 250px;">Network visualization loading...</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="page-section about-heading">
-            <div class="container">
-                <img class="img-fluid rounded about-heading-img mb-3 mb-lg-0" src="assets/img/about.jpg" alt="..." />
-                <div class="about-heading-content">
-                    <div class="row">
-                        <div class="col-xl-9 col-lg-10 mx-auto">
-                            <div class="bg-faded rounded p-5">
-                                <h2 class="section-heading mb-4">
-                                    <span class="section-heading-upper">Strong Coffee, Strong Roots</span>
-                                    <span class="section-heading-lower">About Our Cafe</span>
-                                </h2>
-                                <p>Founded in 1987 by the Hernandez brothers, our establishment has been serving up rich coffee sourced from artisan farmers in various regions of South and Central America. We are dedicated to travelling the world, finding the best coffee, and bringing back to you here in our cafe.</p>
-                                <p class="mb-0">
-                                    We guarantee that you will fall in
-                                    <em>lust</em>
-                                    with our decadent blends the moment you walk inside until you finish your last sip. Join us for your daily routine, an outing with friends, or simply just to enjoy some alone time.
-                                </p>
+                        <!-- Timeline Slider -->
+                        <div id="timeline-container">
+                            <label for="timeline-slider" style="color: #50c878; text-transform: uppercase; font-weight: bold;">Timeline Filter</label>
+                            <input type="range" id="timeline-slider" min="1930" max="2020" value="2020" step="5">
+                            <div class="timeline-labels">
+                                <span>1930</span>
+                                <span>1950</span>
+                                <span>1970</span>
+                                <span>1990</span>
+                                <span>2020</span>
                             </div>
                         </div>
                     </div>
+                    <!-- Legend and Info Panel -->
+                    <div class="col-lg-3">
+                        <div class="network-legend mb-4">
+                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Relationship Types</h5>
+                            <div class="legend-item">
+                                <div class="legend-line legend-creator"></div>
+                                <span style="color: #e8e8e8;">Creator → Creation</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-ideological"></div>
+                                <span style="color: #e8e8e8;">Ideological Alignment</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-geographic"></div>
+                                <span style="color: #e8e8e8;">Geographic Convergence</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-inspiration"></div>
+                                <span style="color: #e8e8e8;">Inspiration</span>
+                            </div>
+                        </div>
+                        <!-- Connection Info Panel -->
+                        <div class="bg-faded rounded p-4" id="connection-panel">
+                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Connection Details</h5>
+                            <p id="connection-content" style="color: #c8c8c8;">Click a node or edge to view relationship details.</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
+
         <footer class="footer text-faded text-center py-5">
-            <div class="container"><p class="m-0 small">Copyright &copy; Your Website 2023</p></div>
+            <div class="container"><p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- D3.js -->
+        <script src="https://d3js.org/d3.v7.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
+        <!-- Network Initialization Placeholder -->
+        <script>
+            // D3 force-directed graph will be initialized here
+            // This is a placeholder - full implementation coming in visualization development phase
+            console.log('Network visualization placeholder loaded. D3 version:', d3.version);
+            
+            // Timeline slider event listener
+            document.getElementById('timeline-slider').addEventListener('input', function(e) {
+                console.log('Timeline filter:', e.target.value);
+                // Will filter network nodes by year when data is loaded
+            });
+        </script>
     </body>
 </html>
