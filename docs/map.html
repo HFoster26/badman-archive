@@ -202,6 +202,16 @@
                     document.getElementById('description-text').innerHTML = expanded ? fullDesc : shortDesc;
                     this.innerHTML = expanded ? 'Show less' : 'Read more';
                 });
+                
+                // Create territory polygon
+                if (figure.geographic.territory && figure.geographic.territory.polygon) {
+                    var polygon = L.polygon(figure.geographic.territory.polygon, {
+                        color: icon === icons.detective ? '#3388ff' : '#dc3545',
+                        fillColor: icon === icons.detective ? '#3388ff' : '#dc3545',
+                        fillOpacity: 0.2,
+                        weight: 2
+                    }).addTo(map);
+                }
             });
         });
     })
