@@ -152,8 +152,10 @@
                 fetch('data/detroit.json')
                     .then(response => response.json())
                     .then(data => {
+            
             // Loop through each figure
                 data.figures.forEach(figure => {
+           
             // Get coordinates from the geographic bucket
             var lat = figure.geographic.primary_location.coordinates.lat;
             var lng = figure.geographic.primary_location.coordinates.lng;
