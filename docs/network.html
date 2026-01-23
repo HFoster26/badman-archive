@@ -326,10 +326,29 @@
                 node
                     .attr('cx', function(d) { return d.x; })
                     .attr('cy', function(d) { return d.y; });
+
+                label
+                    .attr('x', function(d) { return d.x; })
+                    .attr('y', function(d) { return d.y; });
             });
 
             console.log('Tick function active');
- 
+            
+            // ============================================
+            // Labels
+            // ============================================
+
+            const label = g.append('g')
+                .attr('class', 'labels')
+                .selectAll('text')
+                .data(nodes)
+                .enter()
+                .append('text')
+                .text(function(d) { return d.name; })
+                .attr('font-size', '12px')
+                .attr('fill', '#e8e8e8')
+                .attr('text-anchor', 'middle')
+                .attr('dy', -25);
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
