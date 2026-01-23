@@ -240,7 +240,23 @@
                 });
     
                 console.log('Nodes:', nodes.length, '| Edges:', edges.length);
+            
+            // ============================================
+            // SIMULATION: Create the physics engine
+            // ============================================
 
+            const simulation = d3.forceSimulation(nodes)
+                .force('link', d3.forceLink(edges)
+                    .id(function(d) { return d.id; })
+                    .distance(150)
+                )
+                .force('charge', d3.forceManyBody()
+                    .strength(-400)
+                )
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(50));
+
+            console.log('Force simulation created');
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
