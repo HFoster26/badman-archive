@@ -201,6 +201,49 @@
             );
 
             console.log('SVG canvas created with zoom enabled');
+            // ============================================
+            // DATA: Load and transform detroit.json
+            // ============================================
+
+            d3.json('data/detroit.json').then(function(data) {
+    
+                console.log('Data loaded:', data.figures.length, 'figures');
+    
+                // Build nodes array from figures
+                const nodes = data.figures.map(function(figure) {
+                    return {
+                        id: figure.id,
+                        name: figure.name,
+                        type: figure.type,
+                        modality: figure.modality,
+                        emergence: figure.emergence.year,
+                        meta_badman: figure.meta_badman || false
+                    };
+                });
+    
+                // Build edges array from connections
+                const edges = [];
+    
+                data.figures.forEach(function(figure) {
+                    if (figure.network && figure.network.connections) {
+                        figure.network.connections.forEach(function(conn) {
+                            if (conn.direction === 'outgoing' || conn.direction === 'mutual') {
+                                edges.push({
+                                    source: figure.id,
+                                    target: conn.target_id,
+                                    type: conn.type,
+                                    evidence: conn.evidence
+                                });
+                            }
+                        });
+                    }
+                });
+    
+                console.log('Nodes:', nodes.length, '| Edges:', edges.length);
+
+            }).catch(function(error) {
+                console.error('Error loading data:', error);
+            });
         </script>
     </body>
 </html>
