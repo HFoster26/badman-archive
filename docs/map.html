@@ -115,75 +115,63 @@
         <!-- Map Initialization -->
         <script>
             // Initialize map centered on Detroit
-        var map = L.map('map-container').setView([42.3314, -83.0458], 12);
+var map = L.map('map-container').setView([42.3314, -83.0458], 12);
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-        }).addTo(map);
+// Add OpenStreetMap tile layer
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    maxZoom: 19,
+    attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+}).addTo(map);
 
-        // Define custom icons for each modality
-        var detectiveIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-});
-
-        var revolutionaryIcon = L.icon({
-            iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
-            shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-            iconSize: [25, 41],
-            iconAnchor: [12, 41],
-            popupAnchor: [1, -34],
-            shadowSize: [41, 41]
-});    
-                    
-        var goines = {
-            name: "Donald Goines",
-            modality: "detective",
-            type: "real",
-            lat: 42.3355,
-            lng: -83.0370,
-            description: "The apex meta-badman: career criminal who documented street life while living it."
-        };
-
-        // Create a marker
-        var marker = L.marker([goines.lat, goines.lng], {icon: detectiveIcon}).addTo(map);
-
-        // Add click handler to populate info panel
-        marker.on('click', function() {
-            document.getElementById('info-content').innerHTML = 
-                '<strong>' + goines.name + '</strong><br>' +
-                '<em>Modality:</em> ' + goines.modality + '<br>' +
-                '<em>Type:</em> ' + goines.type + '<br><br>' +
-                goines.description;
-}); 
-            
-        // STEP 2: Add a Revolutionary figure
-        var scott = {
-            name: "Ron Scott",
-            modality: "revolutionary",
-            type: "real",
-            lat: 42.3361,
-            lng: -83.0719,
-            description: "Co-founded Detroit's Black Panther Party. Lifelong community organizer who evolved from revolutionary militant to 'Transformational Anthropologist.'"
+// Define custom icons for each modality
+var icons = {
+    detective: L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    }),
+    revolutionary: L.icon({
+        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41]
+    })
 };
 
-        // Create marker with revolutionary (red) icon
-        var scottMarker = L.marker([scott.lat, scott.lng], {icon: revolutionaryIcon}).addTo(map);
-
-        // Add click handler
-        scottMarker.on('click', function() {
-            document.getElementById('info-content').innerHTML = 
-                '<strong>' + scott.name + '</strong><br>' +
-                '<em>Modality:</em> ' + scott.modality + '<br>' +
-                '<em>Type:</em> ' + scott.type + '<br><br>' +
-                scott.description;
-});
+// Fetch JSON and create markers
+fetch('../data/detroit.json')
+    .then(response => response.json())
+    .then(data => {
+        // Loop through each figure
+        data.figures.forEach(figure => {
+            // Get coordinates from the geographic bucket
+            var lat = figure.geographic.primary_location.coordinates.lat;
+            var lng = figure.geographic.primary_location.coordinates.lng;
+            
+            // Select icon based on modality
+            var icon = icons[figure.modality];
+            
+            // Create marker
+            var marker = L.marker([lat, lng], {icon: icon}).addTo(map);
+            
+            // Add click handler
+            marker.on('click', function() {
+                document.getElementById('info-content').innerHTML = 
+                    '<strong>' + figure.name + '</strong><br>' +
+                    '<em>Modality:</em> ' + figure.modality + '<br>' +
+                    '<em>Type:</em> ' + figure.type + '<br><br>' +
+                    figure.biography.description;
+            });
+        });
+    })
+    .catch(error => {
+        console.error('Error loading detroit.json:', error);
+    });
         </script>
     </body>
 </html>
