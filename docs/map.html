@@ -159,42 +159,28 @@ fetch('data/detroit.json')
             // Create marker
             var marker = L.marker([lat, lng], {icon: icon}).addTo(map);
             
-        // Add click handler
+            // Add click handler
             marker.on('click', function() {
-            // Calculate total badman score (out of 25)
-            var totalScore = 
-                figure.scores.outlaw_relationship.score +
-                figure.scores.community_authorization.score +
-                figure.scores.violence_as_language.score +
-                figure.scores.cultural_preservation.score +
-                figure.scores.hypermasculine_performance.score;
+                // Truncate description to first 200 characters
+                var shortDesc = figure.biography.description.substring(0, 200) + '...';
+                // Calculate total badman score (out of 25)
+                var totalScore = 
+                    figure.scores.outlaw_relationship.score +
+                    figure.scores.community_authorization.score +
+                    figure.scores.violence_as_language.score +
+                    figure.scores.cultural_preservation.score +
+                    figure.scores.hypermasculine_performance.score;
     
-        // Truncate description to first 200 characters
-        var shortDesc = figure.biography.description.substring(0, 200) + '...';
-        var fullDesc = figure.biography.description;
-    
-        // Build the panel HTML
-        document.getElementById('info-content').innerHTML = 
-            '<strong>' + figure.name + '</strong><br>' +
-            '<em>Modality:</em> ' + figure.modality + '<br>' +
-            '<em>Type:</em> ' + figure.type + '<br>' +
-            '<em>Years:</em> ' + (figure.years.birth || figure.years.material_start) + 
-            ' - ' + (figure.years.death || figure.years.material_end || 'present') + '<br>' +
-            '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
-            '<span id="description-text">' + shortDesc + '</span>' +
-            '<a href="#" id="read-more-link" style="color: #50c878; display: block; margin-top: 0.5rem;">Read more</a>';
-    
-        // Track expanded state
-        var expanded = false;
-    
-        // Add click handler for "Read more" link
-        document.getElementById('read-more-link').addEventListener('click', function(e) {
-            e.preventDefault();
-            expanded = !expanded;
-            document.getElementById('description-text').innerHTML = expanded ? fullDesc : shortDesc;
-            this.innerHTML = expanded ? 'Show less' : 'Read more';
+                document.getElementById('info-content').innerHTML = 
+                    '<strong>' + figure.name + '</strong><br>' +
+                    '<em>Modality:</em> ' + figure.modality + '<br>' +
+                    '<em>Type:</em> ' + figure.type + '<br>' +
+                    '<em>Years:</em> ' + (figure.years.birth || figure.years.material_start) + 
+                    ' - ' + (figure.years.death || figure.years.material_end || 'present') + '<br>' +
+                    '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
+                    shortDesc;
+            });
         });
-    });
     })
     .catch(error => {
         console.error('Error loading detroit.json:', error);
