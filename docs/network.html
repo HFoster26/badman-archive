@@ -312,9 +312,28 @@
                         d.fx = null;
                         d.fy = null;
                     }
+            // ============================================
+            // TICK: Update positions every frame
+            // ============================================
+
+            simulation.on('tick', function() {
+                edge
+                    .attr('x1', function(d) { return d.source.x; })
+                    .attr('y1', function(d) { return d.source.y; })
+                    .attr('x2', function(d) { return d.target.x; })
+                    .attr('y2', function(d) { return d.target.y; });
+
+                node
+                    .attr('cx', function(d) { return d.x; })
+                    .attr('cy', function(d) { return d.y; });
+            });
+
+            console.log('Tick function active');
+ 
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
+            
         </script>
     </body>
 </html>
