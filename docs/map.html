@@ -161,6 +161,27 @@
                 '<em>Modality:</em> ' + goines.modality + '<br>' +
                 '<em>Type:</em> ' + goines.type + '<br><br>' +
                 goines.description;
+        // STEP 2: Add a Revolutionary figure
+        var scott = {
+            name: "Ron Scott",
+            modality: "revolutionary",
+            type: "real",
+            lat: 42.3361,
+            lng: -83.0719,
+            description: "Co-founded Detroit's Black Panther Party. Lifelong community organizer who evolved from revolutionary militant to 'Transformational Anthropologist.'"
+};
+
+        // Create marker with revolutionary (red) icon
+        var scottMarker = L.marker([scott.lat, scott.lng], {icon: revolutionaryIcon}).addTo(map);
+
+        // Add click handler
+        scottMarker.on('click', function() {
+            document.getElementById('info-content').innerHTML = 
+                '<strong>' + scott.name + '</strong><br>' +
+                '<em>Modality:</em> ' + scott.modality + '<br>' +
+                '<em>Type:</em> ' + scott.type + '<br><br>' +
+                scott.description;
+});
         });
         </script>
     </body>
