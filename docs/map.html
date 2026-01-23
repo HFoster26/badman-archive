@@ -33,7 +33,7 @@
                 display: flex;
                 align-items: center;
                 margin-bottom: 0.5rem;
-    
+            }    
             #info-panel {
                 max-height: 400px;
                 overflow-y: auto;
@@ -189,7 +189,8 @@
                     '<em>Years:</em> ' + (figure.years.birth || figure.years.material_start) + 
                     ' - ' + (figure.years.death || figure.years.material_end || 'present') + '<br>' +
                     '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
-                    shortDesc;
+                    '<span id="description-text">' + shortDesc + '</span>' +
+                    '<a href="#" id="read-more-link" style="color: #50c878; display: block; margin-top: 0.5rem;">Read more</a>';
                 
                 // Track expanded state
                 var expanded = false;
@@ -200,6 +201,7 @@
                     expanded = !expanded;
                     document.getElementById('description-text').innerHTML = expanded ? fullDesc : shortDesc;
                     this.innerHTML = expanded ? 'Show less' : 'Read more';
+                });
             });
         });
     })
