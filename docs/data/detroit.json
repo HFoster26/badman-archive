@@ -9,9 +9,15 @@
       "modality": "detective",
       "years": {
         "birth": 1936,
-        "death": 1974,
-        "active_start": 1955,
-        "active_end": 1974
+        "death": 1974
+      },
+      "emergence": {
+        "year": 1955,
+        "context": "Returned from Korea with heroin addiction at age 19, began criminal career that would result in seven prison sentences for robbery, theft, and drug-related offenses.",
+        "source": {
+          "title": "Low Road: The Life and Legacy of Donald Goines",
+          "url": "https://www.goodreads.com/book/show/115048.Low_Road"
+        }
       },
       "scores": {
         "outlaw_relationship": {
@@ -86,35 +92,128 @@
             [42.3200, -83.0250],
             [42.3200, -83.0550]
           ]
-        }
+        },
+        "additional_locations": [
+          {
+            "name": "Highland Park residence (murder site)",
+            "coordinates": { "lat": 42.4056, "lng": -83.0977 },
+            "significance": "Site of Goines's murder alongside Shirley Sailor, October 21, 1974"
+          },
+          {
+            "name": "Jackson State Prison",
+            "coordinates": { "lat": 42.2459, "lng": -84.4013 },
+            "significance": "Where Goines wrote Dopefiend and multiple other novels during incarceration"
+          }
+        ]
       },
-      "connections": [
-        {
-          "target_id": "kenyatta",
-          "relationship": "creator_to_creation",
-          "direction": "one-way",
-          "description": "Goines created Kenyatta as a fictional extension of revolutionary Black masculinity, publishing four novels under the pseudonym Al C. Clark."
-        }
-      ],
+      "network": {
+        "connections": [
+          {
+            "target_id": "kenyatta",
+            "type": "META",
+            "direction": "outgoing",
+            "evidence": "Goines created Kenyatta under pseudonym Al C. Clark, publishing four novels (Crime Partners, Death List, Kenyatta's Escape, Kenyatta's Last Hit) between 1974-1975."
+          },
+          {
+            "target_id": "action_jackson",
+            "type": "C2C",
+            "direction": "outgoing",
+            "evidence": "Goines's Detroit-based crime fiction established the city as a site of Black detective narratives, a tradition Action Jackson inherits and updates for 1980s action cinema."
+          }
+        ],
+        "influence_trajectory": [
+          {
+            "year": 1971,
+            "metric_type": "copies_sold",
+            "value": 0,
+            "value_label": "Unknown - first printing of Dopefiend",
+            "geography": ["Los Angeles", "Detroit"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: Holloway House records research",
+              "url": null
+            }
+          },
+          {
+            "year": 1974,
+            "metric_type": "copies_sold",
+            "value": 0,
+            "value_label": "Unknown - 16 novels in print at time of death",
+            "geography": ["national"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: Holloway House records or Eddie Allen biography details",
+              "url": null
+            }
+          },
+          {
+            "year": 1998,
+            "metric_type": "copies_sold",
+            "value": 5000000,
+            "value_label": "Over 5 million copies sold (cumulative)",
+            "geography": ["international"],
+            "confidence": "reported",
+            "source": {
+              "title": "Multiple obituaries and retrospectives cite this figure",
+              "url": null
+            }
+          },
+          {
+            "year": 2004,
+            "metric_type": "adaptation",
+            "value": 8053875,
+            "value_label": "$8,053,875 box office - Never Die Alone film adaptation",
+            "geography": ["national"],
+            "confidence": "verified",
+            "source": {
+              "title": "Box Office Mojo",
+              "url": "https://www.boxofficemojo.com/title/tt0350048/"
+            }
+          }
+        ]
+      },
       "sources": {
         "primary": [
           {
             "title": "Dopefiend",
+            "type": "novel",
+            "year": 1971,
             "url": "https://www.kensingtonbooks.com/9781496733290/dopefiend/"
           },
           {
             "title": "Crime Partners (Kenyatta Series #1)",
+            "type": "novel",
+            "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
           },
           {
             "title": "Never Die Alone",
+            "type": "novel",
+            "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496733269/never-die-alone/"
           }
         ],
         "secondary": [
           {
+            "title": "Low Road: The Life and Legacy of Donald Goines",
+            "type": "biography",
+            "year": 2004,
+            "url": "https://www.goodreads.com/book/show/115048.Low_Road"
+          },
+          {
             "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+            "type": "academic",
+            "year": 2003,
             "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
+          }
+        ],
+        "archival": [
+          {
+            "title": "Holloway House Publishing records",
+            "type": "publisher",
+            "repository": "Unknown - company defunct",
+            "url": null,
+            "notes": "Primary source for sales data; Holloway House was notoriously opaque about figures. Company no longer exists; records may be lost."
           }
         ]
       }
@@ -125,11 +224,20 @@
       "type": "fictional",
       "modality": "detective",
       "medium": "print",
+      "creator_id": "goines_donald",
       "years": {
         "material_start": 1974,
         "material_end": 1975
       },
       "adaptations": [],
+      "emergence": {
+        "year": 1974,
+        "context": "First appearance in Crime Partners, published by Holloway House under Goines's pseudonym Al C. Clark. Introduced as leader of a paramilitary organization waging war against drug dealers and racist police in Detroit.",
+        "source": {
+          "title": "Crime Partners",
+          "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
+        }
+      },
       "scores": {
         "outlaw_relationship": {
           "score": 5,
@@ -195,47 +303,93 @@
             [42.3000, -82.9500],
             [42.3000, -83.1000]
           ]
-        }
-      },
-      "connections": [
-        {
-          "target_id": "goines_donald",
-          "relationship": "creator_to_creation",
-          "direction": "one-way",
-          "description": "Created by Donald Goines under the pseudonym Al C. Clark. Kenyatta represents Goines's revolutionary aspirations—the disciplined militant he imagined but never became."
         },
-        {
-          "target_id": "scott_ron",
-          "relationship": "ideological_alignment",
-          "direction": "two-way",
-          "description": "Kenyatta's fictional militant organization parallels the real-world Detroit Black Panther Party that Ron Scott co-founded. Both emphasize armed community defense and systematic resistance to police brutality."
-        }
-      ],
+        "additional_locations": [
+          {
+            "name": "Training farm (fictional)",
+            "coordinates": { "lat": 42.5000, "lng": -83.2000 },
+            "significance": "Fortified compound outside Detroit where Kenyatta trains his paramilitary organization"
+          }
+        ]
+      },
+      "network": {
+        "connections": [
+          {
+            "target_id": "goines_donald",
+            "type": "META",
+            "direction": "incoming",
+            "evidence": "Created by Donald Goines under the pseudonym Al C. Clark. Kenyatta represents Goines's revolutionary aspirations—the disciplined militant he imagined but never became."
+          },
+          {
+            "target_id": "scott_ron",
+            "type": "P2C",
+            "direction": "incoming",
+            "evidence": "Kenyatta's fictional militant organization parallels the real-world Detroit Black Panther Party that Ron Scott co-founded. Both emphasize armed community defense and systematic resistance to police brutality. Scott's organizing provided the real-world template for Goines's fictional vision."
+          }
+        ],
+        "influence_trajectory": [
+          {
+            "year": 1974,
+            "metric_type": "copies_sold",
+            "value": 0,
+            "value_label": "Unknown - first printing of Crime Partners",
+            "geography": ["national"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: Holloway House records research",
+              "url": null
+            }
+          },
+          {
+            "year": 1975,
+            "metric_type": "books_published",
+            "value": 4,
+            "value_label": "4 novels in series completed",
+            "geography": ["national"],
+            "confidence": "verified",
+            "source": {
+              "title": "Holloway House publication records",
+              "url": null
+            }
+          }
+        ]
+      },
       "sources": {
         "primary": [
           {
             "title": "Crime Partners",
+            "type": "novel",
+            "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
           },
           {
             "title": "Death List",
+            "type": "novel",
+            "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496735966/death-list/"
           },
           {
             "title": "Kenyatta's Escape",
+            "type": "novel",
+            "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496739377/kenyattas-escape/"
           },
           {
             "title": "Kenyatta's Last Hit",
+            "type": "novel",
+            "year": 1975,
             "url": "https://www.kensingtonbooks.com/9781496742988/kenyattas-last-hit/"
           }
         ],
         "secondary": [
           {
             "title": "Low Road: The Life and Legacy of Donald Goines",
+            "type": "biography",
+            "year": 2004,
             "url": "https://www.goodreads.com/book/show/115048.Low_Road"
           }
-        ]
+        ],
+        "archival": []
       }
     },
     {
@@ -244,11 +398,20 @@
       "type": "fictional",
       "modality": "detective",
       "medium": "film",
+      "creator_id": null,
       "years": {
         "material_start": 1988,
         "material_end": 1988
       },
       "adaptations": [],
+      "emergence": {
+        "year": 1988,
+        "context": "Film released February 12, 1988. Character introduced as Detroit police sergeant demoted for excessive force, who goes vigilante after being framed for murder.",
+        "source": {
+          "title": "Action Jackson",
+          "url": "https://www.imdb.com/title/tt0094612/"
+        }
+      },
       "scores": {
         "outlaw_relationship": {
           "score": 4,
@@ -314,29 +477,81 @@
             [42.2800, -83.0000],
             [42.2800, -83.1200]
           ]
-        }
+        },
+        "additional_locations": []
       },
-      "connections": [
-        {
-          "target_id": "goines_donald",
-          "relationship": "inspiration",
-          "direction": "one-way",
-          "description": "Action Jackson inherits the Detroit-based Black detective tradition that Goines's work helped establish, updating it for 1980s action cinema while maintaining the city's significance as setting."
-        }
-      ],
+      "network": {
+        "connections": [
+          {
+            "target_id": "goines_donald",
+            "type": "C2C",
+            "direction": "incoming",
+            "evidence": "Action Jackson inherits the Detroit-based Black detective tradition that Goines's work helped establish, updating it for 1980s action cinema. Carl Weathers cited love of blaxploitation tradition that Goines's contemporaries helped create."
+          },
+          {
+            "target_id": "baker_gordon",
+            "type": "GEO",
+            "direction": "incoming",
+            "evidence": "Action Jackson's plot centers on auto industry corruption and union protection—directly echoing the labor struggles Baker organized at Dodge Main two decades earlier. Detroit's auto industry as site of Black resistance connects both figures."
+          }
+        ],
+        "influence_trajectory": [
+          {
+            "year": 1988,
+            "metric_type": "box_office",
+            "value": 20280000,
+            "value_label": "$20,280,000 domestic box office",
+            "geography": ["national"],
+            "confidence": "verified",
+            "source": {
+              "title": "Box Office Mojo",
+              "url": "https://www.boxofficemojo.com/title/tt0094612/"
+            }
+          },
+          {
+            "year": 1988,
+            "metric_type": "box_office_opening",
+            "value": 7500000,
+            "value_label": "$7.5 million opening weekend",
+            "geography": ["national"],
+            "confidence": "verified",
+            "source": {
+              "title": "Box Office Mojo",
+              "url": "https://www.boxofficemojo.com/title/tt0094612/"
+            }
+          },
+          {
+            "year": 1988,
+            "metric_type": "budget",
+            "value": 7000000,
+            "value_label": "$7 million production budget",
+            "geography": null,
+            "confidence": "reported",
+            "source": {
+              "title": "Various industry sources",
+              "url": null
+            }
+          }
+        ]
+      },
       "sources": {
         "primary": [
           {
-            "title": "Action Jackson (1988)",
+            "title": "Action Jackson",
+            "type": "film",
+            "year": 1988,
             "url": "https://www.imdb.com/title/tt0094612/"
           }
         ],
         "secondary": [
           {
             "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+            "type": "academic",
+            "year": 2003,
             "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
           }
-        ]
+        ],
+        "archival": []
       }
     },
     {
@@ -347,9 +562,15 @@
       "modality": "revolutionary",
       "years": {
         "birth": 1947,
-        "death": 2015,
-        "active_start": 1968,
-        "active_end": 2015
+        "death": 2015
+      },
+      "emergence": {
+        "year": 1968,
+        "context": "Co-founded Detroit chapter of Black Panther Party after hearing Kathleen Cleaver speak at St. Matthew/St. Joseph Church. Joined Eric Bell, Jackie Spicer, George Gillis, and Victor Stewart as founding members of an organization explicitly positioned outside and against state authority.",
+        "source": {
+          "title": "The Rise and Fall of Detroit's Dynamic Black Panther Party",
+          "url": "https://michiganchronicle.com/the-rise-and-fall-of-detroits-dynamic-black-panther-party/"
+        }
       },
       "scores": {
         "outlaw_relationship": {
@@ -424,41 +645,129 @@
             [42.3100, -83.0400],
             [42.3100, -83.1000]
           ]
-        }
-      },
-      "connections": [
-        {
-          "target_id": "baker_gordon",
-          "relationship": "ideological_alignment",
-          "direction": "two-way",
-          "description": "Both were revolutionary contemporaries in late 1960s Detroit, representing parallel streams of Black radical organizing—Scott through the Panthers, Baker through labor organizing. Both spoke together at 2010 U.S. Social Forum."
         },
-        {
-          "target_id": "kenyatta",
-          "relationship": "inspiration",
-          "direction": "one-way",
-          "description": "Scott's real-world Panther organizing provided the template for Goines's fictional Kenyatta—a disciplined, armed organization defending Black communities against drugs and police violence."
-        }
-      ],
+        "additional_locations": [
+          {
+            "name": "St. Matthew/St. Joseph Church",
+            "coordinates": { "lat": 42.3520, "lng": -83.0650 },
+            "significance": "Where Scott heard Kathleen Cleaver speak, catalyzing his decision to co-found Detroit BPP"
+          },
+          {
+            "name": "University of Michigan",
+            "coordinates": { "lat": 42.2780, "lng": -83.7382 },
+            "significance": "Accepted before affirmative action policies in 1965"
+          }
+        ]
+      },
+      "network": {
+        "connections": [
+          {
+            "target_id": "baker_gordon",
+            "type": "C2C",
+            "direction": "mutual",
+            "evidence": "Revolutionary contemporaries in late 1960s Detroit, representing parallel streams of Black radical organizing—Scott through the Panthers, Baker through labor organizing. Both spoke together at 2010 U.S. Social Forum panel on their experiences."
+          },
+          {
+            "target_id": "kenyatta",
+            "type": "P2C",
+            "direction": "outgoing",
+            "evidence": "Scott's real-world Panther organizing provided the template for Goines's fictional Kenyatta—a disciplined, armed organization defending Black communities against drugs and police violence. Both emerged in Detroit in the same era with parallel missions."
+          }
+        ],
+        "influence_trajectory": [
+          {
+            "year": 1968,
+            "metric_type": "event_attendance",
+            "value": 0,
+            "value_label": "Unknown - Detroit BPP founding membership",
+            "geography": ["Detroit"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: Archival research on Detroit BPP chapter size",
+              "url": null
+            }
+          },
+          {
+            "year": 1970,
+            "metric_type": "event_attendance",
+            "value": 0,
+            "value_label": "Unknown - Detroit 15 incident participants",
+            "geography": ["Detroit"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: COINTELPRO files and news coverage research",
+              "url": null
+            }
+          },
+          {
+            "year": 2010,
+            "metric_type": "event_attendance",
+            "value": 0,
+            "value_label": "Unknown - Allied Media Conference attendance for Scott's presentation",
+            "geography": ["Detroit"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Allied Media Conference records",
+              "url": "https://alliedmedia.org/"
+            }
+          },
+          {
+            "year": 2015,
+            "metric_type": "newspaper_mentions",
+            "value": 0,
+            "value_label": "Unknown - obituary and tribute coverage volume",
+            "geography": ["Detroit", "national"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: ProQuest news archive search",
+              "url": null
+            }
+          }
+        ]
+      },
       "sources": {
         "primary": [
           {
             "title": "Ron Scott personal webpage",
+            "type": "website",
+            "year": null,
             "url": "https://about.me/ronscott"
           },
           {
             "title": "Allied Media Conference 2010 Video",
+            "type": "video",
+            "year": 2010,
             "url": "https://alliedmedia.org/news/remembering-ron-scott-watch-video-amc2010"
           }
         ],
         "secondary": [
           {
-            "title": "The Legacy of Detroit Activist Ron Scott (ACLU Michigan)",
+            "title": "The Legacy of Detroit Activist Ron Scott",
+            "type": "news",
+            "year": 2015,
             "url": "https://www.aclumich.org/en/news/legacy-detroit-activist-ron-scott"
           },
           {
-            "title": "The Rise and Fall of Detroit's Dynamic Black Panther Party (Michigan Chronicle)",
+            "title": "The Rise and Fall of Detroit's Dynamic Black Panther Party",
+            "type": "news",
+            "year": null,
             "url": "https://michiganchronicle.com/the-rise-and-fall-of-detroits-dynamic-black-panther-party/"
+          }
+        ],
+        "archival": [
+          {
+            "title": "COINTELPRO Files - Detroit Field Office",
+            "type": "government",
+            "repository": "National Archives",
+            "url": null,
+            "notes": "FBI surveillance records on Detroit Black Panther Party. Requires in-person visit or FOIA request. Relevant to Scott's activities 1968-1971."
+          },
+          {
+            "title": "Detroit Coalition Against Police Brutality records",
+            "type": "organizational",
+            "repository": "Unknown",
+            "url": null,
+            "notes": "Scott served as longtime spokesperson. Records may document activities and community reach."
           }
         ]
       }
@@ -471,9 +780,15 @@
       "modality": "revolutionary",
       "years": {
         "birth": 1941,
-        "death": 2014,
-        "active_start": 1963,
-        "active_end": 2014
+        "death": 2014
+      },
+      "emergence": {
+        "year": 1965,
+        "context": "Wrote open letter refusing Vietnam draft, declaring willingness to fight for Black liberation on 12th Street but not in Vietnam. Organized September 10th Movement protest. This was two years before Muhammad Ali's famous refusal.",
+        "source": {
+          "title": "Letter to the Local Draft Board (1965)",
+          "url": "https://viewpointmag.com/2015/06/30/letter-to-the-local-draft-board-1965/"
+        }
       },
       "scores": {
         "outlaw_relationship": {
@@ -563,39 +878,151 @@
             [42.3300, -83.0300],
             [42.3300, -83.1000]
           ]
-        }
+        },
+        "additional_locations": [
+          {
+            "name": "Wayne State University",
+            "coordinates": { "lat": 42.3574, "lng": -83.0693 },
+            "significance": "Where Baker studied Marx and co-founded UHURU student organization in 1963"
+          },
+          {
+            "name": "12th Street corridor",
+            "coordinates": { "lat": 42.3664, "lng": -83.0984 },
+            "significance": "Referenced in 1965 draft refusal letter; epicenter of 1967 Detroit rebellion where Baker was arrested"
+          },
+          {
+            "name": "Ford River Rouge Plant",
+            "coordinates": { "lat": 42.2989, "lng": -83.1497 },
+            "significance": "Site of DRUM-inspired organizing expansion"
+          },
+          {
+            "name": "Eldon Avenue Chrysler Plant",
+            "coordinates": { "lat": 42.4089, "lng": -83.0461 },
+            "significance": "Site of ELRUM (Eldon Avenue Revolutionary Union Movement) organizing"
+          }
+        ]
       },
-      "connections": [
-        {
-          "target_id": "scott_ron",
-          "relationship": "ideological_alignment",
-          "direction": "two-way",
-          "description": "Revolutionary contemporaries representing parallel streams of Black radical organizing in late 1960s Detroit. Both spoke at 2010 U.S. Social Forum panel on their experiences."
-        }
-      ],
+      "network": {
+        "connections": [
+          {
+            "target_id": "scott_ron",
+            "type": "C2C",
+            "direction": "mutual",
+            "evidence": "Revolutionary contemporaries representing parallel streams of Black radical organizing in late 1960s Detroit. Both spoke at 2010 U.S. Social Forum panel on their experiences. Scott through Panthers, Baker through labor organizing."
+          },
+          {
+            "target_id": "action_jackson",
+            "type": "GEO",
+            "direction": "outgoing",
+            "evidence": "Baker's DRUM organizing at auto plants established Detroit's auto industry as a site of Black resistance. Action Jackson's 1988 plot centers on protecting auto workers from corporate conspiracy—a fictional echo of the real struggles Baker led two decades earlier."
+          }
+        ],
+        "influence_trajectory": [
+          {
+            "year": 1965,
+            "metric_type": "newspaper_mentions",
+            "value": 0,
+            "value_label": "Unknown - coverage of draft refusal letter",
+            "geography": ["Detroit"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: ProQuest/Detroit Free Press archive search",
+              "url": null
+            }
+          },
+          {
+            "year": 1968,
+            "metric_type": "strikes_participation",
+            "value": 4000,
+            "value_label": "4,000 workers participated in May 2 wildcat strike",
+            "geography": ["Hamtramck"],
+            "confidence": "reported",
+            "source": {
+              "title": "Detroit: I Do Mind Dying",
+              "url": "https://www.haymarketbooks.org/books/436-detroit-i-do-mind-dying"
+            }
+          },
+          {
+            "year": 1968,
+            "metric_type": "strikes_participation",
+            "value": 0,
+            "value_label": "Unknown - July 8 wildcat strike participation",
+            "geography": ["Hamtramck"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: Reuther Library archival research",
+              "url": null
+            }
+          },
+          {
+            "year": 1969,
+            "metric_type": "newspaper_mentions",
+            "value": 0,
+            "value_label": "Unknown - LRBW founding coverage",
+            "geography": ["Detroit", "national"],
+            "confidence": "unknown",
+            "source": {
+              "title": "Pending: ProQuest archive search",
+              "url": null
+            }
+          },
+          {
+            "year": 1970,
+            "metric_type": "documentary",
+            "value": 1,
+            "value_label": "Featured in 'Finally Got the News' documentary",
+            "geography": ["national"],
+            "confidence": "verified",
+            "source": {
+              "title": "Finally Got the News (1970)",
+              "url": "https://www.imdb.com/title/tt0068588/"
+            }
+          }
+        ]
+      },
       "sources": {
         "primary": [
           {
             "title": "Letter to the Local Draft Board (1965)",
+            "type": "letter",
+            "year": 1965,
             "url": "https://viewpointmag.com/2015/06/30/letter-to-the-local-draft-board-1965/"
           },
           {
-            "title": "Finally Got the News (documentary film)",
+            "title": "Finally Got the News",
+            "type": "documentary",
+            "year": 1970,
             "url": "https://www.imdb.com/title/tt0068588/"
-          },
-          {
-            "title": "Detroit Revolutionary Movements Records (Wayne State Reuther Library)",
-            "url": "https://archives.wayne.edu/repositories/2/resources/1425"
           }
         ],
         "secondary": [
           {
-            "title": "Detroit: I Do Mind Dying by Dan Georgakas and Marvin Surkin",
+            "title": "Detroit: I Do Mind Dying",
+            "type": "academic",
+            "year": 1975,
             "url": "https://www.haymarketbooks.org/books/436-detroit-i-do-mind-dying"
           },
           {
-            "title": "General Gordon Baker, Jr.: A Detroit Revolutionary to the Core (Reuther Library)",
+            "title": "General Gordon Baker, Jr.: A Detroit Revolutionary to the Core",
+            "type": "institutional",
+            "year": 2014,
             "url": "https://reuther.wayne.edu/node/12263"
+          }
+        ],
+        "archival": [
+          {
+            "title": "Detroit Revolutionary Movements Records",
+            "type": "organizational",
+            "repository": "Walter P. Reuther Library, Wayne State University",
+            "url": "https://archives.wayne.edu/repositories/2/resources/1425",
+            "notes": "Primary collection for DRUM, LRBW, and related organizations. Includes correspondence, meeting minutes, publications, photographs. Essential for influence trajectory data."
+          },
+          {
+            "title": "General Baker Papers",
+            "type": "personal",
+            "repository": "Walter P. Reuther Library, Wayne State University",
+            "url": null,
+            "notes": "Personal papers donated after Baker's death. May contain additional documentation of organizing activities and strike participation numbers."
           }
         ]
       }
