@@ -413,8 +413,24 @@
                 html += '<span style="color: #50c878; text-transform: uppercase; font-size: 0.8rem;">' + d.modality + ' | ' + d.type + '</span><br><br>';
                 html += 'Emerged: ' + d.emergence + '<br>';
                 if (d.meta_badman) {
-                    html += '<em style="color: #d4af37;">Meta-Badman</em>';
+                    html += '<em style="color: #d4af37;">Meta-Badman</em><br>';
                 }
+        
+                // Find connections involving this node
+                const nodeConnections = edges.filter(function(e) {
+                    return e.source.id === d.id || e.target.id === d.id;
+                });
+        
+                if (nodeConnections.length > 0) {
+                    html += '<br><strong style="color: #50c878;">Connections:</strong><br>';
+                    nodeConnections.forEach(function(conn) {
+                        const otherNode = conn.source.id === d.id ? conn.target : conn.source;
+                        html += '<span style="color:' + edgeColors[conn.type] + ';">▸ ' + conn.type + '</span> ';
+                        html += '<span style="color: #e8e8e8;">' + otherNode.name + '</span><br>';
+                        html += '<span style="color: #a0a0a0; font-size: 0.85rem;">' + conn.evidence + '</span><br><br>';
+                    });
+                }
+        
                 document.getElementById('connection-content').innerHTML = html;
             }
 
