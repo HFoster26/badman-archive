@@ -2,6 +2,8 @@
 
 This document explains the JSON schema used in `detroit.json` and any future city data files. It is intended for graduate students translating spreadsheet data into JSON and for anyone maintaining or expanding the archive.
 
+---
+
 ## Overview
 
 Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.json`). The file contains two top-level fields:
@@ -18,18 +20,21 @@ Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.jso
 | `city` | string | City identifier (lowercase, no spaces) |
 | `figures` | array | Array of badman figure objects |
 
+**Design Principle:** This single JSON file feeds both the Map visualization tool and the Network Visualization Tool (NVT). Fields are organized into buckets that each tool reads from. Empty or null values are valid—tools render what's available and gracefully skip what's missing.
+
 ---
 
 ## Figure Object Structure
 
-Each figure in the `figures` array contains six data buckets:
+Each figure in the `figures` array contains seven data buckets:
 
 1. **Identity** — Who they are
-2. **Scores** — Five-criteria badman evaluation
-3. **Biography** — Description and key events
-4. **Geographic** — Location and territory data
-5. **Network** — Connections to other figures
-6. **Sources** — Primary and secondary references
+2. **Emergence** — When and why their contentious relationship with law began
+3. **Scores** — Five-criteria badman evaluation
+4. **Biography** — Description and key events
+5. **Geographic** — Location and territory data (Map tool)
+6. **Network** — Connections and influence trajectory (NVT)
+7. **Sources** — Primary and secondary references
 
 ---
 
@@ -52,19 +57,16 @@ Core identifying information for each figure.
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| `meta_badman` | boolean | True if figure is both subject and creator of badman narratives | `true` |
-| `years.birth` | integer | Birth year | `1936` |
-| `years.death` | integer | Death year | `1974` |
-| `years.active_start` | integer | Year badman behavior began | `1955` |
-| `years.active_end` | integer | Year badman behavior ended | `1974` |
+| `meta_badman` | boolean | True if figure is both subject AND creator of badman narratives | `true` |
+| `years.birth` | integer \| null | Birth year | `1936` |
+| `years.death` | integer \| null | Death year (null if living) | `1974` |
 
 **For Fictional Figures:**
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | `medium` | string | Origin medium | `"print"`, `"film"`, `"television"`, `"music"`, `"comics"` |
-| `years.material_start` | integer | First physical release year | `1974` |
-| `years.material_end` | integer | Last physical release year | `1975` |
+| `creator_id` | string \| null | ID of creator figure if in database | `"goines_donald"` |
 | `adaptations` | array | Subsequent media appearances (see below) | `[]` |
 
 ### Adaptations Array (Fictional Figures Only)
@@ -83,7 +85,42 @@ For transmedia figures who appear in multiple media:
 
 ---
 
-## Bucket 2: Scores
+## Bucket 2: Emergence
+
+**This bucket is critical for NVT timeline functionality.**
+
+Emergence captures when and why this figure's contentious relationship with the law began—the moment they became a badman, not when they were born or when a book was published.
+
+```json
+"emergence": {
+  "year": 1955,
+  "context": "First arrest for robbery at age 15; began cycling through Michigan correctional system",
+  "source": {
+    "title": "Eddie Allen, Low Road: The Life and Legacy of Donald Goines",
+    "url": "https://..."
+  }
+}
+```
+
+### Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `year` | integer | Yes | Year contentious relationship with law began |
+| `context` | string | Yes | 1-2 sentence explanation of what triggered emergence |
+| `source` | object \| null | No | Attribution for emergence claim |
+
+### Emergence Guidelines by Figure Type
+
+| Type | What "Emergence" Means | Example |
+|------|------------------------|---------|
+| **Real person** | First documented conflict with legal system OR first act of community-authorized resistance | Ron Scott: 1968 (co-founded Detroit BPP) |
+| **Fictional character** | Year of first publication/release | Kenyatta: 1974 (Crime Partners published) |
+| **Meta-badman** | Year their personal badman behavior began, NOT when they started writing | Goines: 1955 (first arrest), not 1970 (first novel) |
+
+---
+
+## Bucket 3: Scores
 
 The five-criteria badman evaluation system. Each figure is scored 1-5 on five dimensions. Total score (out of 25) is calculated automatically by the visualization code—do not store the total.
 
@@ -124,7 +161,7 @@ The five-criteria badman evaluation system. Each figure is scored 1-5 on five di
 
 ---
 
-## Bucket 3: Biography
+## Bucket 4: Biography
 
 Narrative information about the figure.
 
@@ -160,9 +197,9 @@ Each event is an object with year, event description, and location:
 
 ---
 
-## Bucket 4: Geographic
+## Bucket 5: Geographic
 
-Location data for map visualization.
+Location data for Map visualization tool.
 
 ```json
 "geographic": {
@@ -181,19 +218,27 @@ Location data for map visualization.
       [42.3200, -83.0250],
       [42.3200, -83.0550]
     ]
-  }
+  },
+  "additional_locations": [
+    {
+      "name": "Highland Park residence",
+      "coordinates": { "lat": 42.4056, "lng": -83.0977 },
+      "significance": "Site of murder, October 21, 1974"
+    }
+  ]
 }
 ```
 
 ### Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `primary_location.name` | string | Human-readable location name |
-| `primary_location.coordinates.lat` | float | Latitude (decimal degrees) |
-| `primary_location.coordinates.lng` | float | Longitude (decimal degrees) |
-| `territory.description` | string | Justification for polygon boundaries |
-| `territory.polygon` | array | Array of [lat, lng] coordinate pairs forming closed shape |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `primary_location.name` | string | Yes | Human-readable location name |
+| `primary_location.coordinates.lat` | float | Yes | Latitude (decimal degrees) |
+| `primary_location.coordinates.lng` | float | Yes | Longitude (decimal degrees) |
+| `territory.description` | string | Yes | Justification for polygon boundaries |
+| `territory.polygon` | array | Yes | Array of [lat, lng] coordinate pairs forming closed shape |
+| `additional_locations` | array | No | Other significant locations |
 
 ### Polygon Guidelines
 
@@ -204,47 +249,121 @@ Location data for map visualization.
 
 ---
 
-## Bucket 5: Network
+## Bucket 6: Network
 
-Connections between figures for network visualization.
+**This bucket powers the Network Visualization Tool (NVT).**
+
+Contains two sub-sections: connections (edges between figures) and influence trajectory (material footprint over time).
+
+### 6a: Connections
 
 ```json
 "connections": [
   {
     "target_id": "kenyatta",
-    "relationship": "creator_to_creation",
-    "direction": "one-way",
-    "description": "Goines created Kenyatta under pseudonym Al C. Clark."
+    "type": "META",
+    "direction": "outgoing",
+    "evidence": "Goines created Kenyatta character under pseudonym Al C. Clark in Crime Partners (1974)"
   }
 ]
 ```
 
-### Fields
+### Connection Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `target_id` | string | The `id` of the connected figure |
-| `relationship` | string | Type of connection (see below) |
-| `direction` | string | `"one-way"` or `"two-way"` |
-| `description` | string | Explanation of the connection |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `target_id` | string | Yes | The `id` of the connected figure |
+| `type` | string | Yes | Connection type code (see below) |
+| `direction` | string | Yes | `"outgoing"`, `"incoming"`, or `"mutual"` |
+| `evidence` | string | Yes | Documented proof of connection |
 
-### Relationship Types
+### Connection Types
 
-| Type | Direction | Description |
-|------|-----------|-------------|
-| `creator_to_creation` | one-way | Author/creator to fictional character |
-| `inspiration` | one-way | Real figure inspired fictional character, OR fictional character inspired real person |
-| `ideological_alignment` | two-way | Shared politics, movement membership, organizational ties |
-| `geographic_convergence` | two-way | Operated in same territory during overlapping time periods |
+| Code | Name | Direction | Description | Example |
+|------|------|-----------|-------------|---------|
+| `P2C` | Person ↔ Creator | outgoing or incoming | Real figure inspires fiction OR fiction inspires real person's actions | Malcolm X → Dan Freeman |
+| `C2C` | Creator ↔ Creator | outgoing, incoming, or mutual | One artist's work directly influences another artist's work | Goines → later street lit authors |
+| `GEO` | Geographic Inspiration | outgoing | Place/events shape a person's actions or an artist's creative output | 1967 Rebellion → Ron Scott's radicalization |
+| `META` | Meta-Badman → Creation | outgoing | Real person creates fictional figure (subset of P2C but distinct) | Goines → Kenyatta |
 
 ### Direction Rules
 
-- **One-way connections:** Store on the originating figure only
-- **Two-way connections:** Store on one figure only; code infers the reverse
+- **Outgoing:** This figure influenced/created the target
+- **Incoming:** This figure was influenced by the target
+- **Mutual:** Bidirectional influence (rare; use sparingly)
+
+**Storage rule:** Store connections on the originating figure. The NVT code will infer reverse connections for display.
+
+### 6b: Influence Trajectory
+
+**This is the "material footprint" data—how much cultural space the badman occupied over time.**
+
+```json
+"influence_trajectory": [
+  {
+    "year": 1971,
+    "metric_type": "copies_sold",
+    "value": 15000,
+    "value_label": "15,000 copies",
+    "geography": ["Detroit", "Chicago"],
+    "confidence": "estimated",
+    "source": {
+      "title": "Low Road: The Life and Legacy of Donald Goines",
+      "url": "https://..."
+    }
+  },
+  {
+    "year": 1974,
+    "metric_type": "copies_sold",
+    "value": 125000,
+    "value_label": "125,000 copies",
+    "geography": ["national"],
+    "confidence": "reported",
+    "source": {
+      "title": "Goines obituary, Jet Magazine",
+      "url": null
+    }
+  }
+]
+```
+
+### Influence Trajectory Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `year` | integer | Yes | Year of this data point |
+| `metric_type` | string | Yes | Type of metric (see below) |
+| `value` | integer | Yes | Numeric value for calculations/visualization |
+| `value_label` | string | Yes | Human-readable display string |
+| `geography` | array | No | Where this influence was felt |
+| `confidence` | string | Yes | Data quality flag (see below) |
+| `source` | object | Yes | Attribution (url can be null) |
+
+### Metric Types
+
+| Code | Description | Typical Figures |
+|------|-------------|-----------------|
+| `copies_sold` | Book/comic sales | Print figures (Goines, Kenyatta) |
+| `copies_printed` | Print run size (when sales unknown) | Print figures |
+| `box_office` | Theatrical revenue | Film figures (Action Jackson) |
+| `tv_ratings` | Viewership numbers | Television figures |
+| `event_attendance` | Rally/speech/event turnout | Revolutionary figures (Scott, Baker) |
+| `newspaper_mentions` | Coverage volume in press | All figures |
+| `arrests` | Number of arrests (real figures) | Real figures with documented records |
+| `strikes_participation` | Workers involved in labor actions | Labor figures (Baker) |
+
+### Confidence Levels
+
+| Level | Meaning | Example |
+|-------|---------|---------|
+| `verified` | Hard data from official source | Box office from Box Office Mojo |
+| `reported` | Cited in reliable secondary source | "Over 500,000 sold" per obituary |
+| `estimated` | Scholarly estimate or extrapolation | Academic source calculates based on print runs |
+| `unknown` | Placeholder awaiting research | Value set to 0 or null |
 
 ---
 
-## Bucket 6: Sources
+## Bucket 7: Sources
 
 References for the figure entry.
 
@@ -253,33 +372,92 @@ References for the figure entry.
   "primary": [
     {
       "title": "Crime Partners",
+      "type": "novel",
+      "year": 1974,
       "url": "https://www.goodreads.com/book/show/115038.Crime_Partners"
     }
   ],
   "secondary": [
     {
-      "title": "Born in a Mighty Bad Land",
+      "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+      "type": "academic",
+      "year": 2003,
       "url": "https://iupress.org/"
+    }
+  ],
+  "archival": [
+    {
+      "title": "COINTELPRO Files - Detroit Field Office",
+      "type": "government",
+      "repository": "National Archives",
+      "url": null,
+      "notes": "Requires in-person visit; relevant to Scott entry"
     }
   ]
 }
 ```
 
-### Source Types
+### Source Categories
 
-| Type | Description | Examples |
-|------|-------------|----------|
-| `primary` | Direct sources documenting the figure | Novels, films, speeches, news articles, archival documents |
-| `secondary` | Scholarly analysis about the figure | Academic articles, books, dissertations |
+| Category | Description | Examples |
+|----------|-------------|----------|
+| `primary` | Direct sources documenting the figure | Novels, films, speeches, news articles |
+| `secondary` | Scholarly analysis about the figure | Academic books, journal articles, dissertations |
+| `archival` | Materials requiring institutional access | COINTELPRO files, Reuther Library collections, museum holdings |
 
-### Fields
+### Source Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | string | Source title |
-| `url` | string | Link to source (use stable URLs when possible) |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | Yes | Source title |
+| `type` | string | Yes | Source format (novel, film, academic, news, government, etc.) |
+| `year` | integer | No | Publication/release year |
+| `url` | string \| null | Yes | Link to source (null if no web access) |
+| `repository` | string | No | Physical location for archival sources |
+| `notes` | string | No | Access notes, relevance explanation |
 
-**Note:** Full bibliographic information (author, year, publisher) lives on the Resources page, not in the JSON.
+---
+
+## Handling Incomplete Data
+
+**Core principle:** Empty or null values are valid. The archive is designed for incremental completion.
+
+### Nullable Fields
+
+These fields accept `null` when data is unavailable:
+
+- `years.death` (for living figures)
+- `creator_id` (if creator not in database)
+- `source.url` (for archival/physical sources)
+- `influence_trajectory` (can be empty array `[]`)
+- `additional_locations` (can be empty array `[]`)
+- `adaptations` (can be empty array `[]`)
+
+### Placeholder Pattern
+
+For fields requiring future research, use this pattern:
+
+```json
+"influence_trajectory": [
+  {
+    "year": 1968,
+    "metric_type": "event_attendance",
+    "value": 0,
+    "value_label": "Unknown - requires archival research",
+    "geography": ["Detroit"],
+    "confidence": "unknown",
+    "source": {
+      "title": "Pending: Reuther Library visit",
+      "url": null
+    }
+  }
+]
+```
+
+This creates a visible placeholder that:
+1. Shows up in data audits
+2. Documents what research is needed
+3. Doesn't break visualization code
 
 ---
 
@@ -290,15 +468,26 @@ References for the figure entry.
 1. Fill out all fields in plain language
 2. For locations, provide street names and neighborhood descriptions
 3. For connections, describe relationships in sentences
-4. Flag any uncertain information
+4. For influence metrics, note what you found and where
+5. Flag uncertain information with "NEEDS VERIFICATION"
+6. Note sources for every claim
 
 ### For Graduate Students (JSON Translation)
 
 1. Convert spreadsheet data to JSON format
-2. Look up coordinates for locations
+2. Look up coordinates for locations using Google Maps or OpenStreetMap
 3. Draw territory polygons based on key events and location descriptions
 4. Create proper `target_id` references for connections
-5. Validate JSON syntax before committing
+5. Assign appropriate `confidence` levels to influence data
+6. Validate JSON syntax before committing
+7. Run through validation checklist
+
+### For Project Director (Quality Control)
+
+1. Review all new entries against five-criteria framework
+2. Verify connection evidence is documented
+3. Check that influence trajectory sources are cited
+4. Approve entries for public dataset
 
 ---
 
@@ -310,13 +499,15 @@ References for the figure entry.
 - **Extra commas:** No comma after the last item in an array or object
 - **Quote marks:** All strings must use double quotes `"`, not single quotes `'`
 - **Brackets:** Arrays use `[]`, objects use `{}`
+- **Null values:** Use `null` (no quotes), not `"null"`
 
 ### Data Consistency
 
 - **ID format:** Always lowercase with underscores: `baker_gordon` not `Baker_Gordon`
-- **Coordinate order:** Always `[lat, lng]` not `[lng, lat]`
+- **Coordinate order:** Always `lat, lng` in objects; `[lat, lng]` in polygon arrays
 - **Year format:** Use integers `1968` not strings `"1968"`
 - **Target IDs:** Must exactly match the `id` field of another figure in the dataset
+- **Connection direction:** Store on originating figure with `"outgoing"`
 
 ---
 
@@ -324,14 +515,46 @@ References for the figure entry.
 
 Before committing new entries:
 
-- [ ] JSON syntax validates (use a JSON validator)
-- [ ] All required fields present
+### Required Fields
 - [ ] `id` is unique and follows naming convention
+- [ ] `name` is present
 - [ ] `type` is either `"real"` or `"fictional"`
-- [ ] All five scores have both `score` (1-5) and `justification`
-- [ ] `target_id` in connections matches existing figure `id`
+- [ ] `modality` is valid (`detective`, `revolutionary`, etc.)
+- [ ] `emergence.year` and `emergence.context` are present
+
+### Scores
+- [ ] All five scores present with `score` (1-5) and `justification`
+
+### Geographic
+- [ ] `primary_location` has name and valid coordinates
+- [ ] `territory.polygon` has at least 4 coordinate pairs
 - [ ] Coordinates are valid (lat: -90 to 90, lng: -180 to 180)
-- [ ] URLs are functional
+
+### Network
+- [ ] All `target_id` values match existing figure `id` fields
+- [ ] All connections have `type`, `direction`, and `evidence`
+- [ ] Influence trajectory entries have `confidence` and `source`
+
+### Technical
+- [ ] JSON syntax validates (use jsonlint.com or similar)
+- [ ] URLs are functional (or explicitly `null`)
+- [ ] No trailing commas
+
+---
+
+## Tool Data Requirements
+
+Quick reference for which buckets each visualization tool requires:
+
+| Bucket | Map Tool | NVT | Notes |
+|--------|----------|-----|-------|
+| Identity | ✅ Required | ✅ Required | Both tools need basic identification |
+| Emergence | ❌ Not used | ✅ Required | NVT timeline axis |
+| Scores | ❌ Not used | ⚠️ Optional | Can size nodes by total score |
+| Biography | ⚠️ Optional | ⚠️ Optional | Detail panels in both tools |
+| Geographic | ✅ Required | ❌ Not used | Map markers and polygons |
+| Network | ❌ Not used | ✅ Required | Connections and trajectory |
+| Sources | ⚠️ Optional | ⚠️ Optional | Attribution in detail panels |
 
 ---
 
@@ -340,10 +563,25 @@ Before committing new entries:
 The current dataset includes `detective` and `revolutionary` modalities. Future expansion may include:
 
 - `folk_hero_outlaw` — Post-Emancipation folk figures
-- `gangsta_pimp` — 1970s-present street figures
+- `gangsta_pimp` — 1970s-present street figures  
 - `superhero_villain` — Comic and screen superheroes/villains
 
-When adding new modalities, update this documentation and the main README.
+When adding new modalities:
+1. Update this documentation
+2. Update the main project README
+3. Add color coding to both visualization tools
+4. Create at least one example entry
+
+---
+
+## Adding New Cities
+
+When expanding beyond Detroit:
+
+1. Create new JSON file: `[city].json`
+2. Follow identical schema structure
+3. Update any cross-city connections with full `city:id` references
+4. Add city to main site navigation
 
 ---
 
