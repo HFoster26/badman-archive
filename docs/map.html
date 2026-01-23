@@ -161,11 +161,24 @@ fetch('data/detroit.json')
             
             // Add click handler
             marker.on('click', function() {
+                // Truncate description to first 200 characters
+                var shortDesc = figure.biography.description.substring(0, 200) + '...';
+                // Calculate total badman score (out of 25)
+                var totalScore = 
+                    figure.scores.outlaw_relationship.score +
+                    figure.scores.community_authorization.score +
+                    figure.scores.violence_as_language.score +
+                    figure.scores.cultural_preservation.score +
+                    figure.scores.hypermasculine_performance.score;
+    
                 document.getElementById('info-content').innerHTML = 
                     '<strong>' + figure.name + '</strong><br>' +
                     '<em>Modality:</em> ' + figure.modality + '<br>' +
-                    '<em>Type:</em> ' + figure.type + '<br><br>' +
-                    figure.biography.description;
+                    '<em>Type:</em> ' + figure.type + '<br>' +
+                    '<em>Years:</em> ' + (figure.years.birth || figure.years.material_start) + 
+                    ' - ' + (figure.years.death || figure.years.material_end || 'present') + '<br>' +
+                    '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
+                    shortDesc;
             });
         });
     })
