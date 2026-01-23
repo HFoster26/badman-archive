@@ -155,15 +155,33 @@
         <script src="js/scripts.js"></script>
         <!-- Network Initialization Placeholder -->
         <script>
-            // D3 force-directed graph will be initialized here
-            // This is a placeholder - full implementation coming in visualization development phase
-            console.log('Network visualization placeholder loaded. D3 version:', d3.version);
-            
-            // Timeline slider event listener
-            document.getElementById('timeline-slider').addEventListener('input', function(e) {
-                console.log('Timeline filter:', e.target.value);
-                // Will filter network nodes by year when data is loaded
-            });
+            // ============================================
+            // Define dimensions and color scales
+            // ============================================
+
+                // Get the container element and its dimensions
+                const container = document.getElementById('network-container');
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+
+                // Clear the loading placeholder
+                container.innerHTML = '';
+
+                // Define colors for each connection type
+                const edgeColors = {
+                    'META': '#d4af37',  // Gold - Creator to Creation
+                    'P2C': '#dc3545',   // Red - Person to Creator
+                    'C2C': '#50c878',   // Green - Creator to Creator
+                    'GEO': '#3388ff'    // Blue - Geographic
+                };
+
+                // Define colors for each modality
+                const nodeColors = {
+                    'detective': '#3388ff',      // Blue
+                    'revolutionary': '#dc3545'   // Red
+                };
+
+                console.log('Setup complete. Container:', width, 'x', height);
         </script>
     </body>
 </html>
