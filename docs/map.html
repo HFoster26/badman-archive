@@ -115,17 +115,35 @@
         <!-- Map Initialization -->
         <script>
             // Initialize map centered on Detroit
-            var map = L.map('map-container').setView([42.3314, -83.0458], 12);
-            
-            // Add OpenStreetMap tile layer
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-            }).addTo(map);
-            
-            // Placeholder marker for testing - will be replaced with JSON data
-            var testMarker = L.marker([42.3314, -83.0458]).addTo(map);
-            testMarker.bindPopup("<b>Detroit</b><br>Archive data coming soon.");
+        var map = L.map('map-container').setView([42.3314, -83.0458], 12);
+
+        // Add OpenStreetMap tile layer
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }).addTo(map);
+
+        // STEP 1: Hardcode ONE figure to test the system
+        var goines = {
+            name: "Donald Goines",
+            modality: "detective",
+            type: "real",
+            lat: 42.3355,
+            lng: -83.0370,
+            description: "The apex meta-badman: career criminal who documented street life while living it."
+        };
+
+        // Create a marker
+        var marker = L.marker([goines.lat, goines.lng]).addTo(map);
+
+        // Add click handler to populate info panel
+        marker.on('click', function() {
+            document.getElementById('info-content').innerHTML = 
+                '<strong>' + goines.name + '</strong><br>' +
+                '<em>Modality:</em> ' + goines.modality + '<br>' +
+                '<em>Type:</em> ' + goines.type + '<br><br>' +
+                goines.description;
+        });
         </script>
     </body>
 </html>
