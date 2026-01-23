@@ -190,7 +190,12 @@
                     ' - ' + (figure.years.death || figure.years.material_end || 'present') + '<br>' +
                     '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
                     '<span id="description-text">' + shortDesc + '</span>' +
-                    '<a href="#" id="read-more-link" style="color: #50c878; display: block; margin-top: 0.5rem;">Read more</a>';
+                    '<a href="#" id="read-more-link" style="color: #50c878; display: block; margin-top: 0.5rem;">Read more</a>' +
+                    '<hr style="border-color: #2a623d; margin: 1rem 0;">' +
+                    '<strong>Sources:</strong><br>' +
+                    figure.sources.primary.map(source => 
+                        '<a href="' + source.url + '" target="_blank" style="color: #50c878;">' + source.title + '</a>'
+                    ).join('<br>');';
                 
                 // Track expanded state
                 var expanded = false;
