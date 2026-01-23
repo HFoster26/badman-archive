@@ -242,7 +242,7 @@
                 console.log('Nodes:', nodes.length, '| Edges:', edges.length);
             
             // ============================================
-            // SIMULATION: Create the physics engine
+            // Physics engine
             // ============================================
 
             const simulation = d3.forceSimulation(nodes)
@@ -257,6 +257,61 @@
                 .force('collision', d3.forceCollide().radius(50));
 
             console.log('Force simulation created');
+
+            // ============================================
+            // Connection lines
+            // ============================================
+
+            const edge = g.append('g')
+                .attr('class', 'edges')
+                .selectAll('line')
+                .data(edges)
+                .enter()
+                .append('line')
+                .attr('stroke', function(d) { return edgeColors[d.type]; })
+                .attr('stroke-width', 2)
+                .attr('stroke-opacity', 0.6);
+
+            console.log('Edges drawn');
+
+            // ============================================
+            // NODES: Figure circles
+            // ============================================
+
+            const node = g.append('g')
+                .attr('class', 'nodes')
+                .selectAll('circle')
+                .data(nodes)
+                .enter()
+                .append('circle')
+                .attr('r', 20)
+                .attr('fill', function(d) { return nodeColors[d.modality]; })
+                .attr('stroke', '#ffffff')
+                .attr('stroke-width', 2)
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded)
+                );
+
+            console.log('Nodes drawn');
+                    // Drag functions
+                    function dragStarted(event, d) {
+                        if (!event.active) simulation.alphaTarget(0.3).restart();
+                        d.fx = d.x;
+                        d.fy = d.y;
+                    }
+
+                    function dragged(event, d) {
+                        d.fx = event.x;
+                        d.fy = event.y;
+                    }
+
+                    function dragEnded(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                        d.fx = null;
+                        d.fy = null;
+                    }
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
