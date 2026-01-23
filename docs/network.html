@@ -349,6 +349,76 @@
                 .attr('fill', '#e8e8e8')
                 .attr('text-anchor', 'middle')
                 .attr('dy', -25);
+
+            // ============================================
+            // Click to Focus and Highlight Behavior
+            // ============================================
+
+            let focusedNode = null;
+
+            node.on('click', function(event, d) {
+                event.stopPropagation();
+
+                if (focusedNode === d.id) {
+                    // Clicking same node again - unfocus
+                    unfocus();
+                } else {
+                    // Focus on this node
+                    focusedNode = d.id;
+
+                    // Find connected node IDs
+                    const connectedIds = new Set();
+                    connectedIds.add(d.id);
+
+                    edges.forEach(function(e) {
+                        if (e.source.id === d.id) connectedIds.add(e.target.id);
+                        if (e.target.id === d.id) connectedIds.add(e.source.id);
+                    });
+
+                    // Fade unconnected nodes
+                    node.attr('opacity', function(n) {
+                        return connectedIds.has(n.id) ? 1 : 0.15;
+                    });
+
+                    // Fade unconnected labels
+                    label.attr('opacity', function(n) {
+                        return connectedIds.has(n.id) ? 1 : 0.15;
+                    });
+
+                    // Fade unconnected edges
+                    edge.attr('opacity', function(e) {
+                        return (e.source.id === d.id || e.target.id === d.id) ? 1 : 0.05;
+                    });
+
+                    // Update detail panel
+                    updatePanel(d);
+                }
+            });
+
+            // Click background to unfocus
+            svg.on('click', function() {
+                unfocus();
+            });
+
+            function unfocus() {
+                focusedNode = null;
+                node.attr('opacity', 1);
+                label.attr('opacity', 1);
+                edge.attr('opacity', 0.6);
+                document.getElementById('connection-content').innerHTML = 'Click a node or edge to view relationship details.';
+            }
+
+            function updatePanel(d) {
+                let html = '<strong style="color: #d4af37;">' + d.name + '</strong><br>';
+                html += '<span style="color: #50c878; text-transform: uppercase; font-size: 0.8rem;">' + d.modality + ' | ' + d.type + '</span><br><br>';
+                html += 'Emerged: ' + d.emergence + '<br>';
+                if (d.meta_badman) {
+                    html += '<em style="color: #d4af37;">Meta-Badman</em>';
+                }
+                document.getElementById('connection-content').innerHTML = html;
+            }
+
+            console.log('Focus behavior enabled');
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
