@@ -366,6 +366,17 @@
             // Connection lines
             // ============================================
 
+            // Invisible hit areas for easier edge clicking
+            const edgeHitArea = g.append('g')
+                .attr('class', 'edge-hit-areas')
+                .selectAll('line')
+                .data(edges)
+                .enter()
+                .append('line')
+                .attr('stroke', 'transparent')
+                .attr('stroke-width', 15)
+                .style('cursor', 'pointer');
+
             const edge = g.append('g')
                 .attr('class', 'edges')
                 .selectAll('line')
@@ -435,11 +446,14 @@
             // ============================================
 
             simulation.on('tick', function() {
-                edge
+                edgeHitArea
                     .attr('x1', function(d) { return d.source.x; })
                     .attr('y1', function(d) { return d.source.y; })
                     .attr('x2', function(d) { return d.target.x; })
                     .attr('y2', function(d) { return d.target.y; });
+
+                edge
+                    .attr('x1', function(d) { return d.source.x; })
 
                 node
                     .attr('cx', function(d) { return d.x; })
@@ -562,6 +576,70 @@
 
 
             console.log('Focus behavior enabled');
+
+            // ============================================
+            // EDGE CLICK: Show connection details
+            // ============================================
+
+            edgeHitArea.on('click', function(event, d) {
+                event.stopPropagation();
+
+                var sourceName = typeof d.source === 'object' ? d.source.name : d.source;
+                var targetName = typeof d.target === 'object' ? d.target.name : d.target;
+
+                function tierBadge(tier) {
+                    var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
+                    var colors = {1: '#50c878', 2: '#d4af37', 3: '#c0c0c0'};
+                    return '<span style="background-color:' + colors[tier] +
+                           ';color:#1a1a2e;padding:2px 8px;border-radius:3px;font-size:0.75rem;font-weight:bold;">' +
+                           labels[tier] + '</span>';
+                }
+
+                var typeLabels = {
+                    'META': 'Meta-Creative (Creator → Creation)',
+                    'P2C': 'Person to Creator',
+                    'C2C': 'Creator to Creator',
+                    'ORG': 'Organizational Affiliation'
+                };
+
+                // Populate the figure-metrics panel with edge details
+                var panel = document.getElementById('figure-metrics-panel');
+                var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Connection Details</h5>';
+
+                // Direction header
+                var arrow = d.direction === 'mutual' ? '↔' : '→';
+                html += '<h6 style="color: #d4af37;">' + sourceName + ' ' + arrow + ' ' + targetName + '</h6>';
+
+                // Type with color
+                html += '<div style="margin-bottom: 0.75rem;">';
+                html += '<strong style="color: #e8e8e8;">Type:</strong> ';
+                html += '<span style="color:' + edgeColors[d.type] + ';">' + (typeLabels[d.type] || d.type) + '</span>';
+                html += '</div>';
+
+                // Tier badge
+                html += '<div style="margin-bottom: 0.75rem;">';
+                html += '<strong style="color: #e8e8e8;">Evidence Tier:</strong> ';
+                html += tierBadge(d.tier);
+                html += '</div>';
+
+                // Evidence text
+                if (d.evidence) {
+                    html += '<div style="margin-bottom: 0.75rem;">';
+                    html += '<strong style="color: #e8e8e8;">Evidence:</strong><br>';
+                    html += '<small style="color: #a0a0a0; font-style: italic;">' + d.evidence + '</small>';
+                    html += '</div>';
+                }
+
+                panel.innerHTML = html;
+
+                // Highlight clicked edge, fade others
+                edge.attr('stroke-opacity', function(e) {
+                    return e === d ? 1.0 : 0.1;
+                });
+            });
+
+            console.log('Edge click behavior enabled');
+
             // ============================================
             // TIMELINE: Slider updates visualization
             // ============================================
