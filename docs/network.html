@@ -231,6 +231,7 @@
             d3.json('data/detroit.json').then(function(data) {
     
                 console.log('Data loaded:', data.figures.length, 'figures');
+                const evidenceTiers = data.evidence_tiers;
     
                 // Build nodes array from figures
                 const nodes = data.figures.map(function(figure) {
@@ -300,9 +301,16 @@
                 .enter()
                 .append('line')
                 .attr('stroke', function(d) { return edgeColors[d.type]; })
-                .attr('stroke-width', 2)
-                .attr('stroke-opacity', 0.6);
-
+                .attr('stroke-width', 2.5)
+                .attr('stroke-opacity', function(d) {
+                    return evidenceTiers[d.tier].opacity;
+                })
+                .attr('stroke-dasharray', function(d) {
+                    var style = evidenceTiers[d.tier].line_style;
+                        if (style === 'dashed') return '8,4';
+                        if (style === 'dotted') return '2,4';
+                        return null;
+            });
             console.log('Edges drawn');
 
             // ============================================
