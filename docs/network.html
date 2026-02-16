@@ -111,6 +111,66 @@
                                 <span>1990</span>
                                 <span>2020</span>
                             </div>
+                            </div>
+                <!-- Metrics Panel -->
+                <div class="row mt-4">
+                    <!-- Network Summary (Left) -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="bg-faded rounded p-4" id="network-summary-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
+                            <h5 class="text-uppercase mb-4" style="color: #50c878;">Network Summary</h5>
+                            
+                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
+                                <div>
+                                    <strong style="color: #e8e8e8;">Active Figures</strong><br>
+                                    <small style="color: #a0a0a0;">(visible nodes at current year)</small>
+                                </div>
+                                <span id="metric-active-figures" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0 of 5</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
+                                <div>
+                                    <strong style="color: #e8e8e8;">Active Connections</strong><br>
+                                    <small style="color: #a0a0a0;">(edges at current year)</small>
+                                </div>
+                                <span id="metric-active-connections" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
+                                <div>
+                                    <strong style="color: #e8e8e8;">Network Density</strong><br>
+                                    <small id="metric-density-detail" style="color: #a0a0a0;">(existing ÷ possible connections)</small>
+                                </div>
+                                <span id="metric-density" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0%</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
+                                <div>
+                                    <strong style="color: #e8e8e8;">Reciprocity</strong><br>
+                                    <small style="color: #a0a0a0;">(mutual ÷ directed connections)</small>
+                                </div>
+                                <span id="metric-reciprocity" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0 / 0</span>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong style="color: #e8e8e8;">Cross-Modality Connections</strong><br>
+                                    <small id="metric-cross-detail" style="color: #a0a0a0;">(detective ↔ revolutionary edges)</small>
+                                </div>
+                                <span id="metric-cross-modality" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Selected Figure Metrics (Right) -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="bg-faded rounded p-4" id="figure-metrics-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
+                            <h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>
+                            <p id="figure-metrics-content" style="color: #a0a0a0;">Click a node to view detailed metrics.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
                         </div>
                     </div>
                     <!-- Legend and Info Panel -->
