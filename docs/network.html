@@ -251,8 +251,8 @@
                 const edges = [];
     
                 data.figures.forEach(function(figure) {
-                    if (figure.network && figure.network.connections) {
-                        figure.network.connections.forEach(function(conn) {
+                    if (figure.network && figure.connections) {
+                        figure.connections.forEach(function(conn) {
                             if (conn.direction === 'outgoing' || conn.direction === 'mutual') {
                                 edges.push({
                                     source: figure.id,
