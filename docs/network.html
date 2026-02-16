@@ -183,6 +183,29 @@
 
                 console.log('Setup complete. Container:', width, 'x', height);
             // ============================================
+            // UTILITY: Influence lookup function
+            // ============================================
+            
+            function getInfluenceAtYear(node, year)  {
+                if (year < node.active_start) {
+                    return 0;
+                }
+
+                for (var i = 0; i < node.influence_phases.length; i++) {
+                    var phase = node.influence_phases[i];
+                    if (year >= phase.start && year <= phase.end) {
+                        return phase.value;
+                    }
+                }
+                
+                var lastPhase = node.influence_phases[node.influence_phases.length - 1];
+                return lastPhase.value;
+            }
+
+            var currentYear = parseInt(document.getElementById('timeline-slider').value);
+
+            var radiusScale = d3.scaleSqrt().domain([0, 10]).range([0, 45]);
+            // ============================================
             // SVG Canvas Drawing Surface
             // ============================================
 
@@ -217,7 +240,10 @@
                         type: figure.type,
                         modality: figure.modality,
                         emergence: figure.emergence.year,
-                        meta_badman: figure.meta_badman || false
+                        meta_badman: figure.meta_badman || false,
+                        active_start: figure.years.active_start,
+                        active_end: figure.years.active_end,
+                        influence_phases: figure.influence.phases
                     };
                 });
     
@@ -254,7 +280,9 @@
                     .strength(-400)
                 )
                 .force('center', d3.forceCenter(width / 2, height / 2))
-                .force('collision', d3.forceCollide().radius(50));
+                .force('collision', d3.forceCollide().radius(function(d) {
+                    return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
+                }));
 
             console.log('Force simulation created');
 
@@ -284,7 +312,7 @@
                 .data(nodes)
                 .enter()
                 .append('circle')
-                .attr('r', 20)
+                .attr('r', function(d) { return radiusScale(getInfluenceAtYear(d, currentYear)); })
                 .attr('fill', function(d) { return nodeColors[d.modality]; })
                 .attr('stroke', '#ffffff')
                 .attr('stroke-width', 2)
@@ -348,7 +376,9 @@
                 .attr('font-size', '12px')
                 .attr('fill', '#e8e8e8')
                 .attr('text-anchor', 'middle')
-                .attr('dy', -25);
+                .attr('dy', function(d) {
+                    return -(radiusScale(getInfluenceAtYear(d, currentYear)) + 10);
+                });
 
             // ============================================
             // Click to Focus and Highlight Behavior
