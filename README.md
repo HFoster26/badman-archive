@@ -99,10 +99,10 @@ The Detroit module focuses on Detective and Political Revolutionary modalities, 
 ## Future Development
 
 The modular architecture supports expansion to additional cities:
-- `detroit.badmanarchive.com` (current)
-- `atlanta.badmanarchive.com` (planned)
-- `chicago.badmanarchive.com` (planned)
-- `nyc.badmanarchive.com` (planned)
+- `detroit.badmandigitalarchive.com` (current)
+- `atlanta.badmandigitalarchive.com` (planned)
+- `chicago.badmandigitalarchive.com` (planned)
+- `nyc.badmandigitalarchive.com` (planned)
 
 Each city module operates independently while sharing a unified data structure.
 
@@ -127,4 +127,4 @@ GitHub: [@HFoster26](https://github.com/HFoster26)
 
 ---
 
-*The Badman Archive is a living document of Black resistance. Detroit is just the beginning.*
+
