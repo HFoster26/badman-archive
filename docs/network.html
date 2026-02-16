@@ -90,14 +90,13 @@
             </div>
         </nav>
         
-        <!-- Network Section -->
+<!-- Network Section -->
         <section class="page-section">
             <div class="container">
                 <div class="row">
                     <!-- Network Container -->
                     <div class="col-lg-9 mb-4">
                         <div id="network-container">
-                            <!-- D3 network visualization will be initialized here -->
                             <p style="color: #c8c8c8; text-align: center; padding-top: 250px;">Network visualization loading...</p>
                         </div>
                         <!-- Timeline Slider -->
@@ -111,7 +110,36 @@
                                 <span>1990</span>
                                 <span>2020</span>
                             </div>
+                        </div>
+                    </div>
+                    <!-- Legend and Info Panel -->
+                    <div class="col-lg-3">
+                        <div class="network-legend mb-4">
+                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Relationship Types</h5>
+                            <div class="legend-item">
+                                <div class="legend-line legend-meta"></div>
+                                <span style="color: #e8e8e8;">META: Creator → Creation</span>
                             </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-p2c"></div>
+                                <span style="color: #e8e8e8;">P2C: Person ↔ Creator</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-c2c"></div>
+                                <span style="color: #e8e8e8;">C2C: Creator ↔ Creator</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-line legend-geo"></div>
+                                <span style="color: #e8e8e8;">GEO: Geographic Inspiration</span>
+                            </div>
+                        </div>
+                        <!-- Connection Info Panel -->
+                        <div class="bg-faded rounded p-4" id="connection-panel">
+                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Connection Details</h5>
+                            <p id="connection-content" style="color: #c8c8c8;">Click a node or edge to view relationship details.</p>
+                        </div>
+                    </div>
+                </div>
                 <!-- Metrics Panel -->
                 <div class="row mt-4">
                     <!-- Network Summary (Left) -->
@@ -166,38 +194,6 @@
                         <div class="bg-faded rounded p-4" id="figure-metrics-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
                             <h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>
                             <p id="figure-metrics-content" style="color: #a0a0a0;">Click a node to view detailed metrics.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-                        </div>
-                    </div>
-                    <!-- Legend and Info Panel -->
-                    <div class="col-lg-3">
-                        <div class="network-legend mb-4">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Relationship Types</h5>
-                            <div class="legend-item">
-                                <div class="legend-line legend-meta"></div>
-                                <span style="color: #e8e8e8;">META: Creator → Creation</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-p2c"></div>
-                                <span style="color: #e8e8e8;">P2C: Person ↔ Creator</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-c2c"></div>
-                                <span style="color: #e8e8e8;">C2C: Creator ↔ Creator</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-geo"></div>
-                                <span style="color: #e8e8e8;">GEO: Geographic Inspiration</span>
-                            </div>
-                        </div>
-                        <!-- Connection Info Panel -->
-                        <div class="bg-faded rounded p-4" id="connection-panel">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Connection Details</h5>
-                            <p id="connection-content" style="color: #c8c8c8;">Click a node or edge to view relationship details.</p>
                         </div>
                     </div>
                 </div>
