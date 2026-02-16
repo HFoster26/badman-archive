@@ -310,17 +310,17 @@
             // Connection lines
             // ============================================
 
-        const edge = g.append('g')
-            .attr('class', 'edges')
-            .selectAll('line')
-            .data(edges)
-            .enter()
-            .append('line')
-            .attr('stroke', function(d) { return edgeColors[d.type]; })
-            .attr('stroke-width', 2.5)
-            .attr('stroke-opacity', function(d) {
-                return evidenceTiers[d.tier].opacity;
-            })
+            const edge = g.append('g')
+                .attr('class', 'edges')
+                .selectAll('line')
+                .data(edges)
+                .enter()
+                .append('line')
+                .attr('stroke', function(d) { return edgeColors[d.type]; })
+                .attr('stroke-width', 2.5)
+                .attr('stroke-opacity', function(d) {
+                    return evidenceTiers[d.tier].opacity;
+                })
             .attr('stroke-dasharray', function(d) {
                 var style = evidenceTiers[d.tier].line_style;
                     if (style === 'dashed') return '8,4';
@@ -501,6 +501,50 @@
             }
 
             console.log('Focus behavior enabled');
+            // ============================================
+            // TIMELINE: Slider updates visualization
+            // ============================================
+
+            document.getElementById('timeline-slider').addEventListener('input', function() {
+                currentYear = parseInt(this.value);
+
+                // Update node sizes and visibility
+                node.transition().duration(300)
+                    .attr('r', function(d) {
+                        return radiusScale(getInfluenceAtYear(d, currentYear));
+                    })
+                    .attr('opacity', function(d) {
+                        return currentYear >= d.active_start ? 1 : 0;
+                    });
+
+                // Update label visibility to match nodes
+                label.transition().duration(300)
+                    .attr('opacity', function(d) {
+                        return currentYear >= d.active_start ? 1 : 0;
+                    })
+                    .attr('dy', function(d) {
+                        return -(radiusScale(getInfluenceAtYear(d, currentYear)) + 10);
+                    });
+
+                // Update edge visibility — hide if either node is inactive
+                edge.transition().duration(300)
+                    .attr('opacity', function(d) {
+                        var sourceActive = currentYear >= d.source.active_start;
+                        var targetActive = currentYear >= d.target.active_start;
+                        if (sourceActive && targetActive) {
+                            return evidenceTiers[d.tier].opacity;
+                        }
+                        return 0;
+                    });
+
+                // Update collision radius for new sizes
+                simulation.force('collision').radius(function(d) {
+                    return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
+                });
+                simulation.alpha(0.3).restart();
+            });
+
+            console.log('Timeline slider wired');
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
