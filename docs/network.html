@@ -512,6 +512,7 @@
 
                     // Update detail panel
                     updatePanel(d);
+                    showFigureMetrics(d, currentYear);
                 }
             });
 
@@ -528,6 +529,9 @@
                     return evidenceTiers[d.tier].opacity;
             });
                 document.getElementById('connection-content').innerHTML = 'Click a node or edge to view relationship details.';
+                document.getElementById('figure-metrics-panel').innerHTML =
+                    '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>' +
+                    '<p style="color: #a0a0a0;">Click a node or edge to view details.</p>';
             }
 
             function updatePanel(d) {
