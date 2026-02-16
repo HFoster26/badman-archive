@@ -468,7 +468,9 @@
                 focusedNode = null;
                 node.attr('opacity', 1);
                 label.attr('opacity', 1);
-                edge.attr('opacity', 0.6);
+                edge.attr('opacity', function(d) {
+                    return evidenceTiers[d.tier].opacity;
+            });
                 document.getElementById('connection-content').innerHTML = 'Click a node or edge to view relationship details.';
             }
 
