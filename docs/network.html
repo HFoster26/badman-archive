@@ -556,6 +556,7 @@
                 document.getElementById('connection-content').innerHTML = html;
             }
 
+
             console.log('Focus behavior enabled');
             // ============================================
             // TIMELINE: Slider updates visualization
@@ -599,106 +600,106 @@
                 });
                 simulation.alpha(0.3).restart();
                 updateNetworkMetrics(currentYear);
-                
-                // ============================================
-                // METRICS: Selected figure detail panel
-                // ============================================
+            });
 
-                function showFigureMetrics(nodeData, year) {
-                    var panel = document.getElementById('figure-metrics-panel');
+            console.log('Timeline slider wired');
 
-                    // Calculate degree (in and out)
-                        var inDegree = 0;
-                        var outDegree = 0;
-                        var connections = [];
+            // ============================================
+            // METRICS: Selected figure detail panel
+            // ============================================
 
-                        edges.forEach(function(e) {
-                            var sourceId = typeof e.source === 'object' ? e.source.id : e.source;
-                            var targetId = typeof e.target === 'object' ? e.target.id : e.target;
+            function showFigureMetrics(nodeData, year) {
+                var panel = document.getElementById('figure-metrics-panel');
 
-                            if (sourceId === nodeData.id) {
-                                outDegree++;
-                                var tName = typeof e.target === 'object' ? e.target.name : targetId;
-                                connections.push({ direction: 'out', otherName: tName, type: e.type, tier: e.tier });
+                // Calculate degree (in and out)
+                var inDegree = 0;
+                var outDegree = 0;
+                var connections = [];
+
+                edges.forEach(function(e) {
+                    var sourceId = typeof e.source === 'object' ? e.source.id : e.source;
+                    var targetId = typeof e.target === 'object' ? e.target.id : e.target;
+
+                    if (sourceId === nodeData.id) {
+                        outDegree++;
+                        var tName = typeof e.target === 'object' ? e.target.name : targetId;
+                        connections.push({ direction: 'out', otherName: tName, type: e.type, tier: e.tier });
+                    }
+                    if (targetId === nodeData.id) {
+                        inDegree++;
+                        var sName = typeof e.source === 'object' ? e.source.name : sourceId;
+                        connections.push({ direction: 'in', otherName: sName, type: e.type, tier: e.tier });
+                    }
+                });
+
+                // Get influence value at current year
+                var influence = getInfluenceAtYear(nodeData, year);
+
+                // Find the active phase for justification text
+                var justification = 'No data for this period';
+                if (nodeData.influence_phases) {
+                    for (var i = 0; i < nodeData.influence_phases.length; i++) {
+                        var phase = nodeData.influence_phases[i];
+                        if (year >= phase.start && year <= phase.end) {
+                            justification = phase.justification || phase.label || 'Active';
+                            break;
                         }
-                            if (targetId === nodeData.id) {
-                                inDegree++;
-                                var sName = typeof e.source === 'object' ? e.source.name : sourceId;
-                                connections.push({ direction: 'in', otherName: sName, type: e.type, tier: e.tier });
-                            }
+                    }
+                    // If past all phases, use the last one
+                    if (justification === 'No data for this period' && year >= nodeData.active_start) {
+                        var lastPhase = nodeData.influence_phases[nodeData.influence_phases.length - 1];
+                        justification = lastPhase.justification || lastPhase.label || 'Posthumous legacy';
+                    }
+                }
+
+                // Tier badge helper
+                function tierBadge(tier) {
+                    var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
+                    var colors = {1: '#50c878', 2: '#d4af37', 3: '#c0c0c0'};
+                    return '<span style="background-color:' + colors[tier] +
+                           ';color:#1a1a2e;padding:2px 8px;border-radius:3px;font-size:0.75rem;font-weight:bold;">' +
+                           labels[tier] + '</span>';
+                }
+
+                // Build HTML
+                var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>';
+                html += '<h6 style="color: #d4af37; margin-bottom: 1rem;">' + nodeData.name + '</h6>';
+
+                // Degree
+                html += '<div style="margin-bottom: 1rem;">';
+                html += '<strong style="color: #e8e8e8;">Degree:</strong> ' + (inDegree + outDegree) + '<br>';
+                html += '<small style="color: #a0a0a0;">In: ' + inDegree + ' · Out: ' + outDegree + '</small>';
+                html += '</div>';
+
+                // Influence bar
+                html += '<div style="margin-bottom: 1rem;">';
+                html += '<strong style="color: #e8e8e8;">Influence at ' + year + ':</strong> ' + influence + ' / 10<br>';
+                html += '<div style="background:#2a2a3e;border-radius:4px;height:12px;margin:4px 0;">';
+                html += '<div style="background:#d4af37;border-radius:4px;height:12px;width:' + (influence * 10) + '%;"></div>';
+                html += '</div>';
+                html += '<small style="color: #a0a0a0;">' + justification + '</small>';
+                html += '</div>';
+
+                // Active connections list with tier badges
+                html += '<div>';
+                html += '<strong style="color: #e8e8e8;">Connections:</strong><br>';
+                if (connections.length === 0) {
+                    html += '<small style="color: #a0a0a0;">No connections</small>';
+                } else {
+                    connections.forEach(function(conn) {
+                        var arrow = conn.direction === 'out' ? '→' : '←';
+                        html += '<div style="margin:4px 0;">';
+                        html += '<small style="color:#e8e8e8;">' + arrow + ' ' + conn.otherName + '</small> ';
+                        html += tierBadge(conn.tier);
+                        html += '</div>';
                     });
+                }
+                html += '</div>';
 
-                    // Get influence value at current year
-                        var influence = getInfluenceAtYear(nodeData, year);
+                panel.innerHTML = html;
+            }
 
-                    // Find the active phase for justification text
-                    var justification = 'No data for this period';
-                        if (nodeData.influence_phases) {
-                            for (var i = 0; i < nodeData.influence_phases.length; i++) {
-                                var phase = nodeData.influence_phases[i];
-                                if (year >= phase.start && year <= phase.end) {
-                                    justification = phase.justification || phase.label || 'Active';
-                                    break;
-                                }
-                            }
-                                // If past all phases, use the last one
-                                if (justification === 'No data for this period' && year >= nodeData.active_start) {
-                                    var lastPhase = nodeData.influence_phases[nodeData.influence_phases.length - 1];
-                                    justification = lastPhase.justification || lastPhase.label || 'Posthumous legacy';
-                                }
-                            }
-                            }
-
-                            // Tier badge helper
-                            function tierBadge(tier) {
-                            var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
-                            var colors = {1: '#50c878', 2: '#d4af37', 3: '#c0c0c0'};
-                            return '<span style="background-color:' + colors[tier] +
-                                    ';color:#1a1a2e;padding:2px 8px;border-radius:3px;font-size:0.75rem;font-weight:bold;">' +
-                                        labels[tier] + '</span>';
-                        }
-
-                        // Build HTML
-                        var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>';
-                        html += '<h6 style="color: #d4af37; margin-bottom: 1rem;">' + nodeData.name + '</h6>';
-
-                        // Degree
-                        html += '<div style="margin-bottom: 1rem;">';
-                        html += '<strong style="color: #e8e8e8;">Degree:</strong> ' + (inDegree + outDegree) + '<br>';
-                        html += '<small style="color: #a0a0a0;">In: ' + inDegree + ' · Out: ' + outDegree + '</small>';
-                        html += '</div>';
-
-                        // Influence bar
-                        html += '<div style="margin-bottom: 1rem;">';
-                        html += '<strong style="color: #e8e8e8;">Influence at ' + year + ':</strong> ' + influence + ' / 10<br>';
-                        html += '<div style="background:#2a2a3e;border-radius:4px;height:12px;margin:4px 0;">';
-                        html += '<div style="background:#d4af37;border-radius:4px;height:12px;width:' + (influence * 10) + '%;"></div>';
-                        html += '</div>';
-                        html += '<small style="color: #a0a0a0;">' + justification + '</small>';
-                        html += '</div>';
-
-                        // Active connections list with tier badges
-                        html += '<div>';
-                        html += '<strong style="color: #e8e8e8;">Connections:</strong><br>';
-                        if (connections.length === 0) {
-                            html += '<small style="color: #a0a0a0;">No connections</small>';
-                        } else {
-                                connections.forEach(function(conn) {
-                                var arrow = conn.direction === 'out' ? '→' : '←';
-                                    html += '<div style="margin:4px 0;">';
-                                    html += '<small style="color:#e8e8e8;">' + arrow + ' ' + conn.otherName + '</small> ';
-                                    html += tierBadge(conn.tier);
-                                    html += '</div>';
-                            });
-                            }
-                            html += '</div>';
-
-                            panel.innerHTML = html;
-                        }, 
-
-                            console.log('Figure metrics function ready');
-                            });
-                            console.log('Timeline slider wired');
+            console.log('Figure metrics function ready');
             // ============================================
             // METRICS: Network summary calculations
             // ============================================
