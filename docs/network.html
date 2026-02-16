@@ -601,6 +601,74 @@
             });
 
             console.log('Timeline slider wired');
+            // ============================================
+            // METRICS: Network summary calculations
+            // ============================================
+
+            function updateNetworkMetrics(year) {
+            // Count active nodes (influence > 0 at this year)
+            var activeNodes = nodes.filter(function(d) {
+                return getInfluenceAtYear(d, year) > 0;
+            });
+
+            // Get active node IDs for edge filtering
+            var activeNodeIds = activeNodes.map(function(d) { return d.id; });
+
+            // Count active edges (both endpoints must be active)
+            var activeEdges = edges.filter(function(d) {
+                var sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+                var targetId = typeof d.target === 'object' ? d.target.id : d.target;
+                return activeNodeIds.indexOf(sourceId) !== -1 && activeNodeIds.indexOf(targetId) !== -1;
+            });
+
+            var n = activeNodes.length;
+            var e = activeEdges.length;
+
+            // 1. Active Figures
+            document.getElementById('metric-active-figures').textContent = n + ' of ' + nodes.length;
+
+            // 2. Active Connections
+            document.getElementById('metric-active-connections').textContent = e;
+
+            // 3. Network Density (directed: possible = n * (n-1))
+            var possibleConnections = n * (n - 1);
+            var density = possibleConnections > 0 ? (e / possibleConnections) : 0;
+            document.getElementById('metric-density').textContent = (density * 100).toFixed(1) + '%';
+
+            // 4. Reciprocity (mutual pairs / total directed edges)
+            var directedCount = 0;
+            var mutualCount = 0;
+            activeEdges.forEach(function(ae) {
+                directedCount++;
+                var srcId = typeof ae.source === 'object' ? ae.source.id : ae.source;
+                var tgtId = typeof ae.target === 'object' ? ae.target.id : ae.target;
+                var hasReverse = activeEdges.some(function(other) {
+                    var oSrc = typeof other.source === 'object' ? other.source.id : other.source;
+                    var oTgt = typeof other.target === 'object' ? other.target.id : other.target;
+                    return oSrc === tgtId && oTgt === srcId;
+                });
+                if (hasReverse) mutualCount++;
+            });
+            document.getElementById('metric-reciprocity').textContent = mutualCount + ' / ' + directedCount;
+
+            // 5. Cross-Modality Connections
+            var crossCount = 0;
+            activeEdges.forEach(function(ae) {
+                var sourceNode = typeof ae.source === 'object' ? ae.source :
+                    nodes.find(function(n) { return n.id === ae.source; });
+                var targetNode = typeof ae.target === 'object' ? ae.target :
+                    nodes.find(function(n) { return n.id === ae.target; });
+                if (sourceNode && targetNode && sourceNode.modality !== targetNode.modality) {
+                    crossCount++;
+                }
+            });
+            document.getElementById('metric-cross-modality').textContent = crossCount;
+        }
+
+        // Run on initial load
+        updateNetworkMetrics(currentYear);
+
+        console.log('Network metrics initialized');
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
