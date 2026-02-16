@@ -598,6 +598,7 @@
                     return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
                 });
                 simulation.alpha(0.3).restart();
+                updateNetworkMetrics(currentYear);
             });
 
             console.log('Timeline slider wired');
