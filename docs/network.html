@@ -216,6 +216,22 @@
 
             const g = svg.append('g');
 
+            // Arrowhead marker definition
+            svg.append('defs').selectAll('marker')
+                .data(['META', 'P2C', 'C2C', 'GEO'])
+                .enter()
+                .append('marker')
+                .attr('id', function(d) { return 'arrow-' + d; })
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('markerWidth', 8)
+                .attr('markerHeight', 8)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', function(d) { return edgeColors[d]; });
+
             svg.call(d3.zoom()
                 .scaleExtent([0.3, 3])
                 .on('zoom', function(event) {
@@ -294,23 +310,30 @@
             // Connection lines
             // ============================================
 
-            const edge = g.append('g')
-                .attr('class', 'edges')
-                .selectAll('line')
-                .data(edges)
-                .enter()
-                .append('line')
-                .attr('stroke', function(d) { return edgeColors[d.type]; })
-                .attr('stroke-width', 2.5)
-                .attr('stroke-opacity', function(d) {
-                    return evidenceTiers[d.tier].opacity;
-                })
-                .attr('stroke-dasharray', function(d) {
-                    var style = evidenceTiers[d.tier].line_style;
-                        if (style === 'dashed') return '8,4';
-                        if (style === 'dotted') return '2,4';
-                        return null;
+        const edge = g.append('g')
+            .attr('class', 'edges')
+            .selectAll('line')
+            .data(edges)
+            .enter()
+            .append('line')
+            .attr('stroke', function(d) { return edgeColors[d.type]; })
+            .attr('stroke-width', 2.5)
+            .attr('stroke-opacity', function(d) {
+                return evidenceTiers[d.tier].opacity;
+            })
+            .attr('stroke-dasharray', function(d) {
+                var style = evidenceTiers[d.tier].line_style;
+                    if (style === 'dashed') return '8,4';
+                    if (style === 'dotted') return '2,4';
+                    return null;
+            })
+            .attr('marker-end', function(d) {
+                if (d.direction === 'outgoing') {
+                    return 'url(#arrow-' + d.type + ')';
+                }
+                return null;
             });
+
             console.log('Edges drawn');
 
             // ============================================
