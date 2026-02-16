@@ -129,8 +129,8 @@
                                 <span style="color: #e8e8e8;">C2C: Creator ↔ Creator</span>
                             </div>
                             <div class="legend-item">
-                                <div class="legend-line legend-geo"></div>
-                                <span style="color: #e8e8e8;">GEO: Geographic Inspiration</span>
+                                <div class="legend-line legend-org"></div>
+                                <span style="color: #e8e8e8;">ORG: Organizational Affiliation</span>
                             </div>
                         </div>
                         <!-- Connection Info Panel -->
@@ -274,7 +274,7 @@
 
             // Arrowhead marker definition
             svg.append('defs').selectAll('marker')
-                .data(['META', 'P2C', 'C2C', 'GEO'])
+                .data(['META', 'P2C', 'C2C', 'ORG'])
                 .enter()
                 .append('marker')
                 .attr('id', function(d) { return 'arrow-' + d; })
