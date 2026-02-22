@@ -359,7 +359,7 @@
                 .force('collision', d3.forceCollide().radius(function(d) {
                     return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
                 }));
-
+                .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05))
             console.log('Force simulation created');
 
             // ============================================
