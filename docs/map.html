@@ -235,6 +235,12 @@
                     activePolygon = null;
                 });
             }
+        });  // closes marker.on('click')
+    });  // closes data.figures.forEach
+})  // closes .then(data =>)
+    .catch(error => {
+        console.error('Error loading detroit.json:', error);
+    });
         </script>
     </body>
 </html>
