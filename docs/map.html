@@ -149,7 +149,7 @@
     };
 
             // Fetch JSON and create markers
-                var activePolygon = null;
+                var activePolygons = {};
                 fetch('data/detroit.json')
                     .then(response => response.json())
                     .then(data => {
@@ -214,30 +214,30 @@
                 this.innerHTML = expanded ? 'Show less' : 'Read more';
             });
                 
-            // Remove existing polygon first
-            if (activePolygon) {
-                map.removeLayer(activePolygon);
-                activePolygon = null;
-            }
-
-            // Create territory polygon
+            // Toggle territory polygon
             if (figure.geographic.territory && figure.geographic.territory.polygon) {
-                activePolygon = L.polygon(figure.geographic.territory.polygon, {
-                    color: icon === icons.detective ? '#3388ff' : '#dc3545',
-                    fillColor: icon === icons.detective ? '#3388ff' : '#dc3545',
-                    fillOpacity: 0.2,
-                    weight: 2
-                }).addTo(map);
+                // If this figure's polygon already exists, remove it
+                if (activePolygons[figure.id]) {
+                    map.removeLayer(activePolygons[figure.id]);
+                    delete activePolygons[figure.id];
+                } else {
+                    // Create new polygon for this figure
+                    activePolygons[figure.id] = L.polygon(figure.geographic.territory.polygon, {
+                        color: icon === icons.detective ? '#3388ff' : '#dc3545',
+                        fillColor: icon === icons.detective ? '#3388ff' : '#dc3545',
+                        fillOpacity: 0.2,
+                        weight: 2
+                    }).addTo(map);
 
-                // Double-click to remove polygon
-                activePolygon.on('dblclick', function() {
-                    map.removeLayer(activePolygon);
-                    activePolygon = null;
-                });
+                    // Double-click to remove just this polygon
+                    activePolygons[figure.id].on('dblclick', function() {
+                        map.removeLayer(activePolygons[figure.id]);
+                        delete activePolygons[figure.id];
+                    });
+                }
             }
-        });  // closes marker.on('click')
-    });  // closes data.figures.forEach
-})  // closes .then(data =>)
+        });  // closes data.figures.forEach
+    })  // closes .then(data =>)
     .catch(error => {
         console.error('Error loading detroit.json:', error);
     });
