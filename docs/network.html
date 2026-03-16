@@ -318,7 +318,16 @@
                         active_end: figure.years.active_end,
                         influence_phases: figure.influence.phases
                     };
-                });
+                    // Build nodes array — filter to active modalities only
+                    const nodes = data.figures
+                        .filter(function(figure) {
+                            return activeModalities.includes(figure.modality);
+                        })
+                        .map(function(figure) {
+                            return {
+                            }
+                        }
+                    });
     
                 // Build edges array from connections
                 const edges = [];
