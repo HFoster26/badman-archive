@@ -41,7 +41,8 @@
       "name": "Donald Goines",
       "type": "real",
       "meta_badman": true,
-      "modality": "detective",
+      "modality": "gangsta_pimp",
+      "_modality_note": "Re-sorted from detective → gangsta_pimp on 2026-03-16. GPM modality not yet active in archive. Figure will not render until GPM is added. Scoring, genre/medium, and modality description pending full GPM revision (tracker row 6).",
       "years": {
         "birth": 1936,
         "death": 1974,
@@ -76,7 +77,8 @@
         "hypermasculine_performance": {
           "score": 5,
           "justification": "Embodied and narrated Black masculine bravado, sexual prowess, and physical dominance. Characters perform masculinity through control of territory, women, and rival men."
-        }
+        },
+        "_REVIEW_NEEDED": "All scores require re-evaluation against GPM modality criteria. Current justifications written for Detective modality and are no longer accurate."
       },
       "influence": {
         "scale": "1-10",
@@ -114,38 +116,7 @@
       },
       "biography": {
         "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan's prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
-        "key_events": [
-          {
-            "year": 1952,
-            "event": "Falsified age to join U.S. Air Force at 15",
-            "location": "Detroit, MI"
-          },
-          {
-            "year": 1955,
-            "event": "Returned from Korea with heroin addiction, began criminal career",
-            "location": "Detroit, MI"
-          },
-          {
-            "year": 1969,
-            "event": "Wrote first novel Dopefiend while incarcerated",
-            "location": "Jackson State Prison, MI"
-          },
-          {
-            "year": 1971,
-            "event": "Dopefiend published by Holloway House",
-            "location": "Los Angeles, CA"
-          },
-          {
-            "year": 1974,
-            "event": "Published Crime Partners, first Kenyatta novel, under pseudonym Al C. Clark",
-            "location": "Los Angeles, CA"
-          },
-          {
-            "year": 1974,
-            "event": "Murdered alongside Shirley Sailor in Highland Park home",
-            "location": "Highland Park, MI"
-          }
-        ]
+        "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine's methods. Currently written without modality framing."
       },
       "geographic": {
         "primary_location": {
@@ -158,22 +129,10 @@
         "territory": {
           "description": "Goines operated primarily in Black Bottom and the surrounding East Side of Detroit, with significant presence in Highland Park where he lived and died. His territory spanned the traditional Black neighborhoods along Hastings Street before urban renewal destroyed the community, and later the areas around Highland Park that absorbed displaced residents.",
           "polygon": [
-            [
-              42.345,
-              -83.055
-            ],
-            [
-              42.345,
-              -83.025
-            ],
-            [
-              42.32,
-              -83.025
-            ],
-            [
-              42.32,
-              -83.055
-            ]
+            [42.345, -83.055],
+            [42.345, -83.025],
+            [42.32, -83.025],
+            [42.32, -83.055]
           ]
         },
         "additional_locations": [
@@ -258,8 +217,9 @@
       "name": "Kenyatta",
       "type": "fictional",
       "meta_badman": false,
-      "modality": "detective",
-      "medium": "print",
+      "modality": "revolutionary",
+      "medium": "novel",
+      "genre": "revolutionary_fiction",
       "creator_id": "goines_donald",
       "years": {
         "active_start": 1974,
@@ -361,22 +321,10 @@
         "territory": {
           "description": "Kenyatta operates from a fortified training farm outside Detroit while conducting operations throughout the city's Black neighborhoods. His territory extends wherever drug dealers and corrupt police operate, making the entire ghetto his zone of operation. The series eventually expands his territory westward through Nevada to Los Angeles as he flees law enforcement.",
           "polygon": [
-            [
-              42.4,
-              -83.1
-            ],
-            [
-              42.4,
-              -82.95
-            ],
-            [
-              42.3,
-              -82.95
-            ],
-            [
-              42.3,
-              -83.1
-            ]
+            [42.4, -83.1],
+            [42.4, -82.95],
+            [42.3, -82.95],
+            [42.3, -83.1]
           ]
         },
         "additional_locations": [
@@ -436,6 +384,7 @@
       "meta_badman": false,
       "modality": "detective",
       "medium": "film",
+      "genre": "action",
       "creator_id": null,
       "years": {
         "active_start": 1988,
@@ -537,22 +486,10 @@
         "territory": {
           "description": "Jackson operates throughout Detroit's industrial landscape, from auto plants to executive offices to nightclubs. His territory encompasses both the working-class union halls and the elite spaces where Dellaplane's conspiracy unfolds. Though filmed primarily in Los Angeles, the film establishes Detroit's auto industry as central to its setting.",
           "polygon": [
-            [
-              42.38,
-              -83.12
-            ],
-            [
-              42.38,
-              -83
-            ],
-            [
-              42.28,
-              -83
-            ],
-            [
-              42.28,
-              -83.12
-            ]
+            [42.38, -83.12],
+            [42.38, -83.0],
+            [42.28, -83.0],
+            [42.28, -83.12]
           ]
         },
         "additional_locations": []
@@ -623,7 +560,7 @@
       "influence": {
         "scale": "1-10",
         "metric_type": "curated_scholarly_estimate",
-        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values. Tracker row 12: revise to sharpened PRM definition, ensure education-first sequence reflected in bio.",
         "phases": [
           {
             "start": 1968,
@@ -657,6 +594,7 @@
       },
       "biography": {
         "description": "Ron Scott grew up in Detroit's Jeffries Projects, where his politically astute single mother shaped his worldview. Accepted to the University of Michigan in 1965 before affirmative action, Scott's trajectory shifted after hearing Kathleen Cleaver speak at St. Matthew/St. Joseph Church, leading him to co-found Detroit's Black Panther Party chapter in 1968. For nearly five decades, Scott remained on the front lines of Detroit's struggle for justice—from Panther organizing to police accountability advocacy to community peace-building. As spokesperson for the Detroit Coalition Against Police Brutality and founder of Peace Zones for Life, Scott evolved from revolutionary militant to 'Transformational Anthropologist,' as he called himself, dedicated to changing human behavior toward peace and reconciliation. He died of cancer on November 29, 2015, working until his final days.",
+        "_REVIEW_NEEDED": "Tracker row 12: revise to sharpened PRM definition. Ensure education-first sequence is explicitly reflected — Scott heard Cleaver speak (education), co-founded BPP (political action), subjected to COINTELPRO (system violence), forced into militant posture.",
         "key_events": [
           {
             "year": 1963,
@@ -701,22 +639,10 @@
         "territory": {
           "description": "Scott's territory encompassed Detroit's Black neighborhoods from his childhood in Jeffries Projects through decades of organizing. His work with Peace Zones for Life focused on specific neighborhoods plagued by violence, while his advocacy reached citywide through police commission meetings and media appearances. St. Matthew/St. Joseph Church, where he first encountered Kathleen Cleaver, marked a key location in his political awakening.",
           "polygon": [
-            [
-              42.36,
-              -83.1
-            ],
-            [
-              42.36,
-              -83.04
-            ],
-            [
-              42.31,
-              -83.04
-            ],
-            [
-              42.31,
-              -83.1
-            ]
+            [42.36, -83.1],
+            [42.36, -83.04],
+            [42.31, -83.04],
+            [42.31, -83.1]
           ]
         },
         "additional_locations": [
@@ -852,7 +778,7 @@
       "influence": {
         "scale": "1-10",
         "metric_type": "curated_scholarly_estimate",
-        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values. Tracker row 15: PRM revision — emphasize Marx, draft letter, political theory driving strikes.",
         "phases": [
           {
             "start": 1965,
@@ -886,6 +812,7 @@
       },
       "biography": {
         "description": "General Gordon Baker Jr.—'General' was his given name—was born in Detroit to parents who had migrated from Georgia seeking auto industry work. After graduating from Southwestern High School at 16, Baker studied Marx at Wayne State University and co-founded UHURU, an African-American student organization, in 1963. He traveled to Cuba in 1964 to study the Castro government. In 1965, Baker wrote an open letter refusing the Vietnam draft, declaring 'when the call is made to FREE 12TH STREET HERE IN DETROIT, when these calls are made, send for me, for these shall be Historical Struggles in which it shall be an honor to serve!' This was two years before Muhammad Ali's famous refusal. After working at Chrysler's Dodge Main plant, Baker led 4,000 workers in a wildcat strike on May 2, 1968, founding the Dodge Revolutionary Union Movement (DRUM). DRUM spawned the League of Revolutionary Black Workers in 1969, combining Black Power politics with labor organizing at the point of production. Baker remained a revolutionary organizer until his death on May 18, 2014.",
+        "_REVIEW_NEEDED": "Tracker row 15: PRM revision — foreground Baker's Marxist intellectual formation as the engine of his organizing. The sequence is: Marx at Wayne State + Cuba (education) → draft letter + UHURU + DRUM (political action) → arrest, COINTELPRO, LRBW split (system response). Political theory precedes and drives the strikes.",
         "key_events": [
           {
             "year": 1958,
@@ -945,22 +872,10 @@
         "territory": {
           "description": "Baker's territory centered on Detroit's auto plants, particularly Chrysler's Dodge Main in Hamtramck where DRUM was founded. His organizing extended throughout the auto industry across Detroit, including Ford's River Rouge plant and Chrysler's Eldon Avenue facility. Wayne State University, where he studied and founded UHURU, represented another key node. The 12th Street corridor, which he referenced in his draft refusal letter, became the epicenter of the 1967 rebellion.",
           "polygon": [
-            [
-              42.41,
-              -83.1
-            ],
-            [
-              42.41,
-              -83.03
-            ],
-            [
-              42.33,
-              -83.03
-            ],
-            [
-              42.33,
-              -83.1
-            ]
+            [42.41, -83.1],
+            [42.41, -83.03],
+            [42.33, -83.03],
+            [42.33, -83.1]
           ]
         },
         "additional_locations": [
