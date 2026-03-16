@@ -42,7 +42,7 @@
             .legend-p2c { background-color: #dc3545; }
             .legend-c2c { background-color: #50c878; }
             .legend-geo { background-color: #3388ff; }
-            
+
             /* Timeline slider styling */
             #timeline-container {
                 padding: 1rem;
@@ -89,8 +89,8 @@
                 </div>
             </div>
         </nav>
-        
-<!-- Network Section -->
+
+        <!-- Network Section -->
         <section class="page-section">
             <div class="container">
                 <div class="row">
@@ -146,7 +146,7 @@
                     <div class="col-lg-6 mb-4">
                         <div class="bg-faded rounded p-4" id="network-summary-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
                             <h5 class="text-uppercase mb-4" style="color: #50c878;">Network Summary</h5>
-                            
+
                             <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
                                 <div>
                                     <strong style="color: #e8e8e8;">Active Figures</strong><br>
@@ -209,40 +209,40 @@
         <script src="https://d3js.org/d3.v7.min.js"></script>
         <!-- Core theme JS-->
         <script src="js/scripts.js"></script>
-        <!-- Network Initialization Placeholder -->
+        <!-- Network Initialization -->
         <script>
+            // Active modalities — add to this list as modalities come online
+            const activeModalities = ['detective', 'revolutionary'];
+
             // ============================================
             // Define dimensions and color scales
             // ============================================
 
-                // Get the container element and its dimensions
-                const container = document.getElementById('network-container');
-                const width = container.clientWidth;
-                const height = container.clientHeight;
+            const container = document.getElementById('network-container');
+            const width = container.clientWidth;
+            const height = container.clientHeight;
 
-                // Clear the loading placeholder
-                container.innerHTML = '';
+            container.innerHTML = '';
 
-                // Define colors for each connection type
-                const edgeColors = {
-                    'META': '#d4af37',  // Gold - Creator to Creation
-                    'P2C': '#dc3545',   // Red - Person to Creator
-                    'C2C': '#50c878',   // Green - Creator to Creator
-                    'ORG': '#3388ff'    // Blue - Organizational Affiliation
-                };
+            const edgeColors = {
+                'META': '#d4af37',
+                'P2C': '#dc3545',
+                'C2C': '#50c878',
+                'ORG': '#3388ff'
+            };
 
-                // Define colors for each modality
-                const nodeColors = {
-                    'detective': '#3388ff',      // Blue
-                    'revolutionary': '#dc3545'   // Red
-                };
+            const nodeColors = {
+                'detective': '#3388ff',
+                'revolutionary': '#dc3545'
+            };
 
-                console.log('Setup complete. Container:', width, 'x', height);
+            console.log('Setup complete. Container:', width, 'x', height);
+
             // ============================================
             // UTILITY: Influence lookup function
             // ============================================
-            
-            function getInfluenceAtYear(node, year)  {
+
+            function getInfluenceAtYear(node, year) {
                 if (year < node.active_start) {
                     return 0;
                 }
@@ -253,7 +253,7 @@
                         return phase.value;
                     }
                 }
-                
+
                 var lastPhase = node.influence_phases[node.influence_phases.length - 1];
                 return lastPhase.value;
             }
@@ -261,6 +261,7 @@
             var currentYear = parseInt(document.getElementById('timeline-slider').value);
 
             var radiusScale = d3.scaleSqrt().domain([0, 10]).range([0, 45]);
+
             // ============================================
             // SVG Canvas Drawing Surface
             // ============================================
@@ -272,7 +273,6 @@
 
             const g = svg.append('g');
 
-            // Arrowhead marker definition
             svg.append('defs').selectAll('marker')
                 .data(['META', 'P2C', 'C2C', 'ORG'])
                 .enter()
@@ -296,46 +296,46 @@
             );
 
             console.log('SVG canvas created with zoom enabled');
+
             // ============================================
             // DATA: Load and transform detroit.json
             // ============================================
 
             d3.json('data/detroit.json').then(function(data) {
-    
+
                 console.log('Data loaded:', data.figures.length, 'figures');
                 const evidenceTiers = data.evidence_tiers;
-    
-                // Build nodes array from figures
-                const nodes = data.figures.map(function(figure) {
-                    return {
-                        id: figure.id,
-                        name: figure.name,
-                        type: figure.type,
-                        modality: figure.modality,
-                        emergence: figure.emergence.year,
-                        meta_badman: figure.meta_badman || false,
-                        active_start: figure.years.active_start,
-                        active_end: figure.years.active_end,
-                        influence_phases: figure.influence.phases
-                    };
-                    // Build nodes array — filter to active modalities only
-                    const nodes = data.figures
-                        .filter(function(figure) {
-                            return activeModalities.includes(figure.modality);
-                        })
-                        .map(function(figure) {
-                            return {
-                            }
-                        }
+
+                // Build nodes array — filter to active modalities only
+                const nodes = data.figures
+                    .filter(function(figure) {
+                        return activeModalities.includes(figure.modality);
+                    })
+                    .map(function(figure) {
+                        return {
+                            id: figure.id,
+                            name: figure.name,
+                            type: figure.type,
+                            modality: figure.modality,
+                            emergence: figure.emergence.year,
+                            meta_badman: figure.meta_badman || false,
+                            active_start: figure.years.active_start,
+                            active_end: figure.years.active_end,
+                            influence_phases: figure.influence.phases
+                        };
                     });
-    
-                // Build edges array from connections
+
+                // Build active node ID set for edge filtering
+                const activeNodeIds = new Set(nodes.map(function(n) { return n.id; }));
+
+                // Build edges array — only include edges where both endpoints are active modality nodes
                 const edges = [];
-    
+
                 data.figures.forEach(function(figure) {
+                    if (!activeModalities.includes(figure.modality)) return;
                     if (figure.connections) {
                         figure.connections.forEach(function(conn) {
-                            if (conn.direction === 'outgoing' || conn.direction === 'mutual') {
+                            if ((conn.direction === 'outgoing' || conn.direction === 'mutual') && activeNodeIds.has(conn.target_id)) {
                                 edges.push({
                                     source: figure.id,
                                     target: conn.target_id,
@@ -348,10 +348,10 @@
                         });
                     }
                 });
-    
+
                 console.log('Nodes:', nodes.length, '| Edges:', edges.length);
                 console.log('Edge tiers:', edges.map(function(e) { return e.source + '→' + e.target + ' T' + e.tier; }));
-            
+
             // ============================================
             // Physics engine
             // ============================================
@@ -368,14 +368,14 @@
                 .force('collision', d3.forceCollide().radius(function(d) {
                     return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
                 }))
-                .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05))
+                .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05));
+
             console.log('Force simulation created');
 
             // ============================================
             // Connection lines
             // ============================================
 
-            // Invisible hit areas for easier edge clicking
             const edgeHitArea = g.append('g')
                 .attr('class', 'edge-hit-areas')
                 .selectAll('line')
@@ -397,18 +397,18 @@
                 .attr('stroke-opacity', function(d) {
                     return evidenceTiers[d.tier].opacity;
                 })
-            .attr('stroke-dasharray', function(d) {
-                var style = evidenceTiers[d.tier].line_style;
+                .attr('stroke-dasharray', function(d) {
+                    var style = evidenceTiers[d.tier].line_style;
                     if (style === 'dashed') return '8,4';
                     if (style === 'dotted') return '2,4';
                     return null;
-            })
-            .attr('marker-end', function(d) {
-                if (d.direction === 'outgoing') {
-                    return 'url(#arrow-' + d.type + ')';
-                }
-                return null;
-            });
+                })
+                .attr('marker-end', function(d) {
+                    if (d.direction === 'outgoing') {
+                        return 'url(#arrow-' + d.type + ')';
+                    }
+                    return null;
+                });
 
             console.log('Edges drawn');
 
@@ -433,23 +433,24 @@
                 );
 
             console.log('Nodes drawn');
-                    // Drag functions
-                    function dragStarted(event, d) {
-                        if (!event.active) simulation.alphaTarget(0.3).restart();
-                        d.fx = d.x;
-                        d.fy = d.y;
-                    }
 
-                    function dragged(event, d) {
-                        d.fx = event.x;
-                        d.fy = event.y;
-                    }
+            function dragStarted(event, d) {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            }
 
-                    function dragEnded(event, d) {
-                    if (!event.active) simulation.alphaTarget(0);
-                        d.fx = null;
-                        d.fy = null;
-                    }
+            function dragged(event, d) {
+                d.fx = event.x;
+                d.fy = event.y;
+            }
+
+            function dragEnded(event, d) {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            }
+
             // ============================================
             // TICK: Update positions every frame
             // ============================================
@@ -477,7 +478,7 @@
             });
 
             console.log('Tick function active');
-            
+
             // ============================================
             // Labels
             // ============================================
@@ -506,13 +507,10 @@
                 event.stopPropagation();
 
                 if (focusedNode === d.id) {
-                    // Clicking same node again - unfocus
                     unfocus();
                 } else {
-                    // Focus on this node
                     focusedNode = d.id;
 
-                    // Find connected node IDs
                     const connectedIds = new Set();
                     connectedIds.add(d.id);
 
@@ -521,28 +519,23 @@
                         if (e.target.id === d.id) connectedIds.add(e.source.id);
                     });
 
-                    // Fade unconnected nodes
                     node.attr('opacity', function(n) {
                         return connectedIds.has(n.id) ? 1 : 0.15;
                     });
 
-                    // Fade unconnected labels
                     label.attr('opacity', function(n) {
                         return connectedIds.has(n.id) ? 1 : 0.15;
                     });
 
-                    // Fade unconnected edges
                     edge.attr('opacity', function(e) {
                         return (e.source.id === d.id || e.target.id === d.id) ? 1 : 0.05;
                     });
 
-                    // Update detail panel
                     updatePanel(d);
                     showFigureMetrics(d, currentYear);
                 }
             });
 
-            // Click background to unfocus
             svg.on('click', function() {
                 unfocus();
             });
@@ -553,7 +546,7 @@
                 label.attr('opacity', 1);
                 edge.attr('opacity', function(d) {
                     return evidenceTiers[d.tier].opacity;
-            });
+                });
                 document.getElementById('connection-content').innerHTML = 'Click a node or edge to view relationship details.';
                 document.getElementById('figure-metrics-panel').innerHTML =
                     '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>' +
@@ -567,12 +560,11 @@
                 if (d.meta_badman) {
                     html += '<em style="color: #d4af37;">Meta-Badman</em><br>';
                 }
-        
-                // Find connections involving this node
+
                 const nodeConnections = edges.filter(function(e) {
                     return e.source.id === d.id || e.target.id === d.id;
                 });
-        
+
                 if (nodeConnections.length > 0) {
                     html += '<br><strong style="color: #50c878;">Connections:</strong><br>';
                     nodeConnections.forEach(function(conn) {
@@ -582,10 +574,9 @@
                         html += '<span style="color: #a0a0a0; font-size: 0.85rem;">' + conn.evidence + '</span><br><br>';
                     });
                 }
-        
+
                 document.getElementById('connection-content').innerHTML = html;
             }
-
 
             console.log('Focus behavior enabled');
 
@@ -614,27 +605,22 @@
                     'ORG': 'Organizational Affiliation'
                 };
 
-                // Populate the figure-metrics panel with edge details
                 var panel = document.getElementById('figure-metrics-panel');
                 var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Connection Details</h5>';
 
-                // Direction header
                 var arrow = d.direction === 'mutual' ? '↔' : '→';
                 html += '<h6 style="color: #d4af37;">' + sourceName + ' ' + arrow + ' ' + targetName + '</h6>';
 
-                // Type with color
                 html += '<div style="margin-bottom: 0.75rem;">';
                 html += '<strong style="color: #e8e8e8;">Type:</strong> ';
                 html += '<span style="color:' + edgeColors[d.type] + ';">' + (typeLabels[d.type] || d.type) + '</span>';
                 html += '</div>';
 
-                // Tier badge
                 html += '<div style="margin-bottom: 0.75rem;">';
                 html += '<strong style="color: #e8e8e8;">Evidence Tier:</strong> ';
                 html += tierBadge(d.tier);
                 html += '</div>';
 
-                // Evidence text
                 if (d.evidence) {
                     html += '<div style="margin-bottom: 0.75rem;">';
                     html += '<strong style="color: #e8e8e8;">Evidence:</strong><br>';
@@ -644,7 +630,6 @@
 
                 panel.innerHTML = html;
 
-                // Highlight clicked edge, fade others
                 edge.attr('stroke-opacity', function(e) {
                     return e === d ? 1.0 : 0.1;
                 });
@@ -659,7 +644,6 @@
             document.getElementById('timeline-slider').addEventListener('input', function() {
                 currentYear = parseInt(this.value);
 
-                // Update node sizes and visibility
                 node.transition().duration(300)
                     .attr('r', function(d) {
                         return radiusScale(getInfluenceAtYear(d, currentYear));
@@ -668,7 +652,6 @@
                         return currentYear >= d.active_start ? 1 : 0;
                     });
 
-                // Update label visibility to match nodes
                 label.transition().duration(300)
                     .attr('opacity', function(d) {
                         return currentYear >= d.active_start ? 1 : 0;
@@ -677,7 +660,6 @@
                         return -(radiusScale(getInfluenceAtYear(d, currentYear)) + 10);
                     });
 
-                // Update edge visibility — hide if either node is inactive
                 edge.transition().duration(300)
                     .attr('opacity', function(d) {
                         var sourceActive = currentYear >= d.source.active_start;
@@ -688,7 +670,6 @@
                         return 0;
                     });
 
-                // Update collision radius for new sizes
                 simulation.force('collision').radius(function(d) {
                     return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
                 });
@@ -705,7 +686,6 @@
             function showFigureMetrics(nodeData, year) {
                 var panel = document.getElementById('figure-metrics-panel');
 
-                // Calculate degree (in and out)
                 var inDegree = 0;
                 var outDegree = 0;
                 var connections = [];
@@ -726,10 +706,8 @@
                     }
                 });
 
-                // Get influence value at current year
                 var influence = getInfluenceAtYear(nodeData, year);
 
-                // Find the active phase for justification text
                 var justification = 'No data for this period';
                 if (nodeData.influence_phases) {
                     for (var i = 0; i < nodeData.influence_phases.length; i++) {
@@ -739,14 +717,12 @@
                             break;
                         }
                     }
-                    // If past all phases, use the last one
                     if (justification === 'No data for this period' && year >= nodeData.active_start) {
                         var lastPhase = nodeData.influence_phases[nodeData.influence_phases.length - 1];
                         justification = lastPhase.justification || lastPhase.label || 'Posthumous legacy';
                     }
                 }
 
-                // Tier badge helper
                 function tierBadge(tier) {
                     var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
                     var colors = {1: '#50c878', 2: '#d4af37', 3: '#c0c0c0'};
@@ -755,17 +731,14 @@
                            labels[tier] + '</span>';
                 }
 
-                // Build HTML
                 var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>';
                 html += '<h6 style="color: #d4af37; margin-bottom: 1rem;">' + nodeData.name + '</h6>';
 
-                // Degree
                 html += '<div style="margin-bottom: 1rem;">';
                 html += '<strong style="color: #e8e8e8;">Degree:</strong> ' + (inDegree + outDegree) + '<br>';
                 html += '<small style="color: #a0a0a0;">In: ' + inDegree + ' · Out: ' + outDegree + '</small>';
                 html += '</div>';
 
-                // Influence bar
                 html += '<div style="margin-bottom: 1rem;">';
                 html += '<strong style="color: #e8e8e8;">Influence at ' + year + ':</strong> ' + influence + ' / 10<br>';
                 html += '<div style="background:#2a2a3e;border-radius:4px;height:12px;margin:4px 0;">';
@@ -774,7 +747,6 @@
                 html += '<small style="color: #a0a0a0;">' + justification + '</small>';
                 html += '</div>';
 
-                // Active connections list with tier badges
                 html += '<div>';
                 html += '<strong style="color: #e8e8e8;">Connections:</strong><br>';
                 if (connections.length === 0) {
@@ -794,78 +766,68 @@
             }
 
             console.log('Figure metrics function ready');
+
             // ============================================
             // METRICS: Network summary calculations
             // ============================================
 
             function updateNetworkMetrics(year) {
-            // Count active nodes (influence > 0 at this year)
-            var activeNodes = nodes.filter(function(d) {
-                return getInfluenceAtYear(d, year) > 0;
-            });
-
-            // Get active node IDs for edge filtering
-            var activeNodeIds = activeNodes.map(function(d) { return d.id; });
-
-            // Count active edges (both endpoints must be active)
-            var activeEdges = edges.filter(function(d) {
-                var sourceId = typeof d.source === 'object' ? d.source.id : d.source;
-                var targetId = typeof d.target === 'object' ? d.target.id : d.target;
-                return activeNodeIds.indexOf(sourceId) !== -1 && activeNodeIds.indexOf(targetId) !== -1;
-            });
-
-            var n = activeNodes.length;
-            var e = activeEdges.length;
-
-            // 1. Active Figures
-            document.getElementById('metric-active-figures').textContent = n + ' of ' + nodes.length;
-
-            // 2. Active Connections
-            document.getElementById('metric-active-connections').textContent = e;
-
-            // 3. Network Density (directed: possible = n * (n-1))
-            var possibleConnections = n * (n - 1);
-            var density = possibleConnections > 0 ? (e / possibleConnections) : 0;
-            document.getElementById('metric-density').textContent = (density * 100).toFixed(1) + '%';
-
-            // 4. Reciprocity (mutual pairs / total directed edges)
-            var directedCount = 0;
-            var mutualCount = 0;
-            activeEdges.forEach(function(ae) {
-                directedCount++;
-                var srcId = typeof ae.source === 'object' ? ae.source.id : ae.source;
-                var tgtId = typeof ae.target === 'object' ? ae.target.id : ae.target;
-                var hasReverse = activeEdges.some(function(other) {
-                    var oSrc = typeof other.source === 'object' ? other.source.id : other.source;
-                    var oTgt = typeof other.target === 'object' ? other.target.id : other.target;
-                    return oSrc === tgtId && oTgt === srcId;
+                var activeNodes = nodes.filter(function(d) {
+                    return getInfluenceAtYear(d, year) > 0;
                 });
-                if (hasReverse) mutualCount++;
-            });
-            document.getElementById('metric-reciprocity').textContent = mutualCount + ' / ' + directedCount;
 
-            // 5. Cross-Modality Connections
-            var crossCount = 0;
-            activeEdges.forEach(function(ae) {
-                var sourceNode = typeof ae.source === 'object' ? ae.source :
-                    nodes.find(function(n) { return n.id === ae.source; });
-                var targetNode = typeof ae.target === 'object' ? ae.target :
-                    nodes.find(function(n) { return n.id === ae.target; });
-                if (sourceNode && targetNode && sourceNode.modality !== targetNode.modality) {
-                    crossCount++;
-                }
-            });
-            document.getElementById('metric-cross-modality').textContent = crossCount;
-        }
+                var activeNodeIds = activeNodes.map(function(d) { return d.id; });
 
-        // Run on initial load
-        updateNetworkMetrics(currentYear);
+                var activeEdges = edges.filter(function(d) {
+                    var sourceId = typeof d.source === 'object' ? d.source.id : d.source;
+                    var targetId = typeof d.target === 'object' ? d.target.id : d.target;
+                    return activeNodeIds.indexOf(sourceId) !== -1 && activeNodeIds.indexOf(targetId) !== -1;
+                });
 
-        console.log('Network metrics initialized');
+                var n = activeNodes.length;
+                var e = activeEdges.length;
+
+                document.getElementById('metric-active-figures').textContent = n + ' of ' + nodes.length;
+                document.getElementById('metric-active-connections').textContent = e;
+
+                var possibleConnections = n * (n - 1);
+                var density = possibleConnections > 0 ? (e / possibleConnections) : 0;
+                document.getElementById('metric-density').textContent = (density * 100).toFixed(1) + '%';
+
+                var directedCount = 0;
+                var mutualCount = 0;
+                activeEdges.forEach(function(ae) {
+                    directedCount++;
+                    var srcId = typeof ae.source === 'object' ? ae.source.id : ae.source;
+                    var tgtId = typeof ae.target === 'object' ? ae.target.id : ae.target;
+                    var hasReverse = activeEdges.some(function(other) {
+                        var oSrc = typeof other.source === 'object' ? other.source.id : other.source;
+                        var oTgt = typeof other.target === 'object' ? other.target.id : other.target;
+                        return oSrc === tgtId && oTgt === srcId;
+                    });
+                    if (hasReverse) mutualCount++;
+                });
+                document.getElementById('metric-reciprocity').textContent = mutualCount + ' / ' + directedCount;
+
+                var crossCount = 0;
+                activeEdges.forEach(function(ae) {
+                    var sourceNode = typeof ae.source === 'object' ? ae.source :
+                        nodes.find(function(n) { return n.id === ae.source; });
+                    var targetNode = typeof ae.target === 'object' ? ae.target :
+                        nodes.find(function(n) { return n.id === ae.target; });
+                    if (sourceNode && targetNode && sourceNode.modality !== targetNode.modality) {
+                        crossCount++;
+                    }
+                });
+                document.getElementById('metric-cross-modality').textContent = crossCount;
+            }
+
+            updateNetworkMetrics(currentYear);
+            console.log('Network metrics initialized');
+
             }).catch(function(error) {
                 console.error('Error loading data:', error);
             });
-            
         </script>
     </body>
 </html>
