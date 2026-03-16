@@ -156,6 +156,8 @@
             
             // Loop through each figure
                 data.figures.forEach(figure => {
+            // Skip figures whose modality isn't active yet
+            if (!activeModalities.includes(figure.modality)) return;
            
             // Get coordinates from the geographic bucket
             var lat = figure.geographic.primary_location.coordinates.lat;
