@@ -3,8 +3,8 @@
     <head>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-        <meta name="description" content="" />
-        <meta name="author" content="" />
+        <meta name="description" content="The Detroit Badman Archive is an interactive digital humanities archive documenting Black masculine heroism in Detroit through geospatial and network visualizations." />
+        <meta name="author" content="Harry Foster" />
         <title>Detroit Badman Archive</title>
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Google fonts-->
@@ -15,6 +15,9 @@
         <link href="css/styles.css" rel="stylesheet" />
     </head>
     <body>
+        <!-- Skip navigation link -->
+        <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
         <header>
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
                 <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
@@ -22,9 +25,9 @@
             </h1>
         </header>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav" aria-label="Main navigation">
             <div class="container">
-                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Badman Digital Archive</a>
+                <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav mx-auto">
@@ -39,38 +42,40 @@
                 </div>
             </div>
         </nav>
-        <section class="page-section clearfix">
-            <div class="container">
-                <div class="intro">
-                    <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="assets/img/Detroit_Skyline_(123143197).jpeg" alt="..." />
-                    <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-                        <h2 class="section-heading mb-4">
-                        <span class="section-heading-upper">What is a</span>
-                        <span class="section-heading-lower">Badman?</span>
-                        </h2>
-                            <p class="mb-3">The Black badman is a figure of resistance—an individual who operates outside legal systems while maintaining community support. From post-Emancipation folk heroes to contemporary revolutionaries, the badman embodies survival strategies developed in response to systems that refused to recognize Black humanity.</p>
-                        <div class="intro-button mx-auto"><a class="btn btn-primary btn-xl" href="how-to-use.html">Explore the Archive</a></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <section class="page-section cta">
-            <div class="container">
-                <div class="row">
-                    <div class="col-xl-9 mx-auto">
-                        <div class="cta-inner bg-faded text-center rounded">
+        <main id="main-content">
+            <section class="page-section clearfix">
+                <div class="container">
+                    <div class="intro">
+                        <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="assets/img/Detroit_Skyline_(123143197).jpeg" alt="Detroit skyline viewed across the Detroit River, with the Renaissance Center and downtown towers against an open sky." />
+                        <div class="intro-text left-0 text-center bg-faded p-5 rounded">
                             <h2 class="section-heading mb-4">
-                                <span class="section-heading-upper">Why</span>
-                                <span class="section-heading-lower">Detroit</span>
+                                <span class="section-heading-upper">What is a</span>
+                                <span class="section-heading-lower">Badman?</span>
                             </h2>
-                            <p class="mb-0">Detroit represents a crucial node in Black American resistance history—from Paradise Valley's autonomous economy to the revolutionary labor organizing at Dodge Main. This archive documents how badman figures emerged from and shaped the city's unique cultural landscape.</p>
+                            <p class="mb-3">The Black badman is a figure of resistance—an individual who operates outside legal systems while maintaining community support. From post-Emancipation folk heroes to contemporary revolutionaries, the badman embodies survival strategies developed in response to systems that refused to recognize Black humanity. The Badman Digital Archive documents this tradition city by city, beginning with Detroit.</p>
+                            <div class="intro-button mx-auto"><a class="btn btn-primary btn-xl" href="how-to-use.html">Explore the Archive</a></div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
+            </section>
+            <section class="page-section cta">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-9 mx-auto">
+                            <div class="cta-inner bg-faded text-center rounded">
+                                <h2 class="section-heading mb-4">
+                                    <span class="section-heading-upper">Why</span>
+                                    <span class="section-heading-lower">Detroit</span>
+                                </h2>
+                                <p class="mb-0">Detroit represents a crucial node in Black American resistance history—from Paradise Valley's autonomous economy to the revolutionary labor organizing at Dodge Main. As the first city in a growing national archive, Detroit is the proof of concept: documenting how badman figures emerged from and shaped the city's unique cultural landscape, and building the framework that will extend to cities across the country.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
         <footer class="footer text-faded text-center py-5">
-            <div class="container"><p class="m-0 small">Copyright &copy; Badman Archive - Detroit</p></div>
+            <div class="container"><p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p></div>
         </footer>
         <!-- Bootstrap core JS-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
