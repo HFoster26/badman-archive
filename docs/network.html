@@ -19,14 +19,14 @@
                 height: 600px;
                 width: 100%;
                 border-radius: 0.5rem;
-                border: 2px solid #2a623d;
-                background-color: #0d2818;
+                border: 2px solid var(--dba-border-green);
+                background-color: var(--dba-dark-green);
             }
             .network-legend {
-                background-color: #1a472a;
+                background-color: var(--dba-content-green);
                 padding: 1rem;
                 border-radius: 0.5rem;
-                border: 2px solid #2a623d;
+                border: 2px solid var(--dba-border-green);
             }
             .legend-item {
                 display: flex;
@@ -38,33 +38,77 @@
                 height: 3px;
                 margin-right: 10px;
             }
-            .legend-meta { background-color: #d4af37; }
-            .legend-p2c { background-color: #dc3545; }
-            .legend-c2c { background-color: #50c878; }
-            .legend-geo { background-color: #3388ff; }
+            /* Edge type legend — distinct dash patterns per type (WCAG 1.4.1) */
+            .legend-meta { background-color: var(--dba-gold); }
+            .legend-p2c {
+                background-color: transparent;
+                background-image: repeating-linear-gradient(90deg, var(--dba-revolutionary) 0px, var(--dba-revolutionary) 12px, transparent 12px, transparent 18px);
+            }
+            .legend-c2c {
+                background-color: transparent;
+                background-image: repeating-linear-gradient(90deg, var(--dba-emerald) 0px, var(--dba-emerald) 6px, transparent 6px, transparent 10px);
+            }
+            .legend-org {
+                background-color: transparent;
+                background-image: repeating-linear-gradient(90deg, var(--dba-detective) 0px, var(--dba-detective) 2px, transparent 2px, transparent 6px, var(--dba-detective) 6px, var(--dba-detective) 14px, transparent 14px, transparent 18px);
+            }
+            /* Node modality legend markers — distinct shapes */
+            .legend-marker {
+                width: 20px;
+                height: 20px;
+                margin-right: 10px;
+                display: inline-block;
+            }
+            .legend-node-detective {
+                background-color: var(--dba-detective);
+                border-radius: 50%;
+            }
+            .legend-node-revolutionary {
+                background-color: var(--dba-revolutionary);
+                clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+            }
 
             /* Timeline slider styling */
             #timeline-container {
                 padding: 1rem;
-                background-color: #1a472a;
+                background-color: var(--dba-content-green);
                 border-radius: 0.5rem;
-                border: 2px solid #2a623d;
+                border: 2px solid var(--dba-border-green);
                 margin-top: 1rem;
             }
             #timeline-slider {
                 width: 100%;
-                accent-color: #50c878;
+                accent-color: var(--dba-emerald);
             }
             .timeline-labels {
                 display: flex;
                 justify-content: space-between;
-                color: #c8c8c8;
+                color: var(--dba-text-secondary);
                 font-size: 0.85rem;
                 margin-top: 0.5rem;
+            }
+
+            /* Animation control */
+            #pause-animation {
+                background-color: var(--dba-border-green);
+                color: var(--dba-text-primary);
+                border: 1px solid var(--dba-emerald);
+                padding: 0.25rem 0.75rem;
+                border-radius: 0.25rem;
+                font-size: 0.85rem;
+                cursor: pointer;
+                margin-bottom: 0.5rem;
+            }
+            #pause-animation:hover {
+                background-color: var(--dba-emerald);
+                color: var(--dba-darkest-green);
             }
         </style>
     </head>
     <body>
+        <!-- Skip navigation link -->
+        <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
         <header>
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
                 <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
@@ -72,7 +116,7 @@
             </h1>
         </header>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav" aria-label="Main navigation">
             <div class="container">
                 <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -89,117 +133,151 @@
                 </div>
             </div>
         </nav>
-
-        <!-- Network Section -->
-        <section class="page-section">
-            <div class="container">
-                <div class="row">
-                    <!-- Network Container -->
-                    <div class="col-lg-9 mb-4">
-                        <div id="network-container">
-                            <p style="color: #c8c8c8; text-align: center; padding-top: 250px;">Network visualization loading...</p>
+        <main id="main-content">
+            <!-- Network Section -->
+            <section class="page-section">
+                <div class="container">
+                    <div class="row">
+                        <!-- Network Container -->
+                        <div class="col-lg-9 mb-4">
+                            <button id="pause-animation" aria-label="Pause network animation">Pause Animation</button>
+                            <div id="network-container">
+                                <p style="color: var(--dba-text-secondary); text-align: center; padding-top: 250px;">Network visualization loading...</p>
+                            </div>
+                            <!-- Screen-reader data table alternative -->
+                            <table class="sr-only" aria-label="Detroit badman figures network data">
+                                <caption>Figures in the Detroit Badman Archive with modality, connections, and influence</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Modality</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Active Years</th>
+                                        <th scope="col">Connections</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sr-network-table-body">
+                                    <!-- Populated dynamically from JSON -->
+                                </tbody>
+                            </table>
+                            <!-- Timeline Slider -->
+                            <div id="timeline-container">
+                                <label for="timeline-slider" style="color: var(--dba-emerald); text-transform: uppercase; font-weight: bold;">Timeline Filter</label>
+                                <input type="range" id="timeline-slider" min="1930" max="2020" value="2020" step="5" aria-valuemin="1930" aria-valuemax="2020" aria-valuenow="2020" aria-label="Select year to filter network by time period">
+                                <div class="timeline-labels" aria-hidden="true">
+                                    <span>1930</span>
+                                    <span>1950</span>
+                                    <span>1970</span>
+                                    <span>1990</span>
+                                    <span>2020</span>
+                                </div>
+                            </div>
                         </div>
-                        <!-- Timeline Slider -->
-                        <div id="timeline-container">
-                            <label for="timeline-slider" style="color: #50c878; text-transform: uppercase; font-weight: bold;">Timeline Filter</label>
-                            <input type="range" id="timeline-slider" min="1930" max="2020" value="2020" step="5">
-                            <div class="timeline-labels">
-                                <span>1930</span>
-                                <span>1950</span>
-                                <span>1970</span>
-                                <span>1990</span>
-                                <span>2020</span>
+                        <!-- Legend and Info Panel -->
+                        <div class="col-lg-3">
+                            <!-- Node modality legend -->
+                            <div class="network-legend mb-4">
+                                <h2 class="text-uppercase mb-3" style="color: var(--dba-emerald); font-size: 1.1rem;">Figure Modalities</h2>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="legend-item">
+                                        <span class="legend-marker legend-node-detective" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Circle — Detective Modality</span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-marker legend-node-revolutionary" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Diamond — Revolutionary Modality</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Edge type legend -->
+                            <div class="network-legend mb-4">
+                                <h2 class="text-uppercase mb-3" style="color: var(--dba-emerald); font-size: 1.1rem;">Relationship Types</h2>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="legend-item">
+                                        <span class="legend-line legend-meta" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Solid line — META: Creator → Creation</span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-line legend-p2c" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Long dash — P2C: Person ↔ Creator</span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-line legend-c2c" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Short dash — C2C: Creator ↔ Creator</span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-line legend-org" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Dot-dash — ORG: Organizational Affiliation</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Connection Info Panel -->
+                            <div class="bg-faded rounded p-4" id="connection-panel" tabindex="-1" aria-live="polite" aria-atomic="true">
+                                <h2 class="text-uppercase mb-3" style="color: var(--dba-emerald); font-size: 1.1rem;">Connection Details</h2>
+                                <p id="connection-content" style="color: var(--dba-text-secondary);">Select a figure from the network or the figures list to view relationship details.</p>
                             </div>
                         </div>
                     </div>
-                    <!-- Legend and Info Panel -->
-                    <div class="col-lg-3">
-                        <div class="network-legend mb-4">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Relationship Types</h5>
-                            <div class="legend-item">
-                                <div class="legend-line legend-meta"></div>
-                                <span style="color: #e8e8e8;">META: Creator → Creation</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-p2c"></div>
-                                <span style="color: #e8e8e8;">P2C: Person ↔ Creator</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-c2c"></div>
-                                <span style="color: #e8e8e8;">C2C: Creator ↔ Creator</span>
-                            </div>
-                            <div class="legend-item">
-                                <div class="legend-line legend-org"></div>
-                                <span style="color: #e8e8e8;">ORG: Organizational Affiliation</span>
+                    <!-- Metrics Panel -->
+                    <div class="row mt-4">
+                        <!-- Network Summary (Left) -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="bg-faded rounded p-4" id="network-summary-panel" style="border: 2px solid var(--dba-border-green); background-color: var(--dba-content-green);">
+                                <h2 class="text-uppercase mb-4" style="color: var(--dba-emerald); font-size: 1.1rem;">Network Summary</h2>
+
+                                <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid var(--dba-border-green); padding-bottom: 0.75rem;">
+                                    <div>
+                                        <strong style="color: var(--dba-text-primary);">Active Figures</strong><br>
+                                        <small style="color: var(--dba-text-muted);">(visible nodes at current year)</small>
+                                    </div>
+                                    <span id="metric-active-figures" style="color: var(--dba-gold); font-size: 1.1rem; font-weight: bold;">0 of 5</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid var(--dba-border-green); padding-bottom: 0.75rem;">
+                                    <div>
+                                        <strong style="color: var(--dba-text-primary);">Active Connections</strong><br>
+                                        <small style="color: var(--dba-text-muted);">(edges at current year)</small>
+                                    </div>
+                                    <span id="metric-active-connections" style="color: var(--dba-gold); font-size: 1.1rem; font-weight: bold;">0</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid var(--dba-border-green); padding-bottom: 0.75rem;">
+                                    <div>
+                                        <strong style="color: var(--dba-text-primary);">Network Density</strong><br>
+                                        <small id="metric-density-detail" style="color: var(--dba-text-muted);">(existing ÷ possible connections)</small>
+                                    </div>
+                                    <span id="metric-density" style="color: var(--dba-gold); font-size: 1.1rem; font-weight: bold;">0%</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid var(--dba-border-green); padding-bottom: 0.75rem;">
+                                    <div>
+                                        <strong style="color: var(--dba-text-primary);">Reciprocity</strong><br>
+                                        <small style="color: var(--dba-text-muted);">(mutual ÷ directed connections)</small>
+                                    </div>
+                                    <span id="metric-reciprocity" style="color: var(--dba-gold); font-size: 1.1rem; font-weight: bold;">0 / 0</span>
+                                </div>
+
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <strong style="color: var(--dba-text-primary);">Cross-Modality Connections</strong><br>
+                                        <small id="metric-cross-detail" style="color: var(--dba-text-muted);">(detective ↔ revolutionary edges)</small>
+                                    </div>
+                                    <span id="metric-cross-modality" style="color: var(--dba-gold); font-size: 1.1rem; font-weight: bold;">0</span>
+                                </div>
                             </div>
                         </div>
-                        <!-- Connection Info Panel -->
-                        <div class="bg-faded rounded p-4" id="connection-panel">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Connection Details</h5>
-                            <p id="connection-content" style="color: #c8c8c8;">Click a node or edge to view relationship details.</p>
+
+                        <!-- Selected Figure Metrics (Right) -->
+                        <div class="col-lg-6 mb-4">
+                            <div class="bg-faded rounded p-4" id="figure-metrics-panel" tabindex="-1" aria-live="polite" aria-atomic="true" style="border: 2px solid var(--dba-border-green); background-color: var(--dba-content-green);">
+                                <h2 class="text-uppercase mb-4" style="color: var(--dba-emerald); font-size: 1.1rem;">Selected Figure Metrics</h2>
+                                <p id="figure-metrics-content" style="color: var(--dba-text-muted);">Select a figure from the network or the figures list to view detailed metrics.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <!-- Metrics Panel -->
-                <div class="row mt-4">
-                    <!-- Network Summary (Left) -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="bg-faded rounded p-4" id="network-summary-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
-                            <h5 class="text-uppercase mb-4" style="color: #50c878;">Network Summary</h5>
-
-                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
-                                <div>
-                                    <strong style="color: #e8e8e8;">Active Figures</strong><br>
-                                    <small style="color: #a0a0a0;">(visible nodes at current year)</small>
-                                </div>
-                                <span id="metric-active-figures" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0 of 5</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
-                                <div>
-                                    <strong style="color: #e8e8e8;">Active Connections</strong><br>
-                                    <small style="color: #a0a0a0;">(edges at current year)</small>
-                                </div>
-                                <span id="metric-active-connections" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
-                                <div>
-                                    <strong style="color: #e8e8e8;">Network Density</strong><br>
-                                    <small id="metric-density-detail" style="color: #a0a0a0;">(existing ÷ possible connections)</small>
-                                </div>
-                                <span id="metric-density" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0%</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start mb-3" style="border-bottom: 1px solid #2a623d; padding-bottom: 0.75rem;">
-                                <div>
-                                    <strong style="color: #e8e8e8;">Reciprocity</strong><br>
-                                    <small style="color: #a0a0a0;">(mutual ÷ directed connections)</small>
-                                </div>
-                                <span id="metric-reciprocity" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0 / 0</span>
-                            </div>
-
-                            <div class="d-flex justify-content-between align-items-start">
-                                <div>
-                                    <strong style="color: #e8e8e8;">Cross-Modality Connections</strong><br>
-                                    <small id="metric-cross-detail" style="color: #a0a0a0;">(detective ↔ revolutionary edges)</small>
-                                </div>
-                                <span id="metric-cross-modality" style="color: #d4af37; font-size: 1.1rem; font-weight: bold;">0</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Selected Figure Metrics (Right) -->
-                    <div class="col-lg-6 mb-4">
-                        <div class="bg-faded rounded p-4" id="figure-metrics-panel" style="border: 2px solid #2a623d; background-color: #1a472a;">
-                            <h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>
-                            <p id="figure-metrics-content" style="color: #a0a0a0;">Click a node to view detailed metrics.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
+            </section>
+        </main>
         <footer class="footer text-faded text-center py-5">
             <div class="container"><p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p></div>
         </footer>
@@ -229,6 +307,14 @@
                 'P2C': '#dc3545',
                 'C2C': '#50c878',
                 'ORG': '#3388ff'
+            };
+
+            // Edge dash patterns per TYPE (WCAG 1.4.1 — not color alone)
+            const edgeDashPatterns = {
+                'META': null,           // Solid
+                'P2C': '12,6',          // Long dash
+                'C2C': '6,4',           // Short dash
+                'ORG': '2,4,8,4'        // Dot-dash
             };
 
             const nodeColors = {
@@ -269,7 +355,13 @@
             const svg = d3.select('#network-container')
                 .append('svg')
                 .attr('width', width)
-                .attr('height', height);
+                .attr('height', height)
+                .attr('role', 'img')
+                .attr('aria-label', 'Network visualization of Detroit badman figure relationships');
+
+            // Accessible title and description
+            svg.append('title').text('Network visualization of Detroit badman figure relationships');
+            svg.append('desc').text('Force-directed graph showing connections between badman figures. Nodes represent figures sized by influence. Edges represent documented relationships typed as META, P2C, C2C, or ORG.');
 
             const g = svg.append('g');
 
@@ -350,7 +442,47 @@
                 });
 
                 console.log('Nodes:', nodes.length, '| Edges:', edges.length);
-                console.log('Edge tiers:', edges.map(function(e) { return e.source + '→' + e.target + ' T' + e.tier; }));
+
+                // ============================================
+                // Build SR data table
+                // ============================================
+
+                var srTableBody = document.getElementById('sr-network-table-body');
+                nodes.forEach(function(n) {
+                    var connCount = edges.filter(function(e) {
+                        return e.source === n.id || e.target === n.id;
+                    }).length;
+                    var row = document.createElement('tr');
+                    row.innerHTML =
+                        '<th scope="row">' + n.name + '</th>' +
+                        '<td>' + n.modality + '</td>' +
+                        '<td>' + formatFigureType(n.type, n.meta_badman) + '</td>' +
+                        '<td>' + n.active_start + ' – ' + (n.active_end || 'present') + '</td>' +
+                        '<td>' + connCount + '</td>';
+                    row.setAttribute('tabindex', '0');
+                    row.setAttribute('role', 'button');
+                    row.setAttribute('aria-label', 'View details for ' + n.name);
+                    row.addEventListener('click', function() {
+                        var nodeData = nodes.find(function(nd) { return nd.id === n.id; });
+                        if (nodeData) {
+                            updatePanel(nodeData);
+                            showFigureMetrics(nodeData, currentYear);
+                            document.getElementById('connection-panel').focus();
+                        }
+                    });
+                    row.addEventListener('keydown', function(e) {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            var nodeData = nodes.find(function(nd) { return nd.id === n.id; });
+                            if (nodeData) {
+                                updatePanel(nodeData);
+                                showFigureMetrics(nodeData, currentYear);
+                                document.getElementById('connection-panel').focus();
+                            }
+                        }
+                    });
+                    srTableBody.appendChild(row);
+                });
 
             // ============================================
             // Physics engine
@@ -370,7 +502,29 @@
                 }))
                 .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05));
 
+            // Reduced motion support (WCAG 2.3.3)
+            if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+                for (var i = 0; i < 300; i++) simulation.tick();
+                simulation.stop();
+                console.log('Reduced motion: simulation settled immediately');
+            }
+
             console.log('Force simulation created');
+
+            // Pause/Resume button
+            var animationPaused = false;
+            document.getElementById('pause-animation').addEventListener('click', function() {
+                animationPaused = !animationPaused;
+                if (animationPaused) {
+                    simulation.stop();
+                    this.textContent = 'Resume Animation';
+                    this.setAttribute('aria-label', 'Resume network animation');
+                } else {
+                    simulation.alpha(0.3).restart();
+                    this.textContent = 'Pause Animation';
+                    this.setAttribute('aria-label', 'Pause network animation');
+                }
+            });
 
             // ============================================
             // Connection lines
@@ -398,9 +552,14 @@
                     return evidenceTiers[d.tier].opacity;
                 })
                 .attr('stroke-dasharray', function(d) {
-                    var style = evidenceTiers[d.tier].line_style;
-                    if (style === 'dashed') return '8,4';
-                    if (style === 'dotted') return '2,4';
+                    // Layer 1: Edge TYPE dash pattern (WCAG 1.4.1)
+                    var typeDash = edgeDashPatterns[d.type];
+                    // Layer 2: Evidence tier may further modify (existing behavior)
+                    var tierStyle = evidenceTiers[d.tier].line_style;
+                    // Type pattern takes priority; tier opacity handles evidence distinction
+                    if (typeDash) return typeDash;
+                    if (tierStyle === 'dashed') return '8,4';
+                    if (tierStyle === 'dotted') return '2,4';
                     return null;
                 })
                 .attr('marker-end', function(d) {
@@ -413,7 +572,7 @@
             console.log('Edges drawn');
 
             // ============================================
-            // NODES: Figure circles
+            // NODES: Figure circles with keyboard access
             // ============================================
 
             const node = g.append('g')
@@ -426,13 +585,41 @@
                 .attr('fill', function(d) { return nodeColors[d.modality]; })
                 .attr('stroke', '#ffffff')
                 .attr('stroke-width', 2)
+                .attr('tabindex', '0')
+                .attr('role', 'button')
+                .attr('aria-label', function(d) { return d.name + ', ' + d.modality + ' modality'; })
                 .call(d3.drag()
                     .on('start', dragStarted)
                     .on('drag', dragged)
                     .on('end', dragEnded)
                 );
 
-            console.log('Nodes drawn');
+            // Keyboard handler for nodes
+            node.on('keydown', function(event, d) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    // Trigger the same behavior as click
+                    if (focusedNode === d.id) {
+                        unfocus();
+                    } else {
+                        focusedNode = d.id;
+                        var connectedIds = new Set();
+                        connectedIds.add(d.id);
+                        edges.forEach(function(e) {
+                            if (e.source.id === d.id) connectedIds.add(e.target.id);
+                            if (e.target.id === d.id) connectedIds.add(e.source.id);
+                        });
+                        node.attr('opacity', function(n) { return connectedIds.has(n.id) ? 1 : 0.15; });
+                        label.attr('opacity', function(n) { return connectedIds.has(n.id) ? 1 : 0.15; });
+                        edge.attr('opacity', function(e) { return (e.source.id === d.id || e.target.id === d.id) ? 1 : 0.05; });
+                        updatePanel(d);
+                        showFigureMetrics(d, currentYear);
+                        document.getElementById('connection-panel').focus();
+                    }
+                }
+            });
+
+            console.log('Nodes drawn with keyboard access');
 
             function dragStarted(event, d) {
                 if (!event.active) simulation.alphaTarget(0.3).restart();
@@ -533,6 +720,7 @@
 
                     updatePanel(d);
                     showFigureMetrics(d, currentYear);
+                    document.getElementById('connection-panel').focus();
                 }
             });
 
@@ -547,18 +735,19 @@
                 edge.attr('opacity', function(d) {
                     return evidenceTiers[d.tier].opacity;
                 });
-                document.getElementById('connection-content').innerHTML = 'Click a node or edge to view relationship details.';
+                document.getElementById('connection-content').innerHTML =
+                    '<p style="color: var(--dba-text-secondary);">Select a figure from the network or the figures list to view relationship details.</p>';
                 document.getElementById('figure-metrics-panel').innerHTML =
-                    '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>' +
-                    '<p style="color: #a0a0a0;">Click a node or edge to view details.</p>';
+                    '<h2 class="text-uppercase mb-4" style="color: var(--dba-emerald); font-size: 1.1rem;">Selected Figure Metrics</h2>' +
+                    '<p style="color: var(--dba-text-muted);">Select a figure from the network or the figures list to view detailed metrics.</p>';
             }
 
             function updatePanel(d) {
-                let html = '<strong style="color: #d4af37;">' + d.name + '</strong><br>';
-                html += '<span style="color: #50c878; text-transform: uppercase; font-size: 0.8rem;">' + d.modality + ' | ' + d.type + '</span><br><br>';
-                html += 'Emerged: ' + d.emergence + '<br>';
+                let html = '<h3 style="color: var(--dba-gold); font-size: 1rem; margin-bottom: 0.25rem;">' + d.name + '</h3>';
+                html += '<span style="color: var(--dba-emerald); text-transform: uppercase; font-size: 0.8rem;">' + d.modality + ' | ' + d.type + '</span><br><br>';
+                html += '<p style="color: var(--dba-text-secondary);">Emerged: ' + d.emergence + '</p>';
                 if (d.meta_badman) {
-                    html += '<em style="color: #d4af37;">Meta-Badman</em><br>';
+                    html += '<em style="color: var(--dba-gold);">Meta-Badman</em><br>';
                 }
 
                 const nodeConnections = edges.filter(function(e) {
@@ -566,13 +755,17 @@
                 });
 
                 if (nodeConnections.length > 0) {
-                    html += '<br><strong style="color: #50c878;">Connections:</strong><br>';
+                    html += '<p style="color: var(--dba-emerald);"><strong>Connections:</strong></p>';
+                    html += '<ul class="list-unstyled">';
                     nodeConnections.forEach(function(conn) {
                         const otherNode = conn.source.id === d.id ? conn.target : conn.source;
+                        html += '<li style="margin-bottom: 0.5rem;">';
                         html += '<span style="color:' + edgeColors[conn.type] + ';">▸ ' + conn.type + '</span> ';
-                        html += '<span style="color: #e8e8e8;">' + otherNode.name + '</span><br>';
-                        html += '<span style="color: #a0a0a0; font-size: 0.85rem;">' + conn.evidence + '</span><br><br>';
+                        html += '<span style="color: var(--dba-text-primary);">' + otherNode.name + '</span><br>';
+                        html += '<small style="color: var(--dba-text-muted);">' + conn.evidence + '</small>';
+                        html += '</li>';
                     });
+                    html += '</ul>';
                 }
 
                 document.getElementById('connection-content').innerHTML = html;
@@ -606,29 +799,30 @@
                 };
 
                 var panel = document.getElementById('figure-metrics-panel');
-                var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Connection Details</h5>';
+                var html = '<h2 class="text-uppercase mb-4" style="color: var(--dba-emerald); font-size: 1.1rem;">Connection Details</h2>';
 
                 var arrow = d.direction === 'mutual' ? '↔' : '→';
-                html += '<h6 style="color: #d4af37;">' + sourceName + ' ' + arrow + ' ' + targetName + '</h6>';
+                html += '<h3 style="color: var(--dba-gold); font-size: 1rem;">' + sourceName + ' ' + arrow + ' ' + targetName + '</h3>';
 
                 html += '<div style="margin-bottom: 0.75rem;">';
-                html += '<strong style="color: #e8e8e8;">Type:</strong> ';
+                html += '<strong style="color: var(--dba-text-primary);">Type:</strong> ';
                 html += '<span style="color:' + edgeColors[d.type] + ';">' + (typeLabels[d.type] || d.type) + '</span>';
                 html += '</div>';
 
                 html += '<div style="margin-bottom: 0.75rem;">';
-                html += '<strong style="color: #e8e8e8;">Evidence Tier:</strong> ';
+                html += '<strong style="color: var(--dba-text-primary);">Evidence Tier:</strong> ';
                 html += tierBadge(d.tier);
                 html += '</div>';
 
                 if (d.evidence) {
                     html += '<div style="margin-bottom: 0.75rem;">';
-                    html += '<strong style="color: #e8e8e8;">Evidence:</strong><br>';
-                    html += '<small style="color: #a0a0a0; font-style: italic;">' + d.evidence + '</small>';
+                    html += '<strong style="color: var(--dba-text-primary);">Evidence:</strong><br>';
+                    html += '<small style="color: var(--dba-text-muted); font-style: italic;">' + d.evidence + '</small>';
                     html += '</div>';
                 }
 
                 panel.innerHTML = html;
+                panel.focus();
 
                 edge.attr('stroke-opacity', function(e) {
                     return e === d ? 1.0 : 0.1;
@@ -643,6 +837,7 @@
 
             document.getElementById('timeline-slider').addEventListener('input', function() {
                 currentYear = parseInt(this.value);
+                this.setAttribute('aria-valuenow', currentYear);
 
                 node.transition().duration(300)
                     .attr('r', function(d) {
@@ -731,38 +926,41 @@
                            labels[tier] + '</span>';
                 }
 
-                var html = '<h5 class="text-uppercase mb-4" style="color: #50c878;">Selected Figure Metrics</h5>';
-                html += '<h6 style="color: #d4af37; margin-bottom: 1rem;">' + nodeData.name + '</h6>';
+                var html = '<h2 class="text-uppercase mb-4" style="color: var(--dba-emerald); font-size: 1.1rem;">Selected Figure Metrics</h2>';
+                html += '<h3 style="color: var(--dba-gold); font-size: 1rem; margin-bottom: 1rem;">' + nodeData.name + '</h3>';
 
                 html += '<div style="margin-bottom: 1rem;">';
-                html += '<strong style="color: #e8e8e8;">Degree:</strong> ' + (inDegree + outDegree) + '<br>';
-                html += '<small style="color: #a0a0a0;">In: ' + inDegree + ' · Out: ' + outDegree + '</small>';
+                html += '<strong style="color: var(--dba-text-primary);">Degree:</strong> ' + (inDegree + outDegree) + '<br>';
+                html += '<small style="color: var(--dba-text-muted);">In: ' + inDegree + ' · Out: ' + outDegree + '</small>';
                 html += '</div>';
 
                 html += '<div style="margin-bottom: 1rem;">';
-                html += '<strong style="color: #e8e8e8;">Influence at ' + year + ':</strong> ' + influence + ' / 10<br>';
-                html += '<div style="background:#2a2a3e;border-radius:4px;height:12px;margin:4px 0;">';
-                html += '<div style="background:#d4af37;border-radius:4px;height:12px;width:' + (influence * 10) + '%;"></div>';
+                html += '<strong style="color: var(--dba-text-primary);">Influence at ' + year + ':</strong> ' + influence + ' / 10<br>';
+                html += '<div style="background: var(--dba-dark-green); border-radius:4px; height:12px; margin:4px 0;" role="progressbar" aria-valuenow="' + influence + '" aria-valuemin="0" aria-valuemax="10" aria-label="Influence score ' + influence + ' out of 10">';
+                html += '<div style="background: var(--dba-gold); border-radius:4px; height:12px; width:' + (influence * 10) + '%;"></div>';
                 html += '</div>';
-                html += '<small style="color: #a0a0a0;">' + justification + '</small>';
+                html += '<small style="color: var(--dba-text-muted);">' + justification + '</small>';
                 html += '</div>';
 
                 html += '<div>';
-                html += '<strong style="color: #e8e8e8;">Connections:</strong><br>';
+                html += '<strong style="color: var(--dba-text-primary);">Connections:</strong>';
                 if (connections.length === 0) {
-                    html += '<small style="color: #a0a0a0;">No connections</small>';
+                    html += '<br><small style="color: var(--dba-text-muted);">No connections</small>';
                 } else {
+                    html += '<ul class="list-unstyled mt-2">';
                     connections.forEach(function(conn) {
                         var arrow = conn.direction === 'out' ? '→' : '←';
-                        html += '<div style="margin:4px 0;">';
-                        html += '<small style="color:#e8e8e8;">' + arrow + ' ' + conn.otherName + '</small> ';
+                        html += '<li style="margin:4px 0;">';
+                        html += '<small style="color: var(--dba-text-primary);">' + arrow + ' ' + conn.otherName + '</small> ';
                         html += tierBadge(conn.tier);
-                        html += '</div>';
+                        html += '</li>';
                     });
+                    html += '</ul>';
                 }
                 html += '</div>';
 
                 panel.innerHTML = html;
+                panel.focus();
             }
 
             console.log('Figure metrics function ready');
@@ -776,12 +974,12 @@
                     return getInfluenceAtYear(d, year) > 0;
                 });
 
-                var activeNodeIds = activeNodes.map(function(d) { return d.id; });
+                var activeNodeIdsList = activeNodes.map(function(d) { return d.id; });
 
                 var activeEdges = edges.filter(function(d) {
                     var sourceId = typeof d.source === 'object' ? d.source.id : d.source;
                     var targetId = typeof d.target === 'object' ? d.target.id : d.target;
-                    return activeNodeIds.indexOf(sourceId) !== -1 && activeNodeIds.indexOf(targetId) !== -1;
+                    return activeNodeIdsList.indexOf(sourceId) !== -1 && activeNodeIdsList.indexOf(targetId) !== -1;
                 });
 
                 var n = activeNodes.length;
@@ -812,9 +1010,9 @@
                 var crossCount = 0;
                 activeEdges.forEach(function(ae) {
                     var sourceNode = typeof ae.source === 'object' ? ae.source :
-                        nodes.find(function(n) { return n.id === ae.source; });
+                        nodes.find(function(nd) { return nd.id === ae.source; });
                     var targetNode = typeof ae.target === 'object' ? ae.target :
-                        nodes.find(function(n) { return n.id === ae.target; });
+                        nodes.find(function(nd) { return nd.id === ae.target; });
                     if (sourceNode && targetNode && sourceNode.modality !== targetNode.modality) {
                         crossCount++;
                     }
