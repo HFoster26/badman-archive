@@ -21,19 +21,19 @@
                 height: 600px;
                 width: 100%;
                 border-radius: 0.5rem;
-                border: 2px solid #2a623d;
+                border: 2px solid var(--dba-border-green);
             }
             .map-legend {
-                background-color: #1a472a;
+                background-color: var(--dba-content-green);
                 padding: 1rem;
                 border-radius: 0.5rem;
-                border: 2px solid #2a623d;
+                border: 2px solid var(--dba-border-green);
             }
             .legend-item {
                 display: flex;
                 align-items: center;
                 margin-bottom: 0.5rem;
-            }    
+            }
             #info-panel {
                 max-height: 400px;
                 overflow-y: auto;
@@ -41,14 +41,25 @@
             .legend-marker {
                 width: 20px;
                 height: 20px;
-                border-radius: 50%;
                 margin-right: 10px;
+                display: inline-block;
             }
-            .legend-detective { background-color: #3388ff; }
-            .legend-revolutionary { background-color: #dc3545; }
+            /* Distinct shapes per modality — WCAG 1.4.1 */
+            .legend-detective {
+                background-color: var(--dba-detective);
+                border-radius: 50% 50% 50% 0;
+                transform: rotate(-45deg);
+            }
+            .legend-revolutionary {
+                background-color: var(--dba-revolutionary);
+                clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            }
         </style>
     </head>
     <body>
+        <!-- Skip navigation link -->
+        <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+
         <header>
             <h1 class="site-heading text-center text-faded d-none d-lg-block">
                 <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
@@ -56,7 +67,7 @@
             </h1>
         </header>
         <!-- Navigation-->
-        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav">
+        <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav" aria-label="Main navigation">
             <div class="container">
                 <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -73,40 +84,58 @@
                 </div>
             </div>
         </nav>
-        
-        <!-- Map Section -->
-        <section class="page-section">
-            <div class="container">
-                <div class="row">
-                    <!-- Map Container -->
-                    <div class="col-lg-9 mb-4">
-                        <div id="map-container">
-                            <!-- Leaflet map will be initialized here -->
-                        </div>
-                    </div>
-                    <!-- Legend and Info Panel -->
-                    <div class="col-lg-3">
-                        <div class="map-legend mb-4">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Legend</h5>
-                            <div class="legend-item">
-                                <div class="legend-marker legend-detective"></div>
-                                <span style="color: #e8e8e8;">Detective Modality</span>
+        <main id="main-content">
+            <!-- Map Section -->
+            <section class="page-section">
+                <div class="container">
+                    <div class="row">
+                        <!-- Map Container -->
+                        <div class="col-lg-9 mb-4">
+                            <div id="map-container" role="img" aria-label="Interactive map showing locations of Detroit badman figures across the city">
+                                <!-- Leaflet map will be initialized here -->
                             </div>
-                            <div class="legend-item">
-                                <div class="legend-marker legend-revolutionary"></div>
-                                <span style="color: #e8e8e8;">Revolutionary Modality</span>
-                            </div>
+                            <!-- Screen-reader data table alternative -->
+                            <table class="sr-only" aria-label="Detroit badman figures data">
+                                <caption>Figures in the Detroit Badman Archive with modality, location, and scores</caption>
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Modality</th>
+                                        <th scope="col">Type</th>
+                                        <th scope="col">Location</th>
+                                        <th scope="col">Badman Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sr-figures-table-body">
+                                    <!-- Populated dynamically from JSON -->
+                                </tbody>
+                            </table>
                         </div>
-                        <!-- Figure Info Panel -->
-                        <div class="bg-faded rounded p-4" id="info-panel">
-                            <h5 class="text-uppercase mb-3" style="color: #50c878;">Figure Details</h5>
-                            <p id="info-content" style="color: #c8c8c8;">Click a marker on the map to view details about a badman figure.</p>
+                        <!-- Legend and Info Panel -->
+                        <div class="col-lg-3">
+                            <div class="map-legend mb-4">
+                                <h2 class="text-uppercase mb-3" style="color: var(--dba-emerald); font-size: 1.1rem;">Legend</h2>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="legend-item">
+                                        <span class="legend-marker legend-detective" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Pin marker — Detective Modality</span>
+                                    </li>
+                                    <li class="legend-item">
+                                        <span class="legend-marker legend-revolutionary" aria-hidden="true"></span>
+                                        <span style="color: var(--dba-text-primary);">Star marker — Revolutionary Modality</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <!-- Figure Info Panel -->
+                            <div class="bg-faded rounded p-4" id="info-panel" tabindex="-1" aria-live="polite" aria-atomic="true">
+                                <h2 class="text-uppercase mb-3" style="color: var(--dba-emerald); font-size: 1.1rem;">Figure Details</h2>
+                                <p id="info-content" style="color: var(--dba-text-secondary);">Select a figure from the map or the figures list to view details.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-
+            </section>
+        </main>
         <footer class="footer text-faded text-center py-5">
             <div class="container"><p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p></div>
         </footer>
@@ -150,11 +179,65 @@
                 })
             };
 
-            // Fetch JSON and create markers
+            // Shared function: build detail panel content
+            function showMapFigureDetails(figure) {
+                var totalScore = calculateBadmanScore(figure.scores);
+
+                var shortDesc = figure.biography.description.substring(0, 200) + '...';
+                var fullDesc = figure.biography.description;
+
+                // Build source links with accessible list structure
+                var sourceLinks = '';
+                if (figure.sources.primary && figure.sources.primary.length > 0) {
+                    sourceLinks = '<ul class="list-unstyled">';
+                    for (var i = 0; i < figure.sources.primary.length; i++) {
+                        var source = figure.sources.primary[i];
+                        sourceLinks += '<li style="margin-bottom: 0.3rem;">' +
+                            '<a href="' + source.url + '" target="_blank" rel="noopener noreferrer" style="color: var(--dba-emerald);">' +
+                            source.title +
+                            '<span class="sr-only"> (opens in new tab)</span>' +
+                            '</a></li>';
+                    }
+                    sourceLinks += '</ul>';
+                }
+
+                // Build the panel HTML with proper heading hierarchy
+                document.getElementById('info-content').innerHTML =
+                    '<h3 style="color: var(--dba-text-primary); font-size: 1.1rem; margin-bottom: 0.5rem;">' + figure.name + '</h3>' +
+                    '<p style="color: var(--dba-text-secondary); margin-bottom: 0.25rem;"><em>Modality:</em> ' + figure.modality + '</p>' +
+                    '<p style="color: var(--dba-text-secondary); margin-bottom: 0.25rem;"><em>Type:</em> ' + formatFigureType(figure.type, figure.meta_badman) + '</p>' +
+                    '<p style="color: var(--dba-text-secondary); margin-bottom: 0.25rem;"><em>Years:</em> ' + (figure.years.birth || figure.years.active_start) +
+                    ' – ' + (figure.years.death || figure.years.active_end || 'present') + '</p>' +
+                    '<p style="color: var(--dba-text-secondary); margin-bottom: 0.75rem;"><em>Badman Score:</em> ' + totalScore + '/25</p>' +
+                    '<span id="description-text" style="color: var(--dba-text-secondary);">' + shortDesc + '</span>' +
+                    '<a href="#" id="read-more-link" style="color: var(--dba-emerald); display: block; margin-top: 0.5rem;"' +
+                    ' aria-label="Read more about ' + figure.name + '">Read more</a>' +
+                    '<hr style="border-color: var(--dba-border-green); margin: 1rem 0;">' +
+                    '<p style="color: var(--dba-text-primary);"><strong>Sources:</strong></p>' +
+                    sourceLinks;
+
+                // Move focus to panel for keyboard/screen reader users
+                document.getElementById('info-panel').focus();
+
+                // Read more/less toggle
+                var expanded = false;
+                document.getElementById('read-more-link').addEventListener('click', function(e) {
+                    e.preventDefault();
+                    expanded = !expanded;
+                    document.getElementById('description-text').innerHTML = expanded ? fullDesc : shortDesc;
+                    this.innerHTML = expanded ? 'Show less' : 'Read more';
+                    this.setAttribute('aria-label', expanded ?
+                        'Show less about ' + figure.name :
+                        'Read more about ' + figure.name);
+                });
+            }
+
+            // Fetch JSON, create markers, and build SR data table
             var activePolygons = {};
             fetch('data/detroit.json')
                 .then(response => response.json())
                 .then(data => {
+                    var tableBody = document.getElementById('sr-figures-table-body');
 
                     // Loop through each figure
                     data.figures.forEach(figure => {
@@ -169,64 +252,22 @@
                         // Select icon based on modality
                         var icon = icons[figure.modality];
 
-                        // Create marker
-                        var marker = L.marker([lat, lng], {icon: icon}).addTo(map);
+                        // Create marker with accessible alt text
+                        var marker = L.marker([lat, lng], {
+                            icon: icon,
+                            alt: figure.name + ' — ' + figure.modality + ' modality'
+                        }).addTo(map);
 
                         // Add click handler
                         marker.on('click', function() {
-
-                            // Calculate total badman score (out of 25)
-                            var totalScore = 
-                                figure.scores.outlaw_relationship.score +
-                                figure.scores.community_authorization.score +
-                                figure.scores.violence_as_language.score +
-                                figure.scores.cultural_preservation.score +
-                                figure.scores.hypermasculine_performance.score;
-
-                            // Truncate description to first 200 characters
-                            var shortDesc = figure.biography.description.substring(0, 200) + '...';
-                            var fullDesc = figure.biography.description;
-
-                            // Build source links
-                            var sourceLinks = '';
-                            for (var i = 0; i < figure.sources.primary.length; i++) {
-                                var source = figure.sources.primary[i];
-                                sourceLinks += '<a href="' + source.url + '" target="_blank" style="color: #50c878;">' + source.title + '</a><br>';
-                            }
-
-                            // Build the panel HTML
-                            document.getElementById('info-content').innerHTML = 
-                                '<strong>' + figure.name + '</strong><br>' +
-                                '<em>Modality:</em> ' + figure.modality + '<br>' +
-                                '<em>Type:</em> ' + figure.type + '<br>' +
-                                '<em>Years:</em> ' + (figure.years.birth || figure.years.active_start) + 
-                                ' - ' + (figure.years.death || figure.years.active_end || 'present') + '<br>' +
-                                '<em>Badman Score:</em> ' + totalScore + '/25<br><br>' +
-                                '<span id="description-text">' + shortDesc + '</span>' +
-                                '<a href="#" id="read-more-link" style="color: #50c878; display: block; margin-top: 0.5rem;">Read more</a>' +
-                                '<hr style="border-color: #2a623d; margin: 1rem 0;">' +
-                                '<strong>Sources:</strong><br>' +
-                                sourceLinks;
-
-                            // Track expanded state
-                            var expanded = false;
-
-                            // Add click handler for "Read more" link
-                            document.getElementById('read-more-link').addEventListener('click', function(e) {
-                                e.preventDefault();
-                                expanded = !expanded;
-                                document.getElementById('description-text').innerHTML = expanded ? fullDesc : shortDesc;
-                                this.innerHTML = expanded ? 'Show less' : 'Read more';
-                            });
+                            showMapFigureDetails(figure);
 
                             // Toggle territory polygon
                             if (figure.geographic.territory && figure.geographic.territory.polygon) {
-                                // If this figure's polygon already exists, remove it
                                 if (activePolygons[figure.id]) {
                                     map.removeLayer(activePolygons[figure.id]);
                                     delete activePolygons[figure.id];
                                 } else {
-                                    // Create new polygon for this figure
                                     activePolygons[figure.id] = L.polygon(figure.geographic.territory.polygon, {
                                         color: icon === icons.detective ? '#3388ff' : '#dc3545',
                                         fillColor: icon === icons.detective ? '#3388ff' : '#dc3545',
@@ -234,14 +275,35 @@
                                         weight: 2
                                     }).addTo(map);
 
-                                    // Double-click to remove just this polygon
                                     activePolygons[figure.id].on('dblclick', function() {
                                         map.removeLayer(activePolygons[figure.id]);
                                         delete activePolygons[figure.id];
                                     });
                                 }
                             }
-                        });  // closes marker.on('click')
+                        });
+
+                        // Build SR data table row
+                        var totalScore = calculateBadmanScore(figure.scores);
+                        var row = document.createElement('tr');
+                        row.innerHTML =
+                            '<th scope="row">' + figure.name + '</th>' +
+                            '<td>' + figure.modality + '</td>' +
+                            '<td>' + formatFigureType(figure.type, figure.meta_badman) + '</td>' +
+                            '<td>' + figure.geographic.primary_location.name + '</td>' +
+                            '<td>' + totalScore + '/25</td>';
+                        row.setAttribute('tabindex', '0');
+                        row.setAttribute('role', 'button');
+                        row.setAttribute('aria-label', 'View details for ' + figure.name);
+                        row.addEventListener('click', function() { showMapFigureDetails(figure); });
+                        row.addEventListener('keydown', function(e) {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                showMapFigureDetails(figure);
+                            }
+                        });
+                        tableBody.appendChild(row);
+
                     });  // closes data.figures.forEach
                 })  // closes .then(data =>)
                 .catch(error => {
