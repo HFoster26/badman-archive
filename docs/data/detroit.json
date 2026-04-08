@@ -1002,40 +1002,41 @@
           "score": 5,
           "justification": "Milton Henry embodied multiple registers of Black masculine heroism: Tuskegee Airman (warrior credential), Yale-educated attorney ('The Black Defender'), man who punched a white bus driver in segregated Alabama and stormed a whites-only officers' club. His white Cadillac convertible escorted by armed Black Legion bodyguards performed sovereign masculinity. Richard Henry performed intellectual and revolutionary masculinity — the theorist who named himself after a 14th-century emperor (Abubakari II of Mali), went to federal prison rather than abandon the nation-building project, and claimed patriarchal founding authority with the 'I' suffix. Together they performed sovereign Black manhood — men who answered to no American authority, named themselves in African languages, declared a nation, and stood in the legal and physical crosshairs of the state without yielding."
         }
+      },
       "influence": {
         "scale": "1-10",
         "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
         "phases": [
           {
-            "start": 1970,
-            "end": 1974,
-            "value": 8,
-            "justification": "Published 16 novels in approximately 5 years through Holloway House. Established street literature as a recognizable genre. Readership concentrated in Black urban communities.",
-            "source": "Bryant, Born in a Mighty Bad Land, pp. 112-118"
+            "start": 1962,
+            "end": 1967,
+            "value": 6,
+            "justification": "PLACEHOLDER — Co-founded GOAL (1962), Freedom Now Party (1963). Organized Cynthia Scott protests. Hosted Malcolm X's three major Detroit speeches. Milton Henry ran for Congress on FNP ticket. Building organizational infrastructure but not yet nationally visible.",
+            "source": "TBD — Reuther Library archives; Onaci, Free the Land"
           },
           {
-            "start": 1975,
-            "end": 1989,
-            "value": 6,
-            "justification": "Posthumous reprints sustained cultural presence. Holloway House continued publishing. No mainstream critical attention but consistent community readership.",
+            "start": 1968,
+            "end": 1971,
+            "value": 9,
+            "justification": "PLACEHOLDER — Peak influence. Founded Republic of New Afrika (1968) with 500+ attendees and 100 signatories. New Bethel incident (1969) triggered citywide political crisis — 60-org Black United Front, 3,000 demonstrators, 200,000-signature impeachment petition. National media coverage. FBI COINTELPRO targeting. RNA established consulates in multiple cities.",
+            "source": "Onaci, Free the Land; Davenport, How Social Movements Die; Detroit Under Fire project"
+          },
+          {
+            "start": 1972,
+            "end": 1999,
+            "value": 4,
+            "justification": "PLACEHOLDER — Brothers diverged after 1971. Imari imprisoned in Mississippi. Milton withdrew from movement, entered ministry. RNA continued but Detroit chapter diminished. Influence sustained through Imari's publications and reparations advocacy (N'COBRA co-founded 1987).",
             "source": "TBD — needs archival verification"
           },
           {
-            "start": 1990,
-            "end": 2010,
-            "value": 7,
-            "justification": "Hip-hop culture increasingly references Goines. Multiple artists cite his work as influence. Biography attempts and renewed scholarly interest.",
-            "source": "TBD — needs specific citation data"
-          },
-          {
-            "start": 2011,
+            "start": 2000,
             "end": 2025,
             "value": 5,
-            "justification": "Legacy stable but not growing. Street literature genre well-established. Goines recognized as progenitor but less actively cited.",
-            "source": "TBD — scholarly estimate"
+            "justification": "PLACEHOLDER — Renewed scholarly interest: Onaci's Free the Land (2020), Davenport's How Social Movements Die (2015). AAIHS 50th anniversary coverage (2018). New Bethel Baptist Church added to National Register (2021) and Michigan Historical Marker (2023). Legacy growing in Black nationalist and reparations scholarship.",
+            "source": "Onaci (2020); Davenport (2015); AAIHS (2018); NPS National Register"
           }
         ]
-      },
       },
       "biography": {
         "description": "Milton R. Henry (Gaidi Obadele, 1919-2006) and Richard Bullock Henry (Imari Obadele, 1930-2010) were brothers from Philadelphia who became the architects of Detroit's most radical Black Power organizational infrastructure. As a paired unit, they compressed an entire ideological evolution from reformist civil rights to revolutionary separatism into six years, all rooted in Detroit's west-side Linwood corridor. Milton was the public-facing legal and organizational arm — a Tuskegee Airman, Yale-educated attorney, elected official, and the man who recorded Malcolm X's most important speeches. Richard was the intellectual engine — the theorist, author, and strategic mind who wrote the philosophical architecture for Black sovereignty and the modern reparations movement. Their organizational trajectory — GOAL (1962), Freedom Now Party (1963), Malcolm X Society (1967), Republic of New Afrika (1968) — produced the most significant Black nationalist formation to emerge from Detroit. The New Bethel Baptist Church incident of March 29, 1969, when Detroit police fired over 100 rounds into an RNA anniversary gathering, became a defining confrontation that reshaped the city's politics and demonstrated the PRM sequence with textbook clarity: political action met by state violence forcing the militant posture.",
@@ -1086,7 +1087,7 @@
           }
         ]
       },
-     "geographic": {
+      "geographic": {
         "primary_location": {
           "name": "New Bethel Baptist Church",
           "coordinates": {
@@ -1097,22 +1098,10 @@
         "territory": {
           "description": "The Obadele brothers' Detroit organizing was concentrated along the Linwood corridor on the city's west side. Key locations include GOAL headquarters (11605 Linwood), the Shrine of the Black Madonna where the RNA was founded (7625 Linwood), New Bethel Baptist Church where the 1969 police shootout occurred (8430 C.L. Franklin Blvd/Linwood), and King Solomon Baptist Church where Malcolm X delivered his most famous speeches (6100 14th Street). This stretch of Detroit's Dexter-Linwood and surrounding neighborhoods was the geographic heart of the city's Black nationalist movement in the 1960s.",
           "polygon": [
-            [
-              42.386,
-              -83.119
-            ],
-            [
-              42.386,
-              -83.088
-            ],
-            [
-              42.356,
-              -83.088
-            ],
-            [
-              42.356,
-              -83.119
-            ]
+            [42.386, -83.119],
+            [42.386, -83.088],
+            [42.356, -83.088],
+            [42.356, -83.119]
           ]
         },
         "additional_locations": [
@@ -1135,7 +1124,7 @@
           {
             "name": "King Solomon Baptist Church (6100 14th St)",
             "coordinates": {
-              "lat": 42.35974,
+              "lat": 42.359740,
               "lng": -83.092319
             },
             "significance": "Malcolm X delivered 'Message to the Grassroots' (1963) and 'The Ballot or the Bullet' (1964)"
@@ -1173,13 +1162,13 @@
             "title": "War in America: The Malcolm X Doctrine — Imari Obadele",
             "type": "book",
             "year": 1968,
-            "url": "https://catalog.lib.msu.edu/Record/folio.in00001448834"
+            "url": null
           },
           {
             "title": "Foundations of the Black Nation — Imari Obadele (House of Songhay, Detroit)",
             "type": "book",
             "year": 1975,
-            "url": "https://www.abebooks.com/9780910758017/Foundations-Black-Nation-Textbook-Ideas-0910758018/plp"
+            "url": null
           },
           {
             "title": "Fifth Estate Magazine — 'The New Bethel Incident' (Issue 77, April 17-30, 1969)",
