@@ -120,10 +120,10 @@ function getModalityConfig(modality) {
             label: 'Star marker — Revolutionary Modality'
         },
         'folk_hero_outlaw': {
-            color: '#fd7e14',
+            color: '#d4af37',
             markerShape: 'triangle',
             networkShape: 'triangle',
-            icon: 'diamond',
+            icon: 'triangle',
             label: 'Triangle marker — Folk Hero-Outlaw Modality'
         },
         'gangsta_pimp': {
@@ -134,7 +134,7 @@ function getModalityConfig(modality) {
             label: 'Square marker — Gangsta-Pimp Modality'
         },
         'superhero_villain': {
-            color: '#20c997',
+            color: '#fd7e14',
             markerShape: 'hexagon',
             networkShape: 'hexagon',
             icon: 'lightning-bolt',
@@ -144,7 +144,7 @@ function getModalityConfig(modality) {
 
     return config[modality] || {
         color: '#6c757d',
-        markerShape: 'pin',
+        markerShape: 'circle',
         networkShape: 'circle',
         icon: 'default',
         label: 'Unknown Modality'
