@@ -1,4 +1,10 @@
-# Detroit Badman Archive - Data Schema Documentation
+# Detroit Badman Archive — Data Schema Documentation
+
+**Last Updated:** April 2026  
+**Version:** 2.0  
+**Change Log:** Reconciled documentation with live `detroit.json` schema. Added `genre`, `years.active_start`/`active_end`, connection timing fields (`tier`, `start_year`, `end_year`), top-level `edge_types`/`evidence_tiers` objects, internal flags (`_REVIEW_NEEDED`, `_modality_note`), and revised influence bucket to match curated scholarly estimate model. Added entry separation guidance and updated modality list.
+
+---
 
 This document explains the JSON schema used in `detroit.json` and any future city data files. It is intended for graduate students translating spreadsheet data into JSON and for anyone maintaining or expanding the archive.
 
@@ -6,11 +12,13 @@ This document explains the JSON schema used in `detroit.json` and any future cit
 
 ## Overview
 
-Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.json`). The file contains two top-level fields:
+Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.json`). The file contains two top-level fields plus two visualization configuration objects:
 
 ```json
 {
   "city": "detroit",
+  "edge_types": { ... },
+  "evidence_tiers": { ... },
   "figures": [ ... ]
 }
 ```
@@ -18,9 +26,70 @@ Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.jso
 | Field | Type | Description |
 |-------|------|-------------|
 | `city` | string | City identifier (lowercase, no spaces) |
+| `edge_types` | object | Network edge type definitions (color, label) — used by NVT |
+| `evidence_tiers` | object | Evidence tier definitions (line style, opacity) — used by NVT |
 | `figures` | array | Array of badman figure objects |
 
-**Design Principle:** This single JSON file feeds both the Map visualization tool and the Network Visualization Tool (NVT). Fields are organized into buckets that each tool reads from. Empty or null values are valid—tools render what's available and gracefully skip what's missing.
+### Top-Level: Edge Types
+
+Defines the visual styling for connection types in the Network Visualization Tool:
+
+```json
+"edge_types": {
+  "META": { "label": "Creator → Creation", "color": "#d4af37" },
+  "P2C":  { "label": "Person → Creation",  "color": "#dc3545" },
+  "C2C":  { "label": "Creator ↔ Creator",  "color": "#50c878" },
+  "ORG":  { "label": "Organizational / Ideological", "color": "#3388ff" }
+}
+```
+
+### Top-Level: Evidence Tiers
+
+Defines the visual styling for connection evidence quality in the NVT:
+
+```json
+"evidence_tiers": {
+  "1": { "label": "Documented",            "line_style": "solid",  "opacity": 0.9  },
+  "2": { "label": "Evidenced (unverified)", "line_style": "dashed", "opacity": 0.6  },
+  "3": { "label": "Interpretive",           "line_style": "dotted", "opacity": 0.35 }
+}
+```
+
+**Design Principle:** This single JSON file feeds both the Map visualization tool and the Network Visualization Tool (NVT). Fields are organized into buckets that each tool reads from. Empty or null values are valid — tools render what's available and gracefully skip what's missing.
+
+---
+
+## Entry Separation and Ordering
+
+### Ordering Convention
+
+Figures in the `figures` array should be grouped by modality in the following order:
+
+1. `gangsta_pimp` (dormant until GPM goes live)
+2. `revolutionary`
+3. `detective`
+4. `superhero_villain`
+5. `folk_hero_outlaw`
+
+Within each modality group, order figures by `emergence.year` (earliest first).
+
+### Visual Separation
+
+JSON does not support comments, but each figure object can include a `_divider` field as its first property to create scannable separation when reading the raw file:
+
+```json
+{
+  "_divider": "══════════ REVOLUTIONARY MODALITY ══════════",
+  "id": "scott_ron",
+  "name": "Ron Scott",
+  ...
+}
+```
+
+The `_divider` field is ignored by all visualization code. It exists solely to help human editors navigate the file. Use the following format:
+
+- `"══════════ [MODALITY] MODALITY ══════════"` for the first figure in each modality group
+- `"────────── [MODALITY]: [figure name] ──────────"` for subsequent figures within the same group
 
 ---
 
@@ -33,8 +102,8 @@ Each figure in the `figures` array contains seven data buckets:
 3. **Scores** — Five-criteria badman evaluation
 4. **Biography** — Description and key events
 5. **Geographic** — Location and territory data (Map tool)
-6. **Network** — Connections and influence trajectory (NVT)
-7. **Sources** — Primary and secondary references
+6. **Network** — Connections and influence phases (NVT)
+7. **Sources** — Primary, secondary, and archival references
 
 ---
 
@@ -49,7 +118,8 @@ Core identifying information for each figure.
 | `id` | string | Unique identifier (lowercase, underscores) | `"goines_donald"` |
 | `name` | string | Display name | `"Donald Goines"` |
 | `type` | string | `"real"` or `"fictional"` | `"real"` |
-| `modality` | string | Badman modality classification | `"detective"` or `"revolutionary"` |
+| `modality` | string | Badman modality classification | `"detective"`, `"revolutionary"`, `"gangsta_pimp"`, `"superhero_villain"`, `"folk_hero_outlaw"` |
+| `meta_badman` | boolean | True if figure is both subject AND creator of badman narratives | `true` |
 
 ### Conditional Fields
 
@@ -57,16 +127,20 @@ Core identifying information for each figure.
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
-| `meta_badman` | boolean | True if figure is both subject AND creator of badman narratives | `true` |
 | `years.birth` | integer \| null | Birth year | `1936` |
 | `years.death` | integer \| null | Death year (null if living) | `1974` |
+| `years.active_start` | integer | Year active period begins | `1970` |
+| `years.active_end` | integer | Year active period ends | `1974` |
 
 **For Fictional Figures:**
 
 | Field | Type | Description | Example |
 |-------|------|-------------|---------|
 | `medium` | string | Origin medium | `"print"`, `"film"`, `"television"`, `"music"`, `"comics"` |
+| `genre` | string | Specific genre within medium | `"action"`, `"revolutionary_fiction"`, `"detective_fiction"`, `"street_lit"`, `"superhero"`, `"noir"` |
 | `creator_id` | string \| null | ID of creator figure if in database | `"goines_donald"` |
+| `years.active_start` | integer | Year of first appearance | `1988` |
+| `years.active_end` | integer | Year of last appearance (same as start if single work) | `1988` |
 | `adaptations` | array | Subsequent media appearances (see below) | `[]` |
 
 ### Adaptations Array (Fictional Figures Only)
@@ -83,13 +157,23 @@ For transmedia figures who appear in multiple media:
 ]
 ```
 
+### Internal Flags (Optional)
+
+These fields are used for project management and are ignored by visualization code:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `_modality_note` | string | Notes about modality assignment decisions or pending changes |
+| `_REVIEW_NEEDED` | string | Flags fields requiring revision (can appear on any object within the figure) |
+| `_divider` | string | Visual separator for human readability in raw JSON |
+
 ---
 
 ## Bucket 2: Emergence
 
 **This bucket is critical for NVT timeline functionality.**
 
-Emergence captures when and why this figure's contentious relationship with the law began—the moment they became a badman, not when they were born or when a book was published.
+Emergence captures when and why this figure's contentious relationship with the law began — the moment they became a badman, not when they were born or when a book was published.
 
 ```json
 "emergence": {
@@ -107,7 +191,7 @@ Emergence captures when and why this figure's contentious relationship with the 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `year` | integer | Yes | Year contentious relationship with law began |
-| `context` | string | Yes | 1-2 sentence explanation of what triggered emergence |
+| `context` | string | Yes | 1–2 sentence explanation of what triggered emergence |
 | `source` | object \| null | No | Attribution for emergence claim |
 
 ### Emergence Guidelines by Figure Type
@@ -122,7 +206,7 @@ Emergence captures when and why this figure's contentious relationship with the 
 
 ## Bucket 3: Scores
 
-The five-criteria badman evaluation system. Each figure is scored 1-5 on five dimensions. Total score (out of 25) is calculated automatically by the visualization code—do not store the total.
+The five-criteria badman evaluation system. Each figure is scored 1–5 on five dimensions. Total score (out of 25) is calculated automatically by the visualization code — do not store the total.
 
 ```json
 "scores": {
@@ -149,6 +233,16 @@ The five-criteria badman evaluation system. Each figure is scored 1-5 on five di
 }
 ```
 
+A `_REVIEW_NEEDED` string can be added at the same level as the score fields to flag entries requiring re-evaluation:
+
+```json
+"scores": {
+  "outlaw_relationship": { ... },
+  ...
+  "_REVIEW_NEEDED": "All scores require re-evaluation against GPM modality criteria."
+}
+```
+
 ### Scoring Criteria Definitions
 
 | Criterion | Description | Score 1 | Score 5 |
@@ -169,12 +263,12 @@ Narrative information about the figure.
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `biography.description` | string | 200-300 word biographical overview |
+| `biography.description` | string | 200–300 word biographical overview |
 | `biography.key_events` | array | Structured timeline of significant events |
 
 ### Key Events Array
 
-Each event is an object with year, event description, and location:
+Each event is an object with year, event description, and (optionally) location:
 
 ```json
 "key_events": [
@@ -186,7 +280,9 @@ Each event is an object with year, event description, and location:
 ]
 ```
 
-**Note:** For fictional figures, append `"(fictional)"` to locations that exist only in the narrative.
+**Notes:**
+- For fictional figures, append `"(fictional)"` to locations that exist only in the narrative.
+- The `location` field is optional — some key events (e.g., for paired figures with extensive timelines) may omit it when the location is implicit or documented in geographic data.
 
 ### Additional Fields (Fictional Figures Only)
 
@@ -253,7 +349,7 @@ Location data for Map visualization tool.
 
 **This bucket powers the Network Visualization Tool (NVT).**
 
-Contains two sub-sections: connections (edges between figures) and influence trajectory (material footprint over time).
+Contains two sub-sections: connections (edges between figures) and influence (material footprint over time).
 
 ### 6a: Connections
 
@@ -263,7 +359,11 @@ Contains two sub-sections: connections (edges between figures) and influence tra
     "target_id": "kenyatta",
     "type": "META",
     "direction": "outgoing",
-    "evidence": "Goines created Kenyatta character under pseudonym Al C. Clark in Crime Partners (1974)"
+    "tier": 1,
+    "start_year": 1974,
+    "end_year": 1975,
+    "evidence": "Goines created Kenyatta character under pseudonym Al C. Clark in Crime Partners (1974)",
+    "source": "Holloway House publication records; novels carry Al C. Clark pseudonym"
   }
 ]
 ```
@@ -273,93 +373,103 @@ Contains two sub-sections: connections (edges between figures) and influence tra
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `target_id` | string | Yes | The `id` of the connected figure |
-| `type` | string | Yes | Connection type code (see below) |
+| `type` | string | Yes | Connection type code (see Connection Types below) |
 | `direction` | string | Yes | `"outgoing"`, `"incoming"`, or `"mutual"` |
+| `tier` | integer | Yes | Evidence quality tier: `1` (Documented), `2` (Evidenced), `3` (Interpretive) |
+| `start_year` | integer | Yes | Year the connection began |
+| `end_year` | integer | Yes | Year the connection ended (can equal `start_year` for single events) |
 | `evidence` | string | Yes | Documented proof of connection |
+| `source` | string | Yes | Citation for the evidence claim |
 
 ### Connection Types
 
 | Code | Name | Direction | Description | Example |
 |------|------|-----------|-------------|---------|
-| `P2C` | Person ↔ Creator | outgoing or incoming | Real figure inspires fiction OR fiction inspires real person's actions | Malcolm X → Dan Freeman |
+| `META` | Meta-Badman → Creation | outgoing | Real person creates fictional figure | Goines → Kenyatta |
+| `P2C` | Person → Creation | outgoing or incoming | Real figure inspires fiction OR fiction inspires real person's actions | Malcolm X → Dan Freeman |
 | `C2C` | Creator ↔ Creator | outgoing, incoming, or mutual | One artist's work directly influences another artist's work | Goines → later street lit authors |
+| `ORG` | Organizational / Ideological | outgoing, incoming, or mutual | Shared organizational membership or ideological influence | Scott ↔ Baker (revolutionary contemporaries) |
 | `GEO` | Geographic Inspiration | outgoing | Place/events shape a person's actions or an artist's creative output | 1967 Rebellion → Ron Scott's radicalization |
-| `META` | Meta-Badman → Creation | outgoing | Real person creates fictional figure (subset of P2C but distinct) | Goines → Kenyatta |
 
 ### Direction Rules
 
 - **Outgoing:** This figure influenced/created the target
 - **Incoming:** This figure was influenced by the target
-- **Mutual:** Bidirectional influence (rare; use sparingly)
+- **Mutual:** Bidirectional influence (use sparingly — requires evidence in both directions)
 
 **Storage rule:** Store connections on the originating figure. The NVT code will infer reverse connections for display.
 
-### 6b: Influence Trajectory
+### 6b: Influence (Curated Scholarly Estimate Model)
 
-**This is the "material footprint" data—how much cultural space the badman occupied over time.**
+**This is the "material footprint" data — how much cultural space the badman occupied over time.**
+
+The archive uses a curated scholarly estimate model where the Project Director assigns influence values on a 1–10 scale across defined time phases. This replaces raw metric data (copies sold, box office, etc.) with expert judgment, while preserving the ability to cite specific evidence in justifications.
 
 ```json
-"influence_trajectory": [
-  {
-    "year": 1971,
-    "metric_type": "copies_sold",
-    "value": 15000,
-    "value_label": "15,000 copies",
-    "geography": ["Detroit", "Chicago"],
-    "confidence": "estimated",
-    "source": {
-      "title": "Low Road: The Life and Legacy of Donald Goines",
-      "url": "https://..."
+"influence": {
+  "scale": "1-10",
+  "metric_type": "curated_scholarly_estimate",
+  "phases": [
+    {
+      "start": 1971,
+      "end": 1974,
+      "value": 8,
+      "justification": "Published 16 novels in approximately 5 years through Holloway House. Established street literature as a recognizable genre. Readership concentrated in Black urban communities.",
+      "source": "Bryant, Born in a Mighty Bad Land, pp. 112-118"
+    },
+    {
+      "start": 1975,
+      "end": 1989,
+      "value": 6,
+      "justification": "Posthumous reprints sustained cultural presence. Holloway House continued publishing. No mainstream critical attention but consistent community readership.",
+      "source": "TBD — needs archival verification"
     }
-  },
-  {
-    "year": 1974,
-    "metric_type": "copies_sold",
-    "value": 125000,
-    "value_label": "125,000 copies",
-    "geography": ["national"],
-    "confidence": "reported",
-    "source": {
-      "title": "Goines obituary, Jet Magazine",
-      "url": null
-    }
-  }
-]
+  ]
+}
 ```
 
-### Influence Trajectory Fields
+### Influence Fields
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
-| `year` | integer | Yes | Year of this data point |
-| `metric_type` | string | Yes | Type of metric (see below) |
-| `value` | integer | Yes | Numeric value for calculations/visualization |
-| `value_label` | string | Yes | Human-readable display string |
-| `geography` | array | No | Where this influence was felt |
-| `confidence` | string | Yes | Data quality flag (see below) |
-| `source` | object | Yes | Attribution (url can be null) |
+| `influence.scale` | string | Yes | Always `"1-10"` |
+| `influence.metric_type` | string | Yes | Always `"curated_scholarly_estimate"` |
+| `influence.phases` | array | Yes | Array of time-phase objects |
 
-### Metric Types
+### Phase Fields
 
-| Code | Description | Typical Figures |
-|------|-------------|-----------------|
-| `copies_sold` | Book/comic sales | Print figures (Goines, Kenyatta) |
-| `copies_printed` | Print run size (when sales unknown) | Print figures |
-| `box_office` | Theatrical revenue | Film figures (Action Jackson) |
-| `tv_ratings` | Viewership numbers | Television figures |
-| `event_attendance` | Rally/speech/event turnout | Revolutionary figures (Scott, Baker) |
-| `newspaper_mentions` | Coverage volume in press | All figures |
-| `arrests` | Number of arrests (real figures) | Real figures with documented records |
-| `strikes_participation` | Workers involved in labor actions | Labor figures (Baker) |
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `start` | integer | Yes | Start year of this phase |
+| `end` | integer | Yes | End year of this phase |
+| `value` | integer | Yes | Influence score (1–10) assigned by Project Director |
+| `justification` | string | Yes | Explanation of score — cite specific evidence where possible |
+| `source` | string | Yes | Citation (use `"TBD"` or `"TBD — [description of needed research]"` for placeholders) |
 
-### Confidence Levels
+### Placeholder Pattern
 
-| Level | Meaning | Example |
-|-------|---------|---------|
-| `verified` | Hard data from official source | Box office from Box Office Mojo |
-| `reported` | Cited in reliable secondary source | "Over 500,000 sold" per obituary |
-| `estimated` | Scholarly estimate or extrapolation | Academic source calculates based on print runs |
-| `unknown` | Placeholder awaiting research | Value set to 0 or null |
+For influence phases requiring future research, prefix the justification with `"PLACEHOLDER"` and use `"TBD"` for the source:
+
+```json
+{
+  "start": 1976,
+  "end": 1999,
+  "value": 3,
+  "justification": "PLACEHOLDER — Novels remain in print through Holloway House reprints. Cultural presence sustained but not independently significant.",
+  "source": "TBD"
+}
+```
+
+A `_REVIEW_NEEDED` string can be added to the `influence` object to flag the entire influence trajectory for revision:
+
+```json
+"influence": {
+  "scale": "1-10",
+  "metric_type": "curated_scholarly_estimate",
+  "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+  "phases": [ ... ]
+}
+```
 
 ---
 
@@ -374,7 +484,7 @@ References for the figure entry.
       "title": "Crime Partners",
       "type": "novel",
       "year": 1974,
-      "url": "https://www.goodreads.com/book/show/115038.Crime_Partners"
+      "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
     }
   ],
   "secondary": [
@@ -382,7 +492,7 @@ References for the figure entry.
       "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
       "type": "academic",
       "year": 2003,
-      "url": "https://iupress.org/"
+      "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
     }
   ],
   "archival": [
@@ -400,21 +510,25 @@ References for the figure entry.
 ### Source Categories
 
 | Category | Description | Examples |
-|----------|-------------|----------|
-| `primary` | Direct sources documenting the figure | Novels, films, speeches, news articles |
-| `secondary` | Scholarly analysis about the figure | Academic books, journal articles, dissertations |
-| `archival` | Materials requiring institutional access | COINTELPRO files, Reuther Library collections, museum holdings |
+|----------|-------------|---------|
+| `primary` | Direct sources documenting the figure | Novels, films, speeches, news articles, founding documents, audio recordings |
+| `secondary` | Scholarly analysis about the figure | Academic books, journal articles, dissertations, biographies, obituaries |
+| `archival` | Materials requiring institutional access | COINTELPRO files, Reuther Library collections, museum holdings, personal papers |
 
 ### Source Fields
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
 | `title` | string | Yes | Source title |
-| `type` | string | Yes | Source format (novel, film, academic, news, government, etc.) |
-| `year` | integer | No | Publication/release year |
+| `type` | string | Yes | Source format (see common types below) |
+| `year` | integer \| null | No | Publication/release year |
 | `url` | string \| null | Yes | Link to source (null if no web access) |
 | `repository` | string | No | Physical location for archival sources |
 | `notes` | string | No | Access notes, relevance explanation |
+
+### Common Source Types
+
+`novel`, `film`, `television`, `documentary`, `academic`, `biography`, `news`, `obituary`, `government`, `institutional`, `organizational`, `personal`, `letter`, `audio_recording`, `founding_document`, `newspaper`, `book`, `video`, `website`, `digital_archive`, `publisher`
 
 ---
 
@@ -429,35 +543,10 @@ These fields accept `null` when data is unavailable:
 - `years.death` (for living figures)
 - `creator_id` (if creator not in database)
 - `source.url` (for archival/physical sources)
-- `influence_trajectory` (can be empty array `[]`)
+- `influence.phases` (can be empty array `[]`)
 - `additional_locations` (can be empty array `[]`)
 - `adaptations` (can be empty array `[]`)
-
-### Placeholder Pattern
-
-For fields requiring future research, use this pattern:
-
-```json
-"influence_trajectory": [
-  {
-    "year": 1968,
-    "metric_type": "event_attendance",
-    "value": 0,
-    "value_label": "Unknown - requires archival research",
-    "geography": ["Detroit"],
-    "confidence": "unknown",
-    "source": {
-      "title": "Pending: Reuther Library visit",
-      "url": null
-    }
-  }
-]
-```
-
-This creates a visible placeholder that:
-1. Shows up in data audits
-2. Documents what research is needed
-3. Doesn't break visualization code
+- `connections` (can be empty array `[]`)
 
 ---
 
@@ -468,8 +557,8 @@ This creates a visible placeholder that:
 1. Fill out all fields in plain language
 2. For locations, provide street names and neighborhood descriptions
 3. For connections, describe relationships in sentences
-4. For influence metrics, note what you found and where
-5. Flag uncertain information with "NEEDS VERIFICATION"
+4. For influence, note what you found and where
+5. Flag uncertain information with `"NEEDS VERIFICATION"`
 6. Note sources for every claim
 
 ### For Graduate Students (JSON Translation)
@@ -478,16 +567,107 @@ This creates a visible placeholder that:
 2. Look up coordinates for locations using Google Maps or OpenStreetMap
 3. Draw territory polygons based on key events and location descriptions
 4. Create proper `target_id` references for connections
-5. Assign appropriate `confidence` levels to influence data
-6. Validate JSON syntax before committing
-7. Run through validation checklist
+5. Assign appropriate `tier` levels (1–3) to connections based on evidence quality
+6. Add `_divider` fields for visual separation between entries
+7. Validate JSON syntax before committing
+8. Run through validation checklist
 
 ### For Project Director (Quality Control)
 
 1. Review all new entries against five-criteria framework
-2. Verify connection evidence is documented
-3. Check that influence trajectory sources are cited
+2. Assign influence phase values (1–10 scale)
+3. Verify connection evidence is documented and tier is appropriate
 4. Approve entries for public dataset
+
+---
+
+## Validation Checklist
+
+Before committing new entries:
+
+### Required Fields
+- [ ] `id` is unique and follows naming convention (lowercase, underscores)
+- [ ] `name` is present
+- [ ] `type` is either `"real"` or `"fictional"`
+- [ ] `modality` is valid (`detective`, `revolutionary`, `gangsta_pimp`, `superhero_villain`, `folk_hero_outlaw`)
+- [ ] `meta_badman` is present (boolean)
+- [ ] `years.active_start` and `years.active_end` are present
+- [ ] `emergence.year` and `emergence.context` are present
+
+### Scores
+- [ ] All five scores present with `score` (1–5) and `justification`
+
+### Biography
+- [ ] `description` is 200–300 words
+- [ ] `key_events` array is populated with year and event fields
+- [ ] Fictional figures include `creator` and `source_text`
+
+### Geographic
+- [ ] `primary_location` has name and valid coordinates
+- [ ] `territory.polygon` has at least 4 coordinate pairs
+- [ ] `territory.description` justifies the polygon boundaries
+- [ ] Coordinates are valid (lat: 42.2–42.5 for Detroit, lng: -83.3 to -82.9 for Detroit)
+
+### Network
+- [ ] All `target_id` values match existing figure `id` fields
+- [ ] All connections have `type`, `direction`, `tier`, `start_year`, `end_year`, `evidence`, and `source`
+- [ ] Influence object has `scale`, `metric_type`, and at least one phase
+- [ ] Influence phases have `start`, `end`, `value`, `justification`, and `source`
+
+### Technical
+- [ ] JSON syntax validates (use jsonlint.com or similar)
+- [ ] URLs are functional (or explicitly `null`)
+- [ ] No trailing commas
+- [ ] `_divider` field present for readability
+
+---
+
+## Tool Data Requirements
+
+Quick reference for which buckets each visualization tool requires:
+
+| Bucket | Map Tool | NVT | Notes |
+|--------|----------|-----|-------|
+| Identity | Required | Required | Both tools need basic identification |
+| Emergence | Not used | Required | NVT timeline axis |
+| Scores | Not used | Optional | Can size nodes by total score |
+| Biography | Optional | Optional | Detail panels in both tools |
+| Geographic | Required | Not used | Map markers and polygons |
+| Network | Not used | Required | Connections and influence trajectory |
+| Sources | Optional | Optional | Attribution in detail panels |
+
+---
+
+## Adding New Modalities
+
+The archive currently includes the following modalities:
+
+| Modality | Code | Status | Figures |
+|----------|------|--------|---------|
+| Detective | `detective` | Active | Action Jackson, + new entries |
+| Political Revolutionary | `revolutionary` | Active | Kenyatta, Ron Scott, Baker, Obadele Brothers, + new entries |
+| Gangsta-Pimp | `gangsta_pimp` | Dormant | Donald Goines (will not render until modality activated) |
+| Superhero-Villain | `superhero_villain` | Staged | New entries pending |
+| Folk Hero-Outlaw | `folk_hero_outlaw` | Future | No entries yet |
+
+When adding new modalities:
+1. Update this documentation
+2. Update the `getModalityConfig()` function in the codebase (single source of truth for modality display properties)
+3. Add color coding and marker shapes to both visualization tools
+4. Create at least one example entry
+5. Verify modality filtering in `activeModalities` array works correctly for both map.html and network.html
+
+---
+
+## Adding New Cities
+
+When expanding beyond Detroit:
+
+1. Create new JSON file: `[city].json`
+2. Follow identical schema structure, including top-level `edge_types` and `evidence_tiers`
+3. Update any cross-city connections with full `city:id` references
+4. Add city to main site navigation
+5. Create city subdomain: `[city].badmandigitalarchive.com`
 
 ---
 
@@ -508,83 +688,10 @@ This creates a visible placeholder that:
 - **Year format:** Use integers `1968` not strings `"1968"`
 - **Target IDs:** Must exactly match the `id` field of another figure in the dataset
 - **Connection direction:** Store on originating figure with `"outgoing"`
-
----
-
-## Validation Checklist
-
-Before committing new entries:
-
-### Required Fields
-- [ ] `id` is unique and follows naming convention
-- [ ] `name` is present
-- [ ] `type` is either `"real"` or `"fictional"`
-- [ ] `modality` is valid (`detective`, `revolutionary`, etc.)
-- [ ] `emergence.year` and `emergence.context` are present
-
-### Scores
-- [ ] All five scores present with `score` (1-5) and `justification`
-
-### Geographic
-- [ ] `primary_location` has name and valid coordinates
-- [ ] `territory.polygon` has at least 4 coordinate pairs
-- [ ] Coordinates are valid (lat: -90 to 90, lng: -180 to 180)
-
-### Network
-- [ ] All `target_id` values match existing figure `id` fields
-- [ ] All connections have `type`, `direction`, and `evidence`
-- [ ] Influence trajectory entries have `confidence` and `source`
-
-### Technical
-- [ ] JSON syntax validates (use jsonlint.com or similar)
-- [ ] URLs are functional (or explicitly `null`)
-- [ ] No trailing commas
-
----
-
-## Tool Data Requirements
-
-Quick reference for which buckets each visualization tool requires:
-
-| Bucket | Map Tool | NVT | Notes |
-|--------|----------|-----|-------|
-| Identity | ✅ Required | ✅ Required | Both tools need basic identification |
-| Emergence | ❌ Not used | ✅ Required | NVT timeline axis |
-| Scores | ❌ Not used | ⚠️ Optional | Can size nodes by total score |
-| Biography | ⚠️ Optional | ⚠️ Optional | Detail panels in both tools |
-| Geographic | ✅ Required | ❌ Not used | Map markers and polygons |
-| Network | ❌ Not used | ✅ Required | Connections and trajectory |
-| Sources | ⚠️ Optional | ⚠️ Optional | Attribution in detail panels |
-
----
-
-## Adding New Modalities
-
-The current dataset includes `detective` and `revolutionary` modalities. Future expansion may include:
-
-- `folk_hero_outlaw` — Post-Emancipation folk figures
-- `gangsta_pimp` — 1970s-present street figures  
-- `superhero_villain` — Comic and screen superheroes/villains
-
-When adding new modalities:
-1. Update this documentation
-2. Update the main project README
-3. Add color coding to both visualization tools
-4. Create at least one example entry
-
----
-
-## Adding New Cities
-
-When expanding beyond Detroit:
-
-1. Create new JSON file: `[city].json`
-2. Follow identical schema structure
-3. Update any cross-city connections with full `city:id` references
-4. Add city to main site navigation
+- **Evidence tier:** Integer `1`, `2`, or `3` — not strings
 
 ---
 
 ## Questions?
 
-Contact the project director or consult the main project README for broader context about the Badman Archive and its theoretical framework.
+Contact the Project Director or consult the Modality Sorting Framework for broader context about the Badman Archive and its theoretical framework.
