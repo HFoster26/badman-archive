@@ -52,6 +52,10 @@
                 background-color: transparent;
                 background-image: repeating-linear-gradient(90deg, var(--dba-detective) 0px, var(--dba-detective) 2px, transparent 2px, transparent 6px, var(--dba-detective) 6px, var(--dba-detective) 14px, transparent 14px, transparent 18px);
             }
+            .legend-cc {
+                background-color: transparent;
+                background-image: repeating-linear-gradient(90deg, #e83e8c 0px, #e83e8c 2px, transparent 2px, transparent 4px);
+            }
             /* Node modality legend markers — distinct shapes */
             .legend-marker {
                 width: 20px;
@@ -319,6 +323,7 @@
                 'P2C': '#dc3545',
                 'C2C': '#50c878',
                 'ORG': '#3388ff'
+                'CC': '#e83e8c'
             };
 
             // Edge dash patterns per TYPE (WCAG 1.4.1 — not color alone)
@@ -327,6 +332,7 @@
                 'P2C': '12,6',          // Long dash
                 'C2C': '6,4',           // Short dash
                 'ORG': '2,4,8,4'        // Dot-dash
+                'CC': '2,2'             // Dot-dot
             };
 
             const nodeColors = {
@@ -379,7 +385,7 @@
             const g = svg.append('g');
 
             svg.append('defs').selectAll('marker')
-                .data(['META', 'P2C', 'C2C', 'ORG'])
+                .data(['META', 'P2C', 'C2C', 'ORG', 'CC'])
                 .enter()
                 .append('marker')
                 .attr('id', function(d) { return 'arrow-' + d; })
@@ -809,6 +815,7 @@
                     'P2C': 'Person to Creator',
                     'C2C': 'Creator to Creator',
                     'ORG': 'Organizational Affiliation'
+                    'CC': 'Creation Continuity'
                 };
 
                 var panel = document.getElementById('figure-metrics-panel');
