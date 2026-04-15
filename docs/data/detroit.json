@@ -1358,8 +1358,7 @@
             "type": "artwork",
             "year": 1955,
             "url": "https://images.squarespace-cdn.com/content/v1/5e8778b5608bdc72a92dd6b4/282297b0-5da1-4df6-84e3-e2fde2ac9481/Glanton+Dowdell%2C+Southeast+Corner+of+my+Cell%2C+1955%2C+oil+on+canvas.jpg?format=2500w"
-          },
-          {
+          }
         ],
         "secondary": [
           {
@@ -1405,15 +1404,18 @@
         ]
       }
     },
+      {
       "_divider": "────────── PRM: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
+    
 
 
 
     {
       "_divider": "══════════ DETECTIVE MODALITY ══════════",
+      "_divider": "────────── DET: Action Jackson ──────────"
       "id": "action_jackson",
       "name": "Jericho 'Action' Jackson",
       "type": "fictional",
@@ -1551,7 +1553,729 @@
         "archival": []
       }
     },
-
+    {
+      "_divider": "────────── DET: Moses Baldwin ──────────",
+      "id": "baldwin_moses",
+      "name": "Moses Baldwin",
+      "type": "real",
+      "meta_badman": true,
+      "modality": "detective",
+      "years": {
+        "birth": 1930,
+        "death": 2020,
+        "active_start": 1952,
+        "active_end": 2020
+      },
+      "emergence": {
+        "year": 1963,
+        "context": "Co-founded The Guardians of Michigan, a statewide advocacy organization of Black law enforcement officers, to fight racism and double standards within the Detroit Police Department and to provide institutional infrastructure for Black officers navigating a force where they constituted roughly 3% of personnel in a city approaching 30% Black population.",
+        "source": {
+          "title": "Ken Coleman: Moses Baldwin was a beacon of light in the sometimes dark and dirty cop world",
+          "url": "https://michiganadvance.com/2020/06/22/ken-coleman-moses-baldwin-was-a-beacon-of-light-in-the-sometimes-dark-and-dirty-cop-world/"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 3,
+          "justification": "Wore the DPD badge for 26 years but wielded it against the institution from inside. Founded the Guardians explicitly to oppose the DPOA and the DPD's racial architecture. Defended Judge Crockett against his own department after the New Bethel incident. Called STRESS 'genocide' while still on the force. The badge was the weapon, not the allegiance."
+        },
+        "community_authorization": {
+          "score": 5,
+          "justification": "Over 250 Black officers in the Guardians. 5,000-person anti-STRESS protest march with Guardians members serving as marshals. Co-signatory of United Black Coalition. Coalition with NAACP, ACLU, SCLC. Contributed to founding the National Black Police Association. DPD plaque of appreciation presented posthumously. Ron Scott explicitly acknowledged the Guardians' historical role."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Twenty-six years as a Detroit Police Department officer — one of the most violent police departments in America during the 1950s-70s. Policed during the Big Four era, the 1967 Rebellion, and the STRESS period. Trained for and deployed physical force as a sworn officer. Additionally wielded institutional force (Guardians vs. DPOA), rhetorical force (naming STRESS 'murder squad,' 'assassination squad,' 'genocide'), legal force (federal lawsuits alongside NAACP), and protective force (24-hour bodyguard for Lt. George Bennett)."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "Built institutional infrastructure (the Guardians) that preserved knowledge of how the DPD's racial machinery operated and transmitted that knowledge across generations. Mentored Roosevelt Lawrence Jr., who wrote Blacks That Wore The Blue (2017). Contributed to founding the National Black Police Association. Hosted national Black police conference in Detroit (April 1972). But no published writings or sustained media presence beyond organizational work."
+        },
+        "hypermasculine_performance": {
+          "score": 3,
+          "justification": "Miller High School basketball star. DPD officer for 26 years — the physical presence and authority of the badge. Played on DPD community basketball team. But masculinity expressed through institutional leadership and collective organizing rather than individual physical dominance."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1963,
+            "end": 1970,
+            "value": 3,
+            "justification": "PLACEHOLDER — Guardians founded and growing membership. Building organizational capacity. 1969 defense of Judge Crockett was first major public political statement.",
+            "source": "TBD — Detroit Under Fire project"
+          },
+          {
+            "start": 1971,
+            "end": 1973,
+            "value": 8,
+            "justification": "PLACEHOLDER — Peak influence. Anti-STRESS campaign: 250+ member organization, 5,000-person protest march, formal STRESS abolition demand, national Black police conference, federal lawsuit, United Black Coalition co-signatory, active campaign against Nichols. The Guardians occupied a unique structural position — cops calling other cops murderers.",
+            "source": "Detroit Under Fire project; Michigan Advance (Ken Coleman, 2020)"
+          },
+          {
+            "start": 1974,
+            "end": 1990,
+            "value": 5,
+            "justification": "PLACEHOLDER — Coleman Young era. Guardians' demands became official city policy. Continued advocacy through federal lawsuits (NAACP v. DPOA, 1984). Ran candidates for DPOA leadership (1978). Influence channeled through institutional reform.",
+            "source": "NAACP v. DPOA, 591 F. Supp. 1194 (E.D. Mich. 1984)"
+          },
+          {
+            "start": 2020,
+            "end": 2025,
+            "value": 4,
+            "justification": "PLACEHOLDER — Baldwin's death (March 30, 2020) occurred weeks before George Floyd's murder. Ken Coleman tribute in Michigan Advance. DPD plaque of appreciation. Detroit Under Fire project (2021) provides most comprehensive scholarly treatment. Legacy growing in policing reform scholarship.",
+            "source": "Michigan Advance (2020); Detroit Under Fire (2021)"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Moses 'Doc' Baldwin was a Detroit Police Department officer who co-founded The Guardians of Michigan in 1963, building the institutional architecture through which Black officers fought racism inside the very department they served. A Miller High School basketball star (class of 1947) from Black Bottom, Baldwin joined the DPD in 1952 when fewer than 150 African Americans served on the approximately 5,000-member force. He spent eleven years reading the system before founding the Guardians — a statewide organization of Black law enforcement officers that grew to over 250 members. The Guardians' anti-STRESS campaign of 1971-1973 helped elect Coleman Young as Detroit's first Black mayor, abolish the city's most lethal police unit, and lay groundwork for the National Black Police Association. Baldwin retired from the DPD in 1978 after twenty-six years and became an investigator for the Detroit Public Schools. He died on March 30, 2020, at age 90 — weeks before George Floyd's murder made police reform a national conversation his organizing had prefigured by half a century.",
+        "key_events": [
+          {
+            "year": 1947,
+            "event": "Graduated from Miller High School as a basketball star. Alumni include Coleman Young, Charles Diggs Jr., Della Reese, Milt Jackson.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1952,
+            "event": "Joined the Detroit Police Department. Fewer than 150 Black officers on ~5,000-member force.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1963,
+            "event": "Co-founded The Guardians of Michigan, a statewide advocacy organization of Black law enforcement officers.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1969,
+            "event": "Guardians publicly defended Judge George Crockett after the New Bethel Baptist Church incident, praising his 'courage and brilliance' and denouncing DPD actions.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1971,
+            "event": "Guardians join State of Emergency Committee after STRESS officers kill Ricardo Buck and Craig Mitchell. Off-duty Black officers serve as marshals at 5,000-person protest march from Masonic Temple to Kennedy Square.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1972,
+            "event": "Guardians issue formal demand for STRESS abolition (March 9). Baldwin: 'We demand the elimination of STRESS as of today.' Guardians host national Black Police Officers Conference in Detroit (April). National Black Police Association chartered seven months later (November).",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1973,
+            "event": "Guardians join United Black Coalition demanding STRESS abolition. Actively campaign against DPD Commissioner John Nichols in mayoral race. Coleman Young elected November 1973.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1978,
+            "event": "Retired from DPD after approximately 26 years. Became investigator for Detroit Public Schools.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2020,
+            "event": "Died March 30 at age 90. DPD Assistant Chief J. White presented plaque of appreciation. Detroit Police escort at viewing.",
+            "location": "Detroit, MI"
+          }
+        ]
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Detroit Police Headquarters (1300 Beaubien Street)",
+          "coordinates": {
+            "lat": 42.3364,
+            "lng": -83.0388
+          }
+        },
+        "territory": {
+          "description": "Baldwin's operational territory spans a corridor from Black Bottom/Eastern Market (east side) through downtown/Greektown (DPD headquarters at 1300 Beaubien) to the west side neighborhoods along 12th Street/Rosa Parks Boulevard and Linwood — the areas that were the geographic heart of Black Detroit from the 1950s through the 1970s. The anti-STRESS protest march ran from Masonic Temple (500 Temple Street) to Kennedy Square downtown.",
+          "polygon": [
+            [42.380, -83.100],
+            [42.380, -83.030],
+            [42.325, -83.030],
+            [42.325, -83.100]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Miller High School (Black Bottom neighborhood)",
+            "coordinates": {
+              "lat": 42.340,
+              "lng": -83.037
+            },
+            "significance": "Baldwin's alma mater (graduated 1947). Alumni include Coleman Young, Charles Diggs Jr., Della Reese."
+          },
+          {
+            "name": "Masonic Temple (500 Temple Street)",
+            "coordinates": {
+              "lat": 42.3413,
+              "lng": -83.0597
+            },
+            "significance": "Starting point of the September 23, 1971 anti-STRESS march (5,000 participants)"
+          }
+        ]
+      },
+      "connections": [
+        {
+          "target_id": "obadele_brothers",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 2,
+          "start_year": 1969,
+          "end_year": 1973,
+          "evidence": "The Guardians publicly defended Judge Crockett after the New Bethel Baptist Church incident (an RNA event), placing them in implicit solidarity with the RNA's right to assemble. Both organizations were members of the State of Emergency Committee (September 1971).",
+          "source": "Detroit Under Fire project; Michigan Advance (2020)"
+        },
+        {
+          "target_id": "scott_ron",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 2,
+          "start_year": 1971,
+          "end_year": 1973,
+          "evidence": "Overlapping anti-STRESS activism. Ron Scott explicitly acknowledged the Guardians' historical role in his organizing manual How to End Police Brutality. Both were active in the anti-STRESS coalition, though from different organizational positions (Guardians inside the department, Scott as former Panther outside it).",
+          "source": "Ron Scott, How to End Police Brutality; Detroit Under Fire project"
+        },
+        {
+          "target_id": "baker_gordon",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 3,
+          "start_year": 1971,
+          "end_year": 1972,
+          "evidence": "Indirect connection through Kenneth Cockrel as bridging figure. Both the Guardians and the League of Revolutionary Black Workers participated in anti-STRESS coalition activities. Cockrel co-founded the LRBW and led the State of Emergency Committee that the Guardians joined.",
+          "source": "Detroit Under Fire project; scholarly interpretation"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Guardians of Michigan Newsletter on DPD Racism (January 1971)",
+            "type": "newsletter",
+            "year": 1971,
+            "url": null,
+            "notes": "Digitized through University of Michigan Detroit Under Fire project"
+          },
+          {
+            "title": "Guardians demand for STRESS abolition (March 9, 1972)",
+            "type": "organizational_statement",
+            "year": 1972,
+            "url": null
+          },
+          {
+            "title": "Recommendations to Improve Police-Community Relations (April 1972) — 22 recommendations from national Black Police Officers Conference",
+            "type": "organizational_document",
+            "year": 1972,
+            "url": null
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Ken Coleman: Moses Baldwin was a beacon of light in the sometimes dark and dirty cop world",
+            "type": "news",
+            "year": 2020,
+            "url": "https://michiganadvance.com/2020/06/22/ken-coleman-moses-baldwin-was-a-beacon-of-light-in-the-sometimes-dark-and-dirty-cop-world/"
+          },
+          {
+            "title": "Blacks That Wore The Blue — Roosevelt Lawrence Jr.",
+            "type": "book",
+            "year": 2017,
+            "url": null
+          },
+          {
+            "title": "NAACP v. Detroit Police Officers Ass'n (DPOA), 591 F. Supp. 1194 (E.D. Mich. 1984)",
+            "type": "legal",
+            "year": 1984,
+            "url": "https://law.justia.com/cases/federal/district-courts/FSupp/591/1194/2388315/"
+          }
+        ],
+        "archival": [
+          {
+            "title": "Detroit Commission on Community Relations (DCCR) / Human Rights Department Records — Series 13: Police-Community Relations, 1945-1983, Boxes 132-140",
+            "type": "institutional",
+            "repository": "Walter P. Reuther Library, Wayne State University",
+            "url": "https://archives.wayne.edu/repositories/2/resources/1459",
+            "notes": "Directly relevant to Guardians activities and DPD racial discrimination."
+          },
+          {
+            "title": "Detroit Under Fire: Police Violence, Crime Politics, and the Struggle for Racial Justice (digital project)",
+            "type": "digital_archive",
+            "repository": "University of Michigan Carceral State Project / HistoryLab",
+            "url": "https://policing.umhistorylabs.lsa.umich.edu/s/detroitunderfire/",
+            "notes": "Most comprehensive scholarly treatment of the Guardians' history. Contains digitized primary sources."
+          }
+        ]
+      }
+    },
+    {
+      "_divider": "────────── DET: Lincoln Keller ──────────"
+      "id": "keller_lincoln",
+      "name": "Lincoln Keller",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "detective",
+      "medium": "print",
+      "genre": "detective_fiction",
+      "creator_id": null,
+      "years": {
+        "active_start": 1997,
+        "active_end": 2000
+      },
+      "emergence": {
+        "year": 1997,
+        "context": "First appearance in Silent Conspiracy: A Lincoln Keller Mystery, published by Proctor Publications (Ann Arbor, MI). Created by native Detroiter and Michigan State University graduate Dr. Lee E. Meadows during the late-1990s boom in Black detective fiction catalyzed by Walter Mosley's Easy Rawlins novels.",
+        "source": {
+          "title": "Silent Conspiracy: A Lincoln Keller Mystery",
+          "url": "https://www.goodreads.com/book/show/1131112.Silent_Conspiracy"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 3,
+          "justification": "Former Oakland police officer who left the institution to work independently as a private investigator in Detroit. Not anti-law but outside its authority. PI license gives him liminal status — authorized but not controlled. Regularly clashes with Lt. Knackton, who represents institutional resistance to independent Black investigation."
+        },
+        "community_authorization": {
+          "score": 3,
+          "justification": "Family-embedded — the Keller siblings (all named after US presidents) form a support network. Connected to Detroit's music community through the first novel's Motown-era mystery. Romantic interest Candy Malone bridges Keller to DPD homicide. Three-time AALBC bestseller indicates meaningful authorization within the Black literary community, though very limited readership overall."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Former NFL defensive back (Oakland Raiders) and former police officer — trained for physical violent confrontation at the highest levels. While Keller's investigative style is described as cerebral and methodical, he is fully capable of and experienced in physical force. The detective's restraint is strategic, not temperamental — a man who can hit like a professional athlete but reads the room instead is communicating through his restraint."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "The novels preserve 1990s Detroit street culture and 1950s Black music history with what reviewers call unmatched authenticity. Silent Conspiracy reconstructs Detroit's pre-Motown R&B scene. Author Meadows's WPON radio show The Book Beat extended this preservation function by interviewing African American authors weekly. The novels document a Detroit that no longer exists."
+        },
+        "hypermasculine_performance": {
+          "score": 3,
+          "justification": "Former NFL defensive back — the physical credential is present. But the character's masculinity is expressed through wit, intelligence, family loyalty, and cynical humor rather than physical dominance. Described as gentle and caring alongside his toughness."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1997,
+            "end": 2002,
+            "value": 2,
+            "justification": "PLACEHOLDER — Two novels published by small Ann Arbor press (Proctor Publications). Three-time AALBC bestseller. No mainstream reviews (PW, Kirkus, NYT). Limited print runs, likely low thousands. Planned third novel (Silent Rage) may never have materialized.",
+            "source": "AALBC; Encyclopedia.com Contemporary Authors"
+          },
+          {
+            "start": 2003,
+            "end": 2025,
+            "value": 1,
+            "justification": "PLACEHOLDER — Both books out of print. Goodreads shows 4 ratings total for Silent Conspiracy. ThriftBooks receives approximately one copy of Silent Suspicion every six months. No adaptations, no scholarly citations found. A ghost in the archive.",
+            "source": "Goodreads; ThriftBooks marketplace data"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Lincoln 'Linc' Keller is a Black private investigator operating in Detroit, created by native Detroiter Dr. Lee E. Meadows. A former Oakland Raiders defensive back who became a police officer in Oakland before returning to his hometown, Keller runs a PI practice navigating Detroit's layered criminal and political landscape. He is embedded in a family network: brothers Jefferson (bounty hunter), Truman, and Roosevelt, and sister Julie 'the Duchess of the Database' who runs the computer research firm Info-Search across the hall from his office. His romantic interest is Candy Malone, a Detroit homicide detective. In Silent Conspiracy (1997), Keller investigates the forty-year disappearance of a 1950s R&B group called The Sentiments, uncovering Detroit's hidden music history. In Silent Suspicion (2000), he reopens the cold-case murder of freelance journalist Deborah Norris, discovering corruption linking an aspiring mayoral candidate to bribes and cover-ups. Keller works the Cass Corridor and Detroit's inner city with methodical intelligence, reading the city's social grammar to protect those the official system has failed.",
+        "key_events": [
+          {
+            "year": 1997,
+            "event": "First appearance in Silent Conspiracy. Investigates the forty-year disappearance of The Sentiments, a 1950s R&B group.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 2000,
+            "event": "Silent Suspicion published. Keller reopens the eight-year-old murder of journalist Deborah Norris, uncovering political corruption.",
+            "location": "Detroit, MI (fictional)"
+          }
+        ],
+        "creator": "Lee E. Meadows",
+        "source_text": "Silent Conspiracy: A Lincoln Keller Mystery (1997)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Cass Corridor (Detroit)",
+          "coordinates": {
+            "lat": 42.3450,
+            "lng": -83.0600
+          }
+        },
+        "territory": {
+          "description": "Lincoln Keller operates primarily in the Cass Corridor (now partially rebranded as Midtown), running roughly from the Lodge Freeway east to Woodward Avenue between Warren Avenue and the Fisher Freeway. The first novel's flashback sequences reconstruct Detroit's pre-Motown Black commercial districts near Paradise Valley and Black Bottom. Reviewers describe the novels as providing 'a grand tour of Detroit' with unmatched street-level authenticity of 1990s inner-city Detroit.",
+          "polygon": [
+            [42.360, -83.070],
+            [42.360, -83.045],
+            [42.330, -83.045],
+            [42.330, -83.070]
+          ]
+        },
+        "additional_locations": []
+      },
+      "connections": [],
+      "sources": {
+        "primary": [
+          {
+            "title": "Silent Conspiracy: A Lincoln Keller Mystery",
+            "type": "novel",
+            "year": 1997,
+            "url": "https://www.goodreads.com/book/show/1131112.Silent_Conspiracy"
+          },
+          {
+            "title": "Silent Suspicion: A Lincoln Keller Mystery",
+            "type": "novel",
+            "year": 2000,
+            "url": "https://www.amazon.com/Silent-Suspicion-Lincoln-Keller-Mystery/dp/1882792939"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Thrilling Detective Web Site — Lincoln Keller entry",
+            "type": "reference",
+            "year": 2024,
+            "url": "https://thrillingdetective.com/2024/12/30/lincoln-keller/"
+          },
+          {
+            "title": "AALBC Author Page — Lee E. Meadows",
+            "type": "reference",
+            "year": null,
+            "url": "https://aalbc.com/authors/Lee-E.-Meadows"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "id": "williams_jesse",
+      "name": "Sgt. Jesse Williams",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "detective",
+      "medium": "film",
+      "genre": "action_crime",
+      "creator_id": null,
+      "years": {
+        "active_start": 1973,
+        "active_end": 1973
+      },
+      "emergence": {
+        "year": 1973,
+        "context": "First and only appearance in Detroit 9000, released August 1973. Produced by Holly Hill Productions, distributed by General Film Corporation. Shot on location in Detroit in April 1973. Executive produced by Junius Griffin, widely credited with coining the term 'blaxploitation.' Music by Holland-Dozier-Holland.",
+        "source": {
+          "title": "Detroit 9000",
+          "url": "https://www.imdb.com/title/tt0069966/"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 3,
+          "justification": "Works within the system as a Detroit police sergeant. But the system assigns him a corrupt partner, and his moral clarity puts him in tension with institutional priorities. He survives by reading the system, not serving it. His final moral judgment — ambiguity about whether his partner was the best or worst cop — represents the detective's refusal to accept the system's categories."
+        },
+        "community_authorization": {
+          "score": 3,
+          "justification": "Protects a Black congressional campaign's integrity against robbery and political sabotage. Connected to his community through his girlfriend (university professor) and college sweetheart Roby Harris. But his authorization comes primarily from the institutional badge rather than grassroots community recognition."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Former college football hero and armed police sergeant. Participates in shootouts at Elmwood Cemetery and the train station. Shoots the officer on the cruise ship in the climactic confrontation. Physical violence is central to the film's action sequences. Williams uses decisive force when detection requires it — the detective who reads first and shoots when the reading is done."
+        },
+        "cultural_preservation": {
+          "score": 3,
+          "justification": "The film itself preserves 1973 Detroit as an irreplaceable visual time capsule — now-demolished landmarks (Hudson's building, Fort Street Station), real Detroit personalities (Police Chief John Nichols, Martha Jean 'The Queen' Steinberg), and Holland-Dozier-Holland music. Williams as a character doesn't have an explicit preservation function, but the film's on-location Detroit shooting constitutes cultural documentation."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Former college football hero. Physically commanding. The educated, refined Black detective — masculinity performed through intellectual superiority and physical capability simultaneously. He is the moral survivor of the film: the one left standing while his white partner dies. His final line is not bravado but moral seriousness."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1973,
+            "end": 1980,
+            "value": 4,
+            "justification": "PLACEHOLDER — $1.2M in US/Canada theatrical rentals (1973). Respectable for low-budget exploitation film. Detroit premiere August 7, 1973; New York opening August 29. Re-released as Police Call 9000 (1975). Roger Ebert gave 2/4 stars; Gene Siskel 2/4. Commercially successful in Black urban markets but critically dismissed.",
+            "source": "Variety Big Rental Films of 1973; Roger Ebert (1973)"
+          },
+          {
+            "start": 1981,
+            "end": 1997,
+            "value": 1,
+            "justification": "PLACEHOLDER — Film fades from active cultural conversation. VHS circulation sustained minor cult following. Not cited in mainstream scholarship on blaxploitation or Black cinema.",
+            "source": "TBD"
+          },
+          {
+            "start": 1998,
+            "end": 2025,
+            "value": 3,
+            "justification": "PLACEHOLDER — Quentin Tarantino champions the film through Rolling Thunder Pictures re-release (October 1998). Theatrical re-release grossed only $3,179 but purpose was cultural preservation. DVD release (2000, now out of print). Joseph S. Valle dedicates chapter in Beyond Blaxploitation (Wayne State University Press). Modern reassessments substantially more favorable — NYT called it 'better late than never.' Currently streaming free on Tubi and Plex.",
+            "source": "Box Office Mojo; NYT (1998); Valle in Beyond Blaxploitation (Wayne State UP)"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Sgt. Jesse Williams is a Black police sergeant on the Detroit Police Department, played by Hari Rhodes in the 1973 film Detroit 9000. A former college football hero and the refined, intellectual half of an interracial detective partnership, Williams is paired with Lt. Danny Bassett (Alex Rocco) to investigate the theft of $400,000 from a congressional fundraiser at the Book Cadillac Hotel supporting Congressman Aubrey Hale Clayton's gubernatorial campaign. The case plunges Williams into a web of political corruption, prostitution, fencing operations, and murder that crosses racial lines — the masked robbers deliberately concealed their race using a pre-recorded tape. When Williams's college sweetheart Roby Harris (Vonetta McGee) is killed in his arms, the investigation becomes personal. The film climaxes in shootouts at an abandoned railroad station and Elmwood Cemetery, and concludes on a cruise ship where Williams discovers his partner Danny may have been trying to steal the loot rather than arrest the fence. Danny dies without answering, leaving Williams to deliver the film's iconic closing line. Williams is the moral survivor — the Black detective left standing to contemplate the impossibility of clean justice in a corrupt system.",
+        "key_events": [
+          {
+            "year": 1973,
+            "event": "Film released. Williams and Bassett assigned to investigate $400,000 robbery at congressional fundraiser at Book Cadillac Hotel.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1973,
+            "event": "Williams's college sweetheart Roby Harris (Vonetta McGee) killed by robbers. Investigation becomes personal.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1973,
+            "event": "Climactic shootout at abandoned railroad station and Elmwood Cemetery. Four robbers killed, fence Ferdy Sloan captured.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1973,
+            "event": "Partner Danny Bassett dies on cruise ship. Williams delivers closing line: 'He was either the best cop I ever knew or the worst.'",
+            "location": "Detroit, MI (fictional)"
+          }
+        ],
+        "creator": "Arthur Marks (director/story), Orville H. Hampton (screenplay)",
+        "source_text": "Detroit 9000 (1973 film)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Book Cadillac Hotel (1114 Washington Boulevard)",
+          "coordinates": {
+            "lat": 42.3297,
+            "lng": -83.0496
+          }
+        },
+        "territory": {
+          "description": "The film was shot on location in Detroit in April 1973. Williams's territory traces a rough triangle across Detroit's core: downtown (Book Cadillac Hotel on Washington Boulevard, DPD Headquarters at 1300 Beaubien), east to Elmwood Cemetery (1200 Elmwood Avenue) for the climactic shootout, northwest to Sacred Heart Seminary (2701 West Chicago Boulevard), and south to Fort Street Union Depot. Real Detroit landmarks visible include the J.L. Hudson department store and Detroit Memorial Hospital.",
+          "polygon": [
+            [42.360, -83.065],
+            [42.360, -83.035],
+            [42.320, -83.035],
+            [42.320, -83.065]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Elmwood Cemetery (1200 Elmwood Avenue)",
+            "coordinates": {
+              "lat": 42.3450,
+              "lng": -83.0280
+            },
+            "significance": "Site of climactic shootout. Founded 1846, Detroit's oldest non-denominational cemetery."
+          },
+          {
+            "name": "Fort Street Union Depot",
+            "coordinates": {
+              "lat": 42.3250,
+              "lng": -83.0600
+            },
+            "significance": "Abandoned railroad station used for chase sequence."
+          },
+          {
+            "name": "DPD Headquarters (1300 Beaubien Street)",
+            "coordinates": {
+              "lat": 42.3364,
+              "lng": -83.0388
+            },
+            "significance": "Real police headquarters appears in the film."
+          }
+        ]
+      },
+      "connections": [],
+      "sources": {
+        "primary": [
+          {
+            "title": "Detroit 9000",
+            "type": "film",
+            "year": 1973,
+            "url": "https://www.imdb.com/title/tt0069966/"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "A White Film for a Blaxploitation Audience? The Making and Marketing of Detroit 9000 — Joseph S. Valle, in Beyond Blaxploitation (Wayne State University Press)",
+            "type": "academic",
+            "year": null,
+            "url": "https://muse.jhu.edu/book/52394/"
+          },
+          {
+            "title": "AFI Catalog of Feature Films — Detroit 9000",
+            "type": "reference",
+            "year": null,
+            "url": "https://catalog.afi.com/Catalog/MovieDetails/54938"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── DET: August Snow ──────────"
+      "id": "snow_august",
+      "name": "August Octavio Snow",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "detective",
+      "medium": "print",
+      "genre": "detective_fiction",
+      "creator_id": null,
+      "years": {
+        "active_start": 2017,
+        "active_end": 2023
+      },
+      "emergence": {
+        "year": 2017,
+        "context": "First appearance in August Snow, published February 14, 2017 by Soho Crime (imprint of Soho Press, distributed by Penguin Random House). Created by Stephen Mack Jones, an African American writer born in Lansing, Michigan, educated at Michigan State University, and longtime Farmington Hills resident. Jones received the Kresge Arts in Detroit Literary Fellowship in 2012.",
+        "source": {
+          "title": "August Snow",
+          "url": "https://www.amazon.com/August-Snow-Novel/dp/1616957182"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 4,
+          "justification": "Former DPD officer expelled by systemic corruption who fought back and won a $12 million wrongful dismissal settlement. Operates outside law enforcement but alongside it. His wealth gives him independence the system cannot leverage. Not anti-law but ungovernable by it — the detective who loved being a cop, was betrayed by the institution, and now operates in the space between."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Uses his settlement money to buy and renovate houses in Mexicantown — literally rebuilding the community property by property. Protects undocumented immigrants against ICE raids and human trafficking. Fights gentrification developers threatening to rebrand Mexicantown as 'East Corktown.' Community allies include Father Grabowski (40-year Mexicantown priest) and Elena (immigrant advocate). His community is Mexicantown's Mexican American population as much as Detroit's Black community."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Retired Marine sniper with a distinguished military career — trained killer at the highest level. Former DPD officer. Physical violence is decisive and frequent across all four novels: shootouts, hand-to-hand combat, tactical operations. Also deploys legal force ($12M lawsuit), economic force (property acquisition), and investigative force. Violence is one tool in a sophisticated arsenal wielded by a man whose restraint is itself a form of power."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "Preserves Mexicantown's physical and cultural infrastructure against gentrification. The novels document Southwest Detroit's working-class multiethnic reality — food, language, churches, businesses, immigrant networks. Jones's Kresge Arts in Detroit Literary Fellowship recognizes this cultural function. A fan wrote: 'Detroit's on my bucket list now, mate' — the novels make Detroit legible and desirable to outsiders."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Marine sniper, former cop, physically formidable. But also reads Spanish poetry (Lorca, Neruda, Octavio Paz), renovates houses with his own hands, maintains complex romantic relationships, cooks. Masculinity is multidimensional — warrior and builder, killer and reader. Named after Octavio Paz."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 2017,
+            "end": 2019,
+            "value": 6,
+            "justification": "PLACEHOLDER — Debut novel wins Hammett Prize and Nero Award (2018). Shamus Award finalist. Michigan Notable Book. Reviews in NYT, Wall Street Journal, NPR, Chicago Tribune, Boston Globe. Soho Crime / Penguin Random House distribution ensures wide availability. ~3,785 Goodreads ratings for August Snow.",
+            "source": "Soho Press; Goodreads; multiple major review outlets"
+          },
+          {
+            "start": 2019,
+            "end": 2021,
+            "value": 7,
+            "justification": "PLACEHOLDER — Lives Laid Away (2019) shortlisted for CWA Ian Fleming Steel Dagger (UK). Dead of Winter (2021) named NYT Book Review Editors' Choice and Michigan Notable Book. ABC acquires TV rights in competitive situation with Keegan-Michael Key attached to star (January 2021). ~2,777 additional Goodreads ratings across both titles.",
+            "source": "NYT Book Review; CWA; Variety (TV deal)"
+          },
+          {
+            "start": 2023,
+            "end": 2025,
+            "value": 5,
+            "justification": "PLACEHOLDER — Deus X (2023) receives Amazon Editors' Pick. Key TV deal falls through but exploratory talks ongoing (November 2023). ~569 Goodreads ratings for Deus X. Series total: ~7,131 Goodreads ratings. No fifth novel announced. Jones alive and active as of 2023.",
+            "source": "Hour Detroit Magazine (November 2023); Goodreads"
+          }
+        ]
+      },
+      "biography": {
+        "description": "August Octavio Snow is a biracial detective — half African American, half Mexican American — operating in Detroit's Mexicantown neighborhood. Created by Stephen Mack Jones, Snow is a former Marine sniper and former Detroit Police Department officer who uncovered corruption at the highest levels of city government. Corrupt cops and politicians conspired to drum him out of the department, but he fought back and won a $12 million wrongful dismissal settlement. After a year away, he returned to his childhood home on fictional West Markham Street in Mexicantown, using his wealth to buy and renovate houses in the neighborhood — rebuilding his community one property at a time. Across four novels, Snow confronts corporate embezzlement and cyber-terrorism (August Snow), human trafficking preying on undocumented immigrants (Lives Laid Away), gentrification threatening to rebrand Mexicantown as 'East Corktown' (Dead of Winter), and a Catholic Church cover-up (Deus X). His father was a Black Detroit cop. His mother was a Mexican American painter who read him Spanish-language poets. Snow does not see a cultural dichotomy in himself — he got the best of what both cultures offer.",
+        "key_events": [
+          {
+            "year": 2017,
+            "event": "First appearance in August Snow. Returns to Mexicantown after winning $12M wrongful dismissal settlement against DPD. Investigates death of business magnate Eleanore Paget.",
+            "location": "Detroit, MI / Grosse Pointe, MI (fictional)"
+          },
+          {
+            "year": 2019,
+            "event": "Lives Laid Away published. Body of young Hispanic woman dredged from Detroit River. Snow uncovers human trafficking scheme targeting undocumented immigrants in Mexicantown.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 2021,
+            "event": "Dead of Winter published. Authentico Foods Inc., a 30-year Mexicantown tortilla business, is blackmailed by anonymous billionaire developer. Snow fights gentrification.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 2023,
+            "event": "Deus X published. Father Grabowski, Mexicantown's 40-year Franciscan priest, suddenly retires. Snow investigates Catholic Church cover-up involving religious secret societies.",
+            "location": "Detroit, MI (fictional)"
+          }
+        ],
+        "creator": "Stephen Mack Jones",
+        "source_text": "August Snow (2017)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Mexicantown (Southwest Detroit)",
+          "coordinates": {
+            "lat": 42.3080,
+            "lng": -83.0730
+          }
+        },
+        "territory": {
+          "description": "August Snow operates primarily in Mexicantown (Southwest Detroit), the historically Mexican American neighborhood where he grew up and returned to after his settlement. The main commercial corridors are Bagley Street and West Vernor Highway. His fictional home street, West Markham, is a twelve-house block. The novels map class geography through Detroit's neighborhoods: Mexicantown's working-class community contrasted with Grosse Pointe's wealth, the Detroit River as literal US-Canada border, and the gentrification threat of developers rebranding the neighborhood as 'East Corktown.'",
+          "polygon": [
+            [42.325, -83.095],
+            [42.325, -83.055],
+            [42.295, -83.055],
+            [42.295, -83.095]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Grosse Pointe Estates",
+            "coordinates": {
+              "lat": 42.3860,
+              "lng": -82.9080
+            },
+            "significance": "Location of Eleanore Paget's estate in August Snow (2017). Represents the wealth-poverty contrast."
+          },
+          {
+            "name": "Detroit River",
+            "coordinates": {
+              "lat": 42.3100,
+              "lng": -83.0650
+            },
+            "significance": "US-Canada border. Body recovered in Lives Laid Away (2019). Central to trafficking and immigration themes."
+          }
+        ]
+      },
+      "connections": [],
+      "sources": {
+        "primary": [
+          {
+            "title": "August Snow",
+            "type": "novel",
+            "year": 2017,
+            "url": "https://www.stephenmackjones.com/august-snow-books"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Stephen Mack Jones on Detroit, Crime Fiction, and Working Class Heroes — CrimeReads",
+            "type": "interview",
+            "year": 2019,
+            "url": "https://crimereads.com/stephen-mack-jones-on-detroit-crime-fiction-and-working-class-heroes/"
+          },
+          {
+            "title": "Stephen Mack Jones Discusses His Latest Novel 'Deus X' — Hour Detroit Magazine",
+            "type": "interview",
+            "year": 2023,
+            "url": "https://www.hourdetroit.com/books-literature/stephen-mack-jones-discusses-his-latest-novel-dues-x/"
+          }
+        ],
+        "archival": []
+      }
+    }
+  ]
+},
     {
       "_divider": "────────── DET: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
