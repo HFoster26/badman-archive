@@ -39,7 +39,7 @@
     --dba-revolutionary: #dc3545;
     --dba-folk-hero: #d4af37;
     --dba-gangsta-pimp: #6f42c1;
-    --dba-superhero: #20c997;
+    --dba-superhero: #fd7e14;
 
     /* Focus */
     --dba-focus-ring: #d4af37;
@@ -398,13 +398,11 @@ p {
     display: inline-block;
 }
 
-/* Detective: Pin / teardrop */
+/* Detective: Circle */ 
 .legend-detective {
     background-color: var(--dba-detective);
-    border-radius: 50% 50% 50% 0;
-    transform: rotate(-45deg);
+    border-radius: 50%;
 }
-
 /* Revolutionary: Star */
 .legend-revolutionary {
     background-color: var(--dba-revolutionary);
@@ -425,7 +423,7 @@ p {
 
 /* Superhero-Villain: Hexagon */
 .legend-superhero-villain {
-    background-color: var(--dba-superhero);
+    background-color: var(--dba-shv);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
 }
 
@@ -438,6 +436,11 @@ p {
 .legend-node-revolutionary {
     background-color: var(--dba-revolutionary);
     clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.legend-node-shv {
+    background-color: #fd7e14;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
 }
 
 /*
@@ -492,6 +495,18 @@ p {
         var(--dba-detective) 14px,
         transparent 14px,
         transparent 18px
+    );
+}
+
+/* CC: Double dot */
+.legend-cc {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        #e83e8c 0px,
+        #e83e8c 2px,
+        transparent 2px,
+        transparent 4px
     );
 }
 
