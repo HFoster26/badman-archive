@@ -36,7 +36,11 @@
     }
   },
   "figures": [
+
+
+
     {
+      "_divider": "══════════ GANGSTA-PIMP MODALITY ══════════",
       "id": "goines_donald",
       "name": "Donald Goines",
       "type": "real",
@@ -116,7 +120,8 @@
       },
       "biography": {
         "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan's prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
-        "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine's methods. Currently written without modality framing."
+        "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine's methods. Currently written without modality framing.",
+        "key_events": []
       },
       "geographic": {
         "primary_location": {
@@ -212,7 +217,17 @@
         ]
       }
     },
+
     {
+      "_divider": "────────── GPM: ADD NEW ENTRY HERE ──────────",
+      "_placeholder": true,
+      "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+    },
+
+
+
+    {
+      "_divider": "══════════ REVOLUTIONARY MODALITY ══════════",
       "id": "kenyatta",
       "name": "Kenyatta",
       "type": "fictional",
@@ -377,145 +392,9 @@
         "archival": []
       }
     },
+
     {
-      "id": "action_jackson",
-      "name": "Jericho 'Action' Jackson",
-      "type": "fictional",
-      "meta_badman": false,
-      "modality": "detective",
-      "medium": "film",
-      "genre": "action",
-      "creator_id": null,
-      "years": {
-        "active_start": 1988,
-        "active_end": 1988
-      },
-      "emergence": {
-        "year": 1988,
-        "context": "Film released February 12, 1988. Character originated from Carl Weathers's conversation with Predator producer Joel Silver about their shared love of Shaft and 1970s blaxploitation cinema. Weathers developed the concept; Robert Reneau wrote the screenplay.",
-        "source": {
-          "title": "Action Jackson",
-          "url": "https://www.imdb.com/title/tt0094612/"
-        }
-      },
-      "scores": {
-        "outlaw_relationship": {
-          "score": 4,
-          "justification": "Operates within legal system as Detroit police sergeant but was demoted for excessive force. Goes fully vigilante after being framed for murder, operating outside law to clear his name and bring down Dellaplane."
-        },
-        "community_authorization": {
-          "score": 4,
-          "justification": "Protects auto workers union members against corporate assassination. Partners with Sydney Ash, representing protection of vulnerable community members. However, his authorization comes more from institutional badge than grassroots community."
-        },
-        "violence_as_language": {
-          "score": 5,
-          "justification": "Violence defines his character from opening scene. Demoted for nearly tearing off a man's arm. The film is structured around escalating physical confrontations, car chases, explosions, and hand-to-hand combat."
-        },
-        "cultural_preservation": {
-          "score": 3,
-          "justification": "Preserves and updates blaxploitation tradition for 1980s audiences. Carl Weathers explicitly conceived the character from his love of 1970s blaxploitation films. However, the film prioritizes action spectacle over cultural commentary."
-        },
-        "hypermasculine_performance": {
-          "score": 5,
-          "justification": "Peak hypermasculinity: Harvard-educated but physically dominant, witty but brutal. Carl Weathers's physique is central to the character. Reputation precedes him—criminals faint at the mention of his name."
-        }
-      },
-      "influence": {
-        "scale": "1-10",
-        "metric_type": "curated_scholarly_estimate",
-        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
-        "phases": [
-          {
-            "start": 1988,
-            "end": 1992,
-            "value": 4,
-            "justification": "PLACEHOLDER — $20.28M domestic box office on $7M budget. Commercially successful but critically dismissed. Immediate cultural impact through theatrical run and VHS distribution. Became a cable television staple.",
-            "source": "Box Office Mojo"
-          },
-          {
-            "start": 1993,
-            "end": 2010,
-            "value": 2,
-            "justification": "PLACEHOLDER — Film fades from active cultural conversation. Cult following sustained through cable reruns and home video. Not cited in scholarly or critical discourse on Black action cinema.",
-            "source": "TBD"
-          },
-          {
-            "start": 2011,
-            "end": 2025,
-            "value": 2,
-            "justification": "PLACEHOLDER — Nostalgic rediscovery through streaming platforms and social media. Minor cult status but not a significant cultural force. Occasionally referenced in discussions of 1980s Black action cinema.",
-            "source": "TBD"
-          }
-        ]
-      },
-      "biography": {
-        "description": "Jericho 'Action' Jackson is a Detroit Police Department sergeant who combines Ivy League education with street-level brutality. A Harvard Law graduate, Jackson was demoted from lieutenant after nearly tearing the arm off of Sean Dellaplane, son of powerful auto industry magnate Peter Dellaplane. When Dellaplane Sr. begins systematically murdering union officials to consolidate political power, Jackson investigates—only to be framed for the murder of Dellaplane's wife. Going vigilante with the help of Sydney Ash, a nightclub singer Dellaplane has addicted to heroin, Jackson wages a one-man war against the industrial conspiracy. The character emerged from Carl Weathers's conversations with producer Joel Silver about their shared love of 1970s blaxploitation films, updating that tradition for Reagan-era action cinema.",
-        "key_events": [
-          {
-            "year": 1988,
-            "event": "Film released February 12, 1988 by Lorimar Film Entertainment",
-            "location": "Detroit, MI (setting)"
-          },
-          {
-            "year": 1988,
-            "event": "Jackson demoted from lieutenant for excessive force against Sean Dellaplane",
-            "location": "Detroit, MI (fictional)"
-          },
-          {
-            "year": 1988,
-            "event": "Framed for murder of Patrice Dellaplane, goes vigilante",
-            "location": "Detroit, MI (fictional)"
-          },
-          {
-            "year": 1988,
-            "event": "Final confrontation with Peter Dellaplane",
-            "location": "Detroit, MI (fictional)"
-          }
-        ],
-        "creator": "Carl Weathers (story), Robert Reneau (screenplay)",
-        "source_text": "Action Jackson (1988 film)"
-      },
-      "geographic": {
-        "primary_location": {
-          "name": "Detroit (fictional)",
-          "coordinates": {
-            "lat": 42.3314,
-            "lng": -83.0458
-          }
-        },
-        "territory": {
-          "description": "Jackson operates throughout Detroit's industrial landscape, from auto plants to executive offices to nightclubs. His territory encompasses both the working-class union halls and the elite spaces where Dellaplane's conspiracy unfolds. Though filmed primarily in Los Angeles, the film establishes Detroit's auto industry as central to its setting.",
-          "polygon": [
-            [42.38, -83.12],
-            [42.38, -83.0],
-            [42.28, -83.0],
-            [42.28, -83.12]
-          ]
-        },
-        "additional_locations": []
-      },
-      "connections": [],
-      "sources": {
-        "primary": [
-          {
-            "title": "Action Jackson",
-            "type": "film",
-            "year": 1988,
-            "url": "https://www.imdb.com/title/tt0094612/"
-          }
-        ],
-        "secondary": [
-          {
-            "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
-            "type": "academic",
-            "year": 2003,
-            "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
-          }
-        ],
-        "archival": []
-      }
-    },
-    {
+      "_divider": "────────── PRM: Ron Scott ──────────",
       "id": "scott_ron",
       "name": "Ron Scott",
       "type": "real",
@@ -733,7 +612,9 @@
         ]
       }
     },
+
     {
+      "_divider": "────────── PRM: General Gordon Baker Jr. ──────────",
       "id": "baker_gordon",
       "name": "General Gordon Baker Jr.",
       "type": "real",
@@ -961,7 +842,9 @@
         ]
       }
     },
+
     {
+      "_divider": "────────── PRM: Obadele Brothers ──────────",
       "id": "obadele_brothers",
       "name": "Gaidi & Imari Obadele",
       "type": "real",
@@ -1258,6 +1141,177 @@
           }
         ]
       }
+    },
+
+    {
+      "_divider": "────────── PRM: ADD NEW ENTRY HERE ──────────",
+      "_placeholder": true,
+      "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+    },
+
+
+
+    {
+      "_divider": "══════════ DETECTIVE MODALITY ══════════",
+      "id": "action_jackson",
+      "name": "Jericho 'Action' Jackson",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "detective",
+      "medium": "film",
+      "genre": "action",
+      "creator_id": null,
+      "years": {
+        "active_start": 1988,
+        "active_end": 1988
+      },
+      "emergence": {
+        "year": 1988,
+        "context": "Film released February 12, 1988. Character originated from Carl Weathers's conversation with Predator producer Joel Silver about their shared love of Shaft and 1970s blaxploitation cinema. Weathers developed the concept; Robert Reneau wrote the screenplay.",
+        "source": {
+          "title": "Action Jackson",
+          "url": "https://www.imdb.com/title/tt0094612/"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 4,
+          "justification": "Operates within legal system as Detroit police sergeant but was demoted for excessive force. Goes fully vigilante after being framed for murder, operating outside law to clear his name and bring down Dellaplane."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Protects auto workers union members against corporate assassination. Partners with Sydney Ash, representing protection of vulnerable community members. However, his authorization comes more from institutional badge than grassroots community."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Violence defines his character from opening scene. Demoted for nearly tearing off a man's arm. The film is structured around escalating physical confrontations, car chases, explosions, and hand-to-hand combat."
+        },
+        "cultural_preservation": {
+          "score": 3,
+          "justification": "Preserves and updates blaxploitation tradition for 1980s audiences. Carl Weathers explicitly conceived the character from his love of 1970s blaxploitation films. However, the film prioritizes action spectacle over cultural commentary."
+        },
+        "hypermasculine_performance": {
+          "score": 5,
+          "justification": "Peak hypermasculinity: Harvard-educated but physically dominant, witty but brutal. Carl Weathers's physique is central to the character. Reputation precedes him—criminals faint at the mention of his name."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1988,
+            "end": 1992,
+            "value": 4,
+            "justification": "PLACEHOLDER — $20.28M domestic box office on $7M budget. Commercially successful but critically dismissed. Immediate cultural impact through theatrical run and VHS distribution. Became a cable television staple.",
+            "source": "Box Office Mojo"
+          },
+          {
+            "start": 1993,
+            "end": 2010,
+            "value": 2,
+            "justification": "PLACEHOLDER — Film fades from active cultural conversation. Cult following sustained through cable reruns and home video. Not cited in scholarly or critical discourse on Black action cinema.",
+            "source": "TBD"
+          },
+          {
+            "start": 2011,
+            "end": 2025,
+            "value": 2,
+            "justification": "PLACEHOLDER — Nostalgic rediscovery through streaming platforms and social media. Minor cult status but not a significant cultural force. Occasionally referenced in discussions of 1980s Black action cinema.",
+            "source": "TBD"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Jericho 'Action' Jackson is a Detroit Police Department sergeant who combines Ivy League education with street-level brutality. A Harvard Law graduate, Jackson was demoted from lieutenant after nearly tearing the arm off of Sean Dellaplane, son of powerful auto industry magnate Peter Dellaplane. When Dellaplane Sr. begins systematically murdering union officials to consolidate political power, Jackson investigates—only to be framed for the murder of Dellaplane's wife. Going vigilante with the help of Sydney Ash, a nightclub singer Dellaplane has addicted to heroin, Jackson wages a one-man war against the industrial conspiracy. The character emerged from Carl Weathers's conversations with producer Joel Silver about their shared love of 1970s blaxploitation films, updating that tradition for Reagan-era action cinema.",
+        "key_events": [
+          {
+            "year": 1988,
+            "event": "Film released February 12, 1988 by Lorimar Film Entertainment",
+            "location": "Detroit, MI (setting)"
+          },
+          {
+            "year": 1988,
+            "event": "Jackson demoted from lieutenant for excessive force against Sean Dellaplane",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1988,
+            "event": "Framed for murder of Patrice Dellaplane, goes vigilante",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1988,
+            "event": "Final confrontation with Peter Dellaplane",
+            "location": "Detroit, MI (fictional)"
+          }
+        ],
+        "creator": "Carl Weathers (story), Robert Reneau (screenplay)",
+        "source_text": "Action Jackson (1988 film)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Detroit (fictional)",
+          "coordinates": {
+            "lat": 42.3314,
+            "lng": -83.0458
+          }
+        },
+        "territory": {
+          "description": "Jackson operates throughout Detroit's industrial landscape, from auto plants to executive offices to nightclubs. His territory encompasses both the working-class union halls and the elite spaces where Dellaplane's conspiracy unfolds. Though filmed primarily in Los Angeles, the film establishes Detroit's auto industry as central to its setting.",
+          "polygon": [
+            [42.38, -83.12],
+            [42.38, -83.0],
+            [42.28, -83.0],
+            [42.28, -83.12]
+          ]
+        },
+        "additional_locations": []
+      },
+      "connections": [],
+      "sources": {
+        "primary": [
+          {
+            "title": "Action Jackson",
+            "type": "film",
+            "year": 1988,
+            "url": "https://www.imdb.com/title/tt0094612/"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+            "type": "academic",
+            "year": 2003,
+            "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
+          }
+        ],
+        "archival": []
+      }
+    },
+
+    {
+      "_divider": "────────── DET: ADD NEW ENTRY HERE ──────────",
+      "_placeholder": true,
+      "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+    },
+
+
+
+    {
+      "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
+      "_placeholder": true,
+      "_instructions": "SVM modality staged for launch. Add first entry here. Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+    },
+
+
+
+    {
+      "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
+      "_placeholder": true,
+      "_instructions": "FHOM modality reserved for future expansion. No Detroit figures identified yet. When adding the first entry, copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     }
+
   ]
 }
