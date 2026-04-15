@@ -1410,7 +1410,7 @@
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
     
-// Detective Modality //
+
     {
       "_divider": "────────── DET: Action Jackson ──────────",
       "id": "action_jackson",
@@ -2278,16 +2278,12 @@
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
 
-
-// Superhero-villain Modality //
     {
       "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
       "_placeholder": true,
       "_instructions": "SVM modality staged for launch. Add first entry here. Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
 
-
-// Folk Hero-Outlaw Modality //
     {
       "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
       "_placeholder": true,
