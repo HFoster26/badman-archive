@@ -36,9 +36,6 @@
     }
   },
   "figures": [
-
-
-
     {
       "_divider": "══════════ GANGSTA-PIMP MODALITY ══════════",
       "id": "goines_donald",
@@ -119,8 +116,8 @@
         ]
       },
       "biography": {
-        "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan's prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
-        "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine's methods. Currently written without modality framing.",
+        "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan’s prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
+        "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine’s methods. Currently written without modality framing.",
         "key_events": []
       },
       "geographic": {
@@ -134,10 +131,22 @@
         "territory": {
           "description": "Goines operated primarily in Black Bottom and the surrounding East Side of Detroit, with significant presence in Highland Park where he lived and died. His territory spanned the traditional Black neighborhoods along Hastings Street before urban renewal destroyed the community, and later the areas around Highland Park that absorbed displaced residents.",
           "polygon": [
-            [42.345, -83.055],
-            [42.345, -83.025],
-            [42.32, -83.025],
-            [42.32, -83.055]
+            [
+              42.345,
+              -83.055
+            ],
+            [
+              42.345,
+              -83.025
+            ],
+            [
+              42.32,
+              -83.025
+            ],
+            [
+              42.32,
+              -83.055
+            ]
           ]
         },
         "additional_locations": [
@@ -147,7 +156,7 @@
               "lat": 42.4056,
               "lng": -83.0977
             },
-            "significance": "Site of Goines's murder alongside Shirley Sailor, October 21, 1974"
+            "significance": "Site of Goines’s murder alongside Shirley Sailor, October 21, 1974"
           },
           {
             "name": "Jackson State Prison",
@@ -167,7 +176,7 @@
           "tier": 1,
           "start_year": 1974,
           "end_year": 1975,
-          "evidence": "Goines created Kenyatta under pseudonym Al C. Clark, publishing four novels (Crime Partners, Death List, Kenyatta's Escape, Kenyatta's Last Hit) between 1974-1975.",
+          "evidence": "Goines created Kenyatta under pseudonym Al C. Clark, publishing four novels (Crime Partners, Death List, Kenyatta’s Escape, Kenyatta’s Last Hit) between 1974-1975.",
           "source": "Holloway House publication records; novels carry Al C. Clark pseudonym"
         }
       ],
@@ -217,17 +226,13 @@
         ]
       }
     },
-
     {
       "_divider": "────────── GPM: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
-
-
-
     {
-      "_divider": "══════════ REVOLUTIONARY MODALITY ══════════",
+      "_divider": "────────── PRM: Kenyatta ──────────",
       "id": "kenyatta",
       "name": "Kenyatta",
       "type": "fictional",
@@ -242,7 +247,7 @@
       },
       "emergence": {
         "year": 1974,
-        "context": "First appearance in Crime Partners, published by Holloway House under Goines's pseudonym Al C. Clark. Introduced as leader of a paramilitary organization waging war against drug dealers and racist police in Detroit.",
+        "context": "First appearance in Crime Partners, published by Holloway House under Goines’s pseudonym Al C. Clark. Introduced as leader of a paramilitary organization waging war against drug dealers and racist police in Detroit.",
         "source": {
           "title": "Crime Partners",
           "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
@@ -279,7 +284,7 @@
             "start": 1974,
             "end": 1975,
             "value": 5,
-            "justification": "PLACEHOLDER — Four novels published in rapid succession. Readership tied to Goines's existing audience. Character represents Goines's revolutionary vision but published under pseudonym, limiting initial recognition.",
+            "justification": "PLACEHOLDER — Four novels published in rapid succession. Readership tied to Goines’s existing audience. Character represents Goines’s revolutionary vision but published under pseudonym, limiting initial recognition.",
             "source": "TBD"
           },
           {
@@ -293,13 +298,13 @@
             "start": 2000,
             "end": 2025,
             "value": 2,
-            "justification": "PLACEHOLDER — Goines's broader catalog overshadows the Kenyatta series. Novels available but not actively driving cultural conversation. Scholarly interest in Goines rarely centers the Kenyatta character specifically.",
+            "justification": "PLACEHOLDER — Goines’s broader catalog overshadows the Kenyatta series. Novels available but not actively driving cultural conversation. Scholarly interest in Goines rarely centers the Kenyatta character specifically.",
             "source": "TBD"
           }
         ]
       },
       "biography": {
-        "description": "Kenyatta is the protagonist of Donald Goines's four-novel series published under the pseudonym Al C. Clark. Named after Jomo Kenyatta, the father of Kenyan independence, he leads a militant organization of Black men and women dedicated to cleansing Detroit's ghettos of drug dealers and racist police officers. Operating from a fortified farm outside the city where he trains his soldiers, Kenyatta wages a systematic war against the forces destroying his community. The series follows his escalating conflict with both the criminal underworld and law enforcement, culminating in a cross-country chase that ends in Las Vegas. Kenyatta represents Goines's vision of what organized Black resistance might look like—a disciplined, armed, community-authorized force operating outside the law to protect those the law refuses to serve.",
+        "description": "Kenyatta is the protagonist of Donald Goines’s four-novel series published under the pseudonym Al C. Clark. Named after Jomo Kenyatta, the father of Kenyan independence, he leads a militant organization of Black men and women dedicated to cleansing Detroit’s ghettos of drug dealers and racist police officers. Operating from a fortified farm outside the city where he trains his soldiers, Kenyatta wages a systematic war against the forces destroying his community. The series follows his escalating conflict with both the criminal underworld and law enforcement, culminating in a cross-country chase that ends in Las Vegas. Kenyatta represents Goines’s vision of what organized Black resistance might look like—a disciplined, armed, community-authorized force operating outside the law to protect those the law refuses to serve.",
         "key_events": [
           {
             "year": 1974,
@@ -308,17 +313,17 @@
           },
           {
             "year": 1974,
-            "event": "Death List published, following Kenyatta's systematic elimination of drug suppliers",
+            "event": "Death List published, following Kenyatta’s systematic elimination of drug suppliers",
             "location": "Detroit, MI (fictional)"
           },
           {
             "year": 1974,
-            "event": "Kenyatta's Escape published, depicting hijacking and cross-country flight",
+            "event": "Kenyatta’s Escape published, depicting hijacking and cross-country flight",
             "location": "Nevada/Los Angeles (fictional)"
           },
           {
             "year": 1975,
-            "event": "Kenyatta's Last Hit published posthumously, concluding series in Las Vegas showdown",
+            "event": "Kenyatta’s Last Hit published posthumously, concluding series in Las Vegas showdown",
             "location": "Las Vegas, NV (fictional)"
           }
         ],
@@ -334,12 +339,24 @@
           }
         },
         "territory": {
-          "description": "Kenyatta operates from a fortified training farm outside Detroit while conducting operations throughout the city's Black neighborhoods. His territory extends wherever drug dealers and corrupt police operate, making the entire ghetto his zone of operation. The series eventually expands his territory westward through Nevada to Los Angeles as he flees law enforcement.",
+          "description": "Kenyatta operates from a fortified training farm outside Detroit while conducting operations throughout the city’s Black neighborhoods. His territory extends wherever drug dealers and corrupt police operate, making the entire ghetto his zone of operation. The series eventually expands his territory westward through Nevada to Los Angeles as he flees law enforcement.",
           "polygon": [
-            [42.4, -83.1],
-            [42.4, -82.95],
-            [42.3, -82.95],
-            [42.3, -83.1]
+            [
+              42.4,
+              -83.1
+            ],
+            [
+              42.4,
+              -82.95
+            ],
+            [
+              42.3,
+              -82.95
+            ],
+            [
+              42.3,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
@@ -369,13 +386,13 @@
             "url": "https://www.kensingtonbooks.com/9781496735966/death-list/"
           },
           {
-            "title": "Kenyatta's Escape",
+            "title": "Kenyatta’s Escape",
             "type": "novel",
             "year": 1974,
             "url": "https://www.kensingtonbooks.com/9781496739377/kenyattas-escape/"
           },
           {
-            "title": "Kenyatta's Last Hit",
+            "title": "Kenyatta’s Last Hit",
             "type": "novel",
             "year": 1975,
             "url": "https://www.kensingtonbooks.com/9781496742988/kenyattas-last-hit/"
@@ -392,7 +409,6 @@
         "archival": []
       }
     },
-
     {
       "_divider": "────────── PRM: Ron Scott ──────────",
       "id": "scott_ron",
@@ -518,10 +534,22 @@
         "territory": {
           "description": "Scott's territory encompassed Detroit's Black neighborhoods from his childhood in Jeffries Projects through decades of organizing. His work with Peace Zones for Life focused on specific neighborhoods plagued by violence, while his advocacy reached citywide through police commission meetings and media appearances. St. Matthew/St. Joseph Church, where he first encountered Kathleen Cleaver, marked a key location in his political awakening.",
           "polygon": [
-            [42.36, -83.1],
-            [42.36, -83.04],
-            [42.31, -83.04],
-            [42.31, -83.1]
+            [
+              42.36,
+              -83.1
+            ],
+            [
+              42.36,
+              -83.04
+            ],
+            [
+              42.31,
+              -83.04
+            ],
+            [
+              42.31,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
@@ -612,7 +640,6 @@
         ]
       }
     },
-
     {
       "_divider": "────────── PRM: General Gordon Baker Jr. ──────────",
       "id": "baker_gordon",
@@ -753,10 +780,22 @@
         "territory": {
           "description": "Baker's territory centered on Detroit's auto plants, particularly Chrysler's Dodge Main in Hamtramck where DRUM was founded. His organizing extended throughout the auto industry across Detroit, including Ford's River Rouge plant and Chrysler's Eldon Avenue facility. Wayne State University, where he studied and founded UHURU, represented another key node. The 12th Street corridor, which he referenced in his draft refusal letter, became the epicenter of the 1967 rebellion.",
           "polygon": [
-            [42.41, -83.1],
-            [42.41, -83.03],
-            [42.33, -83.03],
-            [42.33, -83.1]
+            [
+              42.41,
+              -83.1
+            ],
+            [
+              42.41,
+              -83.03
+            ],
+            [
+              42.33,
+              -83.03
+            ],
+            [
+              42.33,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
@@ -980,10 +1019,22 @@
         "territory": {
           "description": "The Obadele brothers' Detroit organizing was concentrated along the Linwood corridor on the city's west side. Key locations include GOAL headquarters (11605 Linwood), the Shrine of the Black Madonna where the RNA was founded (7625 Linwood), New Bethel Baptist Church where the 1969 police shootout occurred (8430 C.L. Franklin Blvd/Linwood), and King Solomon Baptist Church where Malcolm X delivered his most famous speeches (6100 14th Street). This stretch of Detroit's Dexter-Linwood and surrounding neighborhoods was the geographic heart of the city's Black nationalist movement in the 1960s.",
           "polygon": [
-            [42.386, -83.119],
-            [42.386, -83.088],
-            [42.356, -83.088],
-            [42.356, -83.119]
+            [
+              42.386,
+              -83.119
+            ],
+            [
+              42.386,
+              -83.088
+            ],
+            [
+              42.356,
+              -83.088
+            ],
+            [
+              42.356,
+              -83.119
+            ]
           ]
         },
         "additional_locations": [
@@ -1006,7 +1057,7 @@
           {
             "name": "King Solomon Baptist Church (6100 14th St)",
             "coordinates": {
-              "lat": 42.359740,
+              "lat": 42.35974,
               "lng": -83.092319
             },
             "significance": "Malcolm X delivered 'Message to the Grassroots' (1963) and 'The Ballot or the Bullet' (1964)"
@@ -1142,7 +1193,7 @@
       }
     },
     {
-      "_divider": "────────── PRM: Glanton Dowdell ──────────",
+      "_divider": "========== REVOLUTIONARY MODALITY ==========",
       "id": "dowdell_glanton",
       "name": "Glanton Dowdell",
       "type": "real",
@@ -1158,8 +1209,8 @@
         "year": 1965,
         "context": "Joined the radical cadre around General Gordon Baker Jr., John Watson, John Williams, and Luke Tripp — the nucleus that would form the League of Revolutionary Black Workers. Dowdell's street experience from twelve years in Jackson Prison added tactical knowledge to the group's political education.",
         "source": {
-        "title": "The League of Revolutionary Black Workers — A Historical Study",
-        "url": "https://www.historyisaweapon.com/defcon1/rbwstudy.html"
+          "title": "The League of Revolutionary Black Workers — A Historical Study",
+          "url": "https://www.historyisaweapon.com/defcon1/rbwstudy.html"
         }
       },
       "scores": {
@@ -1280,10 +1331,22 @@
         "territory": {
           "description": "Dowdell's Detroit organizing centered on two nodes: the Linwood/Twelfth Street corridor on the west side (Shrine of the Black Madonna, Easel Gallery, New Bethel Baptist Church — all within a half-mile radius) and the Black Bottom neighborhood on the east side where he was born. The Linwood corridor was the geographic heart of Detroit's Black nationalist movement in the 1960s.",
           "polygon": [
-            [42.386, -83.115],
-            [42.386, -83.085],
-            [42.350, -83.085],
-            [42.350, -83.115]
+            [
+              42.386,
+              -83.115
+            ],
+            [
+              42.386,
+              -83.085
+            ],
+            [
+              42.35,
+              -83.085
+            ],
+            [
+              42.35,
+              -83.115
+            ]
           ]
         },
         "additional_locations": [
@@ -1298,7 +1361,7 @@
           {
             "name": "Black Bottom neighborhood (St. Antoine and Palmer)",
             "coordinates": {
-              "lat": 42.340,
+              "lat": 42.34,
               "lng": -83.037
             },
             "significance": "Birthplace and childhood home"
@@ -1351,13 +1414,25 @@
             "title": "Black Madonna and Child mural (1967) — Shrine of the Black Madonna, 7625 Linwood St, Detroit",
             "type": "artwork",
             "year": 1967,
-            "url": "https://maps.app.goo.gl/mPDpjg7wE2at8owN8"
+            "url": null
           },
           {
             "title": "Southeast Corner of My Cell (1955) — oil on canvas, owned by Donnell Walker, Yeadon PA",
             "type": "artwork",
             "year": 1955,
-            "url": "https://images.squarespace-cdn.com/content/v1/5e8778b5608bdc72a92dd6b4/282297b0-5da1-4df6-84e3-e2fde2ac9481/Glanton+Dowdell%2C+Southeast+Corner+of+my+Cell%2C+1955%2C+oil+on+canvas.jpg?format=2500w"
+            "url": null
+          },
+          {
+            "title": "Untitled lynching painting (1975) — Charles H. Wright Museum permanent collection",
+            "type": "artwork",
+            "year": 1975,
+            "url": null
+          },
+          {
+            "title": "Unpublished memoir — held by daughter Anna Simoni, Sweden",
+            "type": "manuscript",
+            "year": null,
+            "url": null
           }
         ],
         "secondary": [
@@ -1383,7 +1458,7 @@
             "title": "An American Dilemma? The Swedish History of Finally Got the News (1970) — John Sundholm, Black Camera Vol. 15 No. 2",
             "type": "academic",
             "year": 2024,
-            "url": "https://urn.kb.se/resolve?urn=urn:nbn:se:su:diva-231100"
+            "url": null
           }
         ],
         "archival": [
@@ -1400,17 +1475,22 @@
             "repository": "Walter P. Reuther Library, Wayne State University",
             "url": "https://archives.wayne.edu/repositories/2/resources/1425",
             "notes": "Primary source for League of Revolutionary Black Workers activities including Dowdell's role."
+          },
+          {
+            "title": "Untitled lynching painting (1975) in permanent collection",
+            "type": "institutional",
+            "repository": "Charles H. Wright Museum of African American History",
+            "url": null,
+            "notes": "Exhibited in Luminosity: A Detroit Arts Gathering (2025-2026). Mailed from Sweden with note: 'Here — this is for you. This is what I'm thinking about in Sweden.'"
           }
         ]
       }
     },
-      {
+    {
       "_divider": "────────── PRM: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
-    
-
     {
       "_divider": "────────── DET: Action Jackson ──────────",
       "id": "action_jackson",
@@ -1521,10 +1601,22 @@
         "territory": {
           "description": "Jackson operates throughout Detroit's industrial landscape, from auto plants to executive offices to nightclubs. His territory encompasses both the working-class union halls and the elite spaces where Dellaplane's conspiracy unfolds. Though filmed primarily in Los Angeles, the film establishes Detroit's auto industry as central to its setting.",
           "polygon": [
-            [42.38, -83.12],
-            [42.38, -83.0],
-            [42.28, -83.0],
-            [42.28, -83.12]
+            [
+              42.38,
+              -83.12
+            ],
+            [
+              42.38,
+              -83.0
+            ],
+            [
+              42.28,
+              -83.0
+            ],
+            [
+              42.28,
+              -83.12
+            ]
           ]
         },
         "additional_locations": []
@@ -1551,7 +1643,7 @@
       }
     },
     {
-      "_divider": "────────── DET: Moses Baldwin ──────────",
+      "_divider": "========== DETECTIVE MODALITY ==========",
       "id": "baldwin_moses",
       "name": "Moses Baldwin",
       "type": "real",
@@ -1689,17 +1781,29 @@
         "territory": {
           "description": "Baldwin's operational territory spans a corridor from Black Bottom/Eastern Market (east side) through downtown/Greektown (DPD headquarters at 1300 Beaubien) to the west side neighborhoods along 12th Street/Rosa Parks Boulevard and Linwood — the areas that were the geographic heart of Black Detroit from the 1950s through the 1970s. The anti-STRESS protest march ran from Masonic Temple (500 Temple Street) to Kennedy Square downtown.",
           "polygon": [
-            [42.380, -83.100],
-            [42.380, -83.030],
-            [42.325, -83.030],
-            [42.325, -83.100]
+            [
+              42.38,
+              -83.1
+            ],
+            [
+              42.38,
+              -83.03
+            ],
+            [
+              42.325,
+              -83.03
+            ],
+            [
+              42.325,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Miller High School (Black Bottom neighborhood)",
             "coordinates": {
-              "lat": 42.340,
+              "lat": 42.34,
               "lng": -83.037
             },
             "significance": "Baldwin's alma mater (graduated 1947). Alumni include Coleman Young, Charles Diggs Jr., Della Reese."
@@ -1807,7 +1911,6 @@
       }
     },
     {
-      "_divider": "────────── DET: Lincoln Keller ──────────",
       "id": "keller_lincoln",
       "name": "Lincoln Keller",
       "type": "fictional",
@@ -1892,17 +1995,29 @@
         "primary_location": {
           "name": "Cass Corridor (Detroit)",
           "coordinates": {
-            "lat": 42.3450,
-            "lng": -83.0600
+            "lat": 42.345,
+            "lng": -83.06
           }
         },
         "territory": {
           "description": "Lincoln Keller operates primarily in the Cass Corridor (now partially rebranded as Midtown), running roughly from the Lodge Freeway east to Woodward Avenue between Warren Avenue and the Fisher Freeway. The first novel's flashback sequences reconstruct Detroit's pre-Motown Black commercial districts near Paradise Valley and Black Bottom. Reviewers describe the novels as providing 'a grand tour of Detroit' with unmatched street-level authenticity of 1990s inner-city Detroit.",
           "polygon": [
-            [42.360, -83.070],
-            [42.360, -83.045],
-            [42.330, -83.045],
-            [42.330, -83.070]
+            [
+              42.36,
+              -83.07
+            ],
+            [
+              42.36,
+              -83.045
+            ],
+            [
+              42.33,
+              -83.045
+            ],
+            [
+              42.33,
+              -83.07
+            ]
           ]
         },
         "additional_locations": []
@@ -1941,7 +2056,6 @@
       }
     },
     {
-      "_divider": "────────── DET: Jesse Williams ──────────",
       "id": "williams_jesse",
       "name": "Sgt. Jesse Williams",
       "type": "fictional",
@@ -2050,26 +2164,38 @@
         "territory": {
           "description": "The film was shot on location in Detroit in April 1973. Williams's territory traces a rough triangle across Detroit's core: downtown (Book Cadillac Hotel on Washington Boulevard, DPD Headquarters at 1300 Beaubien), east to Elmwood Cemetery (1200 Elmwood Avenue) for the climactic shootout, northwest to Sacred Heart Seminary (2701 West Chicago Boulevard), and south to Fort Street Union Depot. Real Detroit landmarks visible include the J.L. Hudson department store and Detroit Memorial Hospital.",
           "polygon": [
-            [42.360, -83.065],
-            [42.360, -83.035],
-            [42.320, -83.035],
-            [42.320, -83.065]
+            [
+              42.36,
+              -83.065
+            ],
+            [
+              42.36,
+              -83.035
+            ],
+            [
+              42.32,
+              -83.035
+            ],
+            [
+              42.32,
+              -83.065
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Elmwood Cemetery (1200 Elmwood Avenue)",
             "coordinates": {
-              "lat": 42.3450,
-              "lng": -83.0280
+              "lat": 42.345,
+              "lng": -83.028
             },
             "significance": "Site of climactic shootout. Founded 1846, Detroit's oldest non-denominational cemetery."
           },
           {
             "name": "Fort Street Union Depot",
             "coordinates": {
-              "lat": 42.3250,
-              "lng": -83.0600
+              "lat": 42.325,
+              "lng": -83.06
             },
             "significance": "Abandoned railroad station used for chase sequence."
           },
@@ -2111,7 +2237,6 @@
       }
     },
     {
-      "_divider": "────────── DET: August Snow ──────────",
       "id": "snow_august",
       "name": "August Octavio Snow",
       "type": "fictional",
@@ -2213,33 +2338,45 @@
         "primary_location": {
           "name": "Mexicantown (Southwest Detroit)",
           "coordinates": {
-            "lat": 42.3080,
-            "lng": -83.0730
+            "lat": 42.308,
+            "lng": -83.073
           }
         },
         "territory": {
           "description": "August Snow operates primarily in Mexicantown (Southwest Detroit), the historically Mexican American neighborhood where he grew up and returned to after his settlement. The main commercial corridors are Bagley Street and West Vernor Highway. His fictional home street, West Markham, is a twelve-house block. The novels map class geography through Detroit's neighborhoods: Mexicantown's working-class community contrasted with Grosse Pointe's wealth, the Detroit River as literal US-Canada border, and the gentrification threat of developers rebranding the neighborhood as 'East Corktown.'",
           "polygon": [
-            [42.325, -83.095],
-            [42.325, -83.055],
-            [42.295, -83.055],
-            [42.295, -83.095]
+            [
+              42.325,
+              -83.095
+            ],
+            [
+              42.325,
+              -83.055
+            ],
+            [
+              42.295,
+              -83.055
+            ],
+            [
+              42.295,
+              -83.095
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Grosse Pointe Estates",
             "coordinates": {
-              "lat": 42.3860,
-              "lng": -82.9080
+              "lat": 42.386,
+              "lng": -82.908
             },
             "significance": "Location of Eleanore Paget's estate in August Snow (2017). Represents the wealth-poverty contrast."
           },
           {
             "name": "Detroit River",
             "coordinates": {
-              "lat": 42.3100,
-              "lng": -83.0650
+              "lat": 42.31,
+              "lng": -83.065
             },
             "significance": "US-Canada border. Body recovered in Lives Laid Away (2019). Central to trafficking and immigration themes."
           }
@@ -2252,7 +2389,25 @@
             "title": "August Snow",
             "type": "novel",
             "year": 2017,
-            "url": "https://www.stephenmackjones.com/august-snow-books"
+            "url": "https://www.amazon.com/August-Snow-Novel/dp/1616957182"
+          },
+          {
+            "title": "Lives Laid Away",
+            "type": "novel",
+            "year": 2019,
+            "url": null
+          },
+          {
+            "title": "Dead of Winter",
+            "type": "novel",
+            "year": 2021,
+            "url": null
+          },
+          {
+            "title": "Deus X",
+            "type": "novel",
+            "year": 2023,
+            "url": null
           }
         ],
         "secondary": [
@@ -2277,9 +2432,8 @@
       "_placeholder": true,
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
-
     {
-      "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
+      "_divider": "────────── SHV: Static Shock ──────────",
       "id": "static_virgil",
       "name": "Virgil Hawkins / Static",
       "type": "fictional",
@@ -2393,25 +2547,37 @@
         "primary_location": {
           "name": "Paris Island, Dakota City (Detroit analog)",
           "coordinates": {
-            "lat": 42.3500,
-            "lng": -83.0600
+            "lat": 42.35,
+            "lng": -83.06
           }
         },
         "territory": {
           "description": "Static operates in Dakota City, a fictional Midwestern manufacturing city modeled on Detroit. His primary territory is the Paris Island and Sadler neighborhoods — working-class Black communities where the Big Bang occurred. Key locations include Ernest Hemingway High School, Paris Island Hospital (where his father Robert works), Akkad's Arcade, the Freeman Community Center, and Alva Industries headquarters. Dakota's geography mirrors Detroit's post-industrial landscape: segregated neighborhoods, corporate exploitation, gang violence, and resilient community institutions.",
           "polygon": [
-            [42.380, -83.100],
-            [42.380, -83.030],
-            [42.320, -83.030],
-            [42.320, -83.100]
+            [
+              42.38,
+              -83.1
+            ],
+            [
+              42.38,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Alva Industries (Dakota City)",
             "coordinates": {
-              "lat": 42.3300,
-              "lng": -83.0500
+              "lat": 42.33,
+              "lng": -83.05
             },
             "significance": "Dakota's dominant corporation. Manufactured the Quantum Juice mutagen deployed by police during the Big Bang. Parallel to Detroit's auto industry."
           }
@@ -2570,17 +2736,29 @@
         "primary_location": {
           "name": "Alva Industries, Dakota City (Detroit analog)",
           "coordinates": {
-            "lat": 42.3300,
-            "lng": -83.0500
+            "lat": 42.33,
+            "lng": -83.05
           }
         },
         "territory": {
           "description": "Hardware operates throughout Dakota City, with Alva Industries as the primary geographic and narrative anchor. His territory extends wherever Alva's corporate influence reaches — factories, corporate headquarters, criminal operations. Dakota's industrial landscape mirrors Detroit's relationship with its dominant employers: the corporation that built the city is also the corporation destroying it.",
           "polygon": [
-            [42.380, -83.100],
-            [42.380, -83.030],
-            [42.320, -83.030],
-            [42.320, -83.100]
+            [
+              42.38,
+              -83.1
+            ],
+            [
+              42.38,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.1
+            ]
           ]
         },
         "additional_locations": []
@@ -2737,25 +2915,37 @@
         "primary_location": {
           "name": "S.T.A.R. Labs Detroit",
           "coordinates": {
-            "lat": 42.3500,
-            "lng": -83.0550
+            "lat": 42.35,
+            "lng": -83.055
           }
         },
         "territory": {
           "description": "Cyborg operates from S.T.A.R. Labs Detroit — the scientific facility where he was created and where his father worked. DC's official locations confirm Detroit as his hometown. Walker's series grounded Victor in Detroit's community through civilian relationships, protests, and explicit use of the city's corporate-renewal narrative. The Justice League Detroit bunker (1984-87) was located in an industrial district along the Detroit River. The Homecoming series (2023) makes tech-industry gentrification a central plot element.",
           "polygon": [
-            [42.380, -83.090],
-            [42.380, -83.030],
-            [42.320, -83.030],
-            [42.320, -83.090]
+            [
+              42.38,
+              -83.09
+            ],
+            [
+              42.38,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.03
+            ],
+            [
+              42.32,
+              -83.09
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Justice League Detroit Bunker (Detroit River industrial district)",
             "coordinates": {
-              "lat": 42.3200,
-              "lng": -83.0700
+              "lat": 42.32,
+              "lng": -83.07
             },
             "significance": "Headquarters of Justice League of America during the Detroit era (1984-1987). Designed by Dale Gunn."
           }
@@ -2903,25 +3093,37 @@
         "primary_location": {
           "name": "49 Pleasant Road, Detroit",
           "coordinates": {
-            "lat": 42.3550,
-            "lng": -83.0650
+            "lat": 42.355,
+            "lng": -83.065
           }
         },
         "territory": {
           "description": "Jason Rusch operates from a working-class Detroit neighborhood. Key locations include his home at 49 Pleasant Road, Bryson's Family Treat restaurant on Mac Street (his workplace), the Stopwatch Bar (where he meets drug dealer Golek), and the Gregson storage facility (where he first transforms into Firestorm). The series consistently uses downtown Detroit as its primary civilian setting. Jason's neighborhood is depicted as working-class to poor, with his home life under an abusive father as a constant source of trauma.",
           "polygon": [
-            [42.375, -83.090],
-            [42.375, -83.040],
-            [42.330, -83.040],
-            [42.330, -83.090]
+            [
+              42.375,
+              -83.09
+            ],
+            [
+              42.375,
+              -83.04
+            ],
+            [
+              42.33,
+              -83.04
+            ],
+            [
+              42.33,
+              -83.09
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Bryson's Family Treat restaurant (Mac Street)",
             "coordinates": {
-              "lat": 42.3480,
-              "lng": -83.0580
+              "lat": 42.348,
+              "lng": -83.058
             },
             "significance": "Jason's workplace. The series opens with him being sent home due to a facial bruise from his father's abuse — the event that pushes him toward the drug courier job."
           }
@@ -3062,25 +3264,37 @@
         "primary_location": {
           "name": "Detroit (WWII-era, fictional)",
           "coordinates": {
-            "lat": 42.3400,
-            "lng": -83.0500
+            "lat": 42.34,
+            "lng": -83.05
           }
         },
         "territory": {
           "description": "Amazing-Man's Detroit territory is set during the 1940s — the wartime industrial city where his father worked in an auto plant and where the Phantom Empire terrorized Black residents. The All-Star Squadron Detroit storyline (#38-40) depicts a city where Black workers fuel the war effort in factories while facing KKK-style violence in their neighborhoods. Post-war, Everett led civil rights marches through Detroit streets. His territory is the same geography as the archive's real Revolutionary figures — the industrial corridor and Black neighborhoods of mid-century Detroit.",
           "polygon": [
-            [42.380, -83.100],
-            [42.380, -83.030],
-            [42.310, -83.030],
-            [42.310, -83.100]
+            [
+              42.38,
+              -83.1
+            ],
+            [
+              42.38,
+              -83.03
+            ],
+            [
+              42.31,
+              -83.03
+            ],
+            [
+              42.31,
+              -83.1
+            ]
           ]
         },
         "additional_locations": [
           {
             "name": "Detroit auto plant (Everett family workplace)",
             "coordinates": {
-              "lat": 42.3950,
-              "lng": -83.0570
+              "lat": 42.395,
+              "lng": -83.057
             },
             "significance": "Where Will's father found work after the family's Great Migration from Mississippi. Parallels the real experience of millions of Black Southerners who came to Detroit for auto industry jobs."
           }
@@ -3131,15 +3345,14 @@
       }
     },
     {
-      "_divider": "────────── SHV: New Entry Here ──────────",  
+      "_divider": "────────── SHV: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
-      "_instructions": "SVM modality staged for launch. Add first entry here. Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+      "_instructions": "SHV modality staged for launch. Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
-
     {
       "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
       "_placeholder": true,
       "_instructions": "FHOM modality reserved for future expansion. No Detroit figures identified yet. When adding the first entry, copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
-    },
+    }
   ]
 }
