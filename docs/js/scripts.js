@@ -120,7 +120,7 @@ function getModalityConfig(modality) {
             label: 'Star marker — Revolutionary Modality'
         },
         'folk_hero_outlaw': {
-            color: '#d4af37',
+            color: '#fd7e14',
             markerShape: 'triangle',
             networkShape: 'triangle',
             icon: 'diamond',
