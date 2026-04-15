@@ -17,6 +17,10 @@
       "label": "Organizational / Ideological",
       "color": "#3388ff"
     }
+    "CC": {
+    "label": "Creation Continuity",
+    "color": "#e83e8c"
+    }
   },
   "evidence_tiers": {
     "1": {
@@ -2586,7 +2590,7 @@
       "connections": [
         {
           "target_id": "hardware_curtis",
-          "type": "C2C",
+          "type": "CC",
           "direction": "mutual",
           "tier": 1,
           "start_year": 1993,
@@ -2766,7 +2770,7 @@
       "connections": [
         {
           "target_id": "static_virgil",
-          "type": "C2C",
+          "type": "CC",
           "direction": "mutual",
           "tier": 1,
           "start_year": 1993,
@@ -3132,7 +3136,7 @@
       "connections": [
         {
           "target_id": "cyborg_victor",
-          "type": "ORG",
+          "type": "CC",
           "direction": "mutual",
           "tier": 2,
           "start_year": 2007,
@@ -3303,7 +3307,7 @@
       "connections": [
         {
           "target_id": "cyborg_victor",
-          "type": "ORG",
+          "type": "CC",
           "direction": "mutual",
           "tier": 3,
           "start_year": 1983,
