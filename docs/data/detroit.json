@@ -1410,12 +1410,9 @@
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
     
-
-
-
+// Detective Modality //
     {
-      "_divider": "══════════ DETECTIVE MODALITY ══════════",
-      "_divider": "────────── DET: Action Jackson ──────────"
+      "_divider": "────────── DET: Action Jackson ──────────",
       "id": "action_jackson",
       "name": "Jericho 'Action' Jackson",
       "type": "fictional",
@@ -1810,7 +1807,7 @@
       }
     },
     {
-      "_divider": "────────── DET: Lincoln Keller ──────────"
+      "_divider": "────────── DET: Lincoln Keller ──────────",
       "id": "keller_lincoln",
       "name": "Lincoln Keller",
       "type": "fictional",
@@ -1944,6 +1941,7 @@
       }
     },
     {
+      "_divider": "────────── DET: Jesse Williams ──────────",
       "id": "williams_jesse",
       "name": "Sgt. Jesse Williams",
       "type": "fictional",
@@ -2113,7 +2111,7 @@
       }
     },
     {
-      "_divider": "────────── DET: August Snow ──────────"
+      "_divider": "────────── DET: August Snow ──────────",
       "id": "snow_august",
       "name": "August Octavio Snow",
       "type": "fictional",
@@ -2273,9 +2271,7 @@
         ],
         "archival": []
       }
-    }
-  ]
-},
+    },
     {
       "_divider": "────────── DET: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
@@ -2283,7 +2279,7 @@
     },
 
 
-
+// Superhero-villain Modality //
     {
       "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
       "_placeholder": true,
@@ -2291,12 +2287,11 @@
     },
 
 
-
+// Folk Hero-Outlaw Modality //
     {
       "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
       "_placeholder": true,
       "_instructions": "FHOM modality reserved for future expansion. No Detroit figures identified yet. When adding the first entry, copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     }
-
   ]
 }
