@@ -842,7 +842,6 @@
         ]
       }
     },
-
     {
       "_divider": "────────── PRM: Obadele Brothers ──────────",
       "id": "obadele_brothers",
@@ -1402,7 +1401,7 @@
             "repository": "Walter P. Reuther Library, Wayne State University",
             "url": "https://archives.wayne.edu/repositories/2/resources/1425",
             "notes": "Primary source for League of Revolutionary Black Workers activities including Dowdell's role."
-          },
+          }
         ]
       }
     },
