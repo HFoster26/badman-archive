@@ -2280,9 +2280,6 @@
 
     {
       "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
-      [
-    {
-      "_divider": "────────── SHV: Static Shock ──────────",
       "id": "static_virgil",
       "name": "Virgil Hawkins / Static",
       "type": "fictional",
@@ -3143,6 +3140,6 @@
       "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
       "_placeholder": true,
       "_instructions": "FHOM modality reserved for future expansion. No Detroit figures identified yet. When adding the first entry, copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
-    }
+    },
   ]
 }
