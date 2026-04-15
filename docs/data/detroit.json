@@ -2280,6 +2280,861 @@
 
     {
       "_divider": "══════════ SUPERHERO-VILLAIN MODALITY ══════════",
+      [
+    {
+      "_divider": "────────── SHV: Static Shock ──────────",
+      "id": "static_virgil",
+      "name": "Virgil Hawkins / Static",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "superhero_villain",
+      "medium": "comics",
+      "genre": "superhero",
+      "creator_id": null,
+      "years": {
+        "active_start": 1993,
+        "active_end": 2026
+      },
+      "emergence": {
+        "year": 1993,
+        "context": "First appearance in Static #1 (June 1993, on sale April 1993), titled 'Burning Sensation.' Created by Dwayne McDuffie, Denys Cowan, Michael Davis, and Derek T. Dingle for Milestone Comics, distributed by DC Comics. McDuffie, born February 22, 1962, in Detroit, Michigan, explicitly stated that Dakota City was modeled on Detroit's economic dissolution. Named after Virgil D. Hawkins, the Black man denied entrance to the University of Florida's law school in 1949.",
+        "source": {
+          "title": "Static #1",
+          "url": "https://dc.fandom.com/wiki/Static_Vol_1_1"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 4,
+          "justification": "Vigilante teenager operating entirely outside law enforcement. Police CAUSED the Big Bang — deploying experimental Alva Industries chemicals against gang members (original) or tear-gassing BLM protesters (2021 revival). Every continuity positions cops as antagonists or catalysts of the crisis. In Shadows of Dakota (2023), Virgil intervenes when police harass homeless people. Refuses to register or cooperate with authorities."
+        },
+        "community_authorization": {
+          "score": 5,
+          "justification": "Protects Paris Island and Sadler — his own working-class Black neighborhoods. His father Robert works at Paris Island Hospital. His community center, school, and family anchor him. The animated series (2000-2004, 52 episodes, Phil LaMarr) made him the most recognized Black superhero for an entire generation of children. McDuffie said Static 'could easily have been me at that age, if I'd had super powers.'"
+        },
+        "violence_as_language": {
+          "score": 4,
+          "justification": "Electromagnetic powers deployed decisively — but Virgil is a teenager whose first instinct is wit and intelligence, not force. He talks his way through confrontations when possible. Physical violence is reactive and protective. His restraint distinguishes him from Hotstreak, his foil, who is pure destructive force. The detective's restraint principle applies: a kid who can electrocute anyone but reads the room instead."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "The animated series tackled gun violence (won 2003 Humanitas Prize), racism, homelessness, bullying. McDuffie built Dakota from Detroit's economic dissolution — preserving the city's narrative in fictional form. Static #25's condom controversy was itself a preservation act — insisting on depicting Black teenage sexuality honestly against corporate resistance. DC's blog: 'Virgil was named after Virgil Hawkins, the black man who was denied entrance into the University of Florida law school.'"
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Teenage masculinity — smart-mouthed, brave, physically capable but not physically dominant. His power is electricity, not muscle. Masculinity expressed through courage, loyalty, and intellectual confidence rather than physical intimidation. He's the geek who can fight, not the fighter who reads."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1993,
+            "end": 1997,
+            "value": 5,
+            "justification": "PLACEHOLDER — Milestone's first four titles sold over 3 million copies combined in their first year. Static ran 45 issues. By series end, retail orders had dropped to approximately 4,800 copies — reflecting the catastrophic 1994-97 comics market crash and retailer perception of Milestone as 'comics for blacks.'",
+            "source": "Comichron; Milestone Media sales data"
+          },
+          {
+            "start": 2000,
+            "end": 2004,
+            "value": 9,
+            "justification": "PLACEHOLDER — Static Shock animated series (Kids' WB, 4 seasons, 52 episodes). First African-American superhero as titular character of a broadcast animated series. Became part of DCAU. Won Emmy for Music Direction (2004). Humanitas Prize (2003). Best-rated program on Kids' WB among children. Cultural reach orders of magnitude beyond the comics.",
+            "source": "Wikipedia; Emmy records; Humanitas Prize"
+          },
+          {
+            "start": 2005,
+            "end": 2020,
+            "value": 4,
+            "justification": "PLACEHOLDER — Post-series dormancy. New 52 Static Shock (2011-12) cancelled after 8 issues amid creative conflict. McDuffie died February 21, 2011. Character in limbo due to Milestone ownership disputes (Charlotte Fullerton lawsuit 2017, settled 2019).",
+            "source": "ComicsAlliance; court records"
+          },
+          {
+            "start": 2021,
+            "end": 2026,
+            "value": 6,
+            "justification": "PLACEHOLDER — Milestone Returns revival. Static: Season One (2021-22, Vita Ayala/ChrisCross) reimagined origin with BLM protest framing. Static: Shadows of Dakota (2023). The Dakota Incident (2026) integrated Milestone into DC continuity. Michael B. Jordan attached as film producer (stalled). James Gunn confirmed no current DCU plans.",
+            "source": "DC Comics; MovieWeb; Variety"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Virgil Ovid Hawkins is a 15-year-old Black teenager from the Paris Island neighborhood of Dakota City — a fictional Midwestern city explicitly modeled on Detroit by creator Dwayne McDuffie. Brilliant, motor-mouthed, and geeky, Virgil gains electromagnetic superpowers during the Big Bang, a mass-empowerment event caused when police deploy experimental Alva Industries tear gas on gang members (in the original comics) or BLM protesters (in the 2021 revival). In every version, police action is the catalyst — state violence against Black communities generates the very crisis authorities then seek to control. As Static, Virgil protects his working-class neighborhoods against Bang Baby villains, corporate predator Edwin Alva, and the institutional systems that created the disaster. The Static Shock animated series (2000-2004) made him the first Black superhero to headline a broadcast animated series, reaching millions of viewers and establishing him as a generational icon.",
+        "key_events": [
+          {
+            "year": 1993,
+            "event": "First appearance in Static #1 (June 1993). Virgil gains electromagnetic powers during the Big Bang on Paris Island, Dakota City.",
+            "location": "Dakota City (Detroit analog)"
+          },
+          {
+            "year": 1997,
+            "event": "Static #45 — final issue of original Milestone run. Series ends as Milestone ceases publication.",
+            "location": "Dakota City"
+          },
+          {
+            "year": 2000,
+            "event": "Static Shock animated series premieres September 23 on Kids' WB. 4 seasons, 52 episodes. Voiced by Phil LaMarr.",
+            "location": "Dakota City"
+          },
+          {
+            "year": 2021,
+            "event": "Static: Season One #1 launches Milestone Returns initiative. Origin reimagined with BLM protest framing.",
+            "location": "Dakota City"
+          },
+          {
+            "year": 2026,
+            "event": "The Dakota Incident officially integrates Milestone into DC Universe continuity.",
+            "location": "Dakota City"
+          }
+        ],
+        "creator": "Dwayne McDuffie, Denys Cowan, Michael Davis, Derek T. Dingle (Milestone Media); Robert L. Washington III (co-writer, Static #1)",
+        "source_text": "Static #1 (1993)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Paris Island, Dakota City (Detroit analog)",
+          "coordinates": {
+            "lat": 42.3500,
+            "lng": -83.0600
+          }
+        },
+        "territory": {
+          "description": "Static operates in Dakota City, a fictional Midwestern manufacturing city modeled on Detroit. His primary territory is the Paris Island and Sadler neighborhoods — working-class Black communities where the Big Bang occurred. Key locations include Ernest Hemingway High School, Paris Island Hospital (where his father Robert works), Akkad's Arcade, the Freeman Community Center, and Alva Industries headquarters. Dakota's geography mirrors Detroit's post-industrial landscape: segregated neighborhoods, corporate exploitation, gang violence, and resilient community institutions.",
+          "polygon": [
+            [42.380, -83.100],
+            [42.380, -83.030],
+            [42.320, -83.030],
+            [42.320, -83.100]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Alva Industries (Dakota City)",
+            "coordinates": {
+              "lat": 42.3300,
+              "lng": -83.0500
+            },
+            "significance": "Dakota's dominant corporation. Manufactured the Quantum Juice mutagen deployed by police during the Big Bang. Parallel to Detroit's auto industry."
+          }
+        ]
+      },
+      "connections": [
+        {
+          "target_id": "hardware_curtis",
+          "type": "C2C",
+          "direction": "mutual",
+          "tier": 1,
+          "start_year": 1993,
+          "end_year": 2026,
+          "evidence": "Fellow Milestone Comics creation operating in Dakota City. Both created by Dwayne McDuffie. Static and Hardware teamed up in Static Shock: Rebirth of the Cool (2001). Both are targets of Edwin Alva's corporate machinations. Connected through the shared Milestone universe.",
+          "source": "Static Shock: Rebirth of the Cool (2001); Milestone Comics continuity"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Static #1-45 (1993-1997, Milestone/DC Comics)",
+            "type": "comics",
+            "year": 1993,
+            "url": "https://dc.fandom.com/wiki/Static_Vol_1_1"
+          },
+          {
+            "title": "Static Shock animated series (2000-2004, Kids' WB, 52 episodes)",
+            "type": "television",
+            "year": 2000,
+            "url": "https://www.imdb.com/title/tt0247729/"
+          },
+          {
+            "title": "Static: Season One #1-6 (2021-2022, DC/Milestone Returns)",
+            "type": "comics",
+            "year": 2021,
+            "url": "https://milestone.media/static-season-one-1/"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Making a World: Comics, Meaning, and the Dakotaverse — AAIHS",
+            "type": "academic",
+            "year": null,
+            "url": "https://www.aaihs.org/making-a-world-comics-meaning-and-the-dakotaverse/"
+          },
+          {
+            "title": "Race, Sci-Fi, and Comics: A Talk with Dwayne McDuffie — Hudlin Entertainment",
+            "type": "interview",
+            "year": null,
+            "url": "https://hudlinentertainment.com/race-sci-fi-and-comics-a-talk-with-dwayne-mcduffie/"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── SHV: Hardware ──────────",
+      "id": "hardware_curtis",
+      "name": "Curtis Metcalf / Hardware",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "superhero_villain",
+      "medium": "comics",
+      "genre": "superhero",
+      "creator_id": null,
+      "years": {
+        "active_start": 1993,
+        "active_end": 2024
+      },
+      "emergence": {
+        "year": 1993,
+        "context": "First appearance in Hardware #1 (April 1993, on sale February 23, 1993), titled 'Angry Black Man.' The first Milestone Comics title ever published. Written by Dwayne McDuffie, penciled by Denys Cowan, inked by Jimmy Palmiotti. McDuffie designed Curtis Metcalf's story as a direct reflection of his own experience at Marvel Comics — a Black creator whose genius generated billions for a company that would never let him truly own or advance.",
+        "source": {
+          "title": "Hardware #1",
+          "url": "https://dc.fandom.com/wiki/Hardware_Vol_1_1"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Built his armor from stolen corporate technology to wage guerrilla war against his employer Edwin Alva. When he reported Alva's crimes through legal channels — FBI, SEC — the system did nothing. His vigilantism is a direct response to institutional failure. In the 2021 revival he is actively fugitive from Dakota police, framed by Alva. The first issue's title — 'Angry Black Man' — declares the posture."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Protects Dakota broadly, but his conflict is initially personal — Metcalf vs. Alva. His authorization comes from the community recognizing that Alva Industries exploits everyone. The 2021 revival by Brandon Thomas deepens community ties. But Hardware is more isolated than Static — a lone operator with genius-level resources, not a neighborhood kid. His parakeet metaphor resonated beyond comics as a universal statement about Black experience in corporate America."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Omnicannon, Plasma Whip, PLASER that raises targets to 10,000 degrees. Early Hardware killed dozens of Alva's guards — closer to the Punisher than Superman. McDuffie deliberately opened the series with 'Angry Black Man' as the title. The violence is constitutive, not incidental. Hardware's rage at exploitation IS the character. His arc moves from indiscriminate vengeance toward principled resistance, but the violence never stops being central."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "The series preserves and transmits knowledge of how corporate exploitation of Black genius operates — the parakeet metaphor has been called 'one of the greatest monologues in the history of comics.' Milestone itself was a cultural preservation act: a Black-owned comics company retaining 100% creative control and all copyrights. Hardware #1 was the first title published. Brandon Thomas's 2021 revival explicitly honors McDuffie's legacy."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Genius-level intellect in a battle suit — six college degrees, nano-technological armor, one-man army. The armor is hypermasculine performance literalized: technology as physical dominance. But Curtis is also depicted as emotionally volatile, capable of deep regret over early killings, and evolving from vengeance toward justice. Not Iron Man — 'the exploited worker becomes the hero.'"
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1993,
+            "end": 1997,
+            "value": 5,
+            "justification": "PLACEHOLDER — Hardware ran 50 issues (April 1993-April 1997), the longest Milestone title. Milestone's DC distribution deal cost DC $500,000-$650,000 annually. McDuffie stated the line was 'the only DC-affiliated publisher not incurring losses' during the mid-90s crash. Sales declined with the broader market contraction.",
+            "source": "Milestone Media; McDuffie interviews"
+          },
+          {
+            "start": 1998,
+            "end": 2020,
+            "value": 2,
+            "justification": "PLACEHOLDER — Post-Milestone dormancy. Hardware appeared in Young Justice: Outsiders (Season 3, 2019) — first animated appearance, non-speaking role as Justice League member. No solo publications. Milestone ownership disputes limited use.",
+            "source": "Young Justice wiki"
+          },
+          {
+            "start": 2021,
+            "end": 2026,
+            "value": 4,
+            "justification": "PLACEHOLDER — Hardware: Season One (2021, 6 issues, Brandon Thomas/Denys Cowan/Bill Sienkiewicz) relaunched the character. Icon vs. Hardware (2023-24, 5 issues, Reginald Hudlin). Milestone animated film announced at DC FanDome 2021 — no release date as of April 2026.",
+            "source": "DC Comics; CBR; /Film"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Curtis 'Curt' Metcalf is a Black genius inventor from Dakota City whose brilliance was discovered at age 12 by industrialist Edwin Alva. Enrolled in elite schools, graduated at 14, accumulated six college degrees, then went to work for Alva Industries, where his inventions generated billions in revenue. When Curtis requested royalties, Alva's response was devastating: 'You are not family. You are an employee. You are a cog in the machine.' Curtis discovered his contract was ironclad and that Alva was laundering drug money and manufacturing illegal weapons. He reported everything to the FBI and SEC. Nothing happened. So Curtis built the Hardware armor from Alva's own corporate resources and launched a one-man guerrilla war against his employer. The series' defining passage — the parakeet metaphor from Hardware #1 — describes a bird repeatedly crashing into a window it cannot perceive: 'The lesson is clear: escape is impossible until one perceives all of the barriers. My name is Curtis Metcalf. But you can call me Hardware.'",
+        "key_events": [
+          {
+            "year": 1993,
+            "event": "First appearance in Hardware #1, 'Angry Black Man.' First Milestone Comics title ever published. Curtis builds the Hardware armor and begins guerrilla war against Edwin Alva.",
+            "location": "Dakota City (Detroit analog)"
+          },
+          {
+            "year": 1997,
+            "event": "Hardware #50 — final issue of original Milestone run.",
+            "location": "Dakota City"
+          },
+          {
+            "year": 2021,
+            "event": "Hardware: Season One #1-6 (Brandon Thomas/Denys Cowan) relaunches the character in Milestone Returns. Origin updated — Curtis framed by Alva, on the run from Dakota police after the Big Bang.",
+            "location": "Dakota City"
+          },
+          {
+            "year": 2023,
+            "event": "Icon vs. Hardware #1-5 (Reginald Hudlin). Hardware seeks to use time travel to alter history for Black people, pitting him against Icon.",
+            "location": "Dakota City"
+          }
+        ],
+        "creator": "Dwayne McDuffie (writer), Denys Cowan (artist) — Milestone Media",
+        "source_text": "Hardware #1 (1993)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Alva Industries, Dakota City (Detroit analog)",
+          "coordinates": {
+            "lat": 42.3300,
+            "lng": -83.0500
+          }
+        },
+        "territory": {
+          "description": "Hardware operates throughout Dakota City, with Alva Industries as the primary geographic and narrative anchor. His territory extends wherever Alva's corporate influence reaches — factories, corporate headquarters, criminal operations. Dakota's industrial landscape mirrors Detroit's relationship with its dominant employers: the corporation that built the city is also the corporation destroying it.",
+          "polygon": [
+            [42.380, -83.100],
+            [42.380, -83.030],
+            [42.320, -83.030],
+            [42.320, -83.100]
+          ]
+        },
+        "additional_locations": []
+      },
+      "connections": [
+        {
+          "target_id": "static_virgil",
+          "type": "C2C",
+          "direction": "mutual",
+          "tier": 1,
+          "start_year": 1993,
+          "end_year": 2026,
+          "evidence": "Fellow Milestone creation in Dakota City. Both created by Dwayne McDuffie. Teamed up in Static Shock: Rebirth of the Cool (2001). Both targets of Edwin Alva. Hardware serves as a mentor/elder figure to Static in several crossovers. Connected through the shared Milestone universe and the Big Bang event.",
+          "source": "Static Shock: Rebirth of the Cool (2001); Milestone continuity"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Hardware #1-50 (1993-1997, Milestone/DC Comics)",
+            "type": "comics",
+            "year": 1993,
+            "url": "https://dc.fandom.com/wiki/Hardware_Vol_1_1"
+          },
+          {
+            "title": "Hardware: Season One #1-6 (2021, DC/Milestone Returns)",
+            "type": "comics",
+            "year": 2021,
+            "url": "https://www.amazon.com/Hardware-Season-One-1/dp/1779515138"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Dwayne McDuffie's Sad Meta-Commentary on Corporate Comics — ComicsAlliance",
+            "type": "criticism",
+            "year": null,
+            "url": "https://comicsalliance.com/dwayne-mcduffie-hardware/"
+          },
+          {
+            "title": "Suit Yourself: Everything You Need to Know About Hardware — DC",
+            "type": "reference",
+            "year": 2022,
+            "url": "https://www.dc.com/blog/2022/10/04/suit-yourself-everything-you-need-to-know-about-hardware"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── SHV: Cyborg ──────────",
+      "id": "cyborg_victor",
+      "name": "Victor Stone / Cyborg",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "superhero_villain",
+      "medium": "comics",
+      "genre": "superhero",
+      "creator_id": null,
+      "years": {
+        "active_start": 1980,
+        "active_end": 2026
+      },
+      "emergence": {
+        "year": 1980,
+        "context": "First appearance in DC Comics Presents #26 (October 1980), as an insert preview titled 'Where Nightmares Begin!' Written by Marv Wolfman, art by George Pérez. Victor Stone's Detroit connection is a New 52-era development (2011 onward), with all three solo series set explicitly in Detroit at S.T.A.R. Labs.",
+        "source": {
+          "title": "DC Comics Presents #26",
+          "url": "https://dc.fandom.com/wiki/DC_Comics_Presents_Vol_1_26"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 3,
+          "justification": "Works within institutional structures — Justice League member, Teen Titans, S.T.A.R. Labs employee's son. But his body was rebuilt WITHOUT HIS CONSENT by his father Silas Stone. David Walker's run explicitly addressed government attempts to claim ownership of cybernetically enhanced beings — an allegory for state control over Black bodies. His relationship to the institution that made him is fraught."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Three solo series set in Detroit, each depicting him protecting the city. Walker grounded him in Detroit's community through civilian relationships (Sebastian Cardona, protests outside S.T.A.R. Labs). The 2023 Cyborg: Homecoming series is literally named for his return to the city after his father's death. But Cyborg also operates at Justice League scale, diluting local rootedness."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "His body IS a weapon — sonic cannon, technopathic interface, superhuman strength, Mother Box technology. He didn't choose this. His father weaponized him to save his life. The violence is built into his flesh. Every fight is a reminder of what was taken from him. The technology that makes him powerful is the same technology that destroyed the person he was."
+        },
+        "cultural_preservation": {
+          "score": 3,
+          "justification": "Walker deliberately used Detroit's urban renewal narrative — 'urban centers that have fallen on decay and are now being reclaimed by corporations.' The Semper run's trade paperback was literally titled 'Danger in Detroit.' The 2023 Homecoming series made tech-industry gentrification of Detroit a central plot element. But Cyborg's cultural function is more about Black identity in technology than about Detroit specifically."
+        },
+        "hypermasculine_performance": {
+          "score": 5,
+          "justification": "Former high school football star. His body is literally enhanced beyond human capacity — half visible machinery. He is the most physically imposing figure in the SHV batch. But Walker fought DC editorial to let Victor appear fully human sometimes. Walker revealed he was told Cyborg needed more skin showing so he could have tattoos and be 'thugged out.' The tension between the man and the machine IS the hypermasculine performance — forced into a body that performs power he didn't ask for."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1980,
+            "end": 2010,
+            "value": 5,
+            "justification": "PLACEHOLDER — New Teen Titans member (1980s peak popularity). Teen Titans animated series (2003-2006) and Teen Titans Go! (2013-present) sustained visibility. No solo series and no Detroit connection during this period.",
+            "source": "DC Comics; Cartoon Network"
+          },
+          {
+            "start": 2011,
+            "end": 2018,
+            "value": 6,
+            "justification": "PLACEHOLDER — New 52 elevated Cyborg to Justice League founding member. Three Detroit-set solo series: Vol. 1 (Walker, 12 issues, launched at 45,187 copies), Vol. 2 (Semper, 23 issues, 'Danger in Detroit'). Justice League film (2017, $661.3M worldwide, Ray Fisher). Zack Snyder's Justice League (2021, 3.7M US households). But solo series cancelled twice due to declining sales.",
+            "source": "Comichron; Box Office Mojo; ScreenRant"
+          },
+          {
+            "start": 2019,
+            "end": 2026,
+            "value": 4,
+            "justification": "PLACEHOLDER — Doom Patrol TV series (Joivan Wade as Cyborg, 2019-2023). Cyborg Vol. 3: Homecoming (2023-24, Morgan Hampton, 6 issues). Ray Fisher's public feud with DC Films ended his tenure. No Cyborg projects in James Gunn DCU. Character active in comics but without sustained commercial traction.",
+            "source": "DC Comics; Deadline; THR"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Victor Stone is the son of scientists Silas and Elinore Stone, both employed at S.T.A.R. Labs in Detroit. Used as a test subject for intelligence enhancement experiments by his parents, Victor's resentment grew until an interdimensional accident killed his mother and destroyed most of his body. Silas rebuilt his son without consent using experimental cybernetics and Mother Box technology. In the New 52 and subsequent continuities, all three Cyborg solo series are set in Detroit, where Victor confronts the irreconcilable tension between the technology that saved him and the father who imposed it, between being DC's most prominent Black hero and being perceived as a weapon. David Walker's run (2015-16) explicitly engaged Black Lives Matter, Detroit's corporate renewal, and the question: 'If you're a black superhero, how do you fight for law and order?' Walker was told by DC editorial to make Cyborg more 'thugged out' — he refused and left the book prematurely.",
+        "key_events": [
+          {
+            "year": 1980,
+            "event": "First appearance in DC Comics Presents #26. Victor Stone becomes Cyborg after his father rebuilds him with experimental technology.",
+            "location": "New York City (original origin)"
+          },
+          {
+            "year": 2015,
+            "event": "Cyborg Vol. 1 #1 by David Walker and Ivan Reis. First solo series, set at S.T.A.R. Labs Detroit. Opened with protests outside the facility. Launched at 45,187 copies.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2016,
+            "event": "Cyborg Vol. 2 by John Semper Jr. begins. Trade paperback Vol. 2 titled 'Danger in Detroit.' Series runs 23 issues before cancellation.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2017,
+            "event": "Justice League film released. Ray Fisher as Cyborg. $661.3 million worldwide gross. Snyder called Cyborg 'the heart of the movie.'",
+            "location": "Gotham City (film setting, not Detroit)"
+          },
+          {
+            "year": 2023,
+            "event": "Cyborg Vol. 3: Homecoming by Morgan Hampton (Milestone Initiative graduate). Victor returns to Detroit after his father's death. Tech company Solace threatens to turn 'the Motor City into an overclocked engine for revolutionary artificial intelligence.'",
+            "location": "Detroit, MI"
+          }
+        ],
+        "creator": "Marv Wolfman (writer), George Pérez (artist) — DC Comics",
+        "source_text": "DC Comics Presents #26 (1980)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "S.T.A.R. Labs Detroit",
+          "coordinates": {
+            "lat": 42.3500,
+            "lng": -83.0550
+          }
+        },
+        "territory": {
+          "description": "Cyborg operates from S.T.A.R. Labs Detroit — the scientific facility where he was created and where his father worked. DC's official locations confirm Detroit as his hometown. Walker's series grounded Victor in Detroit's community through civilian relationships, protests, and explicit use of the city's corporate-renewal narrative. The Justice League Detroit bunker (1984-87) was located in an industrial district along the Detroit River. The Homecoming series (2023) makes tech-industry gentrification a central plot element.",
+          "polygon": [
+            [42.380, -83.090],
+            [42.380, -83.030],
+            [42.320, -83.030],
+            [42.320, -83.090]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Justice League Detroit Bunker (Detroit River industrial district)",
+            "coordinates": {
+              "lat": 42.3200,
+              "lng": -83.0700
+            },
+            "significance": "Headquarters of Justice League of America during the Detroit era (1984-1987). Designed by Dale Gunn."
+          }
+        ]
+      },
+      "connections": [],
+      "sources": {
+        "primary": [
+          {
+            "title": "Cyborg Vol. 1 #1-12 (2015-2016, David Walker/Ivan Reis, DC Comics)",
+            "type": "comics",
+            "year": 2015,
+            "url": "https://www.amazon.com/Cyborg-Vol-Unplugged-David-Walker/dp/1401261191"
+          },
+          {
+            "title": "Cyborg Vol. 2 #1-23 (2016-2018, John Semper Jr., DC Comics)",
+            "type": "comics",
+            "year": 2016,
+            "url": "https://www.amazon.com/Cyborg-Vol-Danger-Detroit-Rebirth/dp/1401270875"
+          },
+          {
+            "title": "Cyborg: Homecoming (2023-2024, Morgan Hampton, DC Comics)",
+            "type": "comics",
+            "year": 2023,
+            "url": "https://www.amazon.com/Cyborg-Homecoming-Morgan-Hampton-ebook/dp/B0CW1BMZ3V"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Detroit vs. Everybody (Including Superheroes): Representing Race through Setting in DC Comics — Vincent Haddad, Inks: The Journal of the Comics Studies Society",
+            "type": "academic",
+            "year": 2021,
+            "url": "https://muse.jhu.edu/pub/30/article/839585"
+          },
+          {
+            "title": "Victor Stone Goes Solo: An Interview with Cyborg's David Walker — DC",
+            "type": "interview",
+            "year": 2015,
+            "url": "https://www.dc.com/blog/2015/04/23/victor-stone-goes-solo-an-interview-with-cyborgs-david-walker"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── SHV: Firestorm ──────────",
+      "id": "firestorm_jason",
+      "name": "Jason Rusch / Firestorm",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "superhero_villain",
+      "medium": "comics",
+      "genre": "superhero",
+      "creator_id": null,
+      "years": {
+        "active_start": 2004,
+        "active_end": 2026
+      },
+      "emergence": {
+        "year": 2004,
+        "context": "First appearance in Firestorm vol. 3 #1 (July 2004, published May 5, 2004), titled 'Eye Contact, Part I.' Written by Dan Jolley, penciled by ChrisCross, inked by John Dell. Jason Rusch is a 17-year-old Black teenager from Detroit whose origin is fundamentally a Detroit survival narrative interrupted by superpowers — the loss of a minimum-wage restaurant job pushes him toward a drug courier job, during which the Firestorm matrix finds him.",
+        "source": {
+          "title": "Firestorm Vol. 3 #1",
+          "url": "https://dc.fandom.com/wiki/Firestorm_Vol_3_1"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 3,
+          "justification": "The Firestorm matrix found him accidentally while running a drug courier job. His relationship to law enforcement is undefined rather than adversarial. He operates as a superhero within the DC Universe's institutional framework (Justice League membership under Dwayne McDuffie) rather than against it. His outlaw status is economic — a kid forced outside legitimate work by poverty — not ideological."
+        },
+        "community_authorization": {
+          "score": 3,
+          "justification": "His Detroit community is present in the early issues — Bryson's Family Treat restaurant, his neighborhood on 49 Pleasant Road, his father Alvin. But Jason's arc pulls him away from Detroit rapidly. By the Stuart Moore run he's at S.T.A.R. Labs and in college. The community that authorized him is the one he was trying to escape. Doctor Otaki, 'one of Jason's former neighbors,' knows his identity — neighborhood-level accountability."
+        },
+        "violence_as_language": {
+          "score": 5,
+          "justification": "Nuclear-level power — molecular transmutation of organic and inorganic matter, nuclear blasts, flight over 600 mph. Jason can literally rearrange matter at the atomic level. His early career involved accidentally killing his fusion partner Golek when they separated. He studied flash cards to learn chemistry because his power exceeded his knowledge — a working-class kid wielding god-level force without the education to control it."
+        },
+        "cultural_preservation": {
+          "score": 3,
+          "justification": "The origin narrative preserves Detroit's working-class Black experience — minimum wage job, abusive father with an industrial injury, economic desperation pushing a smart kid toward drug work. But this preservation function fades as the series moves away from Detroit. Dwayne McDuffie wrote the final three issues (#33-35), bridging Jason to the Justice League, but didn't return him to Detroit."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "The Firestorm matrix transforms a skinny teenager into a flaming nuclear-powered being. The visual transformation IS hypermasculine performance — the powerless kid becomes the most powerful being in the room. But Jason's masculinity is also defined by vulnerability: his father's abuse, his poverty, his inability to control his own powers. His heroism is accidental, not chosen."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 2004,
+            "end": 2007,
+            "value": 4,
+            "justification": "PLACEHOLDER — Firestorm vol. 3 ran 35 issues (July 2004-June 2007). #1 ranked #34 on Diamond's Top 300 with approximately 46,270 copies. Dan Jolley wrote #1-13 (Detroit-set), Stuart Moore wrote #14-32, Dwayne McDuffie wrote #33-35. Cancelled but Jason simultaneously elevated to Justice League.",
+            "source": "Comichron; DC Comics"
+          },
+          {
+            "start": 2007,
+            "end": 2013,
+            "value": 3,
+            "justification": "PLACEHOLDER — Justice League member under McDuffie's JLA run. Blackest Night: Black Lantern Ronnie Raymond murdered Jason's girlfriend Gehenna. Brightest Day: Jason and resurrected Ronnie forced to cooperate. New 52 Fury of Firestorm (2011-13, 21 issues) rebooted character, dropped Detroit setting, poorly received.",
+            "source": "DC Comics"
+          },
+          {
+            "start": 2015,
+            "end": 2026,
+            "value": 3,
+            "justification": "PLACEHOLDER — Franz Drameh played composite Firestorm character (Jax Jackson) on CW's Legends of Tomorrow (2015-2018) — set in Central City, not Detroit. Jason appeared in Batman: The Brave and the Bold (voiced by Tyler James Williams) and Injustice 2 video game. New ongoing series announced 2026 under DC Next Level (Jeff Lemire/Rafael De Latorre).",
+            "source": "CW; DC Comics"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Jason Thomas Rusch is a 17-year-old African American from Detroit, Michigan, whose origin is fundamentally a Detroit survival narrative interrupted by superpowers. His father Alvin lost a hand in an industrial accident and became abusive and alcoholic; his mother abandoned the family. Jason works at Bryson's Family Treat restaurant for minimum wage, saving for college — his one path out of Detroit. When his boss sends him home because of a facial bruise from his father's abuse, Jason accepts a courier job from local drug peddler Stevie Golek. During this job, the Firestorm matrix finds him, accidentally fusing him with a stranger in a nuclear explosion. Unlike the original Firestorm (white, from New York), Jason's powers emerged from economic desperation in a specific Detroit neighborhood — the loss of a menial job was catastrophic enough to push a brilliant teenager toward criminality. His unstable matrix requires merging with various people, and he compensates for his lack of scientific knowledge by studying flash cards with chemical formulas — a working-class kid hacking his way to competence with god-level power.",
+        "key_events": [
+          {
+            "year": 2004,
+            "event": "First appearance in Firestorm vol. 3 #1. Jason gains nuclear powers during a courier job for drug dealer Stevie Golek in Detroit.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 2005,
+            "event": "Stuart Moore takes over writing with #14. Jason gets a job at S.T.A.R. Labs and enrolls in college. Detroit setting begins to fade.",
+            "location": "Detroit, MI / S.T.A.R. Labs"
+          },
+          {
+            "year": 2007,
+            "event": "Dwayne McDuffie writes final three issues (#33-35), bridging Jason into the Justice League of America.",
+            "location": "Various"
+          },
+          {
+            "year": 2026,
+            "event": "New Firestorm ongoing series announced under DC Next Level initiative, written by Jeff Lemire with art by Rafael De Latorre.",
+            "location": "TBD"
+          }
+        ],
+        "creator": "Dan Jolley (writer), ChrisCross (artist) — DC Comics",
+        "source_text": "Firestorm Vol. 3 #1 (2004)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "49 Pleasant Road, Detroit",
+          "coordinates": {
+            "lat": 42.3550,
+            "lng": -83.0650
+          }
+        },
+        "territory": {
+          "description": "Jason Rusch operates from a working-class Detroit neighborhood. Key locations include his home at 49 Pleasant Road, Bryson's Family Treat restaurant on Mac Street (his workplace), the Stopwatch Bar (where he meets drug dealer Golek), and the Gregson storage facility (where he first transforms into Firestorm). The series consistently uses downtown Detroit as its primary civilian setting. Jason's neighborhood is depicted as working-class to poor, with his home life under an abusive father as a constant source of trauma.",
+          "polygon": [
+            [42.375, -83.090],
+            [42.375, -83.040],
+            [42.330, -83.040],
+            [42.330, -83.090]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Bryson's Family Treat restaurant (Mac Street)",
+            "coordinates": {
+              "lat": 42.3480,
+              "lng": -83.0580
+            },
+            "significance": "Jason's workplace. The series opens with him being sent home due to a facial bruise from his father's abuse — the event that pushes him toward the drug courier job."
+          }
+        ]
+      },
+      "connections": [
+        {
+          "target_id": "cyborg_victor",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 2,
+          "start_year": 2007,
+          "end_year": 2026,
+          "evidence": "Both are Black DC superheroes based in Detroit. Both are connected to S.T.A.R. Labs. Jason worked at S.T.A.R. Labs during the Stuart Moore run. Both served in various Justice League incarnations. The DC Database confirms Detroit as the shared hometown of both characters.",
+          "source": "DC Database Detroit entry; Justice League rosters"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Firestorm Vol. 3 #1-35 (2004-2007, DC Comics)",
+            "type": "comics",
+            "year": 2004,
+            "url": "https://dc.fandom.com/wiki/Firestorm_Vol_3_1"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Jason Rusch, the 21st Century Firestorm — Overstreet Access",
+            "type": "reference",
+            "year": null,
+            "url": "https://www.overstreetaccess.com/jason-rusch-the-21st-century-firestorm/"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── SHV: Amazing-Man ──────────",
+      "id": "amazingman_will",
+      "name": "Will Everett / Amazing-Man",
+      "type": "fictional",
+      "meta_badman": false,
+      "modality": "superhero_villain",
+      "medium": "comics",
+      "genre": "superhero",
+      "creator_id": null,
+      "years": {
+        "active_start": 1983,
+        "active_end": 2026
+      },
+      "emergence": {
+        "year": 1983,
+        "context": "First appearance in All-Star Squadron #23 (July 1983). Created by Roy Thomas and Jerry Ordway. Thomas created Everett explicitly to address DC's absence of Black heroes in its WWII-era continuity. The character's Great Migration origin — sharecropper family from Mississippi to Detroit auto plants — maps directly onto real Detroit history.",
+        "source": {
+          "title": "All-Star Squadron #23",
+          "url": "https://dc.fandom.com/wiki/All-Star_Squadron_Vol_1_23"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 4,
+          "justification": "Gained his powers through Nazi experimentation against his will — the Ultra-Humanite used him as a test subject. Initially forced to serve as a villain's agent before breaking free. His relationship to American law is defined by the fact that 1940s American law did not recognize him as fully human. An Olympic gold medalist who came home to Jim Crow. The law he is asked to defend never defended him."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "Jesse Owens's fictional counterpart — a Black Olympian who became a superhero. Led civil rights marches in Detroit post-war, described as the third most important civil rights advocate in the DC Universe. His community authorization is earned through decades of activism, not just superheroics. His grandson Will Everett III inherited his powers and Detroit roots."
+        },
+        "violence_as_language": {
+          "score": 4,
+          "justification": "Molecular mimicry — can take on the properties of any material he touches: steel skin, diamond fists, liquid form. His power is literalized adaptation. Violence is defensive and protective. In All-Star Squadron #38-40, he fights the Phantom Empire (KKK analog) in Detroit to protect Black residents being terrorized. He was nearly lynched before fighting back. The violence he deploys was first deployed against him."
+        },
+        "cultural_preservation": {
+          "score": 4,
+          "justification": "His origin IS the Great Migration narrative — sharecropper family from Decatur, Mississippi to Detroit auto plants after young Will defied a white landowner. His Berlin Olympics backstory preserves the Jesse Owens legacy in fictional form. His post-war civil rights activism documents the continuity between WWII service and the civil rights movement. Roy Thomas created him explicitly to fill a historical gap in DC's representation."
+        },
+        "hypermasculine_performance": {
+          "score": 3,
+          "justification": "Olympic athlete — the physical credential is there. But Everett's masculinity is expressed through endurance and moral courage rather than dominance. He survives lynching, Nazi experimentation, and systemic racism. His performance is survival itself — the Black man who absorbs whatever the world throws at him and transforms it into strength. Literally — his power is to become whatever he touches."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1983,
+            "end": 1987,
+            "value": 3,
+            "justification": "PLACEHOLDER — Appeared in All-Star Squadron (team book, not solo). Detroit KKK storyline in #38-40. Character created as a retcon — filling WWII-era gap. Limited name recognition outside All-Star Squadron readership.",
+            "source": "DC Comics; All-Star Squadron issues"
+          },
+          {
+            "start": 1988,
+            "end": 2006,
+            "value": 2,
+            "justification": "PLACEHOLDER — Grandson Will Everett III (Amazing-Man II) appeared in Justice League America #86 (1994), joined Extreme Justice. Original Everett died of cancer in comics (late 1980s). Limited appearances. Third Amazing-Man (Markus Clay) appeared in JSA, operates in New Orleans.",
+            "source": "DC Comics"
+          },
+          {
+            "start": 2021,
+            "end": 2026,
+            "value": 3,
+            "justification": "PLACEHOLDER — Dr. Vincent Haddad's academic article 'Detroit vs. Everybody (Including Superheroes)' in Inks: The Journal of the Comics Studies Society (2021) analyzes Amazing-Man's Detroit storylines alongside Cyborg. Wayne State Reuther Library podcast featured Haddad discussing the character. ScreenRant coverage of character's return in new story. Growing scholarly interest.",
+            "source": "Haddad (2021); Reuther Library podcast; ScreenRant"
+          }
+        ]
+      },
+      "biography": {
+        "description": "William Blake Everett was born in Decatur, Mississippi, to a family of sharecroppers. After young Will defied a white landowner, the family migrated to Detroit, where his father found work at an auto plant — a fictional rendering of the Great Migration that brought millions of Black Southerners to Northern industrial cities. Will grew up in Detroit, excelled in athletics, and competed in the 1936 Berlin Olympics, winning gold alongside Jesse Owens. He returned to a nation that celebrated his athletic achievement but denied his humanity. The Ultra-Humanite later kidnapped and experimented on Everett, granting him the power of molecular mimicry — the ability to take on the physical properties of any material he touches. Initially forced to serve the villain, Everett broke free and joined the All-Star Squadron. In All-Star Squadron #38-40, the team traveled to Detroit to help Everett fight 'The Real American,' a bigoted villain leading the Phantom Empire — a KKK-like organization terrorizing Black Detroiters. Everett was arrested and nearly lynched before being rescued. Post-war, he became one of the most important civil rights leaders in the DC Universe, leading anti-segregation marches in Detroit for decades.",
+        "key_events": [
+          {
+            "year": 1936,
+            "event": "Will Everett competes in the 1936 Berlin Olympics, winning gold alongside Jesse Owens. Returns to Detroit and Jim Crow America.",
+            "location": "Berlin, Germany / Detroit, MI (fictional)"
+          },
+          {
+            "year": 1942,
+            "event": "Kidnapped by the Ultra-Humanite and subjected to experiments granting molecular mimicry powers. Breaks free and joins the All-Star Squadron.",
+            "location": "Various (fictional WWII setting)"
+          },
+          {
+            "year": 1942,
+            "event": "All-Star Squadron #38-40: The team travels to Detroit. Everett fights the Phantom Empire (KKK analog) terrorizing Black residents. He is arrested and nearly lynched before fighting back.",
+            "location": "Detroit, MI (fictional)"
+          },
+          {
+            "year": 1983,
+            "event": "First real-world appearance in All-Star Squadron #23 (July 1983). Created by Roy Thomas and Jerry Ordway to address DC's absence of Black WWII-era heroes.",
+            "location": "Publication — DC Comics"
+          }
+        ],
+        "creator": "Roy Thomas (writer), Jerry Ordway (artist) — DC Comics",
+        "source_text": "All-Star Squadron #23 (1983)"
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Detroit (WWII-era, fictional)",
+          "coordinates": {
+            "lat": 42.3400,
+            "lng": -83.0500
+          }
+        },
+        "territory": {
+          "description": "Amazing-Man's Detroit territory is set during the 1940s — the wartime industrial city where his father worked in an auto plant and where the Phantom Empire terrorized Black residents. The All-Star Squadron Detroit storyline (#38-40) depicts a city where Black workers fuel the war effort in factories while facing KKK-style violence in their neighborhoods. Post-war, Everett led civil rights marches through Detroit streets. His territory is the same geography as the archive's real Revolutionary figures — the industrial corridor and Black neighborhoods of mid-century Detroit.",
+          "polygon": [
+            [42.380, -83.100],
+            [42.380, -83.030],
+            [42.310, -83.030],
+            [42.310, -83.100]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "Detroit auto plant (Everett family workplace)",
+            "coordinates": {
+              "lat": 42.3950,
+              "lng": -83.0570
+            },
+            "significance": "Where Will's father found work after the family's Great Migration from Mississippi. Parallels the real experience of millions of Black Southerners who came to Detroit for auto industry jobs."
+          }
+        ]
+      },
+      "connections": [
+        {
+          "target_id": "cyborg_victor",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 3,
+          "start_year": 1983,
+          "end_year": 2026,
+          "evidence": "Both are Black DC superheroes whose Detroit storylines explicitly engage race. Dr. Vincent Haddad's academic article 'Detroit vs. Everybody (Including Superheroes)' in Inks: The Journal of the Comics Studies Society (2021) analyzes Amazing-Man's 1940s Detroit storylines alongside Cyborg's 2010s Detroit runs as parallel representations of race through setting in DC Comics.",
+          "source": "Haddad, 'Detroit vs. Everybody,' Inks (2021)"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "All-Star Squadron #23 (first appearance), #38-40 (Detroit KKK storyline) — DC Comics",
+            "type": "comics",
+            "year": 1983,
+            "url": "https://dc.fandom.com/wiki/All-Star_Squadron_Vol_1_23"
+          }
+        ],
+        "secondary": [
+          {
+            "title": "Detroit vs. Everybody (Including Superheroes): Representing Race through Setting in DC Comics — Vincent Haddad, Inks: The Journal of the Comics Studies Society",
+            "type": "academic",
+            "year": 2021,
+            "url": "https://muse.jhu.edu/pub/30/article/839585"
+          },
+          {
+            "title": "Detroit vs. Everybody: Exploring Race, Place, and Black Superheroes in DC Comics — Walter P. Reuther Library Podcast",
+            "type": "podcast",
+            "year": 2022,
+            "url": "https://reuther.wayne.edu/node/15161"
+          },
+          {
+            "title": "Amazing Man — DC Cosmic Teams profile",
+            "type": "reference",
+            "year": null,
+            "url": "https://www.cosmicteams.com/jsa/profiles/amazing-man.htm"
+          }
+        ],
+        "archival": []
+      }
+    },
+    {
+      "_divider": "────────── SHV: New Entry Here ──────────",  
       "_placeholder": true,
       "_instructions": "SVM modality staged for launch. Add first entry here. Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
     },
