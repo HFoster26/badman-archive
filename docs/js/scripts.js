@@ -107,7 +107,7 @@ function getModalityConfig(modality) {
     const config = {
         'detective': {
             color: '#3388ff',
-            markerShape: 'pin',
+            markerShape: 'circle',
             networkShape: 'circle',
             icon: 'magnifying-glass',
             label: 'Pin marker — Detective Modality'
@@ -115,7 +115,7 @@ function getModalityConfig(modality) {
         'revolutionary': {
             color: '#dc3545',
             markerShape: 'star',
-            networkShape: 'diamond',
+            networkShape: 'star',
             icon: 'raised-fist',
             label: 'Star marker — Revolutionary Modality'
         },
@@ -123,7 +123,7 @@ function getModalityConfig(modality) {
             color: '#d4af37',
             markerShape: 'triangle',
             networkShape: 'triangle',
-            icon: 'star',
+            icon: 'diamond',
             label: 'Triangle marker — Folk Hero-Outlaw Modality'
         },
         'gangsta_pimp': {
