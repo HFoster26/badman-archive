@@ -1142,8 +1142,270 @@
         ]
       }
     },
-
     {
+      "_divider": "────────── PRM: Glanton Dowdell ──────────",
+      "id": "dowdell_glanton",
+      "name": "Glanton Dowdell",
+      "type": "real",
+      "meta_badman": true,
+      "modality": "revolutionary",
+      "years": {
+        "birth": 1923,
+        "death": 2000,
+        "active_start": 1965,
+        "active_end": 1969
+      },
+      "emergence": {
+        "year": 1965,
+        "context": "Joined the radical cadre around General Gordon Baker Jr., John Watson, John Williams, and Luke Tripp — the nucleus that would form the League of Revolutionary Black Workers. Dowdell's street experience from twelve years in Jackson Prison added tactical knowledge to the group's political education.",
+        "source": {
+        "title": "The League of Revolutionary Black Workers — A Historical Study",
+        "url": "https://www.historyisaweapon.com/defcon1/rbwstudy.html"
+        }
+      },
+      "scores": {
+        "outlaw_relationship": {
+          "score": 5,
+          "justification": "Second-degree murder conviction and twelve years in Jackson Prison. Co-founded Detroit Black Panther Party (1966) with Baker and Griffin. Arrested with Baker for concealed weapons during Kercheval Street incident (1966). Arrested during 1967 Detroit Rebellion. Served as League of Revolutionary Black Workers intelligence chief. Gallery destroyed and shot by police. Fled to Sweden claiming political asylum from FBI fabrication (1969). Never returned to the United States."
+        },
+        "community_authorization": {
+          "score": 4,
+          "justification": "The Black Madonna and Child mural became the defining visual image of Detroit's Black Power movement — the church was renamed after it. Over 2,000 attended CCAC meetings where Dowdell served as vice chairman. Co-organized the First Black Arts Conference (1966). However, his 1969 exile removed him from the Detroit community for thirty-one years, limiting sustained grassroots authorization."
+        },
+        "violence_as_language": {
+          "score": 4,
+          "justification": "Convicted of second-degree murder before his political radicalization. Shot by police when the Easel Gallery was destroyed. Arrested twice alongside Baker (Kercheval 1966, Rebellion 1967). Served as League intelligence/security chief — the role most directly associated with organizational force. However, his first moves were artistic and intellectual: painting, gallery founding, arts conferences. The system forced the militant posture — classic PRM sequence. Violence was the system's doing, not Dowdell's first impulse."
+        },
+        "cultural_preservation": {
+          "score": 5,
+          "justification": "Painted the 18-by-9-foot Black Madonna and Child mural (Easter 1967) — one of the most galvanizing images of the Black counterculture. Opened the Easel Gallery on Twelfth Street for Black artists. Co-organized the First and Second Black Arts Conferences (1966-67). Distributed the revolutionary film Finally Got the News in Sweden. Taught art to prisoners at Jackson. Wrote an unpublished memoir. His art literally provided the visual vocabulary for Black Christian Nationalism and Detroit's Black Power aesthetic."
+        },
+        "hypermasculine_performance": {
+          "score": 4,
+          "justification": "Prison organizer who built cadres. League intelligence chief with tactical authority. Survived police shootings. Armed bodyguard accompaniment. But also a painter, muralist, gallery owner, memoirist — masculinity expressed through both force and artistic creation. The meta_badman duality: the man who could organize a prison strike and paint a Madonna."
+        }
+      },
+      "influence": {
+        "scale": "1-10",
+        "metric_type": "curated_scholarly_estimate",
+        "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+        "phases": [
+          {
+            "start": 1955,
+            "end": 1962,
+            "value": 2,
+            "justification": "PLACEHOLDER — Incarceration period. Honorable mention at Detroit Institute of Arts (1955). Paintings reproduced in Jet and Pittsburgh Courier. One-man show at Grand River Gallery (1958). Influence limited to Black art community and prison reform circles.",
+            "source": "marshallfredericks.net; Robertson, The Black Utopians"
+          },
+          {
+            "start": 1965,
+            "end": 1969,
+            "value": 8,
+            "justification": "PLACEHOLDER — Peak Detroit period. Co-founded Detroit BPP (1966). Easel Gallery and Black Arts Conferences (1966-67). Black Madonna mural — arguably the single most influential image of Detroit's Black Power movement. CCAC vice chairmanship with 2,000+ attendees. League intelligence/security leadership. People's Tribunal under his mural drew 2,000 people with Rosa Parks on the jury.",
+            "source": "Robertson, The Black Utopians; Georgakas & Surkin, Detroit: I Do Mind Dying"
+          },
+          {
+            "start": 1969,
+            "end": 2000,
+            "value": 3,
+            "justification": "PLACEHOLDER — Swedish exile. 1971 Swedish TV broadcast featuring Finally Got the News. 1975 lynching painting mailed to Wright Museum. International solidarity symbol but declining Detroit visibility. Wrote unpublished memoir.",
+            "source": "Sundholm, Black Camera (2024); Robertson, The Black Utopians"
+          },
+          {
+            "start": 2016,
+            "end": 2025,
+            "value": 6,
+            "justification": "PLACEHOLDER — Posthumous scholarly recovery. Harvey chapter in Clark ed. (Palgrave 2016). Shrine listed on National Register (2021). Robertson's The Black Utopians (2024) — NYT Notable Book. Wright Museum Luminosity exhibition (2025). Sundholm Black Camera article (2024). More published attention in past decade than in entire preceding half-century.",
+            "source": "Robertson (2024); Harvey in Clark (2016); NPS National Register"
+          }
+        ]
+      },
+      "biography": {
+        "description": "Glanton Vernier Dowdell was a Detroit-born artist, militant organizer, and political exile whose life arc — from Black Bottom childhood to Jackson Prison to the Black Madonna mural to Swedish asylum — makes him one of the most consequential and least documented figures of Detroit's Black Power movement. A confirmed meta-badman, he was both the subject of badman narratives (fugitive, prisoner, revolutionary) and the creator of them (muralist, gallery founder, cultural organizer). After serving nearly thirteen years for second-degree murder, Dowdell joined the radical cadre around General Gordon Baker Jr. in 1965, co-founded the Detroit Black Panther Party in 1966, opened the Easel Gallery on Twelfth Street, and painted the eighteen-by-nine-foot Black Madonna and Child mural unveiled at Easter 1967 in Rev. Albert Cleage's church — an image so galvanizing the church was renamed after it. He served as vice chairman of the Citywide Citizens Action Committee after the 1967 Rebellion and as head of intelligence and security for the League of Revolutionary Black Workers. In August 1969, after police destroyed his gallery and shot him, Dowdell fled to Stockholm claiming political asylum from FBI fabrication. He never returned to the United States. He died in Sweden in 2000.",
+        "key_events": [
+          {
+            "year": 1923,
+            "event": "Born in Detroit's Black Bottom neighborhood at St. Antoine and Palmer. Father Lovett died of smallpox in 1924.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1949,
+            "event": "Convicted of second-degree murder. Sentenced to Southern Michigan State Prison (Jackson).",
+            "location": "Detroit, MI / Jackson, MI"
+          },
+          {
+            "year": 1955,
+            "event": "Painting 'Southeast Corner of My Cell' wins honorable mention at Detroit Institute of Arts Annual Exhibition while Dowdell is incarcerated.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1962,
+            "event": "Paroled from Jackson Prison after approximately twelve years and ten months.",
+            "location": "Jackson, MI"
+          },
+          {
+            "year": 1965,
+            "event": "Joins radical cadre around General Gordon Baker Jr., John Watson, John Williams, and Luke Tripp.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1966,
+            "event": "Co-founds Detroit Black Panther Party with Baker and Rufus Griffin. Opens the Easel Gallery on Twelfth Street. Co-organizes First Black Arts Conference with Rev. Albert Cleage and Edward Vaughn. Arrested with Baker at Kercheval Street incident for concealed weapons.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1967,
+            "event": "Black Madonna and Child mural unveiled at Easter in Rev. Cleage's Central United Church of Christ. Church renamed Shrine of the Black Madonna. Arrested during Detroit Rebellion July 24. Elected vice chairman of Citywide Citizens Action Committee. People's Tribunal held under his mural August 30 with 2,000 attendees.",
+            "location": "Detroit, MI"
+          },
+          {
+            "year": 1969,
+            "event": "Serves as head of intelligence and security for League of Revolutionary Black Workers. Easel Gallery destroyed by police; Dowdell shot. Flees to Stockholm, Sweden claiming political asylum in August.",
+            "location": "Detroit, MI / Stockholm, Sweden"
+          },
+          {
+            "year": 2000,
+            "event": "Dies in Stockholm, Sweden. Never returned to the United States.",
+            "location": "Stockholm, Sweden"
+          }
+        ]
+      },
+      "geographic": {
+        "primary_location": {
+          "name": "Shrine of the Black Madonna (7625 Linwood Street)",
+          "coordinates": {
+            "lat": 42.363039,
+            "lng": -83.102143
+          }
+        },
+        "territory": {
+          "description": "Dowdell's Detroit organizing centered on two nodes: the Linwood/Twelfth Street corridor on the west side (Shrine of the Black Madonna, Easel Gallery, New Bethel Baptist Church — all within a half-mile radius) and the Black Bottom neighborhood on the east side where he was born. The Linwood corridor was the geographic heart of Detroit's Black nationalist movement in the 1960s.",
+          "polygon": [
+            [42.386, -83.115],
+            [42.386, -83.085],
+            [42.350, -83.085],
+            [42.350, -83.115]
+          ]
+        },
+        "additional_locations": [
+          {
+            "name": "The Easel Gallery (Twelfth Street / Rosa Parks Blvd)",
+            "coordinates": {
+              "lat": 42.365,
+              "lng": -83.098
+            },
+            "significance": "Dowdell's gallery/studio (1966-c.1968); where the Black Madonna was painted; destroyed by police"
+          },
+          {
+            "name": "Black Bottom neighborhood (St. Antoine and Palmer)",
+            "coordinates": {
+              "lat": 42.340,
+              "lng": -83.037
+            },
+            "significance": "Birthplace and childhood home"
+          },
+          {
+            "name": "Southern Michigan State Prison (Jackson)",
+            "coordinates": {
+              "lat": 42.2459,
+              "lng": -84.4013
+            },
+            "significance": "Incarcerated approximately 1949-1962. Organized prison strike, painted, taught art to inmates."
+          }
+        ]
+      },
+      "connections": [
+        {
+          "target_id": "baker_gordon",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 1,
+          "start_year": 1965,
+          "end_year": 1969,
+          "evidence": "Closest documented political comrade. Joined Baker's radical cadre in 1965. Co-founded Detroit Black Panther Party (1966). Arrested together at Kercheval Street (1966) and during 1967 Rebellion. Both served in League leadership. Baker reportedly held the ladder when Dowdell painted the Black Madonna.",
+          "source": "Georgakas & Surkin, Detroit: I Do Mind Dying; LRBW historical study; Robertson, The Black Utopians"
+        },
+        {
+          "target_id": "obadele_brothers",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 2,
+          "start_year": 1967,
+          "end_year": 1969,
+          "evidence": "Overlapping political networks. Milton Henry served as prosecutor at the People's Tribunal held under Dowdell's mural (August 1967). Both operated in Detroit's radical Black nationalist milieu along the Linwood corridor. No confirmed formal RNA membership for Dowdell.",
+          "source": "Robertson, The Black Utopians; LRBW historical study"
+        },
+        {
+          "target_id": "scott_ron",
+          "type": "ORG",
+          "direction": "mutual",
+          "tier": 3,
+          "start_year": 1968,
+          "end_year": 1969,
+          "evidence": "No direct documentary evidence of personal relationship found. Both operated in Detroit's late-1960s radical networks — Dowdell in the League, Scott in the Panthers — but sources do not cross-reference them.",
+          "source": "Scholarly interpretation — no documented direct link"
+        }
+      ],
+      "sources": {
+        "primary": [
+          {
+            "title": "Black Madonna and Child mural (1967) — Shrine of the Black Madonna, 7625 Linwood St, Detroit",
+            "type": "artwork",
+            "year": 1967,
+            "url": "https://maps.app.goo.gl/mPDpjg7wE2at8owN8"
+          },
+          {
+            "title": "Southeast Corner of My Cell (1955) — oil on canvas, owned by Donnell Walker, Yeadon PA",
+            "type": "artwork",
+            "year": 1955,
+            "url": "https://images.squarespace-cdn.com/content/v1/5e8778b5608bdc72a92dd6b4/282297b0-5da1-4df6-84e3-e2fde2ac9481/Glanton+Dowdell%2C+Southeast+Corner+of+my+Cell%2C+1955%2C+oil+on+canvas.jpg?format=2500w"
+          },
+          {
+        ],
+        "secondary": [
+          {
+            "title": "The Black Utopians: Searching for Paradise and the Promised Land in America — Aaron Robertson (Farrar, Straus and Giroux)",
+            "type": "academic",
+            "year": 2024,
+            "url": "https://us.macmillan.com/books/9780374600792/theblackutopians"
+          },
+          {
+            "title": "Detroit: I Do Mind Dying: A Study in Urban Revolution — Dan Georgakas and Marvin Surkin (Haymarket Books)",
+            "type": "academic",
+            "year": 1975,
+            "url": "https://www.haymarketbooks.org/books/436-detroit-i-do-mind-dying"
+          },
+          {
+            "title": "Black Power and Black Madonna: Charting the Aesthetic Influence of Rev. Albert Cleage, Glanton Dowdell & the Shrine of the Black Madonna, #1 — M. Harvey, in Clark ed., Albert Cleage Jr. and the Black Madonna and Child (Palgrave Macmillan)",
+            "type": "academic",
+            "year": 2016,
+            "url": "https://link.springer.com/chapter/10.1057/978-1-137-54689-0_8"
+          },
+          {
+            "title": "An American Dilemma? The Swedish History of Finally Got the News (1970) — John Sundholm, Black Camera Vol. 15 No. 2",
+            "type": "academic",
+            "year": 2024,
+            "url": "https://urn.kb.se/resolve?urn=urn:nbn:se:su:diva-231100"
+          }
+        ],
+        "archival": [
+          {
+            "title": "Albert B. Cleage Jr. Papers, 1949-2005",
+            "type": "institutional",
+            "repository": "Bentley Historical Library, University of Michigan",
+            "url": "https://findingaids.lib.umich.edu/catalog/umich-bhl-2010025",
+            "notes": "Primary archival source for Dowdell's church affiliation, the Black Madonna mural, and photographs."
+          },
+          {
+            "title": "Detroit Revolutionary Movements Records",
+            "type": "institutional",
+            "repository": "Walter P. Reuther Library, Wayne State University",
+            "url": "https://archives.wayne.edu/repositories/2/resources/1425",
+            "notes": "Primary source for League of Revolutionary Black Workers activities including Dowdell's role."
+          },
+        ]
+      }
+    },
       "_divider": "────────── PRM: ADD NEW ENTRY HERE ──────────",
       "_placeholder": true,
       "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
