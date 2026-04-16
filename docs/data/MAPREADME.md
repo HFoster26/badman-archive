@@ -19,7 +19,7 @@ The Map Visualization Tool (MVT) is a Leaflet.js-powered interactive map that vi
 - **Keyboard accessible**: Full keyboard operability via Leaflet's built-in arrow-key pan and +/- zoom
 
 ### Visual Encoding
-- **Marker shape**: Indicates modality (pin = Detective, star = Revolutionary, hexagon = Superhero-Villain, square = Gangsta-Pimp, triangle = Folk Hero-Outlaw)
+- **Marker shape**: Indicates modality (circle = Detective, star = Revolutionary, hexagon = Superhero-Villain, square = Gangsta-Pimp, triangle = Folk Hero-Outlaw)
 - **Marker color**: Reinforces modality identity (blue, red, teal, purple, gold respectively)
 - **Icon overlay**: Each marker includes a modality-specific icon (magnifying glass, raised fist, lightning bolt, dollar sign, star)
 - **Territory polygon fill**: Semi-transparent fill in the figure's modality color
@@ -34,9 +34,9 @@ Every modality is defined by three distinguishable properties: color, shape, and
 
 | Modality | Color | Hex | Marker Shape | Icon |
 |----------|-------|-----|--------------|------|
-| Detective | Blue | `#3388ff` | Pin | Magnifying glass |
+| Detective | Blue | `#3388ff` | Circle | Magnifying glass |
 | Revolutionary | Red | `#dc3545` | Star | Raised fist |
-| Superhero-Villain | Orange | `#fd7e14` | Hexagon | Lightning bolt |
+| Superhero-Villain | Teal | `#20c997` | Hexagon | Lightning bolt |
 | Gangsta-Pimp | Purple | `#6f42c1` | Square | Dollar sign |
 | Folk Hero-Outlaw | Gold | `#d4af37` | Triangle | Star |
 
