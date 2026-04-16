@@ -183,35 +183,35 @@ formatFigureType("fictional")    // Returns "Fictional"
 function getModalityConfig(modality) {
     const config = {
         'detective': {
-            color: '#3388FF',
-            markerShape: 'pin',
+            color: '#3388ff',
+            markerShape: 'circle',
             networkShape: 'circle',
             icon: 'magnifying-glass',
-            label: 'Pin marker — Detective Modality'
+            label: 'Circle marker — Detective Modality'
         },
         'revolutionary': {
-            color: '#DC3545',
+            color: '#dc3545',
             markerShape: 'star',
             networkShape: 'diamond',
             icon: 'raised-fist',
             label: 'Star marker — Revolutionary Modality'
         },
         'superhero_villain': {
-            color: '#FD7E14',
+            color: '#fd7e14',
             markerShape: 'hexagon',
             networkShape: 'hexagon',
             icon: 'lightning-bolt',
             label: 'Hexagon marker — Superhero-Villain Modality'
         },
         'gangsta_pimp': {
-            color: '#6F42C1',
+            color: '#6f42c1',
             markerShape: 'square',
             networkShape: 'square',
             icon: 'dollar-sign',
             label: 'Square marker — Gangsta-Pimp Modality'
         },
         'folk_hero_outlaw': {
-            color: '#D4AF37',
+            color: '#d4af37',
             markerShape: 'triangle',
             networkShape: 'triangle',
             icon: 'star',
@@ -220,8 +220,8 @@ function getModalityConfig(modality) {
     };
 
     return config[modality] || {
-        color: '#6C757D',
-        markerShape: 'pin',
+        color: '#6c757d',
+        markerShape: 'circle',
         networkShape: 'circle',
         icon: 'default',
         label: 'Unknown Modality'
@@ -249,12 +249,12 @@ function getModalityConfig(modality) {
 
 | Modality | Color | Hex | Map Marker | Network Shape | Icon |
 |----------|-------|-----|------------|---------------|------|
-| Detective | Blue | `#3388FF` | Pin | Circle | Magnifying glass |
-| Revolutionary | Red | `#DC3545` | Star | Diamond | Raised fist |
-| Superhero-Villain | Orange | `#FD7E14` | Hexagon | Hexagon | Lightning bolt |
-| Gangsta-Pimp | Purple | `#6F42C1` | Square | Square | Dollar sign |
-| Folk Hero-Outlaw | Gold | `#D4AF37` | Triangle | Triangle | Star |
-| Unknown/Default | Gray | `#6C757D` | Pin | Circle | Default |
+| Detective | Blue | `#3388ff` | Circle | Circle | Magnifying glass |
+| Revolutionary | Red | `#dc3545` | Star | Diamond | Raised fist |
+| Superhero-Villain | Orange | `#fd7e14` | Hexagon | Hexagon | Lightning bolt |
+| Gangsta-Pimp | Purple | `#6f42c1` | Square | Square | Dollar sign |
+| Folk Hero-Outlaw | Gold | `#d4af37` | Triangle | Triangle | Star |
+| Unknown/Default | Gray | `#6c757d` | Circle | Circle | Default |
 
 **Launch state:** At launch, three modalities render: Detective, Revolutionary, and Superhero-Villain. The Gangsta-Pimp and Folk Hero-Outlaw configurations remain in the function because they are defined and ready for activation — the `activeModalities` array in map.html and network.html controls which modalities actually render. Do not remove these configurations.
 
@@ -399,11 +399,11 @@ The archive's JSON includes top-level `edge_types` and `evidence_tiers` objects 
 
 | Code | Name | Color | Default Dash Pattern |
 |------|------|-------|---------------------|
-| META | Creator → Creation | `#D4AF37` (Gold) | Solid |
-| P2C | Person → Creation | `#DC3545` (Red) | Long dash (12,6) |
-| C2C | Creator ↔ Creator | `#50C878` (Green) | Short dash (6,4) |
-| ORG | Organizational / Ideological | `#3388FF` (Blue) | Dot-dash (2,4,8,4) |
-| CC | Creation Continuity | `#E83E8C` (Pink) | Dotted (2,2) |
+| META | Creator → Creation | `#d4af37` (Gold) | Solid |
+| P2C | Person → Creation | `#dc3545` (Red) | Long dash (12,6) |
+| C2C | Creator ↔ Creator | `#50c878` (Green) | Short dash (6,4) |
+| ORG | Organizational / Ideological | `#3388ff` (Blue) | Dot-dash (2,4,8,4) |
+| CC | Creation Continuity | `#e83e8c` (Pink) | Dotted (2,2) |
 
 **Note on CC:** The CC edge type ("Creation Continuity") captures relationships between fictional characters sharing a universe or continuity (e.g., Static ↔ Hardware in the Milestone universe, Firestorm ↔ Cyborg across DC Detroit settings). This type is new as of the SHV modality integration. If adding future functions that iterate edge types, include CC in the iteration.
 
