@@ -31,18 +31,18 @@ All text/background combinations must meet WCAG AA minimums: 4.5:1 for normal te
 
 | Element | Foreground | Background | Ratio | AA | Status |
 |---------|-----------|------------|-------|----|----|
-| Primary text | `#E8E8E8` | `#1A472A` | 8.66:1 | Pass | ✅ |
-| Secondary text | `#C8C8C8` | `#1A472A` | 6.34:1 | Pass | ✅ |
-| Muted text | `#B0B0B0` | `#1A472A` | 4.89:1 | Pass | ✅ |
-| Link text (on content bg) | `#50C878` | `#0D2818` | 7.4:1 | Pass | ✅ |
-| Link vs. adjacent primary text | `#50C878` | `#E8E8E8` | 1.73:1 | Fail | ✅ via underline* |
-| Heading accent | `#50C878` | `#0D2818` | 7.4:1 | Pass | ✅ |
-| Nav hover / active | `#D4AF37` | `#0A1F12` | 8.2:1 | Pass | ✅ |
-| Footer text | `#E8E8E8` | `#0A1F12` | 14.07:1 | Pass | ✅ |
-| Focus ring | `#D4AF37` | `#1A472A` | 5.04:1 | Pass | ✅ |
-| Button text | `#FFFFFF` | `#552583` | 10.61:1 | Pass | ✅ |
+| Primary text | `#e8e8e8` | `#1a472a` | 8.66:1 | Pass | ✅ |
+| Secondary text | `#c8c8c8` | `#1a472a` | 6.34:1 | Pass | ✅ |
+| Muted text | `#b0b0b0` | `#1a472a` | 4.89:1 | Pass | ✅ |
+| Link text (on content bg) | `#50c878` | `#0d2818` | 7.4:1 | Pass | ✅ |
+| Link vs. adjacent primary text | `#50c878` | `#e8e8e8` | 1.73:1 | Fail | ✅ via underline* |
+| Heading accent | `#50c878` | `#0d2818` | 7.4:1 | Pass | ✅ |
+| Nav hover / active | `#d4af37` | `#0a1f12` | 8.2:1 | Pass | ✅ |
+| Footer text | `#e8e8e8` | `#0a1f12` | 14.07:1 | Pass | ✅ |
+| Focus ring | `#d4af37` | `#1a472a` | 5.04:1 | Pass | ✅ |
+| Button text | `#ffffff` | `#552583` | 10.61:1 | Pass | ✅ |
 
-*\* **Link vs. adjacent primary text:** The emerald link color fails the adjacent-text contrast test against `#E8E8E8` primary text in isolation. This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. Do not remove link underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines because their structural context signals link-ness.*
+*\* **Link vs. adjacent primary text:** The emerald link color fails the adjacent-text contrast test against `#e8e8e8` primary text in isolation. This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. Do not remove link underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines because their structural context signals link-ness.*
 
 **Rule:** When adding any new color combination, run it through the WebAIM Contrast Checker before committing. Document the result in this table.
 
@@ -52,11 +52,11 @@ Color alone cannot differentiate modalities (WCAG 1.4.1). Every modality require
 
 | Modality | Color | Hex | Map Marker | Network Shape | Icon |
 |----------|-------|-----|------------|---------------|------|
-| Detective | Blue | `#3388FF` | Default pin | Circle | Magnifying glass |
-| Revolutionary | Red | `#DC3545` | Star | Diamond | Raised fist |
-| Superhero-Villain | Orange | `#FD7E14` | Hexagon | Hexagon | Lightning bolt |
-| Gangsta-Pimp | Purple | `#6F42C1` | Square | Square | Dollar sign |
-| Folk Hero-Outlaw | Gold | `#D4AF37` | Triangle | Triangle | Star |
+| Detective | Blue | `#3388ff` | Circle | Circle | Magnifying glass |
+| Revolutionary | Red | `#dc3545` | Star | Diamond | Raised fist |
+| Superhero-Villain | Orange | `#fd7e14` | Hexagon | Hexagon | Lightning bolt |
+| Gangsta-Pimp | Purple | `#6f42c1` | Square | Square | Dollar sign |
+| Folk Hero-Outlaw | Gold | `#d4af37` | Triangle | Triangle | Star |
 
 This table is the single source of truth for modality visual identity. It must stay in sync with `getModalityConfig()` in `scripts.js`, the `.legend-[modality]` classes in `styles.css`, and the DATAREADME.md modality reference. When a new modality goes live, define all three properties here before writing any code. The `activeModalities` array in map.html and network.html controls which modalities render — add the modality string to that array when ready.
 
@@ -236,7 +236,7 @@ Every page must follow a sequential heading order. This is the defined hierarchy
 **Classes explained:**
 - `page-section` — Adds vertical margin (5rem top and bottom)
 - `col-xl-9 mx-auto` — 75% width on extra-large screens, centered
-- `bg-faded` — Green background box (`#1A472A`)
+- `bg-faded` — Green background box (`#1a472a`)
 - `rounded` — Rounded corners
 - `p-5` — Padding (3rem)
 
@@ -306,7 +306,7 @@ All links on the site must follow these rules (WCAG 2.4.4, 1.4.1).
 
 ### In-prose link underlines (required)
 - Any link appearing inside body text must have `text-decoration: underline` applied.
-- This is required because the emerald link color (`#50C878`) does not provide sufficient contrast against primary text color (`#E8E8E8`) in isolation (1.73:1). The underline serves as the non-color cue that satisfies WCAG 1.4.1.
+- This is required because the emerald link color (`#50c878`) does not provide sufficient contrast against primary text color (`#e8e8e8`) in isolation (1.73:1). The underline serves as the non-color cue that satisfies WCAG 1.4.1.
 - Navigation links, buttons, and other structurally-signalled links do not need underlines.
 
 ```css
@@ -351,8 +351,8 @@ Both the map detail panel and network metrics panel update their content when a 
 ### Panel container setup
 ```html
 <div class="bg-faded rounded p-4" id="info-panel" tabindex="-1" aria-live="polite" aria-atomic="true">
-    <h2 class="text-uppercase mb-3" style="color: #50C878;">Figure Details</h2>
-    <p id="info-content" style="color: #C8C8C8;">
+    <h2 class="text-uppercase mb-3" style="color: #50c878;">Figure Details</h2>
+    <p id="info-content" style="color: #c8c8c8;">
         Select a figure from the map or the figures list below to view details.
     </p>
 </div>
@@ -376,7 +376,7 @@ When a figure is selected, the injected HTML must include proper heading structu
 
 ```javascript
 document.getElementById('info-content').innerHTML =
-    '<h3 style="color: #E8E8E8;">' + figure.name + '</h3>' +
+    '<h3 style="color: #e8e8e8;">' + figure.name + '</h3>' +
     '<p><em>Modality:</em> ' + figure.modality + '</p>' +
     // ... rest of content
 ```
@@ -517,19 +517,19 @@ This provides the alternative interaction path required by WCAG 1.3.3 (Sensory C
 **Legend structure (three active modalities at launch):**
 ```html
 <div class="map-legend mb-4">
-    <h2 class="text-uppercase mb-3" style="color: #50C878; font-size: 1.1rem;">Legend</h2>
+    <h2 class="text-uppercase mb-3" style="color: #50c878; font-size: 1.1rem;">Legend</h2>
     <ul class="list-unstyled">
         <li class="legend-item">
             <span class="legend-marker legend-detective" aria-hidden="true"></span>
-            <span style="color: #E8E8E8;">Pin marker — Detective Modality</span>
+            <span style="color: #e8e8e8;">Circle marker — Detective Modality</span>
         </li>
         <li class="legend-item">
             <span class="legend-marker legend-revolutionary" aria-hidden="true"></span>
-            <span style="color: #E8E8E8;">Star marker — Revolutionary Modality</span>
+            <span style="color: #e8e8e8;">Star marker — Revolutionary Modality</span>
         </li>
         <li class="legend-item">
             <span class="legend-marker legend-superhero-villain" aria-hidden="true"></span>
-            <span style="color: #E8E8E8;">Hexagon marker — Superhero-Villain Modality</span>
+            <span style="color: #e8e8e8;">Hexagon marker — Superhero-Villain Modality</span>
         </li>
     </ul>
 </div>
@@ -538,7 +538,7 @@ This provides the alternative interaction path required by WCAG 1.3.3 (Sensory C
 **Accessibility patterns:**
 - Legend heading is `<h2>` (correct level, styled smaller with CSS)
 - Legend items use `<ul>`/`<li>` (semantic list structure)
-- Legend text describes marker **shape**, not color ("Pin marker" not "Blue marker")
+- Legend text describes marker **shape**, not color ("Circle marker" not "Blue marker")
 - `aria-hidden="true"` on the colored indicator spans (decorative — the text label carries the information)
 
 **Marker alt text:**
@@ -639,7 +639,7 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 
 **Pause/Resume button:**
 ```html
-<button id="pause-animation" class="btn btn-sm" style="background-color: #2A623D; color: #E8E8E8; border: 1px solid #50C878;">
+<button id="pause-animation" class="btn btn-sm" style="background-color: #2a623d; color: #e8e8e8; border: 1px solid #50c878;">
     Pause Animation
 </button>
 ```
@@ -666,11 +666,11 @@ Edge types must be distinguishable without color. Define a dash pattern per type
 
 | Edge Type | Color | Dash Pattern |
 |-----------|-------|-------------|
-| META | Gold (`#D4AF37`) | Solid (no dash) |
-| P2C | Red (`#DC3545`) | Long dash (12,6) |
-| C2C | Green (`#50C878`) | Short dash (6,4) |
-| ORG | Blue (`#3388FF`) | Dot-dash (2,4,8,4) |
-| CC | Pink (`#E83E8C`) | Dotted (2,2) |
+| META | Gold (`#d4af37`) | Solid (no dash) |
+| P2C | Red (`#dc3545`) | Long dash (12,6) |
+| C2C | Green (`#50c878`) | Short dash (6,4) |
+| ORG | Blue (`#3388ff`) | Dot-dash (2,4,8,4) |
+| CC | Pink (`#e83e8c`) | Dotted (2,2) |
 
 Note: Evidence tier dash patterns (documented/evidenced/interpretive) are a separate layer on top of edge type patterns. The two systems must be visually distinguishable from each other.
 
@@ -722,10 +722,10 @@ Note: Evidence tier dash patterns (documented/evidenced/interpretive) are a sepa
 
 **Bibliography structure:**
 ```html
-<h2 style="color: #50C878;">Theoretical</h2>
+<h2 style="color: #50c878;">Theoretical</h2>
 <p>Author. <em>Title</em>. Publisher, Year.</p>
 
-<h2 style="color: #50C878;">Detective Modality</h2>
+<h2 style="color: #50c878;">Detective Modality</h2>
 <!-- Sources for this modality -->
 ```
 
