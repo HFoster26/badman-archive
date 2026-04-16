@@ -52,11 +52,11 @@ Defines the visual styling for connection types in the Network Visualization Too
 
 ```json
 "edge_types": {
-  "META": { "label": "Creator → Creation", "color": "#D4AF37" },
-  "P2C":  { "label": "Person → Creation",  "color": "#DC3545" },
-  "C2C":  { "label": "Creator ↔ Creator",  "color": "#50C878" },
-  "ORG":  { "label": "Organizational / Ideological", "color": "#3388FF" },
-  "CC":   { "label": "Creation Continuity", "color": "#E83E8C" }
+  "META": { "label": "Creator → Creation", "color": "#d4af37" },
+  "P2C":  { "label": "Person → Creation",  "color": "#dc3545" },
+  "C2C":  { "label": "Creator ↔ Creator",  "color": "#50c878" },
+  "ORG":  { "label": "Organizational / Ideological", "color": "#3388ff" },
+  "CC":   { "label": "Creation Continuity", "color": "#e83e8c" }
 }
 ```
 
@@ -732,11 +732,11 @@ These are the verified visual identity colors for each modality. See HTML_TEMPLA
 
 | Modality | Color | Hex |
 |----------|-------|-----|
-| Detective | Blue | `#3388FF` |
-| Revolutionary | Red | `#DC3545` |
-| Superhero-Villain | Orange | `#FD7E14` |
-| Gangsta-Pimp | Purple | `#6F42C1` |
-| Folk Hero-Outlaw | Gold | `#D4AF37` |
+| Detective | Blue | `#3388ff` |
+| Revolutionary | Red | `#dc3545` |
+| Superhero-Villain | Orange | `#fd7e14` |
+| Gangsta-Pimp | Purple | `#6f42c1` |
+| Folk Hero-Outlaw | Gold | `#d4af37` |
 
 ### Activating a Dormant or Future Modality
 
