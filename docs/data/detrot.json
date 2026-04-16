@@ -1,0 +1,719 @@
+"""
+Figure definitions - Part 1: GPM + PRM
+
+Every figure's identity, emergence, scores, biography, geographic, and network
+data is carried forward EXACTLY from the current detroit.json. Only the sources
+structure changes: nested primary/secondary/archival arrays are replaced with
+a flat source_ids array, and emergence.source becomes emergence.source_id.
+
+_REVIEW_NEEDED flags are preserved exactly. Where they reference scoring or
+biographical content, a _related_sources hint is added so revision work can
+easily locate the sources tied to that content.
+"""
+
+from build_sources import sid, attach_figure
+
+# =============================================================================
+# GOINES (GPM - dormant)
+# =============================================================================
+
+def build_goines():
+    fid = "goines_donald"
+    src_keys = [
+        "goines_dopefiend", "goines_crime_partners", "goines_never_die_alone",
+        "allen_low_road", "bryant_mighty_bad_land", "holloway_house_records"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "══════════ GANGSTA-PIMP MODALITY ══════════",
+        "id": fid,
+        "name": "Donald Goines",
+        "type": "real",
+        "meta_badman": True,
+        "modality": "gangsta_pimp",
+        "_modality_note": "Re-sorted from detective → gangsta_pimp on 2026-03-16. GPM modality not yet active in archive. Figure will not render until GPM is added. Scoring, genre/medium, and modality description pending full GPM revision (tracker row 6).",
+        "years": {"birth": 1936, "death": 1974, "active_start": 1970, "active_end": 1974},
+        "emergence": {
+            "year": 1955,
+            "context": "Returned from Korea with heroin addiction at age 19, began criminal career that would result in seven prison sentences for robbery, theft, and drug-related offenses.",
+            "source_id": sid("allen_low_road")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Seven prison sentences for robbery, theft, and drug-related offenses. Never sought legitimacy within legal systems. Career criminal from age 15 until death."
+            },
+            "community_authorization": {
+                "score": 5,
+                "justification": "Novels achieved massive circulation in Black communities through barbershops, beauty salons, and street vendors. Holloway House reported millions of copies sold. Recognized as authentic voice of street life."
+            },
+            "violence_as_language": {
+                "score": 5,
+                "justification": "Both lived and wrote violence as primary mode of expression. Characters resolve conflicts through physical confrontation. His own death—murdered alongside his partner—embodied this principle."
+            },
+            "cultural_preservation": {
+                "score": 5,
+                "justification": "Documented Black urban street life with ethnographic detail. Preserved vernacular, survival strategies, and community dynamics that official records ignored. Created literary archive of underclass experience."
+            },
+            "hypermasculine_performance": {
+                "score": 5,
+                "justification": "Embodied and narrated Black masculine bravado, sexual prowess, and physical dominance. Characters perform masculinity through control of territory, women, and rival men."
+            },
+            "_REVIEW_NEEDED": "All scores require re-evaluation against GPM modality criteria. Current justifications written for Detective modality and are no longer accurate.",
+            "_related_sources": [sid("bryant_mighty_bad_land"), sid("allen_low_road")]
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "phases": [
+                {
+                    "start": 1970, "end": 1974, "value": 8,
+                    "justification": "Published 16 novels in approximately 5 years through Holloway House. Established street literature as a recognizable genre. Readership concentrated in Black urban communities.",
+                    "source": "Bryant, Born in a Mighty Bad Land, pp. 112-118"
+                },
+                {
+                    "start": 1975, "end": 1989, "value": 6,
+                    "justification": "Posthumous reprints sustained cultural presence. Holloway House continued publishing. No mainstream critical attention but consistent community readership.",
+                    "source": "TBD — needs archival verification"
+                },
+                {
+                    "start": 1990, "end": 2010, "value": 7,
+                    "justification": "Hip-hop culture increasingly references Goines. Multiple artists cite his work as influence. Biography attempts and renewed scholarly interest.",
+                    "source": "TBD — needs specific citation data"
+                },
+                {
+                    "start": 2011, "end": 2025, "value": 5,
+                    "justification": "Legacy stable but not growing. Street literature genre well-established. Goines recognized as progenitor but less actively cited.",
+                    "source": "TBD — scholarly estimate"
+                }
+            ]
+        },
+        "biography": {
+            "description": "Donald Goines represents the apex of the meta-badman: a career criminal who documented street life while living it. Born in Detroit to middle-class parents, Goines rejected conventional paths, falsifying his age to join the Air Force at 15 and returning with a heroin addiction that would define his life. He cycled through Michigan's prison system seven times, teaching himself to write during his incarcerations. Between 1969 and 1974, Goines produced sixteen novels that sold millions of copies, primarily through informal distribution networks in Black communities. His work captured the texture of urban survival—the hustles, the addictions, the violence, the codes of honor among outlaws. On October 21, 1974, Goines and his partner Shirley Sailor were murdered in their Highland Park home, a crime that remains unsolved. Theories suggest his killers may have been figures from the life he documented, making his death the final chapter of the story he spent his career telling.",
+            "_REVIEW_NEEDED": "Biography description requires revision to foreground GPM modality logic — extractive economy, postindustrial conditions, mirroring the machine's methods. Currently written without modality framing.",
+            "_related_sources": [sid("allen_low_road"), sid("bryant_mighty_bad_land")],
+            "key_events": []
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "Black Bottom",
+                "coordinates": {"lat": 42.3355, "lng": -83.037}
+            },
+            "territory": {
+                "description": "Goines operated primarily in Black Bottom and the surrounding East Side of Detroit, with significant presence in Highland Park where he lived and died. His territory spanned the traditional Black neighborhoods along Hastings Street before urban renewal destroyed the community, and later the areas around Highland Park that absorbed displaced residents.",
+                "polygon": [[42.345, -83.055], [42.345, -83.025], [42.32, -83.025], [42.32, -83.055]]
+            },
+            "additional_locations": [
+                {
+                    "name": "Highland Park residence (murder site)",
+                    "coordinates": {"lat": 42.4056, "lng": -83.0977},
+                    "significance": "Site of Goines's murder alongside Shirley Sailor, October 21, 1974"
+                },
+                {
+                    "name": "Jackson State Prison",
+                    "coordinates": {"lat": 42.2459, "lng": -84.4013},
+                    "significance": "Where Goines wrote Dopefiend and multiple other novels during incarceration"
+                }
+            ]
+        },
+        "connections": [
+            {
+                "target_id": "kenyatta",
+                "type": "META",
+                "direction": "outgoing",
+                "tier": 1,
+                "start_year": 1974,
+                "end_year": 1975,
+                "evidence": "Goines created Kenyatta under pseudonym Al C. Clark, publishing four novels (Crime Partners, Death List, Kenyatta's Escape, Kenyatta's Last Hit) between 1974-1975.",
+                "source": "Holloway House publication records; novels carry Al C. Clark pseudonym"
+            }
+        ],
+        "source_ids": [sid(k) for k in src_keys]
+    }
+
+
+# =============================================================================
+# KENYATTA (PRM)
+# =============================================================================
+
+def build_kenyatta():
+    fid = "kenyatta"
+    src_keys = [
+        "goines_crime_partners", "goines_death_list",
+        "goines_kenyattas_escape", "goines_kenyattas_last_hit",
+        "allen_low_road"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "────────── PRM: Kenyatta ──────────",
+        "id": fid,
+        "name": "Kenyatta",
+        "type": "fictional",
+        "meta_badman": False,
+        "modality": "revolutionary",
+        "medium": "novel",
+        "genre": "revolutionary_fiction",
+        "creator_id": "goines_donald",
+        "years": {"active_start": 1974, "active_end": 1975},
+        "emergence": {
+            "year": 1974,
+            "context": "First appearance in Crime Partners, published by Holloway House under Goines's pseudonym Al C. Clark. Introduced as leader of a paramilitary organization waging war against drug dealers and racist police in Detroit.",
+            "source_id": sid("goines_crime_partners")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Operates entirely outside legal systems as leader of a paramilitary organization. Wages war against both drug dealers and racist police. No pretense of legitimacy within state structures."
+            },
+            "community_authorization": {
+                "score": 5,
+                "justification": "Commands an army of community members who follow him willingly. His mission—ridding the ghetto of drugs and corrupt cops—directly serves community interests. Named after Jomo Kenyatta, father of Kenyan independence."
+            },
+            "violence_as_language": {
+                "score": 5,
+                "justification": "Violence is his primary mode of operation. Organizes assassinations, armed raids, and paramilitary strikes. The novels are structured around escalating violent confrontations."
+            },
+            "cultural_preservation": {
+                "score": 4,
+                "justification": "Represents the revolutionary aspirations of the Black Power era. Preserves and transmits ideology of armed self-defense and community control. However, his fictional status limits direct community engagement."
+            },
+            "hypermasculine_performance": {
+                "score": 3,
+                "justification": "Commands respect through tactical brilliance and organizational leadership more than personal physical dominance. Masculinity expressed through control of territory and people rather than individual combat."
+            }
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+            "_related_sources": [sid("goines_crime_partners"), sid("goines_kenyattas_last_hit")],
+            "phases": [
+                {"start": 1974, "end": 1975, "value": 5,
+                 "justification": "PLACEHOLDER — Four novels published in rapid succession. Readership tied to Goines's existing audience. Character represents Goines's revolutionary vision but published under pseudonym, limiting initial recognition.",
+                 "source": "TBD"},
+                {"start": 1976, "end": 1999, "value": 3,
+                 "justification": "PLACEHOLDER — Novels remain in print through Holloway House reprints. Cultural presence sustained by association with Goines but Kenyatta not independently cited as a cultural figure. No adaptations.",
+                 "source": "TBD"},
+                {"start": 2000, "end": 2025, "value": 2,
+                 "justification": "PLACEHOLDER — Goines's broader catalog overshadows the Kenyatta series. Novels available but not actively driving cultural conversation. Scholarly interest in Goines rarely centers the Kenyatta character specifically.",
+                 "source": "TBD"}
+            ]
+        },
+        "biography": {
+            "description": "Kenyatta is the protagonist of Donald Goines's four-novel series published under the pseudonym Al C. Clark. Named after Jomo Kenyatta, the father of Kenyan independence, he leads a militant organization of Black men and women dedicated to cleansing Detroit's ghettos of drug dealers and racist police officers. Operating from a fortified farm outside the city where he trains his soldiers, Kenyatta wages a systematic war against the forces destroying his community. The series follows his escalating conflict with both the criminal underworld and law enforcement, culminating in a cross-country chase that ends in Las Vegas. Kenyatta represents Goines's vision of what organized Black resistance might look like—a disciplined, armed, community-authorized force operating outside the law to protect those the law refuses to serve.",
+            "key_events": [
+                {"year": 1974, "event": "First appearance in Crime Partners, introduced as leader of militant Black organization",
+                 "location": "Detroit, MI (fictional)"},
+                {"year": 1974, "event": "Death List published, following Kenyatta's systematic elimination of drug suppliers",
+                 "location": "Detroit, MI (fictional)"},
+                {"year": 1974, "event": "Kenyatta's Escape published, depicting hijacking and cross-country flight",
+                 "location": "Nevada/Los Angeles (fictional)"},
+                {"year": 1975, "event": "Kenyatta's Last Hit published posthumously, concluding series in Las Vegas showdown",
+                 "location": "Las Vegas, NV (fictional)"}
+            ],
+            "creator": "Donald Goines (as Al C. Clark)",
+            "source_text": "Crime Partners (1974)"
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "Detroit (fictional)",
+                "coordinates": {"lat": 42.332, "lng": -83.0458}
+            },
+            "territory": {
+                "description": "Kenyatta operates from a fortified training farm outside Detroit while conducting operations throughout the city's Black neighborhoods. His territory extends wherever drug dealers and corrupt police operate, making the entire ghetto his zone of operation. The series eventually expands his territory westward through Nevada to Los Angeles as he flees law enforcement.",
+                "polygon": [[42.4, -83.1], [42.4, -82.95], [42.3, -82.95], [42.3, -83.1]]
+            },
+            "additional_locations": [
+                {"name": "Training farm (fictional)",
+                 "coordinates": {"lat": 42.5, "lng": -83.2},
+                 "significance": "Fortified compound outside Detroit where Kenyatta trains his paramilitary organization"}
+            ]
+        },
+        "connections": [],
+        "source_ids": [sid(k) for k in src_keys]
+    }
+
+
+# =============================================================================
+# RON SCOTT (PRM)
+# =============================================================================
+
+def build_scott():
+    fid = "scott_ron"
+    src_keys = [
+        "scott_personal_webpage", "amc_2010_scott_video",
+        "aclu_scott_legacy", "michigan_chronicle_bpp",
+        "cointelpro_detroit", "dcapb_records"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "────────── PRM: Ron Scott ──────────",
+        "id": fid,
+        "name": "Ron Scott",
+        "type": "real",
+        "meta_badman": False,
+        "modality": "revolutionary",
+        "years": {"birth": 1947, "death": 2015, "active_start": 1968, "active_end": 2015},
+        "emergence": {
+            "year": 1968,
+            "context": "Co-founded Detroit chapter of Black Panther Party after hearing Kathleen Cleaver speak at St. Matthew/St. Joseph Church. Joined Eric Bell, Jackie Spicer, George Gillis, and Victor Stewart as founding members of an organization explicitly positioned outside and against state authority.",
+            "source_id": sid("michigan_chronicle_bpp")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Co-founded Detroit's Black Panther Party, an organization explicitly positioned outside and against state authority. Subject of FBI COINTELPRO surveillance and suppression. Organized armed resistance to police brutality."
+            },
+            "community_authorization": {
+                "score": 5,
+                "justification": "Lifelong community organizer. Founded Peace Zones for Life to address community violence. Spokesperson for Detroit Coalition Against Police Brutality. Received Congressional Black Caucus Unsung Hero award and National Academy of Television Arts Silver Circle Award."
+            },
+            "violence_as_language": {
+                "score": 4,
+                "justification": "Armed self-defense was central to Panther ideology. However, Scott's later work emphasized de-escalation and peace-building, representing evolution from violent resistance to community reconciliation."
+            },
+            "cultural_preservation": {
+                "score": 5,
+                "justification": "Preserved and transmitted Black radical tradition through decades of organizing, media work, and mentorship. Hosted 'For My People' on Detroit PBS affiliate. Participated in Detroit Black Journal. Educated new generations about Panther legacy."
+            },
+            "hypermasculine_performance": {
+                "score": 4,
+                "justification": "Embodied revolutionary Black masculinity as Panther leader. Public speaker and confrontational presence at police commission meetings. However, later work emphasized community healing over masculine dominance."
+            }
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values. Tracker row 12: revise to sharpened PRM definition, ensure education-first sequence reflected in bio.",
+            "_related_sources": [sid("michigan_chronicle_bpp"), sid("cointelpro_detroit"), sid("amc_2010_scott_video")],
+            "phases": [
+                {"start": 1968, "end": 1975, "value": 7,
+                 "justification": "PLACEHOLDER — Co-founded Detroit BPP chapter. Active during peak Black Panther organizing. Subject of COINTELPRO surveillance. Survived 'Detroit 15' incident (1970 armed siege). High local visibility as Panther leader.",
+                 "source": "TBD — Michigan Chronicle coverage; COINTELPRO files"},
+                {"start": 1976, "end": 1995, "value": 4,
+                 "justification": "PLACEHOLDER — Post-Panther transition period. Shifted from revolutionary organizing to community-based advocacy. Lower public profile but sustained grassroots presence. Exact activities during this period need archival verification.",
+                 "source": "TBD — needs archival research"},
+                {"start": 1996, "end": 2010, "value": 6,
+                 "justification": "PLACEHOLDER — Founded Peace Zones for Life. Became spokesperson for Detroit Coalition Against Police Brutality. Hosted 'For My People' on PBS affiliate. Renewed public visibility as elder activist and media figure. Spoke at 2010 Allied Media Conference.",
+                 "source": "TBD — ACLU Michigan; Allied Media Conference records"},
+                {"start": 2011, "end": 2025, "value": 4,
+                 "justification": "PLACEHOLDER — Continued organizing until death in 2015. Posthumous legacy sustained through community memory and tribute coverage. Not widely known outside Detroit activist circles.",
+                 "source": "TBD — obituary coverage research"}
+            ]
+        },
+        "biography": {
+            "description": "Ron Scott grew up in Detroit's Jeffries Projects, where his politically astute single mother shaped his worldview. Accepted to the University of Michigan in 1965 before affirmative action, Scott's trajectory shifted after hearing Kathleen Cleaver speak at St. Matthew/St. Joseph Church, leading him to co-found Detroit's Black Panther Party chapter in 1968. For nearly five decades, Scott remained on the front lines of Detroit's struggle for justice—from Panther organizing to police accountability advocacy to community peace-building. As spokesperson for the Detroit Coalition Against Police Brutality and founder of Peace Zones for Life, Scott evolved from revolutionary militant to 'Transformational Anthropologist,' as he called himself, dedicated to changing human behavior toward peace and reconciliation. He died of cancer on November 29, 2015, working until his final days.",
+            "_REVIEW_NEEDED": "Tracker row 12: revise to sharpened PRM definition. Ensure education-first sequence is explicitly reflected — Scott heard Cleaver speak (education), co-founded BPP (political action), subjected to COINTELPRO (system violence), forced into militant posture.",
+            "_related_sources": [sid("michigan_chronicle_bpp"), sid("aclu_scott_legacy")],
+            "key_events": [
+                {"year": 1963, "event": "Participated in Detroit March where Dr. Martin Luther King Jr. delivered early version of 'I Have a Dream' speech", "location": "Detroit, MI"},
+                {"year": 1965, "event": "Accepted to University of Michigan before affirmative action policies", "location": "Ann Arbor, MI"},
+                {"year": 1968, "event": "Co-founded Detroit chapter of Black Panther Party after hearing Kathleen Cleaver speak", "location": "Detroit, MI"},
+                {"year": 1968, "event": "Detroit Black Panther Party chapter established with Eric Bell, Jackie Spicer, George Gillis, and Victor Stewart", "location": "Detroit, MI"},
+                {"year": 2010, "event": "Spoke at Allied Media Conference presenting Peace Zones for Life vision", "location": "Detroit, MI"},
+                {"year": 2015, "event": "Died November 29 after battle with cancer, working until final days", "location": "Detroit, MI"}
+            ]
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "Jeffries Projects",
+                "coordinates": {"lat": 42.3361, "lng": -83.0719}
+            },
+            "territory": {
+                "description": "Scott's territory encompassed Detroit's Black neighborhoods from his childhood in Jeffries Projects through decades of organizing. His work with Peace Zones for Life focused on specific neighborhoods plagued by violence, while his advocacy reached citywide through police commission meetings and media appearances. St. Matthew/St. Joseph Church, where he first encountered Kathleen Cleaver, marked a key location in his political awakening.",
+                "polygon": [[42.36, -83.1], [42.36, -83.04], [42.31, -83.04], [42.31, -83.1]]
+            },
+            "additional_locations": [
+                {"name": "St. Matthew/St. Joseph Church",
+                 "coordinates": {"lat": 42.352, "lng": -83.065},
+                 "significance": "Where Scott heard Kathleen Cleaver speak, catalyzing his decision to co-found Detroit BPP"},
+                {"name": "University of Michigan",
+                 "coordinates": {"lat": 42.278, "lng": -83.7382},
+                 "significance": "Accepted before affirmative action policies in 1965"}
+            ]
+        },
+        "connections": [
+            {
+                "target_id": "kenyatta", "type": "P2C", "direction": "outgoing", "tier": 3,
+                "start_year": 1968, "end_year": 1975,
+                "evidence": "Scott's real-world Panther organizing provided the template for Goines's fictional Kenyatta—a disciplined, armed organization defending Black communities against drugs and police violence. Both emerged in Detroit in the same era with parallel missions.",
+                "source": "Scholarly interpretation — no documented link between Scott and Goines"
+            },
+            {
+                "target_id": "baker_gordon", "type": "ORG", "direction": "mutual", "tier": 2,
+                "start_year": 1968, "end_year": 2014,
+                "evidence": "Revolutionary contemporaries in late 1960s Detroit, representing parallel streams of Black radical organizing—Scott through the Panthers, Baker through labor organizing. Both spoke together at 2010 U.S. Social Forum panel on their experiences.",
+                "source": "2010 U.S. Social Forum panel documentation; exact origins of relationship pending Reuther Library verification"
+            }
+        ],
+        "source_ids": [sid(k) for k in src_keys]
+    }
+
+
+# =============================================================================
+# GENERAL GORDON BAKER JR. (PRM)
+# =============================================================================
+
+def build_baker():
+    fid = "baker_gordon"
+    src_keys = [
+        "baker_draft_letter", "finally_got_the_news",
+        "georgakas_surkin_detroit", "reuther_baker_obituary",
+        "reuther_detroit_revolutionary_movements", "reuther_baker_papers"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "────────── PRM: General Gordon Baker Jr. ──────────",
+        "id": fid,
+        "name": "General Gordon Baker Jr.",
+        "type": "real",
+        "meta_badman": False,
+        "modality": "revolutionary",
+        "years": {"birth": 1941, "death": 2014, "active_start": 1965, "active_end": 2014},
+        "emergence": {
+            "year": 1965,
+            "context": "Wrote open letter refusing Vietnam draft, declaring willingness to fight for Black liberation on 12th Street but not in Vietnam. Organized September 10th Movement protest. This was two years before Muhammad Ali's famous refusal.",
+            "source_id": sid("baker_draft_letter")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Publicly refused Vietnam draft in 1965, two years before Muhammad Ali. Organized wildcat strikes outside union authorization. Founded revolutionary organizations explicitly opposed to capitalist state. Arrested during 1967 Detroit rebellion."
+            },
+            "community_authorization": {
+                "score": 4,
+                "justification": "Led 4,000 workers in wildcat strikes. Founded DRUM and League of Revolutionary Black Workers with broad worker support. However, authorization came primarily from workers rather than broader Black community, and LRBW eventually split over strategic disagreements."
+            },
+            "violence_as_language": {
+                "score": 3,
+                "justification": "Rhetoric was militant and confrontational. Draft refusal letter declared willingness to fight for Black liberation. However, primary tactics were labor organizing and political education rather than armed resistance."
+            },
+            "cultural_preservation": {
+                "score": 5,
+                "justification": "Preserved and transmitted Marxist-Black nationalist synthesis through decades of organizing and education. Co-founded UHURU student organization. Maintained revolutionary theory through League of Revolutionaries for a New America. His papers are preserved at Wayne State's Reuther Library."
+            },
+            "hypermasculine_performance": {
+                "score": 2,
+                "justification": "Leadership style emphasized collective organizing and ideological discipline over individual masculine dominance. Revolutionary identity derived from intellectual and organizational capacity rather than physical confrontation or personal bravado."
+            }
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values. Tracker row 15: PRM revision — emphasize Marx, draft letter, political theory driving strikes.",
+            "_related_sources": [sid("baker_draft_letter"), sid("finally_got_the_news"), sid("georgakas_surkin_detroit")],
+            "phases": [
+                {"start": 1965, "end": 1969, "value": 6,
+                 "justification": "PLACEHOLDER — Draft refusal letter circulated in activist networks. Co-founded UHURU at Wayne State. Arrested during 1967 rebellion. Building toward DRUM but not yet nationally visible.",
+                 "source": "TBD — Reuther Library archives"},
+                {"start": 1968, "end": 1973, "value": 8,
+                 "justification": "PLACEHOLDER — Peak influence. Led 4,000-worker wildcat strike at Dodge Main. Founded DRUM and co-founded League of Revolutionary Black Workers. Featured in 'Finally Got the News' documentary (1970). National attention from labor and radical press.",
+                 "source": "Geschwender, Detroit: I Do Mind Dying; Finally Got the News (1970)"},
+                {"start": 1974, "end": 1999, "value": 4,
+                 "justification": "PLACEHOLDER — LRBW split diminished organizational influence. Baker continued organizing through League of Revolutionaries for a New America but lower public profile. Influence sustained through mentorship and political education networks.",
+                 "source": "TBD — needs archival verification"},
+                {"start": 2000, "end": 2025, "value": 5,
+                 "justification": "PLACEHOLDER — Renewed interest in DRUM through academic scholarship and documentary projects. 2010 U.S. Social Forum panel. Papers donated to Reuther Library after 2014 death. Legacy growing in labor history circles.",
+                 "source": "Reuther Library; U.S. Social Forum records"}
+            ]
+        },
+        "biography": {
+            "description": "General Gordon Baker Jr.—'General' was his given name—was born in Detroit to parents who had migrated from Georgia seeking auto industry work. After graduating from Southwestern High School at 16, Baker studied Marx at Wayne State University and co-founded UHURU, an African-American student organization, in 1963. He traveled to Cuba in 1964 to study the Castro government. In 1965, Baker wrote an open letter refusing the Vietnam draft, declaring 'when the call is made to FREE 12TH STREET HERE IN DETROIT, when these calls are made, send for me, for these shall be Historical Struggles in which it shall be an honor to serve!' This was two years before Muhammad Ali's famous refusal. After working at Chrysler's Dodge Main plant, Baker led 4,000 workers in a wildcat strike on May 2, 1968, founding the Dodge Revolutionary Union Movement (DRUM). DRUM spawned the League of Revolutionary Black Workers in 1969, combining Black Power politics with labor organizing at the point of production. Baker remained a revolutionary organizer until his death on May 18, 2014.",
+            "_REVIEW_NEEDED": "Tracker row 15: PRM revision — foreground Baker's Marxist intellectual formation as the engine of his organizing. The sequence is: Marx at Wayne State + Cuba (education) → draft letter + UHURU + DRUM (political action) → arrest, COINTELPRO, LRBW split (system response). Political theory precedes and drives the strikes.",
+            "_related_sources": [sid("baker_draft_letter"), sid("georgakas_surkin_detroit"), sid("reuther_baker_obituary")],
+            "key_events": [
+                {"year": 1958, "event": "Graduated from Southwestern High School at age 16", "location": "Detroit, MI"},
+                {"year": 1963, "event": "Co-founded UHURU student organization at Wayne State University", "location": "Detroit, MI"},
+                {"year": 1964, "event": "Traveled to Cuba to study Castro government", "location": "Cuba"},
+                {"year": 1965, "event": "Wrote open letter refusing Vietnam draft, organized September 10th Movement protest", "location": "Detroit, MI"},
+                {"year": 1967, "event": "Arrested on first day of Detroit rebellion, July 23", "location": "Detroit, MI"},
+                {"year": 1968, "event": "Led wildcat strike of 4,000 workers at Dodge Main plant, founded DRUM", "location": "Hamtramck, MI"},
+                {"year": 1968, "event": "Led second wildcat strike July 8, shutting down plant for two days", "location": "Hamtramck, MI"},
+                {"year": 1969, "event": "Co-founded League of Revolutionary Black Workers", "location": "Detroit, MI"},
+                {"year": 2014, "event": "Died May 18, memorial held at UAW Local 600", "location": "Detroit, MI"}
+            ]
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "Dodge Main Plant",
+                "coordinates": {"lat": 42.3954, "lng": -83.0569}
+            },
+            "territory": {
+                "description": "Baker's territory centered on Detroit's auto plants, particularly Chrysler's Dodge Main in Hamtramck where DRUM was founded. His organizing extended throughout the auto industry across Detroit, including Ford's River Rouge plant and Chrysler's Eldon Avenue facility. Wayne State University, where he studied and founded UHURU, represented another key node. The 12th Street corridor, which he referenced in his draft refusal letter, became the epicenter of the 1967 rebellion.",
+                "polygon": [[42.41, -83.1], [42.41, -83.03], [42.33, -83.03], [42.33, -83.1]]
+            },
+            "additional_locations": [
+                {"name": "Wayne State University",
+                 "coordinates": {"lat": 42.3574, "lng": -83.0693},
+                 "significance": "Where Baker studied Marx and co-founded UHURU student organization in 1963"},
+                {"name": "12th Street corridor",
+                 "coordinates": {"lat": 42.3664, "lng": -83.0984},
+                 "significance": "Referenced in 1965 draft refusal letter; epicenter of 1967 Detroit rebellion where Baker was arrested"},
+                {"name": "Ford River Rouge Plant",
+                 "coordinates": {"lat": 42.2989, "lng": -83.1497},
+                 "significance": "Site of DRUM-inspired organizing expansion"},
+                {"name": "Eldon Avenue Chrysler Plant",
+                 "coordinates": {"lat": 42.4089, "lng": -83.0461},
+                 "significance": "Site of ELRUM (Eldon Avenue Revolutionary Union Movement) organizing"}
+            ]
+        },
+        "connections": [],
+        "source_ids": [sid(k) for k in src_keys]
+    }
+
+
+# =============================================================================
+# OBADELE BROTHERS (PRM - paired entry)
+# =============================================================================
+
+def build_obadele():
+    fid = "obadele_brothers"
+    src_keys = [
+        "malcolm_grassroots_recording", "malcolm_ballot_bullet_recording",
+        "malcolm_last_message_recording", "rna_declaration",
+        "obadele_war_in_america", "obadele_foundations_black_nation",
+        "fifth_estate_new_bethel", "firing_line_milton_henry",
+        "onaci_free_the_land", "davenport_social_movements_die",
+        "berger_aaihs_free_the_land", "detroit_under_fire_rna",
+        "lee_milton_henry_obit", "amsterdam_news_milton_henry",
+        "rosa_parks_reparations", "reuther_rna_materials",
+        "bentley_robert_williams_papers", "milton_henry_civil_rights_collection",
+        "fbi_cointelpro_rna"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "────────── PRM: Obadele Brothers ──────────",
+        "id": fid,
+        "name": "Gaidi & Imari Obadele",
+        "type": "real",
+        "meta_badman": False,
+        "modality": "revolutionary",
+        "years": {"birth": 1919, "death": 2010, "active_start": 1962, "active_end": 1971},
+        "emergence": {
+            "year": 1962,
+            "context": "Milton and Richard Henry co-founded the Group on Advanced Leadership (GOAL) in Detroit with Rev. Albert B. Cleage Jr., establishing the organizational infrastructure that would evolve through the Freedom Now Party (1963), the Malcolm X Society (1967), and the Republic of New Afrika (1968). Their Detroit organizing was concentrated along the Linwood corridor on the city's west side.",
+            "source_id": sid("onaci_free_the_land")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Milton Henry graduated from Yale Law School, practiced in American courts for decades, then signed a Declaration of Independence rejecting American sovereignty entirely. He was court-martialed for integrating a whites-only officers' club at Selfridge Field. Richard Henry encouraged draft resistance at age 18, refused to send his son to school over racist textbooks, and authored War in America: The Malcolm X Doctrine, framing Black Americans as a subjugated nation with the legal right to secede. Together they co-founded the Republic of New Afrika, drafting an actual constitution (Code of Umoja), claiming five Southern states as national territory, demanding $400 billion in reparations, and establishing a provisional government with ministers and a military arm."
+            },
+            "community_authorization": {
+                "score": 5,
+                "justification": "Milton Henry won election as a Pontiac city commissioner and earned the nickname 'The Black Defender' through decades of criminal defense advocacy. After the 1969 New Bethel incident, a Black United Front of nearly 60 organizations coalesced to defend the detainees and Judge Crockett, and over 3,000 people demonstrated in support. The RNA founding conference drew over 500 Black nationalists with approximately 100 signatories. GOAL's 1963 textbook campaign mobilized the threat of 10,000 protesters and forced the Detroit school board to commission supplemental materials. Rev. C.L. Franklin rented New Bethel for RNA events. Rosa Parks was a friend of the brothers and attended the RNA founding. Malcolm X thanked the brothers by name from the podium."
+            },
+            "violence_as_language": {
+                "score": 4,
+                "justification": "The brothers' first moves were always political and intellectual — legal briefs, organizing, speeches, electoral campaigns. The state responded with violence: court-martial, police firing over 100 rounds into New Bethel Baptist Church during the RNA's first anniversary celebration. The Detroit Commission on Community Relations found no evidence anyone inside the church fired on police. Police shot four unarmed people inside, beat and kicked prisoners, and shouted racial epithets. The RNA's armed self-defense posture (Black Legion bodyguard unit) was defensive, inherited from Robert F. Williams' philosophy. After 1969, Milton Henry withdrew from the militant trajectory, entering seminary and founding a church. The system forced the militant posture; the brothers did not initiate violence."
+            },
+            "cultural_preservation": {
+                "score": 5,
+                "justification": "Milton Henry's Afro-American Recording Company recorded and posthumously released Malcolm X's three most important Detroit speeches: 'Message to the Grassroots' (1963), 'The Ballot or the Bullet' (1964), and 'The Last Message' (1965). Without these recordings, foundational texts of Black radical thought might not exist in primary audio form. Richard Henry authored War in America: The Malcolm X Doctrine (1968), Revolution and Nation-Building (1970), and Foundations of the Black Nation (1975, House of Songhay, Detroit). Political scientist Robert C. Smith called Imari Obadele 'the father of the modern reparations movement.' GOAL, the Freedom Now Party, the Malcolm X Society, and the RNA each functioned as schools of Black political consciousness. Richard Henry's 1963 textbook campaign forced the Detroit school board to commission 'The Struggle for Freedom and Rights,' sparking nationwide textbook reform activism."
+            },
+            "hypermasculine_performance": {
+                "score": 5,
+                "justification": "Milton Henry embodied multiple registers of Black masculine heroism: Tuskegee Airman (warrior credential), Yale-educated attorney ('The Black Defender'), man who punched a white bus driver in segregated Alabama and stormed a whites-only officers' club. His white Cadillac convertible escorted by armed Black Legion bodyguards performed sovereign masculinity. Richard Henry performed intellectual and revolutionary masculinity — the theorist who named himself after a 14th-century emperor (Abubakari II of Mali), went to federal prison rather than abandon the nation-building project, and claimed patriarchal founding authority with the 'I' suffix. Together they performed sovereign Black manhood — men who answered to no American authority, named themselves in African languages, declared a nation, and stood in the legal and physical crosshairs of the state without yielding."
+            }
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+            "_related_sources": [sid("onaci_free_the_land"), sid("davenport_social_movements_die"), sid("detroit_under_fire_rna")],
+            "phases": [
+                {"start": 1962, "end": 1967, "value": 6,
+                 "justification": "PLACEHOLDER — Co-founded GOAL (1962), Freedom Now Party (1963). Organized Cynthia Scott protests. Hosted Malcolm X's three major Detroit speeches. Milton Henry ran for Congress on FNP ticket. Building organizational infrastructure but not yet nationally visible.",
+                 "source": "TBD — Reuther Library archives; Onaci, Free the Land"},
+                {"start": 1968, "end": 1971, "value": 9,
+                 "justification": "PLACEHOLDER — Peak influence. Founded Republic of New Afrika (1968) with 500+ attendees and 100 signatories. New Bethel incident (1969) triggered citywide political crisis — 60-org Black United Front, 3,000 demonstrators, 200,000-signature impeachment petition. National media coverage. FBI COINTELPRO targeting. RNA established consulates in multiple cities.",
+                 "source": "Onaci, Free the Land; Davenport, How Social Movements Die; Detroit Under Fire project"},
+                {"start": 1972, "end": 1999, "value": 4,
+                 "justification": "PLACEHOLDER — Brothers diverged after 1971. Imari imprisoned in Mississippi. Milton withdrew from movement, entered ministry. RNA continued but Detroit chapter diminished. Influence sustained through Imari's publications and reparations advocacy (N'COBRA co-founded 1987).",
+                 "source": "TBD — needs archival verification"},
+                {"start": 2000, "end": 2025, "value": 5,
+                 "justification": "PLACEHOLDER — Renewed scholarly interest: Onaci's Free the Land (2020), Davenport's How Social Movements Die (2015). AAIHS 50th anniversary coverage (2018). New Bethel Baptist Church added to National Register (2021) and Michigan Historical Marker (2023). Legacy growing in Black nationalist and reparations scholarship.",
+                 "source": "Onaci (2020); Davenport (2015); AAIHS (2018); NPS National Register"}
+            ]
+        },
+        "biography": {
+            "description": "Milton R. Henry (Gaidi Obadele, 1919-2006) and Richard Bullock Henry (Imari Obadele, 1930-2010) were brothers from Philadelphia who became the architects of Detroit's most radical Black Power organizational infrastructure. As a paired unit, they compressed an entire ideological evolution from reformist civil rights to revolutionary separatism into six years, all rooted in Detroit's west-side Linwood corridor. Milton was the public-facing legal and organizational arm — a Tuskegee Airman, Yale-educated attorney, elected official, and the man who recorded Malcolm X's most important speeches. Richard was the intellectual engine — the theorist, author, and strategic mind who wrote the philosophical architecture for Black sovereignty and the modern reparations movement. Their organizational trajectory — GOAL (1962), Freedom Now Party (1963), Malcolm X Society (1967), Republic of New Afrika (1968) — produced the most significant Black nationalist formation to emerge from Detroit. The New Bethel Baptist Church incident of March 29, 1969, when Detroit police fired over 100 rounds into an RNA anniversary gathering, became a defining confrontation that reshaped the city's politics and demonstrated the PRM sequence with textbook clarity: political action met by state violence forcing the militant posture.",
+            "key_events": [
+                {"year": 1942, "event": "Milton Henry serves as a Tuskegee Airman. At Selfridge Field near Detroit, he enters the whites-only officers' club and demands his rights; is court-martialed."},
+                {"year": 1950, "event": "Milton Henry moves to Pontiac, Michigan after graduating from Yale Law School. Establishes law practice and wins election as Pontiac city commissioner."},
+                {"year": 1953, "event": "Richard Henry moves to Detroit. Works as reporter for the Michigan Chronicle (1953-1956) and later as technical writer at U.S. Army TACOM."},
+                {"year": 1962, "event": "Milton Henry, Richard Henry, and Rev. Albert B. Cleage Jr. co-found the Group on Advanced Leadership (GOAL), headquartered at 11605 Linwood Avenue, Detroit."},
+                {"year": 1963, "event": "Year of confrontation: Richard Henry refuses to send his son to school over racist textbooks, forcing school board reforms. GOAL co-organizes protests against police killing of Cynthia Scott. Henry brothers and Cleage co-found the Michigan Freedom Now Party. November 9-10: Milton Henry and Grace Lee Boggs organize the Grassroots Leadership Conference at King Solomon Baptist Church, where Malcolm X delivers 'Message to the Grassroots,' recorded by Milton's Afro-American Recording Company."},
+                {"year": 1964, "event": "April 12: GOAL hosts Malcolm X at King Solomon Baptist Church. Morning press conference at GOAL HQ with Malcolm and Milton Henry. Evening: Malcolm delivers 'The Ballot or the Bullet,' thanking 'Milton and Richard Henley' by name. Milton Henry runs for U.S. Representative on Freedom Now Party ticket."},
+                {"year": 1965, "event": "February 14: Milton Henry organizes Malcolm X's final Detroit appearance at Ford Auditorium. Malcolm's home had been firebombed that morning; Milton arranges for a doctor at the Statler Hilton. Henry records 'The Last Message.' One week later, Malcolm is assassinated. Milton Henry serves as pallbearer at the funeral."},
+                {"year": 1967, "event": "Brothers found the Malcolm X Society in Detroit to carry forward Malcolm's political philosophy, specifically his advocacy for Black self-determination and nationhood. The Society becomes the direct organizational vehicle for founding the RNA."},
+                {"year": 1968, "event": "March 29-31: The Malcolm X Society and GOAL convene the Black Government Conference at the Shrine of the Black Madonna (7625 Linwood Street). Over 500 Black nationalists attend. Approximately 100 sign a Declaration of Independence from the United States. Republic of New Afrika provisional government elected: Robert F. Williams (President), Gaidi Obadele/Milton Henry (First Vice President), Betty Shabazz (Second Vice President), Imari Obadele/Richard Henry (Minister of Information). Queen Mother Audley Moore is first signatory."},
+                {"year": 1969, "event": "March 29: RNA first anniversary celebration at New Bethel Baptist Church (8430 Linwood). Approximately 142 people inside when police confront armed Black Legion bodyguards escorting Milton Henry to his car. Gunfire erupts — who fires first remains disputed. Detroit police fire at least 100 rounds into the church. All 142 people arrested. March 30: Judge George W. Crockett Jr. sets up temporary courtroom at police station, conducts habeas corpus hearings, releases approximately 130 detainees. Political aftermath: 200,000 sign impeachment petition against Crockett; Black United Front of 60 organizations and 3,000 demonstrators defend him. Three men charged; defense attorneys Kenneth Cockrel, Justin Ravitz, and Milton Henry win acquittals in all cases."},
+                {"year": 1971, "event": "Brothers diverge. Imari Obadele leads RNA faction south to Mississippi to acquire land. Milton Henry stays in Detroit area, distances from militant trajectory, eventually enters seminary and founds Christ Presbyterian Church in Southfield."}
+            ]
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "New Bethel Baptist Church",
+                "coordinates": {"lat": 42.364028, "lng": -83.102193}
+            },
+            "territory": {
+                "description": "The Obadele brothers' Detroit organizing was concentrated along the Linwood corridor on the city's west side. Key locations include GOAL headquarters (11605 Linwood), the Shrine of the Black Madonna where the RNA was founded (7625 Linwood), New Bethel Baptist Church where the 1969 police shootout occurred (8430 C.L. Franklin Blvd/Linwood), and King Solomon Baptist Church where Malcolm X delivered his most famous speeches (6100 14th Street). This stretch of Detroit's Dexter-Linwood and surrounding neighborhoods was the geographic heart of the city's Black nationalist movement in the 1960s.",
+                "polygon": [[42.386, -83.119], [42.386, -83.088], [42.356, -83.088], [42.356, -83.119]]
+            },
+            "additional_locations": [
+                {"name": "Shrine of the Black Madonna (7625 Linwood)",
+                 "coordinates": {"lat": 42.363039, "lng": -83.102143},
+                 "significance": "RNA founding conference, March 1968"},
+                {"name": "GOAL Headquarters (11605 Linwood)",
+                 "coordinates": {"lat": 42.382179, "lng": -83.114752},
+                 "significance": "Group on Advanced Leadership offices, site of 1964 Malcolm X press conference"},
+                {"name": "King Solomon Baptist Church (6100 14th St)",
+                 "coordinates": {"lat": 42.35974, "lng": -83.092319},
+                 "significance": "Malcolm X delivered 'Message to the Grassroots' (1963) and 'The Ballot or the Bullet' (1964)"}
+            ]
+        },
+        "connections": [],
+        "source_ids": [sid(k) for k in src_keys]
+    }
+
+
+# =============================================================================
+# GLANTON DOWDELL (PRM)
+# =============================================================================
+
+def build_dowdell():
+    fid = "dowdell_glanton"
+    src_keys = [
+        "lrbw_historical_study", "dowdell_black_madonna_mural",
+        "dowdell_cell_painting", "dowdell_lynching_painting",
+        "dowdell_memoir", "robertson_black_utopians",
+        "georgakas_surkin_detroit", "harvey_black_madonna_chapter",
+        "sundholm_finally_got_the_news", "bentley_cleage_papers",
+        "reuther_detroit_revolutionary_movements", "wright_museum_dowdell"
+    ]
+    for key in src_keys:
+        attach_figure(key, fid)
+
+    return {
+        "_divider": "────────── PRM: Glanton Dowdell ──────────",
+        "id": fid,
+        "name": "Glanton Dowdell",
+        "type": "real",
+        "meta_badman": True,
+        "modality": "revolutionary",
+        "years": {"birth": 1923, "death": 2000, "active_start": 1965, "active_end": 1969},
+        "emergence": {
+            "year": 1965,
+            "context": "Joined the radical cadre around General Gordon Baker Jr., John Watson, John Williams, and Luke Tripp — the nucleus that would form the League of Revolutionary Black Workers. Dowdell's street experience from twelve years in Jackson Prison added tactical knowledge to the group's political education.",
+            "source_id": sid("lrbw_historical_study")
+        },
+        "scores": {
+            "outlaw_relationship": {
+                "score": 5,
+                "justification": "Second-degree murder conviction and twelve years in Jackson Prison. Co-founded Detroit Black Panther Party (1966) with Baker and Griffin. Arrested with Baker for concealed weapons during Kercheval Street incident (1966). Arrested during 1967 Detroit Rebellion. Served as League of Revolutionary Black Workers intelligence chief. Gallery destroyed and shot by police. Fled to Sweden claiming political asylum from FBI fabrication (1969). Never returned to the United States."
+            },
+            "community_authorization": {
+                "score": 4,
+                "justification": "The Black Madonna and Child mural became the defining visual image of Detroit's Black Power movement — the church was renamed after it. Over 2,000 attended CCAC meetings where Dowdell served as vice chairman. Co-organized the First Black Arts Conference (1966). However, his 1969 exile removed him from the Detroit community for thirty-one years, limiting sustained grassroots authorization."
+            },
+            "violence_as_language": {
+                "score": 4,
+                "justification": "Convicted of second-degree murder before his political radicalization. Shot by police when the Easel Gallery was destroyed. Arrested twice alongside Baker (Kercheval 1966, Rebellion 1967). Served as League intelligence/security chief — the role most directly associated with organizational force. However, his first moves were artistic and intellectual: painting, gallery founding, arts conferences. The system forced the militant posture — classic PRM sequence. Violence was the system's doing, not Dowdell's first impulse."
+            },
+            "cultural_preservation": {
+                "score": 5,
+                "justification": "Painted the 18-by-9-foot Black Madonna and Child mural (Easter 1967) — one of the most galvanizing images of the Black counterculture. Opened the Easel Gallery on Twelfth Street for Black artists. Co-organized the First and Second Black Arts Conferences (1966-67). Distributed the revolutionary film Finally Got the News in Sweden. Taught art to prisoners at Jackson. Wrote an unpublished memoir. His art literally provided the visual vocabulary for Black Christian Nationalism and Detroit's Black Power aesthetic."
+            },
+            "hypermasculine_performance": {
+                "score": 4,
+                "justification": "Prison organizer who built cadres. League intelligence chief with tactical authority. Survived police shootings. Armed bodyguard accompaniment. But also a painter, muralist, gallery owner, memoirist — masculinity expressed through both force and artistic creation. The meta_badman duality: the man who could organize a prison strike and paint a Madonna."
+            }
+        },
+        "influence": {
+            "scale": "1-10",
+            "metric_type": "curated_scholarly_estimate",
+            "_REVIEW_NEEDED": "HARRY — these are placeholder estimates. Review and revise all values.",
+            "_related_sources": [sid("robertson_black_utopians"), sid("georgakas_surkin_detroit"), sid("harvey_black_madonna_chapter"), sid("sundholm_finally_got_the_news")],
+            "phases": [
+                {"start": 1955, "end": 1962, "value": 2,
+                 "justification": "PLACEHOLDER — Incarceration period. Honorable mention at Detroit Institute of Arts (1955). Paintings reproduced in Jet and Pittsburgh Courier. One-man show at Grand River Gallery (1958). Influence limited to Black art community and prison reform circles.",
+                 "source": "marshallfredericks.net; Robertson, The Black Utopians"},
+                {"start": 1965, "end": 1969, "value": 8,
+                 "justification": "PLACEHOLDER — Peak Detroit period. Co-founded Detroit BPP (1966). Easel Gallery and Black Arts Conferences (1966-67). Black Madonna mural — arguably the single most influential image of Detroit's Black Power movement. CCAC vice chairmanship with 2,000+ attendees. League intelligence/security leadership. People's Tribunal under his mural drew 2,000 people with Rosa Parks on the jury.",
+                 "source": "Robertson, The Black Utopians; Georgakas & Surkin, Detroit: I Do Mind Dying"},
+                {"start": 1969, "end": 2000, "value": 3,
+                 "justification": "PLACEHOLDER — Swedish exile. 1971 Swedish TV broadcast featuring Finally Got the News. 1975 lynching painting mailed to Wright Museum. International solidarity symbol but declining Detroit visibility. Wrote unpublished memoir.",
+                 "source": "Sundholm, Black Camera (2024); Robertson, The Black Utopians"},
+                {"start": 2016, "end": 2025, "value": 6,
+                 "justification": "PLACEHOLDER — Posthumous scholarly recovery. Harvey chapter in Clark ed. (Palgrave 2016). Shrine listed on National Register (2021). Robertson's The Black Utopians (2024) — NYT Notable Book. Wright Museum Luminosity exhibition (2025). Sundholm Black Camera article (2024). More published attention in past decade than in entire preceding half-century.",
+                 "source": "Robertson (2024); Harvey in Clark (2016); NPS National Register"}
+            ]
+        },
+        "biography": {
+            "description": "Glanton Vernier Dowdell was a Detroit-born artist, militant organizer, and political exile whose life arc — from Black Bottom childhood to Jackson Prison to the Black Madonna mural to Swedish asylum — makes him one of the most consequential and least documented figures of Detroit's Black Power movement. A confirmed meta-badman, he was both the subject of badman narratives (fugitive, prisoner, revolutionary) and the creator of them (muralist, gallery founder, cultural organizer). After serving nearly thirteen years for second-degree murder, Dowdell joined the radical cadre around General Gordon Baker Jr. in 1965, co-founded the Detroit Black Panther Party in 1966, opened the Easel Gallery on Twelfth Street, and painted the eighteen-by-nine-foot Black Madonna and Child mural unveiled at Easter 1967 in Rev. Albert Cleage's church — an image so galvanizing the church was renamed after it. He served as vice chairman of the Citywide Citizens Action Committee after the 1967 Rebellion and as head of intelligence and security for the League of Revolutionary Black Workers. In August 1969, after police destroyed his gallery and shot him, Dowdell fled to Stockholm claiming political asylum from FBI fabrication. He never returned to the United States. He died in Sweden in 2000.",
+            "key_events": [
+                {"year": 1923, "event": "Born in Detroit's Black Bottom neighborhood at St. Antoine and Palmer. Father Lovett died of smallpox in 1924.", "location": "Detroit, MI"},
+                {"year": 1949, "event": "Convicted of second-degree murder. Sentenced to Southern Michigan State Prison (Jackson).", "location": "Detroit, MI / Jackson, MI"},
+                {"year": 1955, "event": "Painting 'Southeast Corner of My Cell' wins honorable mention at Detroit Institute of Arts Annual Exhibition while Dowdell is incarcerated.", "location": "Detroit, MI"},
+                {"year": 1962, "event": "Paroled from Jackson Prison after approximately twelve years and ten months.", "location": "Jackson, MI"},
+                {"year": 1965, "event": "Joins radical cadre around General Gordon Baker Jr., John Watson, John Williams, and Luke Tripp.", "location": "Detroit, MI"},
+                {"year": 1966, "event": "Co-founds Detroit Black Panther Party with Baker and Rufus Griffin. Opens the Easel Gallery on Twelfth Street. Co-organizes First Black Arts Conference with Rev. Albert Cleage and Edward Vaughn. Arrested with Baker at Kercheval Street incident for concealed weapons.", "location": "Detroit, MI"},
+                {"year": 1967, "event": "Black Madonna and Child mural unveiled at Easter in Rev. Cleage's Central United Church of Christ. Church renamed Shrine of the Black Madonna. Arrested during Detroit Rebellion July 24. Elected vice chairman of Citywide Citizens Action Committee. People's Tribunal held under his mural August 30 with 2,000 attendees.", "location": "Detroit, MI"},
+                {"year": 1969, "event": "Serves as head of intelligence and security for League of Revolutionary Black Workers. Easel Gallery destroyed by police; Dowdell shot. Flees to Stockholm, Sweden claiming political asylum in August.", "location": "Detroit, MI / Stockholm, Sweden"},
+                {"year": 2000, "event": "Dies in Stockholm, Sweden. Never returned to the United States.", "location": "Stockholm, Sweden"}
+            ]
+        },
+        "geographic": {
+            "primary_location": {
+                "name": "Shrine of the Black Madonna (7625 Linwood Street)",
+                "coordinates": {"lat": 42.363039, "lng": -83.102143}
+            },
+            "territory": {
+                "description": "Dowdell's Detroit organizing centered on two nodes: the Linwood/Twelfth Street corridor on the west side (Shrine of the Black Madonna, Easel Gallery, New Bethel Baptist Church — all within a half-mile radius) and the Black Bottom neighborhood on the east side where he was born. The Linwood corridor was the geographic heart of Detroit's Black nationalist movement in the 1960s.",
+                "polygon": [[42.386, -83.115], [42.386, -83.085], [42.35, -83.085], [42.35, -83.115]]
+            },
+            "additional_locations": [
+                {"name": "The Easel Gallery (Twelfth Street / Rosa Parks Blvd)",
+                 "coordinates": {"lat": 42.365, "lng": -83.098},
+                 "significance": "Dowdell's gallery/studio (1966-c.1968); where the Black Madonna was painted; destroyed by police"},
+                {"name": "Black Bottom neighborhood (St. Antoine and Palmer)",
+                 "coordinates": {"lat": 42.34, "lng": -83.037},
+                 "significance": "Birthplace and childhood home"},
+                {"name": "Southern Michigan State Prison (Jackson)",
+                 "coordinates": {"lat": 42.2459, "lng": -84.4013},
+                 "significance": "Incarcerated approximately 1949-1962. Organized prison strike, painted, taught art to inmates."}
+            ]
+        },
+        "connections": [
+            {
+                "target_id": "baker_gordon", "type": "ORG", "direction": "mutual", "tier": 1,
+                "start_year": 1965, "end_year": 1969,
+                "evidence": "Closest documented political comrade. Joined Baker's radical cadre in 1965. Co-founded Detroit Black Panther Party (1966). Arrested together at Kercheval Street (1966) and during 1967 Rebellion. Both served in League leadership. Baker reportedly held the ladder when Dowdell painted the Black Madonna.",
+                "source": "Georgakas & Surkin, Detroit: I Do Mind Dying; LRBW historical study; Robertson, The Black Utopians"
+            },
+            {
+                "target_id": "obadele_brothers", "type": "ORG", "direction": "mutual", "tier": 2,
+                "start_year": 1967, "end_year": 1969,
+                "evidence": "Overlapping political networks. Milton Henry served as prosecutor at the People's Tribunal held under Dowdell's mural (August 1967). Both operated in Detroit's radical Black nationalist milieu along the Linwood corridor. No confirmed formal RNA membership for Dowdell.",
+                "source": "Robertson, The Black Utopians; LRBW historical study"
+            },
+            {
+                "target_id": "scott_ron", "type": "ORG", "direction": "mutual", "tier": 3,
+                "start_year": 1968, "end_year": 1969,
+                "evidence": "No direct documentary evidence of personal relationship found. Both operated in Detroit's late-1960s radical networks — Dowdell in the League, Scott in the Panthers — but sources do not cross-reference them.",
+                "source": "Scholarly interpretation — no documented direct link"
+            }
+        ],
+        "source_ids": [sid(k) for k in src_keys]
+    }
