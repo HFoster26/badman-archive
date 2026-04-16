@@ -1,12 +1,28 @@
 # Detroit Badman Archive — Data Schema Documentation
 
-**Last Updated:** April 2026  
-**Version:** 2.0  
-**Change Log:** Reconciled documentation with live `detroit.json` schema. Added `genre`, `years.active_start`/`active_end`, connection timing fields (`tier`, `start_year`, `end_year`), top-level `edge_types`/`evidence_tiers` objects, internal flags (`_REVIEW_NEEDED`, `_modality_note`), and revised influence bucket to match curated scholarly estimate model. Added entry separation guidance and updated modality list.
+**Last Updated:** April 2026
+**Version:** 2.1
+**Change Log:** Removed GEO edge type. Added CC (Creation Continuity) edge type. Flipped SVM modality from "Staged" to "Active." Added Special Entry Types section documenting `_placeholder` / `_instructions` pattern. Updated modality status to reflect three-modality launch (Detective, Revolutionary, Superhero-Villain). Hex codes normalized to uppercase. Figure-by-figure modality tables removed; live site is source of truth for roster.
 
 ---
 
 This document explains the JSON schema used in `detroit.json` and any future city data files. It is intended for graduate students translating spreadsheet data into JSON and for anyone maintaining or expanding the archive.
+
+---
+
+## Launch State
+
+At launch (May 2026), the Detroit module includes **15 figures across 3 active modalities**:
+
+| Modality | Status | Figures at Launch | Notes |
+|----------|--------|-------------------|-------|
+| Detective | Active | 5 | Renders on map and network |
+| Political Revolutionary | Active | 5 | Renders on map and network |
+| Superhero-Villain | Active | 5 | Renders on map and network |
+| Gangsta-Pimp | Dormant | 1 | Entry exists (Goines) but filtered from rendering pending modality activation |
+| Folk Hero-Outlaw | Future | 0 | Reserved; no entries yet |
+
+The complete figure roster is available on the [live site](https://detroit.badmandigitalarchive.com). This schema documentation does not maintain a figure-by-figure list because the live site is the source of truth for current archive state.
 
 ---
 
@@ -36,10 +52,11 @@ Defines the visual styling for connection types in the Network Visualization Too
 
 ```json
 "edge_types": {
-  "META": { "label": "Creator → Creation", "color": "#d4af37" },
-  "P2C":  { "label": "Person → Creation",  "color": "#dc3545" },
-  "C2C":  { "label": "Creator ↔ Creator",  "color": "#50c878" },
-  "ORG":  { "label": "Organizational / Ideological", "color": "#3388ff" }
+  "META": { "label": "Creator → Creation", "color": "#D4AF37" },
+  "P2C":  { "label": "Person → Creation",  "color": "#DC3545" },
+  "C2C":  { "label": "Creator ↔ Creator",  "color": "#50C878" },
+  "ORG":  { "label": "Organizational / Ideological", "color": "#3388FF" },
+  "CC":   { "label": "Creation Continuity", "color": "#E83E8C" }
 }
 ```
 
@@ -49,13 +66,63 @@ Defines the visual styling for connection evidence quality in the NVT:
 
 ```json
 "evidence_tiers": {
-  "1": { "label": "Documented",            "line_style": "solid",  "opacity": 0.9  },
+  "1": { "label": "Documented",             "line_style": "solid",  "opacity": 0.9  },
   "2": { "label": "Evidenced (unverified)", "line_style": "dashed", "opacity": 0.6  },
   "3": { "label": "Interpretive",           "line_style": "dotted", "opacity": 0.35 }
 }
 ```
 
 **Design Principle:** This single JSON file feeds both the Map visualization tool and the Network Visualization Tool (NVT). Fields are organized into buckets that each tool reads from. Empty or null values are valid — tools render what's available and gracefully skip what's missing.
+
+---
+
+## Special Entry Types
+
+Beyond standard figure objects, the `figures` array includes two special entry types that serve file-navigation and workflow purposes. Both are filtered out during rendering and have no effect on visualizations.
+
+### Placeholder Entries
+
+Each modality section in the JSON contains a placeholder entry marking where new figure entries should be inserted. Placeholders use this exact structure:
+
+```json
+{
+  "_divider": "────────── [MODALITY]: ADD NEW ENTRY HERE ──────────",
+  "_placeholder": true,
+  "_instructions": "Copy a complete figure object from an existing entry, replace all fields, and remove _placeholder and _instructions fields. Refer to BDA_Data_Schema_Documentation.md for field requirements."
+}
+```
+
+**Fields:**
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `_divider` | string | Visual separator naming the modality and signaling the insertion point |
+| `_placeholder` | boolean | Set to `true` to flag the entry for filtering during rendering |
+| `_instructions` | string | Plain-language guidance for graduate students adding new entries |
+
+**Placement convention:** One placeholder per modality group, positioned at the end of that modality's figures. The placeholder sits between the last active figure and the next modality's entries (or the end of the array).
+
+**When you add a new figure:**
+1. Copy a complete figure object from an existing same-modality entry
+2. Paste it **above** the placeholder (inside the same modality group)
+3. Replace all fields with the new figure's data
+4. Do NOT remove the placeholder — it stays as the insertion point for the next entry
+
+**Rendering behavior:** Both the map tool and the network tool filter out any entry where `_placeholder === true`. The sr-only data tables also skip these entries. Placeholders are invisible to users.
+
+### Divider-Only Entries
+
+Currently, the FHOM (Folk Hero-Outlaw Modality) section contains a divider-only placeholder because no figures exist in that modality yet:
+
+```json
+{
+  "_divider": "══════════ FOLK HERO-OUTLAW MODALITY ══════════",
+  "_placeholder": true,
+  "_instructions": "FHOM modality reserved for future expansion..."
+}
+```
+
+When the first FHOM figure is added, this entry is replaced with a standard modality opener divider and the new figure object, plus a fresh `ADD NEW ENTRY HERE` placeholder.
 
 ---
 
@@ -75,7 +142,7 @@ Within each modality group, order figures by `emergence.year` (earliest first).
 
 ### Visual Separation
 
-JSON does not support comments, but each figure object can include a `_divider` field as its first property to create scannable separation when reading the raw file:
+JSON does not support comments, but each figure object includes a `_divider` field as its first property to create scannable separation when reading the raw file:
 
 ```json
 {
@@ -86,10 +153,10 @@ JSON does not support comments, but each figure object can include a `_divider` 
 }
 ```
 
-The `_divider` field is ignored by all visualization code. It exists solely to help human editors navigate the file. Use the following format:
+The `_divider` field is ignored by all visualization code. It exists solely to help human editors navigate the file. Use these formats:
 
-- `"══════════ [MODALITY] MODALITY ══════════"` for the first figure in each modality group
-- `"────────── [MODALITY]: [figure name] ──────────"` for subsequent figures within the same group
+- `"══════════ [MODALITY] MODALITY ══════════"` — Major modality section opener (double-bar equals, used for the first figure in each modality group)
+- `"────────── [MODALITY]: [figure name] ──────────"` — Individual figure separator within a modality group
 
 ---
 
@@ -163,9 +230,11 @@ These fields are used for project management and are ignored by visualization co
 
 | Field | Type | Description |
 |-------|------|-------------|
+| `_divider` | string | Visual separator for human readability in raw JSON |
 | `_modality_note` | string | Notes about modality assignment decisions or pending changes |
 | `_REVIEW_NEEDED` | string | Flags fields requiring revision (can appear on any object within the figure) |
-| `_divider` | string | Visual separator for human readability in raw JSON |
+| `_placeholder` | boolean | Set to `true` on special insertion-point entries (see Special Entry Types) |
+| `_instructions` | string | Plain-language guidance accompanying `_placeholder` entries |
 
 ---
 
@@ -389,7 +458,7 @@ Contains two sub-sections: connections (edges between figures) and influence (ma
 | `P2C` | Person → Creation | outgoing or incoming | Real figure inspires fiction OR fiction inspires real person's actions | Malcolm X → Dan Freeman |
 | `C2C` | Creator ↔ Creator | outgoing, incoming, or mutual | One artist's work directly influences another artist's work | Goines → later street lit authors |
 | `ORG` | Organizational / Ideological | outgoing, incoming, or mutual | Shared organizational membership or ideological influence | Scott ↔ Baker (revolutionary contemporaries) |
-| `GEO` | Geographic Inspiration | outgoing | Place/events shape a person's actions or an artist's creative output | 1967 Rebellion → Ron Scott's radicalization |
+| `CC` | Creation Continuity | outgoing, incoming, or mutual | Fictional characters sharing a universe or continuity | Static ↔ Hardware (Milestone shared universe) |
 
 ### Direction Rules
 
@@ -528,7 +597,7 @@ References for the figure entry.
 
 ### Common Source Types
 
-`novel`, `film`, `television`, `documentary`, `academic`, `biography`, `news`, `obituary`, `government`, `institutional`, `organizational`, `personal`, `letter`, `audio_recording`, `founding_document`, `newspaper`, `book`, `video`, `website`, `digital_archive`, `publisher`
+`novel`, `film`, `television`, `documentary`, `academic`, `biography`, `news`, `obituary`, `government`, `institutional`, `organizational`, `personal`, `letter`, `audio_recording`, `founding_document`, `newspaper`, `book`, `video`, `website`, `digital_archive`, `publisher`, `comics`, `artwork`, `manuscript`, `newsletter`, `interview`, `reference`, `legal`, `podcast`
 
 ---
 
@@ -568,9 +637,11 @@ These fields accept `null` when data is unavailable:
 3. Draw territory polygons based on key events and location descriptions
 4. Create proper `target_id` references for connections
 5. Assign appropriate `tier` levels (1–3) to connections based on evidence quality
-6. Add `_divider` fields for visual separation between entries
-7. Validate JSON syntax before committing
-8. Run through validation checklist
+6. Add `_divider` field for visual separation between entries
+7. Insert new figure objects **above** the `_placeholder` entry for the appropriate modality
+8. Do NOT remove the placeholder — it stays as the insertion point for the next entry
+9. Validate JSON syntax before committing
+10. Run through validation checklist
 
 ### For Project Director (Quality Control)
 
@@ -611,14 +682,19 @@ Before committing new entries:
 ### Network
 - [ ] All `target_id` values match existing figure `id` fields
 - [ ] All connections have `type`, `direction`, `tier`, `start_year`, `end_year`, `evidence`, and `source`
+- [ ] Connection `type` is one of the five defined types: `META`, `P2C`, `C2C`, `ORG`, `CC`
 - [ ] Influence object has `scale`, `metric_type`, and at least one phase
 - [ ] Influence phases have `start`, `end`, `value`, `justification`, and `source`
+
+### Placement
+- [ ] New figure inserted **above** the `_placeholder` entry for its modality
+- [ ] `_placeholder` entry preserved (not removed)
+- [ ] `_divider` field present for readability
 
 ### Technical
 - [ ] JSON syntax validates (use jsonlint.com or similar)
 - [ ] URLs are functional (or explicitly `null`)
 - [ ] No trailing commas
-- [ ] `_divider` field present for readability
 
 ---
 
@@ -638,24 +714,40 @@ Quick reference for which buckets each visualization tool requires:
 
 ---
 
-## Adding New Modalities
+## Modality Reference
 
 The archive currently includes the following modalities:
 
-| Modality | Code | Status | Figures |
-|----------|------|--------|---------|
-| Detective | `detective` | Active | Action Jackson, + new entries |
-| Political Revolutionary | `revolutionary` | Active | Kenyatta, Ron Scott, Baker, Obadele Brothers, + new entries |
-| Gangsta-Pimp | `gangsta_pimp` | Dormant | Donald Goines (will not render until modality activated) |
-| Superhero-Villain | `superhero_villain` | Staged | New entries pending |
-| Folk Hero-Outlaw | `folk_hero_outlaw` | Future | No entries yet |
+| Modality | Code | Status at Launch | Rendering |
+|----------|------|------------------|-----------|
+| Detective | `detective` | Active | Yes |
+| Political Revolutionary | `revolutionary` | Active | Yes |
+| Superhero-Villain | `superhero_villain` | Active | Yes |
+| Gangsta-Pimp | `gangsta_pimp` | Dormant | No (filtered via `activeModalities`) |
+| Folk Hero-Outlaw | `folk_hero_outlaw` | Future | No (no entries exist yet) |
 
-When adding new modalities:
-1. Update this documentation
-2. Update the `getModalityConfig()` function in the codebase (single source of truth for modality display properties)
-3. Add color coding and marker shapes to both visualization tools
-4. Create at least one example entry
-5. Verify modality filtering in `activeModalities` array works correctly for both map.html and network.html
+### Modality Colors
+
+These are the verified visual identity colors for each modality. See HTML_TEMPLATES.md for the full visual identity system (color + shape + icon).
+
+| Modality | Color | Hex |
+|----------|-------|-----|
+| Detective | Blue | `#3388FF` |
+| Revolutionary | Red | `#DC3545` |
+| Superhero-Villain | Orange | `#FD7E14` |
+| Gangsta-Pimp | Purple | `#6F42C1` |
+| Folk Hero-Outlaw | Gold | `#D4AF37` |
+
+### Activating a Dormant or Future Modality
+
+When a modality goes live:
+
+1. Update the Status column in this table
+2. Update the `getModalityConfig()` function in the codebase (single source of truth for modality display properties — already includes all five modalities)
+3. Add the modality string to the `activeModalities` array in map.html and network.html
+4. Verify at least one figure entry exists with the modality's code
+5. Verify the legend CSS class exists in `styles.css` (`.legend-[modality]`)
+6. Test modality filtering by toggling in map and network
 
 ---
 
@@ -689,6 +781,7 @@ When expanding beyond Detroit:
 - **Target IDs:** Must exactly match the `id` field of another figure in the dataset
 - **Connection direction:** Store on originating figure with `"outgoing"`
 - **Evidence tier:** Integer `1`, `2`, or `3` — not strings
+- **Placeholder preservation:** Never remove `_placeholder: true` entries when adding new figures — insert new entries above them
 
 ---
 
