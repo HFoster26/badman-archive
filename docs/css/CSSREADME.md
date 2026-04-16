@@ -4,7 +4,7 @@
 
 This file contains **only** custom styles for the Detroit Badman Archive. Bootstrap 5 is loaded via CDN in the HTML `<head>` section—it is not bundled in this file.
 
-**Total lines:** ~320 (expanded from ~280 to include accessibility utilities)
+**Total lines:** ~340 (expanded from ~320 to include in-prose link underline rule)
 
 ---
 
@@ -28,25 +28,26 @@ And Bootstrap JS before the closing `</body>`:
 ## File Structure
 
 ```
-styles.css (~320 lines)
+styles.css (~340 lines)
 ├── CSS Variables (Lines 14-41)
 ├── Base Styles (Lines 43-48)
 ├── Accessibility Utilities (Lines 50-85)
 │   ├── .sr-only / .sr-only-focusable
 │   ├── Focus styles
 │   └── Reduced motion
-├── Header (Lines 87-112)
-├── Navigation (Lines 114-140)
-├── Page Sections (Lines 142-157)
-├── Content Boxes (Lines 159-182)
-├── Section Headings (Lines 184-200)
-├── Buttons (Lines 202-222)
-├── Intro Section (Lines 224-262)
-├── Text Colors (Lines 264-272)
-├── Footer (Lines 274-278)
-├── About Page Styles (Lines 280-292)
-├── Legend Styles (Lines 294-320)
-└── Utility Classes (Lines 322-340)
+├── In-Prose Link Underlines (Lines 87-98)
+├── Header (Lines 100-125)
+├── Navigation (Lines 127-153)
+├── Page Sections (Lines 155-170)
+├── Content Boxes (Lines 172-195)
+├── Section Headings (Lines 197-213)
+├── Buttons (Lines 215-235)
+├── Intro Section (Lines 237-275)
+├── Text Colors (Lines 277-285)
+├── Footer (Lines 287-291)
+├── About Page Styles (Lines 293-305)
+├── Legend Styles (Lines 307-333)
+└── Utility Classes (Lines 335-353)
 ```
 
 ---
@@ -62,69 +63,69 @@ All colors are defined as CSS variables in `:root`. Edit these to change colors 
 ```css
 :root {
     /* Primary Greens */
-    --dba-darkest-green: #0a1f12;
-    --dba-dark-green: #0d2818;
-    --dba-medium-green: #143d26;
-    --dba-content-green: #1a472a;
-    --dba-border-green: #2a623d;
-    --dba-emerald: #50c878;
-    
+    --dba-darkest-green: #0A1F12;
+    --dba-dark-green: #0D2818;
+    --dba-medium-green: #143D26;
+    --dba-content-green: #1A472A;
+    --dba-border-green: #2A623D;
+    --dba-emerald: #50C878;
+
     /* Kobe Tribute - Purple & Gold */
     --dba-purple: #552583;
-    --dba-gold: #d4af37;
-    
+    --dba-gold: #D4AF37;
+
     /* Text Colors */
-    --dba-text-primary: #e8e8e8;
-    --dba-text-secondary: #c8c8c8;
-    --dba-text-muted: #b0b0b0;
-    --dba-white: #ffffff;
-    
+    --dba-text-primary: #E8E8E8;
+    --dba-text-secondary: #C8C8C8;
+    --dba-text-muted: #B0B0B0;
+    --dba-white: #FFFFFF;
+
     /* Modality Colors */
-    --dba-detective: #3388ff;
-    --dba-revolutionary: #dc3545;
-    --dba-folk-hero: #d4af37;
-    --dba-gangsta-pimp: #6f42c1;
-    --dba-superhero: #20c997;
+    --dba-detective: #3388FF;
+    --dba-revolutionary: #DC3545;
+    --dba-superhero-villain: #FD7E14;
+    --dba-gangsta-pimp: #6F42C1;
+    --dba-folk-hero: #D4AF37;
 
     /* Focus */
-    --dba-focus-ring: #d4af37;
+    --dba-focus-ring: #D4AF37;
 }
 ```
-
-**Changes from previous version:**
-- Added `--dba-text-muted` (#b0b0b0) — Replaces hardcoded `#a0a0a0` in inline styles. The previous value (#a0a0a0) likely fails WCAG 4.5:1 contrast against #1a472a. The new value (#b0b0b0) should be verified with the Deque Color Contrast Analyzer but is closer to passing.
-- Added `--dba-focus-ring` (#d4af37) — Used for keyboard focus indicators. Gold on dark green provides high visibility.
 
 **Rule:** No color should be hardcoded in inline styles on HTML elements. If a color is used in the archive, it gets a CSS variable. This keeps the contrast reference table accurate and makes global changes possible.
 
 ### Color Contrast Reference Table
 
-All text/background combinations must meet WCAG AA minimums: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold+). Run each pair through the Deque Color Contrast Analyzer before deploying.
+All text/background combinations meet WCAG AA minimums: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold) and UI components. Contrast verified via WebAIM Contrast Checker in April 2026.
 
-| Element | Foreground | Background | Min Ratio | Verified? |
-|---------|-----------|------------|-----------|-----------|
-| Primary text | `--dba-text-primary` (#e8e8e8) | `--dba-content-green` (#1a472a) | 4.5:1 | **Needs testing** |
-| Secondary text | `--dba-text-secondary` (#c8c8c8) | `--dba-content-green` (#1a472a) | 4.5:1 | **Needs testing** |
-| Muted text | `--dba-text-muted` (#b0b0b0) | `--dba-content-green` (#1a472a) | 4.5:1 | **Needs testing** |
-| Link text | `--dba-emerald` (#50c878) | `--dba-content-green` (#1a472a) | 4.5:1 | **Needs testing** |
-| Link vs. adjacent text | `--dba-emerald` (#50c878) | `--dba-text-primary` (#e8e8e8) | 3:1 | **Needs testing** |
-| Heading accent | `--dba-emerald` (#50c878) | `--dba-dark-green` (#0d2818) | 3:1 (large) | **Needs testing** |
-| Nav hover/active | `--dba-gold` (#d4af37) | `--dba-darkest-green` (#0a1f12) | 4.5:1 | **Needs testing** |
-| Footer text | `--dba-text-primary` (#e8e8e8) | `--dba-darkest-green` (#0a1f12) | 4.5:1 | **Needs testing** |
-| Focus ring | `--dba-focus-ring` (#d4af37) | `--dba-content-green` (#1a472a) | 3:1 | **Needs testing** |
-| Button text | `--dba-white` (#ffffff) | `--dba-purple` (#552583) | 4.5:1 | **Needs testing** |
+| Element | Foreground | Background | Ratio | AA | Status |
+|---------|-----------|------------|-------|----|----|
+| Primary text | `--dba-text-primary` (`#E8E8E8`) | `--dba-content-green` (`#1A472A`) | 8.66:1 | Pass | ✅ |
+| Secondary text | `--dba-text-secondary` (`#C8C8C8`) | `--dba-content-green` (`#1A472A`) | 6.34:1 | Pass | ✅ |
+| Muted text | `--dba-text-muted` (`#B0B0B0`) | `--dba-content-green` (`#1A472A`) | 4.89:1 | Pass | ✅ |
+| Link text (on content bg) | `--dba-emerald` (`#50C878`) | `--dba-dark-green` (`#0D2818`) | 7.4:1 | Pass | ✅ |
+| Link vs. adjacent primary text | `--dba-emerald` (`#50C878`) | `--dba-text-primary` (`#E8E8E8`) | 1.73:1 | Fail | ✅ via underline* |
+| Heading accent | `--dba-emerald` (`#50C878`) | `--dba-dark-green` (`#0D2818`) | 7.4:1 | Pass | ✅ |
+| Nav hover / active | `--dba-gold` (`#D4AF37`) | `--dba-darkest-green` (`#0A1F12`) | 8.2:1 | Pass | ✅ |
+| Footer text | `--dba-text-primary` (`#E8E8E8`) | `--dba-darkest-green` (`#0A1F12`) | 14.07:1 | Pass | ✅ |
+| Focus ring | `--dba-focus-ring` (`#D4AF37`) | `--dba-content-green` (`#1A472A`) | 5.04:1 | Pass | ✅ |
+| Button text | `--dba-white` (`#FFFFFF`) | `--dba-purple` (`#552583`) | 10.61:1 | Pass | ✅ |
 
-**Action required before May launch:** Run every row through the Deque analyzer, record the actual ratio, and mark as verified. If any pair fails, adjust the foreground color and update the CSS variable. This table is the audit trail.
+*\* **Link vs. adjacent primary text:** The emerald link color fails adjacent-text contrast against `#E8E8E8` primary text in isolation (1.73:1). This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. See "In-Prose Link Underlines" section below for the CSS rule. Do not remove underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines.*
+
+**Note on `--dba-text-muted`:** This variable replaced a previously-used hardcoded `#a0a0a0`, which was flagged as a suspected failure in the March 2026 accessibility audit. `#a0a0a0` on `#1A472A` yields approximately 3.9:1 (fails AA for normal text). The upgrade to `#B0B0B0` brought the ratio to a verified 4.89:1, just above the AA threshold. Do not downgrade this value without re-testing.
 
 ### Modality Colors (for map markers and network nodes)
 
 | Modality | Variable | Hex |
 |----------|----------|-----|
-| Detective | `--dba-detective` | `#3388ff` (Blue) |
-| Revolutionary | `--dba-revolutionary` | `#dc3545` (Red) |
-| Folk Hero-Outlaw | `--dba-folk-hero` | `#d4af37` (Gold) |
-| Gangsta-Pimp | `--dba-gangsta-pimp` | `#6f42c1` (Purple) |
-| Superhero-Villain | `--dba-superhero` | `#20c997` (Teal) |
+| Detective | `--dba-detective` | `#3388FF` (Blue) |
+| Revolutionary | `--dba-revolutionary` | `#DC3545` (Red) |
+| Superhero-Villain | `--dba-superhero-villain` | `#FD7E14` (Orange) |
+| Gangsta-Pimp | `--dba-gangsta-pimp` | `#6F42C1` (Purple) |
+| Folk Hero-Outlaw | `--dba-folk-hero` | `#D4AF37` (Gold) |
+
+At launch, three modalities render: Detective, Revolutionary, and Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw variables are defined but filtered out via the `activeModalities` array in map.html and network.html pending post-launch activation.
 
 **Note:** Color alone cannot differentiate modalities (WCAG 1.4.1). Each modality also requires a distinct marker shape and icon. See the Modality Visual Identity System table in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT.md for the full specification.
 
@@ -202,7 +203,7 @@ a:focus-visible {
 }
 ```
 
-**Why this exists:** The default browser focus outline (thin blue ring) is nearly invisible on dark green backgrounds. WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The gold ring (#d4af37) on dark green provides high contrast.
+**Why this exists:** The default browser focus outline (thin blue ring) is nearly invisible on dark green backgrounds. WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The gold ring (`#D4AF37`) on dark green provides verified 5.04:1 contrast on content backgrounds and 8.2:1 on the darkest-green nav background.
 
 **`:focus-visible` vs. `:focus`:** Using `:focus-visible` instead of `:focus` means the ring only appears for keyboard navigation, not for mouse clicks. This is the modern best practice — keyboard users see the ring, mouse users don't.
 
@@ -227,7 +228,40 @@ a:focus-visible {
 
 ---
 
-### Header (Lines 87-112)
+### In-Prose Link Underlines (Lines 87-98)
+
+```css
+.essay a,
+p a,
+.bio-overview a,
+.data-section a,
+.cited-in-desc a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+```
+
+**Why this exists:** The emerald link color (`--dba-emerald`, `#50C878`) does not provide sufficient contrast against primary text color (`#E8E8E8`) in isolation — the two colors measure 1.73:1, below the WCAG 1.4.11 non-text contrast threshold. Without an underline, a color-blind user reading body prose cannot tell that a green word is a hyperlink.
+
+The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). This is the industry-standard pattern used by NYT, JSTOR, Wikipedia, and academic journals for in-prose links.
+
+**What gets underlined:**
+- Links inside essay paragraphs (`<article class="essay">`, `<p>`)
+- Links inside biography overview (`.bio-overview`)
+- Links inside data-section content (`.data-section`)
+- Links inside cited-in descriptions on source pages
+
+**What does NOT get underlined:**
+- Navigation links — structurally signaled as navigation
+- Buttons — structurally signaled as interactive
+- "Read more" toggles in detail panels — structurally signaled as controls
+- Heading-accent emerald text (`.section-heading-upper`) — not a link, just colored text
+
+**Do not remove this rule.** The archive cannot ship without it and remain WCAG-compliant.
+
+---
+
+### Header (Lines 100-125)
 
 **Classes:**
 - `.site-heading` — Container for the large desktop header
@@ -240,7 +274,7 @@ a:focus-visible {
 
 ---
 
-### Navigation (Lines 114-140)
+### Navigation (Lines 127-153)
 
 **Classes:**
 - `#mainNav` — The navigation bar container
@@ -257,7 +291,7 @@ a:focus-visible {
 
 ---
 
-### Page Sections (Lines 142-157)
+### Page Sections (Lines 155-170)
 
 **Classes:**
 - `.page-section` — Standard section (dark green background)
@@ -267,7 +301,7 @@ a:focus-visible {
 
 ---
 
-### Content Boxes (Lines 159-182)
+### Content Boxes (Lines 172-195)
 
 **Classes:**
 - `.bg-faded` — The green rounded boxes containing content
@@ -281,7 +315,7 @@ a:focus-visible {
 
 ---
 
-### Section Headings (Lines 184-200)
+### Section Headings (Lines 197-213)
 
 **Classes:**
 - `.section-heading` — Container
@@ -293,7 +327,7 @@ a:focus-visible {
 
 ---
 
-### Buttons (Lines 202-222)
+### Buttons (Lines 215-235)
 
 **Classes:**
 - `.btn-primary` — Standard button (purple outline)
@@ -302,7 +336,7 @@ a:focus-visible {
 
 **Key detail:** Buttons use purple border by default and fill with purple on hover, with gold border accent.
 
-**Accessibility note:** Button focus state uses the global `*:focus-visible` gold ring. Verify that button text color (#ffffff) against button background (--dba-purple on hover) passes 4.5:1 contrast.
+**Accessibility note:** Button focus state uses the global `*:focus-visible` gold ring. Button text color `#FFFFFF` against purple button fill `#552583` is verified at 10.61:1 (WCAG AAA).
 
 **To modify:**
 - Change `--dba-purple` to adjust button color
@@ -311,7 +345,7 @@ a:focus-visible {
 
 ---
 
-### Intro Section (Lines 224-262)
+### Intro Section (Lines 237-275)
 
 Home page specific styles for the overlapping image and text layout.
 
@@ -327,7 +361,7 @@ Home page specific styles for the overlapping image and text layout.
 
 ---
 
-### Text Colors (Lines 264-272)
+### Text Colors (Lines 277-285)
 
 ```css
 p {
@@ -341,11 +375,11 @@ p {
 
 Paragraphs use lighter gray (`--dba-text-secondary`); `.text-faded` class uses brighter off-white (`--dba-text-primary`).
 
-**Important:** Do not use `#a0a0a0` for any text on `--dba-content-green` backgrounds. That combination likely fails WCAG 4.5:1 contrast. Use `--dba-text-muted` (#b0b0b0) as the minimum for muted text, and verify it passes.
+**Important:** Do not use `#a0a0a0` for any text on `--dba-content-green` backgrounds. That combination fails WCAG 4.5:1 contrast. Use `--dba-text-muted` (`#B0B0B0`) as the minimum for muted text.
 
 ---
 
-### Footer (Lines 274-278)
+### Footer (Lines 287-291)
 
 ```css
 .footer {
@@ -357,7 +391,7 @@ Matches the navigation bar color for visual consistency.
 
 ---
 
-### Legend Styles (Lines 294-320)
+### Legend Styles (Lines 307-333)
 
 Styles for the modality legends on map.html and network.html.
 
@@ -395,9 +429,9 @@ Styles for the modality legends on map.html and network.html.
     clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);  /* Star shape */
 }
 
-.legend-folk-hero {
-    background-color: var(--dba-folk-hero);
-    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);  /* Triangle */
+.legend-superhero-villain {
+    background-color: var(--dba-superhero-villain);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);  /* Hexagon */
 }
 
 .legend-gangsta-pimp {
@@ -405,9 +439,9 @@ Styles for the modality legends on map.html and network.html.
     border-radius: 2px;  /* Square with slightly rounded corners */
 }
 
-.legend-superhero-villain {
-    background-color: var(--dba-superhero);
-    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);  /* Hexagon */
+.legend-folk-hero {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);  /* Triangle */
 }
 ```
 
@@ -419,9 +453,11 @@ Styles for the modality legends on map.html and network.html.
 |----------|-----------|-----------|
 | Detective | Pin/teardrop | `border-radius` + `transform: rotate` |
 | Revolutionary | Star | `clip-path: polygon` |
-| Folk Hero-Outlaw | Triangle | `clip-path: polygon` |
-| Gangsta-Pimp | Square | Default with slight `border-radius` |
 | Superhero-Villain | Hexagon | `clip-path: polygon` |
+| Gangsta-Pimp | Square | Default with slight `border-radius` |
+| Folk Hero-Outlaw | Triangle | `clip-path: polygon` |
+
+**Launch state:** At launch, legend items for Detective, Revolutionary, and Superhero-Villain render. Gangsta-Pimp and Folk Hero-Outlaw classes are defined but not displayed because no active figures in those modalities exist in the rendered dataset. When a modality goes live, its legend entry appears automatically via the shared legend rendering logic.
 
 **When adding a new modality:** Add a `.legend-[modality]` class here with the appropriate shape, add the modality to `getModalityConfig()` in scripts.js, and add it to the Modality Visual Identity System table in HTML_TEMPLATES.md. All three must stay in sync.
 
@@ -429,7 +465,7 @@ Styles for the modality legends on map.html and network.html.
 
 ---
 
-### Utility Classes (Lines 322-340)
+### Utility Classes (Lines 335-353)
 
 Custom utility classes you can add to any element:
 
@@ -459,7 +495,7 @@ Edit the values in the `:root` section at the top of the file. All elements usin
 }
 ```
 
-**After any color change:** Re-check the affected rows in the Color Contrast Reference Table above. Run the new value through the Deque Color Contrast Analyzer against every background it appears on. Update the table with the new ratio.
+**After any color change:** Re-check the affected rows in the Color Contrast Reference Table above. Run the new value through the WebAIM Contrast Checker (webaim.org/resources/contrastchecker/) against every background it appears on. Update the table with the new ratio.
 
 ### Option 2: Override Specific Elements
 
@@ -468,7 +504,7 @@ Add new rules at the bottom of the file:
 ```css
 /* Custom override */
 .btn-primary {
-    border-color: #ff0000 !important;  /* Red buttons */
+    border-color: #FF0000 !important;  /* Red buttons */
 }
 ```
 
@@ -485,6 +521,7 @@ Add new styles at the end of the file before the closing of the document.
 4. If adding a new color, add it to `:root` as a variable and add a row to the Color Contrast Reference Table
 5. If adding hover/transition effects, verify they respect `prefers-reduced-motion` (the global rule handles most cases, but complex animations may need explicit handling)
 6. If adding interactive elements, verify the `*:focus-visible` gold ring is visible against the element's background
+7. If adding in-prose link contexts, add the selector to the in-prose link underlines rule
 
 **Example:**
 ```css
@@ -506,14 +543,16 @@ The following inline styles in the HTML files should be migrated to CSS variable
 
 | File | Element | Current Inline Style | Replace With |
 |------|---------|---------------------|-------------|
-| map.html | `#info-content` | `color: #c8c8c8` | `color: var(--dba-text-secondary)` |
-| map.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
-| map.html | Legend text | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
-| network.html | `#figure-metrics-content` | `color: #a0a0a0` | `color: var(--dba-text-muted)` |
-| network.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
-| network.html | Labels | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
+| map.html | `#info-content` | `color: #C8C8C8` | `color: var(--dba-text-secondary)` |
+| map.html | Panel headers | `color: #50C878` | `color: var(--dba-emerald)` |
+| map.html | Legend text | `color: #E8E8E8` | `color: var(--dba-text-primary)` |
+| network.html | `#figure-metrics-content` | `color: #A0A0A0` | `color: var(--dba-text-muted)` (upgrade to `#B0B0B0`) |
+| network.html | Panel headers | `color: #50C878` | `color: var(--dba-emerald)` |
+| network.html | Labels | `color: #E8E8E8` | `color: var(--dba-text-primary)` |
 
-**Why this matters:** Inline styles cannot be globally updated by changing a CSS variable. If a contrast check reveals that #c8c8c8 fails on #1a472a, you'd have to find and update every inline instance across every HTML file. With variables, you change one value in `:root` and everything updates.
+**Why this matters:** Inline styles cannot be globally updated by changing a CSS variable. If a contrast check reveals that a color fails on a given background, you'd have to find and update every inline instance across every HTML file. With variables, you change one value in `:root` and everything updates.
+
+**Critical row:** The network.html `#figure-metrics-content` row currently uses `#A0A0A0`, which fails WCAG AA against dark backgrounds. This must be migrated to `--dba-text-muted` before launch. This is not a style preference — it is a compliance requirement.
 
 ---
 
@@ -534,6 +573,12 @@ The following inline styles in the HTML files should be migrated to CSS variable
 1. Verify `--dba-focus-ring` is defined in `:root`
 2. Check that the element isn't overriding `outline` with `outline: none`
 3. Test with keyboard (Tab key) — `:focus-visible` only fires for keyboard navigation
+
+### Underlines appearing where they shouldn't / missing where they should
+1. The in-prose link underline rule targets specific selectors (`.essay a`, `p a`, etc.)
+2. If a new context contains links, add its selector to the rule
+3. If underlines appear on a nav link, check whether the rule's selectors match the nav link's parent — if so, exclude with `:not()`
+4. Do NOT remove the underlines globally — they are a WCAG compliance requirement
 
 ### Mobile display issues
 1. Check the `@media` queries in the Intro Section
