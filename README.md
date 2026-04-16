@@ -228,4 +228,4 @@ The Detroit Badman Archive originated through the Cultural Heritage Informatics 
 
 ---
 
-*Last updated: 16 April 2026*
+*Last updated: [PLACEHOLDER — auto-populate on commit or manually update]*
