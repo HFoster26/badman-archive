@@ -34,11 +34,11 @@ The Network Visualization Tool (NVT) is a D3.js-powered force-directed graph tha
 
 | Code | Name | Color | Description |
 |------|------|-------|-------------|
-| `META` | Creator → Creation | Gold (`#D4AF37`) | Real person creates fictional figure (e.g., Goines → Kenyatta) |
-| `P2C` | Person → Creation | Red (`#DC3545`) | Real figure inspires fiction OR fiction inspires real person |
-| `C2C` | Creator ↔ Creator | Green (`#50C878`) | One artist's work influences another's |
-| `ORG` | Organizational / Ideological | Blue (`#3388FF`) | Shared membership, ideology, or institutional connection |
-| `CC` | Creation Continuity | Pink (`#E83E8C`) | Fictional characters sharing a universe or continuity (e.g., Static ↔ Hardware) |
+| `META` | Creator → Creation | Gold (`#d4af37`) | Real person creates fictional figure (e.g., Goines → Kenyatta) |
+| `P2C` | Person → Creation | Red (`#dc3545`) | Real figure inspires fiction OR fiction inspires real person |
+| `C2C` | Creator ↔ Creator | Green (`#50c878`) | One artist's work influences another's |
+| `ORG` | Organizational / Ideological | Blue (`#3388ff`) | Shared membership, ideology, or institutional connection |
+| `CC` | Creation Continuity | Pink (`#e83e8c`) | Fictional characters sharing a universe or continuity (e.g., Static ↔ Hardware) |
 
 Edge type definitions are stored in the `edge_types` object at the top of `detroit.json` and read directly by the visualization. See DATAREADME.md for the full schema.
 
@@ -196,11 +196,11 @@ Edges are built from the `connections` array. Only `outgoing` and `mutual` direc
 ```json
 {
   "edge_types": {
-    "META": { "label": "Creator → Creation",          "color": "#D4AF37" },
-    "P2C":  { "label": "Person → Creation",           "color": "#DC3545" },
-    "C2C":  { "label": "Creator ↔ Creator",           "color": "#50C878" },
-    "ORG":  { "label": "Organizational / Ideological","color": "#3388FF" },
-    "CC":   { "label": "Creation Continuity",         "color": "#E83E8C" }
+    "META": { "label": "Creator → Creation",          "color": "#d4af37" },
+    "P2C":  { "label": "Person → Creation",           "color": "#dc3545" },
+    "C2C":  { "label": "Creator ↔ Creator",           "color": "#50c878" },
+    "ORG":  { "label": "Organizational / Ideological","color": "#3388ff" },
+    "CC":   { "label": "Creation Continuity",         "color": "#e83e8c" }
   }
 }
 ```
