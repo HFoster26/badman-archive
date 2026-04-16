@@ -134,7 +134,7 @@ All text/background combinations meet WCAG AA minimums: 4.5:1 for normal text, 3
 
 At launch, three modalities render: Detective, Revolutionary, and Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw variables are defined but filtered out via the `activeModalities` array in map.html and network.html pending post-launch activation.
 
-**Note:** Color alone cannot differentiate modalities (WCAG 1.4.1). Each modality also requires a distinct marker shape and icon. See the Modality Visual Identity System table in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT.md for the full specification.
+**Note:** Color alone cannot differentiate modalities (WCAG 1.4.1). Each modality also requires a distinct marker shape and icon. See the Modality Visual Identity System table in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT_DOCUMENTATION.md for the full specification.
 
 ### Network Background
 
@@ -235,7 +235,7 @@ a:focus-visible {
 }
 ```
 
-**Why this exists:** WCAG 2.3.3 (Animation from Interactions) and the `prefers-reduced-motion` media query. Users who have enabled "Reduce motion" in their OS settings will see no CSS animations or transitions. The D3 network simulation is handled separately in JavaScript (see network.html and JAVASCRIPT.md), but this CSS rule catches any transitions on hover states, nav toggles, or future animated elements.
+**Why this exists:** WCAG 2.3.3 (Animation from Interactions) and the `prefers-reduced-motion` media query. Users who have enabled "Reduce motion" in their OS settings will see no CSS animations or transitions. The D3 network simulation is handled separately in JavaScript (see network.html and JAVASCRIPT_DOCUMENTATION.md), but this CSS rule catches any transitions on hover states, nav toggles, or future animated elements.
 
 ---
 
@@ -346,7 +346,7 @@ These classes style the figure detail panel populated dynamically by `showFigure
 }
 ```
 
-**Why these exist:** The previous `showFigureDetails()` and `buildSourceLinks()` functions in scripts.js built detail panel content via HTML template strings with inline styles like `style="color: #e8e8e8; font-size: 1.5rem;"` hardcoded directly. This violated the "no hardcoded hex in JavaScript" convention (see JAVASCRIPT.md) and duplicated color authority across the codebase. Moving these to CSS classes centralizes styling and lets the in-prose link underline rule apply automatically to panel links.
+**Why these exist:** The previous `showFigureDetails()` and `buildSourceLinks()` functions in scripts.js built detail panel content via HTML template strings with inline styles like `style="color: #e8e8e8; font-size: 1.5rem;"` hardcoded directly. This violated the "no hardcoded hex in JavaScript" convention (see JAVASCRIPT_DOCUMENTATION.md) and duplicated color authority across the codebase. Moving these to CSS classes centralizes styling and lets the in-prose link underline rule apply automatically to panel links.
 
 **Class reference:**
 
@@ -397,7 +397,7 @@ These classes style the figure detail panel populated dynamically by `showFigure
 - Change `--dba-darkest-green` to adjust nav background
 - Change `--dba-gold` to adjust hover/active color
 
-**Accessibility note:** The active link also receives `aria-current="page"` via JavaScript (see JAVASCRIPT.md). The gold color is a visual indicator; `aria-current` is the screen reader indicator. Both are required.
+**Accessibility note:** The active link also receives `aria-current="page"` via JavaScript (see JAVASCRIPT_DOCUMENTATION.md). The gold color is a visual indicator; `aria-current` is the screen reader indicator. Both are required.
 
 ---
 
@@ -554,7 +554,7 @@ Styles for the modality legends on map.html and network.html.
 }
 ```
 
-**Why shapes?** The previous version used identical circles with different colors for each modality. WCAG 1.4.1 (Use of Color) requires a non-color differentiator. Each modality now has a distinct CSS shape that matches the Modality Visual Identity System defined in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT.md.
+**Why shapes?** The previous version used identical circles with different colors for each modality. WCAG 1.4.1 (Use of Color) requires a non-color differentiator. Each modality now has a distinct CSS shape that matches the Modality Visual Identity System defined in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT_DOCUMENTATION.md.
 
 **Shape reference:**
 
