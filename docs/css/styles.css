@@ -126,7 +126,112 @@ a:focus-visible {
         scroll-behavior: auto !important;
     }
 }
+/* ============================================
+   DETAIL PANEL CLASSES
+   
+   Used by showFigureDetails() and buildSourceLinks() 
+   in scripts.js. These classes replace hardcoded 
+   inline hex values that were previously written 
+   directly into JavaScript template strings.
+   ============================================ */
+/*
+ * Figure name heading in detail panels.
+ * Used on <h3> element inside #info-content and #figure-metrics-content.
+ * Contrast: 8.66:1 against --dba-content-green (WCAG AAA).
+ */
+.figure-detail-name {
+    color: var(--dba-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
 
+/*
+ * "Read more" / "Show less" toggle link in detail panels.
+ * In-prose context — inherits underline from in-prose link rule above.
+ * Contrast: 7.4:1 emerald on --dba-content-green (WCAG AAA).
+ * Hover/focus: transitions to gold at 5.04:1 (WCAG AA).
+ */
+.read-more-toggle {
+    color: var(--dba-emerald);
+    display: block;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.read-more-toggle:hover,
+.read-more-toggle:focus {
+    color: var(--dba-gold);
+}
+
+/*
+ * Horizontal divider separating biography from sources in detail panels.
+ * Decorative — screen readers ignore <hr> with role="presentation" default.
+ */
+.panel-divider {
+    border: 0;
+    border-top: 1px solid var(--dba-border-green);
+    margin: 1rem 0;
+}
+
+/*
+ * Source link list container (<ul>) inside detail panels.
+ * Pair with Bootstrap's .list-unstyled for structure:
+ *   <ul class="list-unstyled source-links">
+ */
+.source-links {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+/*
+ * Individual source link item (<li>) inside detail panels.
+ * Anchors within inherit underline from the in-prose link rule above
+ * (source-links selector needs to be added to that rule, OR add
+ * `.source-link-item a` to the selector list — see note below).
+ */
+.source-link-item {
+    margin-bottom: 0.3rem;
+}
+
+.source-link-item a {
+    color: var(--dba-emerald);
+}
+
+.source-link-item a:hover,
+.source-link-item a:focus {
+    color: var(--dba-gold);
+}
+
+/* ============================================
+   REQUIRED UPDATE TO IN-PROSE LINK UNDERLINE RULE
+   
+   When adding the above block, also update the 
+   existing in-prose link underline rule (if present)
+   or add it if not yet in styles.css.
+   
+   The updated selector list should include detail 
+   panel contexts so source links and read-more 
+   toggles get the required WCAG 1.4.1 underline.
+   ============================================ */
+
+/*
+ * In-prose link underlines.
+ * Required by WCAG 1.4.1 — emerald links fail adjacent-text
+ * contrast against primary text (1.73:1). Underline is the
+ * non-color cue that satisfies accessibility.
+ */
+.essay a,
+p a,
+.bio-overview a,
+.data-section a,
+.cited-in-desc a,
+.source-link-item a,
+.read-more-toggle {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
 /* ============================================
    HEADER
    ============================================ */
