@@ -36,7 +36,7 @@ Every modality is defined by three distinguishable properties: color, shape, and
 |----------|-------|-----|--------------|------|
 | Detective | Blue | `#3388ff` | Pin | Magnifying glass |
 | Revolutionary | Red | `#dc3545` | Star | Raised fist |
-| Superhero-Villain | Teal | `#20c997` | Hexagon | Lightning bolt |
+| Superhero-Villain | Orange | `#fd7e14` | Hexagon | Lightning bolt |
 | Gangsta-Pimp | Purple | `#6f42c1` | Square | Dollar sign |
 | Folk Hero-Outlaw | Gold | `#d4af37` | Triangle | Star |
 
