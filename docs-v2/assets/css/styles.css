@@ -1,0 +1,250 @@
+/* ==========================================================================
+   BDA Base Styles — Phase 2 structural pass
+   --------------------------------------------------------------------------
+   This is not the full visual design pass. Phase 2 only establishes:
+     - CSS variables for the dark-green theme (color already audited)
+     - Skip-to-content link (WCAG 2.4.1)
+     - .sr-only and .visually-hidden (Bootstrap 5 compatible)
+     - Partial placeholder min-heights (FOUC mitigation)
+     - Navbar, footer, credentialing rail structural layout
+     - Basic .page-main wrapper for stub pages
+   Visual polish lives in Phase 3.
+   ========================================================================== */
+
+/* ----- CSS variables (dark green theme, audited for contrast) ----- */
+:root {
+  --bda-bg-primary:   #0d1f12;
+  --bda-bg-secondary: #1a472a;
+  --bda-bg-tertiary:  #143624;
+
+  --bda-text-primary:   #e8e8e8;
+  --bda-text-secondary: #b0b0b0; /* upgraded from #a0a0a0 per audit item 1 */
+  --bda-text-muted:     #8a8a8a;
+
+  --bda-link:         #50c878;
+  --bda-link-hover:   #6fdb91;
+  --bda-link-visited: #50c878;
+
+  --bda-accent-detective:      #3388ff;
+  --bda-accent-revolutionary:  #dc3545;
+  --bda-accent-superhero:      #fd7e14;
+  --bda-accent-gangsta:        #6f42c1;
+  --bda-accent-folk:           #d4af37;
+
+  --bda-border-color: #2a5f3f;
+
+  --bda-font-serif: Georgia, 'Times New Roman', serif;
+  --bda-font-sans:  system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+
+  --bda-navbar-height:      64px;
+  --bda-credentialing-width: 280px;
+  --bda-content-max-width:  720px;
+}
+
+/* ----- Base ----- */
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--bda-bg-primary);
+  color: var(--bda-text-primary);
+  font-family: var(--bda-font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--bda-link); }
+a:hover, a:focus { color: var(--bda-link-hover); }
+a:visited { color: var(--bda-link-visited); }
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 0.5em;
+  line-height: 1.25;
+  font-weight: 600;
+}
+
+/* ----- Accessibility primitives (both classes defined per audit) ----- */
+.sr-only,
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+.sr-only-focusable:focus,
+.visually-hidden-focusable:focus {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  padding: 1rem !important;
+  margin: 0 !important;
+  overflow: visible !important;
+  clip: auto !important;
+  white-space: normal !important;
+  background: var(--bda-bg-secondary);
+  color: var(--bda-text-primary);
+  z-index: 10000;
+}
+
+/* ----- Skip to content (WCAG 2.4.1) ----- */
+.bda-skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  padding: 1rem 1.5rem;
+  background: var(--bda-bg-secondary);
+  color: var(--bda-text-primary);
+  text-decoration: underline;
+  z-index: 10000;
+  transition: top 0.15s ease-out;
+}
+.bda-skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--bda-link);
+  outline-offset: 2px;
+}
+
+/* ----- Partial placeholders (prevent FOUC reflow) ----- */
+#bda-navbar {
+  min-height: var(--bda-navbar-height);
+  background: var(--bda-bg-secondary);
+  border-bottom: 1px solid var(--bda-border-color);
+}
+
+#bda-footer {
+  min-height: 200px;
+  background: var(--bda-bg-tertiary);
+  border-top: 1px solid var(--bda-border-color);
+  margin-top: 4rem;
+}
+
+#bda-credentialing-rail {
+  min-height: 400px;
+}
+
+/* ----- Navbar ----- */
+.bda-navbar { padding: 0.5rem 1rem; background: var(--bda-bg-secondary); }
+.bda-navbar .navbar-brand { color: var(--bda-text-primary); font-weight: 700; }
+.bda-navbar .bda-brand-city { color: var(--bda-link); }
+.bda-navbar .bda-brand-sep  { margin: 0 0.4rem; color: var(--bda-text-muted); }
+.bda-navbar .bda-brand-name { color: var(--bda-text-primary); }
+
+.bda-navbar .nav-link { color: var(--bda-text-primary); padding: 0.5rem 1rem; }
+.bda-navbar .nav-link:hover,
+.bda-navbar .nav-link:focus { color: var(--bda-link); }
+.bda-navbar .nav-link.active,
+.bda-navbar .nav-link[aria-current="page"] {
+  color: var(--bda-link);
+  border-bottom: 2px solid var(--bda-link);
+}
+
+.bda-navbar .dropdown-menu {
+  background: var(--bda-bg-secondary);
+  border: 1px solid var(--bda-border-color);
+}
+.bda-navbar .dropdown-item { color: var(--bda-text-primary); }
+.bda-navbar .dropdown-item:hover,
+.bda-navbar .dropdown-item:focus {
+  background: var(--bda-bg-tertiary);
+  color: var(--bda-link);
+}
+
+/* ----- Footer ----- */
+.bda-footer { padding: 3rem 0 2rem; color: var(--bda-text-secondary); }
+.bda-footer-heading { font-size: 1rem; margin-bottom: 1rem; color: var(--bda-text-primary); }
+.bda-footer-heading-sub { margin-top: 2rem; }
+.bda-footer-list { list-style: none; padding: 0; margin: 0; }
+.bda-footer-list li { margin-bottom: 0.4rem; }
+.bda-footer-body { font-size: 0.9rem; }
+.bda-footer-bottom {
+  border-top: 1px solid var(--bda-border-color);
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  font-size: 0.85rem;
+  color: var(--bda-text-muted);
+}
+.bda-footer-meta { text-align: right; }
+.bda-footer-partner-pending { color: var(--bda-text-muted); font-style: italic; }
+
+/* ----- Credentialing rail ----- */
+.bda-credentialing-rail {
+  position: sticky;
+  top: calc(var(--bda-navbar-height) + 1rem);
+  width: var(--bda-credentialing-width);
+  padding: 1.5rem;
+  background: var(--bda-bg-secondary);
+  border: 1px solid var(--bda-border-color);
+  border-radius: 4px;
+}
+.bda-author-photo img { border-radius: 50%; margin-bottom: 1rem; }
+.bda-author-name { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.bda-author-pronouns { font-size: 0.85rem; color: var(--bda-text-muted); margin: 0 0 0.75rem; }
+.bda-author-affiliation { font-size: 0.85rem; margin-bottom: 1rem; }
+.bda-author-bio { font-size: 0.85rem; color: var(--bda-text-secondary); }
+
+.bda-page-toc { margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--bda-border-color); }
+.bda-page-toc-heading { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--bda-text-muted); }
+.bda-page-toc-list { list-style: none; padding: 0; margin: 0; font-size: 0.9rem; }
+.bda-page-toc-list li { margin-bottom: 0.4rem; }
+
+/* ----- Page layout ----- */
+.bda-page-main {
+  max-width: var(--bda-content-max-width);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.bda-page-main--wide { max-width: 1100px; }
+.bda-page-main--full { max-width: none; padding: 0; }
+
+/* Two-column layout for pages with credentialing rail */
+.bda-page-with-rail {
+  display: grid;
+  grid-template-columns: 1fr var(--bda-credentialing-width);
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+.bda-page-with-rail > main { min-width: 0; }
+
+@media (max-width: 900px) {
+  .bda-page-with-rail {
+    grid-template-columns: 1fr;
+  }
+  .bda-credentialing-rail {
+    position: static;
+    width: auto;
+  }
+}
+
+/* ----- Stub page indicator (dev/build-in-progress) ----- */
+.bda-stub-banner {
+  background: var(--bda-bg-tertiary);
+  border: 1px dashed var(--bda-border-color);
+  color: var(--bda-text-muted);
+  padding: 0.75rem 1rem;
+  margin-bottom: 2rem;
+  font-size: 0.85rem;
+  border-radius: 4px;
+}
+
+/* ----- Reduced motion (WCAG 2.3.3 + audit item 11) ----- */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
