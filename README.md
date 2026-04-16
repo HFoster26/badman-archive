@@ -181,7 +181,7 @@ This repository includes technical documentation for each layer of the archive:
 ## Contributing
 
 ### Community submissions
-Community members are invited to submit figures for consideration through the Repository page on the live site. Submissions undergo vetting against the five-criteria framework before inclusion. See the [Submit a Figure](https://detroit.badmandigitalarchive.com/engagement/submit) page for submission guidelines and the form.
+Community members are invited to submit figures for consideration through the Submit a Figure page on the live site. Submissions undergo vetting against the five-criteria framework before inclusion. See the [Submit a Figure](https://detroit.badmandigitalarchive.com/engagement/submit) page for submission guidelines and the form.
 
 ### Developer contributions
 Development is led by Harry M. Foster with support from the Cultural Heritage Informatics (CHI) Fellowship and CHI directors **Dr. Gillian MacDonald** and **Dr. Maddie Mackie**.
