@@ -4,7 +4,7 @@
 
 This file contains **only** custom styles for the Detroit Badman Archive. Bootstrap 5 is loaded via CDN in the HTML `<head>` section—it is not bundled in this file.
 
-**Total lines:** ~340 (expanded from ~320 to include in-prose link underline rule)
+**Total lines:** ~400 (expanded from ~340 to include Detail Panel Classes, network node legend classes, and edge type legend dash patterns)
 
 ---
 
@@ -36,6 +36,12 @@ styles.css (~340 lines)
 │   ├── Focus styles
 │   └── Reduced motion
 ├── In-Prose Link Underlines (Lines 87-98)
+├── Detail Panel Classes (new)
+│   ├── .figure-detail-name
+│   ├── .read-more-toggle
+│   ├── .panel-divider
+│   ├── .source-links
+│   └── .source-link-item
 ├── Header (Lines 100-125)
 ├── Navigation (Lines 127-153)
 ├── Page Sections (Lines 155-170)
@@ -63,32 +69,33 @@ All colors are defined as CSS variables in `:root`. Edit these to change colors 
 ```css
 :root {
     /* Primary Greens */
-    --dba-darkest-green: #0A1F12;
-    --dba-dark-green: #0D2818;
-    --dba-medium-green: #143D26;
-    --dba-content-green: #1A472A;
-    --dba-border-green: #2A623D;
-    --dba-emerald: #50C878;
+    --dba-darkest-green: #0a1f12;
+    --dba-dark-green: #0d2818;
+    --dba-medium-green: #143d26;
+    --dba-content-green: #1a472a;
+    --dba-border-green: #2a623d;
+    --dba-emerald: #50c878;
+    --dba-network-bg: #0a1a0f;
 
     /* Kobe Tribute - Purple & Gold */
     --dba-purple: #552583;
-    --dba-gold: #D4AF37;
+    --dba-gold: #d4af37;
 
     /* Text Colors */
-    --dba-text-primary: #E8E8E8;
-    --dba-text-secondary: #C8C8C8;
-    --dba-text-muted: #B0B0B0;
-    --dba-white: #FFFFFF;
+    --dba-text-primary: #e8e8e8;
+    --dba-text-secondary: #c8c8c8;
+    --dba-text-muted: #b0b0b0;
+    --dba-white: #ffffff;
 
     /* Modality Colors */
-    --dba-detective: #3388FF;
-    --dba-revolutionary: #DC3545;
-    --dba-superhero-villain: #FD7E14;
-    --dba-gangsta-pimp: #6F42C1;
-    --dba-folk-hero: #D4AF37;
+    --dba-detective: #3388ff;
+    --dba-revolutionary: #dc3545;
+    --dba-shv: #fd7e14;
+    --dba-gangsta-pimp: #6f42c1;
+    --dba-folk-hero: #d4af37;
 
     /* Focus */
-    --dba-focus-ring: #D4AF37;
+    --dba-focus-ring: #d4af37;
 }
 ```
 
@@ -100,34 +107,38 @@ All text/background combinations meet WCAG AA minimums: 4.5:1 for normal text, 3
 
 | Element | Foreground | Background | Ratio | AA | Status |
 |---------|-----------|------------|-------|----|----|
-| Primary text | `--dba-text-primary` (`#E8E8E8`) | `--dba-content-green` (`#1A472A`) | 8.66:1 | Pass | ✅ |
-| Secondary text | `--dba-text-secondary` (`#C8C8C8`) | `--dba-content-green` (`#1A472A`) | 6.34:1 | Pass | ✅ |
-| Muted text | `--dba-text-muted` (`#B0B0B0`) | `--dba-content-green` (`#1A472A`) | 4.89:1 | Pass | ✅ |
-| Link text (on content bg) | `--dba-emerald` (`#50C878`) | `--dba-dark-green` (`#0D2818`) | 7.4:1 | Pass | ✅ |
-| Link vs. adjacent primary text | `--dba-emerald` (`#50C878`) | `--dba-text-primary` (`#E8E8E8`) | 1.73:1 | Fail | ✅ via underline* |
-| Heading accent | `--dba-emerald` (`#50C878`) | `--dba-dark-green` (`#0D2818`) | 7.4:1 | Pass | ✅ |
-| Nav hover / active | `--dba-gold` (`#D4AF37`) | `--dba-darkest-green` (`#0A1F12`) | 8.2:1 | Pass | ✅ |
-| Footer text | `--dba-text-primary` (`#E8E8E8`) | `--dba-darkest-green` (`#0A1F12`) | 14.07:1 | Pass | ✅ |
-| Focus ring | `--dba-focus-ring` (`#D4AF37`) | `--dba-content-green` (`#1A472A`) | 5.04:1 | Pass | ✅ |
-| Button text | `--dba-white` (`#FFFFFF`) | `--dba-purple` (`#552583`) | 10.61:1 | Pass | ✅ |
+| Primary text | `--dba-text-primary` (`#e8e8e8`) | `--dba-content-green` (`#1a472a`) | 8.66:1 | Pass | ✅ |
+| Secondary text | `--dba-text-secondary` (`#c8c8c8`) | `--dba-content-green` (`#1a472a`) | 6.34:1 | Pass | ✅ |
+| Muted text | `--dba-text-muted` (`#b0b0b0`) | `--dba-content-green` (`#1a472a`) | 4.89:1 | Pass | ✅ |
+| Link text (on content bg) | `--dba-emerald` (`#50c878`) | `--dba-dark-green` (`#0d2818`) | 7.4:1 | Pass | ✅ |
+| Link vs. adjacent primary text | `--dba-emerald` (`#50c878`) | `--dba-text-primary` (`#e8e8e8`) | 1.73:1 | Fail | ✅ via underline* |
+| Heading accent | `--dba-emerald` (`#50c878`) | `--dba-dark-green` (`#0d2818`) | 7.4:1 | Pass | ✅ |
+| Nav hover / active | `--dba-gold` (`#d4af37`) | `--dba-darkest-green` (`#0a1f12`) | 8.2:1 | Pass | ✅ |
+| Footer text | `--dba-text-primary` (`#e8e8e8`) | `--dba-darkest-green` (`#0a1f12`) | 14.07:1 | Pass | ✅ |
+| Focus ring | `--dba-focus-ring` (`#d4af37`) | `--dba-content-green` (`#1a472a`) | 5.04:1 | Pass | ✅ |
+| Button text | `--dba-white` (`#ffffff`) | `--dba-purple` (`#552583`) | 10.61:1 | Pass | ✅ |
 
-*\* **Link vs. adjacent primary text:** The emerald link color fails adjacent-text contrast against `#E8E8E8` primary text in isolation (1.73:1). This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. See "In-Prose Link Underlines" section below for the CSS rule. Do not remove underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines.*
+*\* **Link vs. adjacent primary text:** The emerald link color fails adjacent-text contrast against `#e8e8e8` primary text in isolation (1.73:1). This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. See "In-Prose Link Underlines" section below for the CSS rule. Do not remove underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines.*
 
-**Note on `--dba-text-muted`:** This variable replaced a previously-used hardcoded `#a0a0a0`, which was flagged as a suspected failure in the March 2026 accessibility audit. `#a0a0a0` on `#1A472A` yields approximately 3.9:1 (fails AA for normal text). The upgrade to `#B0B0B0` brought the ratio to a verified 4.89:1, just above the AA threshold. Do not downgrade this value without re-testing.
+**Note on `--dba-text-muted`:** This variable replaced a previously-used hardcoded `#a0a0a0`, which was flagged as a suspected failure in the March 2026 accessibility audit. `#a0a0a0` on `#1a472a` yields approximately 3.9:1 (fails AA for normal text). The upgrade to `#b0b0b0` brought the ratio to a verified 4.89:1, just above the AA threshold. Do not downgrade this value without re-testing.
 
 ### Modality Colors (for map markers and network nodes)
 
 | Modality | Variable | Hex |
 |----------|----------|-----|
-| Detective | `--dba-detective` | `#3388FF` (Blue) |
-| Revolutionary | `--dba-revolutionary` | `#DC3545` (Red) |
-| Superhero-Villain | `--dba-superhero-villain` | `#FD7E14` (Orange) |
-| Gangsta-Pimp | `--dba-gangsta-pimp` | `#6F42C1` (Purple) |
-| Folk Hero-Outlaw | `--dba-folk-hero` | `#D4AF37` (Gold) |
+| Detective | `--dba-detective` | `#3388ff` (Blue) |
+| Revolutionary | `--dba-revolutionary` | `#dc3545` (Red) |
+| Superhero-Villain | `--dba-shv` | `#fd7e14` (Orange) |
+| Gangsta-Pimp | `--dba-gangsta-pimp` | `#6f42c1` (Purple) |
+| Folk Hero-Outlaw | `--dba-folk-hero` | `#d4af37` (Gold) |
 
 At launch, three modalities render: Detective, Revolutionary, and Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw variables are defined but filtered out via the `activeModalities` array in map.html and network.html pending post-launch activation.
 
 **Note:** Color alone cannot differentiate modalities (WCAG 1.4.1). Each modality also requires a distinct marker shape and icon. See the Modality Visual Identity System table in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT.md for the full specification.
+
+### Network Background
+
+The `--dba-network-bg` variable (`#0a1a0f`) is a darker-than-darkest green used specifically as the background for the D3 network visualization SVG in network.html. It is intentionally darker than `--dba-darkest-green` (`#0a1f12`) to increase contrast with node colors and make the force-directed graph easier to read. Do not use this variable outside the network visualization context.
 
 ---
 
@@ -203,7 +214,7 @@ a:focus-visible {
 }
 ```
 
-**Why this exists:** The default browser focus outline (thin blue ring) is nearly invisible on dark green backgrounds. WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The gold ring (`#D4AF37`) on dark green provides verified 5.04:1 contrast on content backgrounds and 8.2:1 on the darkest-green nav background.
+**Why this exists:** The default browser focus outline (thin blue ring) is nearly invisible on dark green backgrounds. WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The gold ring (`#d4af37`) on dark green provides verified 5.04:1 contrast on content backgrounds and 8.2:1 on the darkest-green nav background.
 
 **`:focus-visible` vs. `:focus`:** Using `:focus-visible` instead of `:focus` means the ring only appears for keyboard navigation, not for mouse clicks. This is the modern best practice — keyboard users see the ring, mouse users don't.
 
@@ -241,7 +252,7 @@ p a,
 }
 ```
 
-**Why this exists:** The emerald link color (`--dba-emerald`, `#50C878`) does not provide sufficient contrast against primary text color (`#E8E8E8`) in isolation — the two colors measure 1.73:1, below the WCAG 1.4.11 non-text contrast threshold. Without an underline, a color-blind user reading body prose cannot tell that a green word is a hyperlink.
+**Why this exists:** The emerald link color (`--dba-emerald`, `#50c878`) does not provide sufficient contrast against primary text color (`#e8e8e8`) in isolation — the two colors measure 1.73:1, below the WCAG 1.4.11 non-text contrast threshold. Without an underline, a color-blind user reading body prose cannot tell that a green word is a hyperlink.
 
 The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). This is the industry-standard pattern used by NYT, JSTOR, Wikipedia, and academic journals for in-prose links.
 
@@ -258,6 +269,105 @@ The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). Thi
 - Heading-accent emerald text (`.section-heading-upper`) — not a link, just colored text
 
 **Do not remove this rule.** The archive cannot ship without it and remain WCAG-compliant.
+
+---
+
+### Detail Panel Classes
+
+These classes style the figure detail panel populated dynamically by `showFigureDetails()` and `buildSourceLinks()` in scripts.js. They replace hardcoded inline hex values that were previously written directly into JavaScript template strings.
+
+```css
+/* ============================================
+   DETAIL PANEL CLASSES
+   ============================================ */
+
+/*
+ * Figure name heading in detail panels.
+ * Used on <h3> element inside #info-content and #figure-metrics-content.
+ */
+.figure-detail-name {
+    color: var(--dba-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/*
+ * Read more / Show less toggle link in detail panels.
+ * In-prose context — inherits underline from the in-prose link rule above.
+ */
+.read-more-toggle {
+    color: var(--dba-emerald);
+    display: block;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.read-more-toggle:hover,
+.read-more-toggle:focus {
+    color: var(--dba-gold);
+}
+
+/*
+ * Horizontal divider separating biography from sources in detail panels.
+ */
+.panel-divider {
+    border: 0;
+    border-top: 1px solid var(--dba-border-green);
+    margin: 1rem 0;
+}
+
+/*
+ * Source link list container (ul) inside detail panels.
+ * Uses Bootstrap's list-unstyled for structure; this class adds spacing.
+ */
+.source-links {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+/*
+ * Individual source link item (li) inside detail panels.
+ * Links inside are in-prose context — they receive the underline
+ * automatically via the in-prose link rule above.
+ */
+.source-link-item {
+    margin-bottom: 0.3rem;
+}
+
+.source-link-item a {
+    color: var(--dba-emerald);
+}
+
+.source-link-item a:hover,
+.source-link-item a:focus {
+    color: var(--dba-gold);
+}
+```
+
+**Why these exist:** The previous `showFigureDetails()` and `buildSourceLinks()` functions in scripts.js built detail panel content via HTML template strings with inline styles like `style="color: #e8e8e8; font-size: 1.5rem;"` hardcoded directly. This violated the "no hardcoded hex in JavaScript" convention (see JAVASCRIPT.md) and duplicated color authority across the codebase. Moving these to CSS classes centralizes styling and lets the in-prose link underline rule apply automatically to panel links.
+
+**Class reference:**
+
+| Class | Applied To | Purpose |
+|-------|-----------|---------|
+| `.figure-detail-name` | `<h3>` inside `#info-content` / `#figure-metrics-content` | Figure name heading |
+| `.read-more-toggle` | `<a>` linking to biography expansion | Read more / Show less control |
+| `.panel-divider` | `<hr>` inside detail panel | Visual separator above sources |
+| `.source-links` | `<ul>` wrapping sources | List container spacing |
+| `.source-link-item` | `<li>` for each source | Individual item spacing; anchors inherit color + underline |
+
+**Accessibility notes:**
+- The `.figure-detail-name` class uses `var(--dba-text-primary)` at 8.66:1 contrast — WCAG AAA.
+- The `.read-more-toggle` and source link anchors use `var(--dba-emerald)` which is 7.4:1 against content-green backgrounds, and they are in-prose context so they receive the required underline from the rule above.
+- Hover/focus states transition to `var(--dba-gold)` — verified at 5.04:1 against content-green (WCAG AA).
+- `.panel-divider` is a decorative `<hr>`; screen readers ignore it.
+
+**When modifying:**
+- Do not add `text-decoration: none` to `.read-more-toggle` or `.source-link-item a` — this would break the in-prose underline WCAG mitigation
+- Do not reintroduce hardcoded hex values in the JavaScript that populates these classes
+- If the detail panel structure changes (e.g., adding a new field), add a new class here rather than styling inline in JS
 
 ---
 
@@ -336,7 +446,7 @@ The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). Thi
 
 **Key detail:** Buttons use purple border by default and fill with purple on hover, with gold border accent.
 
-**Accessibility note:** Button focus state uses the global `*:focus-visible` gold ring. Button text color `#FFFFFF` against purple button fill `#552583` is verified at 10.61:1 (WCAG AAA).
+**Accessibility note:** Button focus state uses the global `*:focus-visible` gold ring. Button text color `#ffffff` against purple button fill `#552583` is verified at 10.61:1 (WCAG AAA).
 
 **To modify:**
 - Change `--dba-purple` to adjust button color
@@ -375,7 +485,7 @@ p {
 
 Paragraphs use lighter gray (`--dba-text-secondary`); `.text-faded` class uses brighter off-white (`--dba-text-primary`).
 
-**Important:** Do not use `#a0a0a0` for any text on `--dba-content-green` backgrounds. That combination fails WCAG 4.5:1 contrast. Use `--dba-text-muted` (`#B0B0B0`) as the minimum for muted text.
+**Important:** Do not use `#a0a0a0` for any text on `--dba-content-green` backgrounds. That combination fails WCAG 4.5:1 contrast. Use `--dba-text-muted` (`#b0b0b0`) as the minimum for muted text.
 
 ---
 
@@ -420,8 +530,7 @@ Styles for the modality legends on map.html and network.html.
 
 .legend-detective {
     background-color: var(--dba-detective);
-    border-radius: 50% 50% 50% 0;  /* Pin/teardrop shape */
-    transform: rotate(-45deg);
+    border-radius: 50%;  /* Circle shape */
 }
 
 .legend-revolutionary {
@@ -430,7 +539,7 @@ Styles for the modality legends on map.html and network.html.
 }
 
 .legend-superhero-villain {
-    background-color: var(--dba-superhero-villain);
+    background-color: var(--dba-shv);
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);  /* Hexagon */
 }
 
@@ -451,7 +560,7 @@ Styles for the modality legends on map.html and network.html.
 
 | Modality | CSS Shape | Technique |
 |----------|-----------|-----------|
-| Detective | Pin/teardrop | `border-radius` + `transform: rotate` |
+| Detective | Circle | `border-radius: 50%` |
 | Revolutionary | Star | `clip-path: polygon` |
 | Superhero-Villain | Hexagon | `clip-path: polygon` |
 | Gangsta-Pimp | Square | Default with slight `border-radius` |
@@ -463,6 +572,124 @@ Styles for the modality legends on map.html and network.html.
 
 **Accessibility note:** The legend marker spans use `aria-hidden="true"` in the HTML because they are decorative — the adjacent text label carries the information. See HTML_TEMPLATES.md for the full legend markup pattern.
 
+### Network Node Legend Classes
+
+The network visualization uses different shapes than the map legend — circles, diamonds, and hexagons rather than pins, stars, and hexagons. These classes provide distinct legend markers for network.html:
+
+```css
+.legend-node-detective {
+    background-color: var(--dba-detective);
+    border-radius: 50%;  /* Circle */
+}
+
+.legend-node-revolutionary {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);  /* Diamond */
+}
+
+.legend-node-shv {
+    background-color: var(--dba-shv);
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);  /* Hexagon */
+}
+```
+
+**Shape reference (network vs. map):**
+
+| Modality | Map Legend Shape | Network Legend Shape |
+|----------|------------------|----------------------|
+| Detective | Circle | Circle |
+| Revolutionary | Star | Diamond |
+| Superhero-Villain | Hexagon | Hexagon |
+
+Detective and SHV use the same shape in both legends; Revolutionary uses a star on the map but a diamond in the network because D3 force-directed graphs render cleaner with diamond nodes than star polygons at small sizes.
+
+### Edge Type Legend Classes
+
+The network's edge legend uses distinct dash patterns for each connection type (WCAG 1.4.1 — dash pattern serves as non-color differentiator when color is unavailable or ambiguous). All edge type legend lines share this base:
+
+```css
+.legend-line {
+    width: 30px;
+    height: 3px;
+    margin-right: 10px;
+}
+```
+
+The dash patterns are implemented with `repeating-linear-gradient`:
+
+```css
+/* META: Solid */
+.legend-meta {
+    background-color: var(--dba-gold);
+}
+
+/* P2C: Long dash */
+.legend-p2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-revolutionary) 0px,
+        var(--dba-revolutionary) 12px,
+        transparent 12px,
+        transparent 18px
+    );
+}
+
+/* C2C: Short dash */
+.legend-c2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-emerald) 0px,
+        var(--dba-emerald) 6px,
+        transparent 6px,
+        transparent 10px
+    );
+}
+
+/* ORG: Dot-dash */
+.legend-org {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-detective) 0px,
+        var(--dba-detective) 2px,
+        transparent 2px,
+        transparent 6px,
+        var(--dba-detective) 6px,
+        var(--dba-detective) 14px,
+        transparent 14px,
+        transparent 18px
+    );
+}
+
+/* CC: Dotted */
+.legend-cc {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        #e83e8c 0px,
+        #e83e8c 2px,
+        transparent 2px,
+        transparent 4px
+    );
+}
+```
+
+**Edge type dash pattern reference:**
+
+| Edge Type | Color Variable | Color Hex | Dash Pattern |
+|-----------|---------------|-----------|--------------|
+| META | `--dba-gold` | `#d4af37` | Solid |
+| P2C | `--dba-revolutionary` | `#dc3545` | Long dash (12px on, 6px off) |
+| C2C | `--dba-emerald` | `#50c878` | Short dash (6px on, 4px off) |
+| ORG | `--dba-detective` | `#3388ff` | Dot-dash (2+4+8+4 pattern) |
+| CC | Pink | `#e83e8c` | Dotted (2px on, 2px off) |
+
+**Note on CC color:** The CC edge type uses hex `#e83e8c` directly rather than a CSS variable because it is the only place in the codebase that needs this pink. If CC-styled elements appear elsewhere in future development, create a `--dba-cc-pink` variable and update this class.
+
+**Pattern synchronization:** These CSS dash patterns must match the `edgeDashPatterns` JavaScript object in network.html's inline script. When adjusting any dash pattern, update both simultaneously.
+
 ---
 
 ### Utility Classes (Lines 335-353)
@@ -473,12 +700,14 @@ Custom utility classes you can add to any element:
 .border-purple  /* Adds purple border */
 .text-gold      /* Gold text color */
 .text-purple    /* Purple text color */
+.text-emerald   /* Emerald green text color */
 ```
 
 **Usage example:**
 ```html
 <h3 class="text-gold">Gold Heading</h3>
 <div class="bg-faded border-purple p-4">Purple-bordered box</div>
+<span class="text-emerald">Accented inline text</span>
 ```
 
 ---
@@ -504,7 +733,7 @@ Add new rules at the bottom of the file:
 ```css
 /* Custom override */
 .btn-primary {
-    border-color: #FF0000 !important;  /* Red buttons */
+    border-color: #ff0000 !important;  /* Red buttons */
 }
 ```
 
@@ -543,16 +772,16 @@ The following inline styles in the HTML files should be migrated to CSS variable
 
 | File | Element | Current Inline Style | Replace With |
 |------|---------|---------------------|-------------|
-| map.html | `#info-content` | `color: #C8C8C8` | `color: var(--dba-text-secondary)` |
-| map.html | Panel headers | `color: #50C878` | `color: var(--dba-emerald)` |
-| map.html | Legend text | `color: #E8E8E8` | `color: var(--dba-text-primary)` |
-| network.html | `#figure-metrics-content` | `color: #A0A0A0` | `color: var(--dba-text-muted)` (upgrade to `#B0B0B0`) |
-| network.html | Panel headers | `color: #50C878` | `color: var(--dba-emerald)` |
-| network.html | Labels | `color: #E8E8E8` | `color: var(--dba-text-primary)` |
+| map.html | `#info-content` | `color: #c8c8c8` | `color: var(--dba-text-secondary)` |
+| map.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
+| map.html | Legend text | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
+| network.html | `#figure-metrics-content` | `color: #a0a0a0` | `color: var(--dba-text-muted)` (upgrade to `#b0b0b0`) |
+| network.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
+| network.html | Labels | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
 
 **Why this matters:** Inline styles cannot be globally updated by changing a CSS variable. If a contrast check reveals that a color fails on a given background, you'd have to find and update every inline instance across every HTML file. With variables, you change one value in `:root` and everything updates.
 
-**Critical row:** The network.html `#figure-metrics-content` row currently uses `#A0A0A0`, which fails WCAG AA against dark backgrounds. This must be migrated to `--dba-text-muted` before launch. This is not a style preference — it is a compliance requirement.
+**Critical row:** The network.html `#figure-metrics-content` row currently uses `#a0a0a0`, which fails WCAG AA against dark backgrounds. This must be migrated to `--dba-text-muted` before launch. This is not a style preference — it is a compliance requirement.
 
 ---
 
