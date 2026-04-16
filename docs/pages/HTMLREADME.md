@@ -156,6 +156,8 @@ Every HTML file follows this structure:
 
 ## Navigation Section
 
+The navigation uses a dropdown structure with seven top-level items, five of which expand to sub-items. This matches the Phase 2.1 navigation restructure defined in the Pre-Launch Sprint Scoping document.
+
 ```html
 <nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav" aria-label="Main navigation">
     <div class="container">
@@ -163,33 +165,105 @@ Every HTML file follows this structure:
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mx-auto">
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="index.html">Home</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="how-to-use.html">How to Use</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="map.html">Map</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="network.html">Network</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="repository.html">Repository</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="about.html">About</a></li>
-                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="resources.html">Resources</a></li>
+
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase" href="index.html">Home</a>
+                </li>
+
+                <li class="nav-item dropdown px-lg-4">
+                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
+                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
+                        <li><a class="dropdown-item" href="about/project.html">The Project</a></li>
+                        <li><a class="dropdown-item" href="about/tradition.html">The Badman Tradition</a></li>
+                        <li><a class="dropdown-item" href="about/methodology.html">Methodology</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown px-lg-4">
+                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="archiveDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Archive</a>
+                    <ul class="dropdown-menu" aria-labelledby="archiveDropdown">
+                        <li><a class="dropdown-item" href="figures.html">Figures</a></li>
+                        <li><a class="dropdown-item" href="sources.html">Primary Sources</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown px-lg-4">
+                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="visualizationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizations</a>
+                    <ul class="dropdown-menu" aria-labelledby="visualizationsDropdown">
+                        <li><a class="dropdown-item" href="map.html">Map</a></li>
+                        <li><a class="dropdown-item" href="network.html">Network</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown px-lg-4">
+                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="engagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Engagement</a>
+                    <ul class="dropdown-menu" aria-labelledby="engagementDropdown">
+                        <li><a class="dropdown-item" href="engagement/submit.html">Submit a Figure</a></li>
+                        <li><a class="dropdown-item" href="engagement/events.html">Events</a></li>
+                    </ul>
+                </li>
+
+                <li class="nav-item px-lg-4">
+                    <a class="nav-link text-uppercase" href="contact.html">Contact</a>
+                </li>
+
             </ul>
         </div>
     </div>
 </nav>
 ```
 
+**Navigation structure:**
+
+| Top-Level Item | Type | Sub-Items |
+|----------------|------|-----------|
+| Home | Direct link | — |
+| About | Dropdown | The Project, The Badman Tradition, Methodology |
+| Archive | Dropdown | Figures, Primary Sources |
+| Visualizations | Dropdown | Map, Network |
+| Engagement | Dropdown | Submit a Figure, Events |
+| Contact | Direct link | — |
+
 **Key elements:**
 - `navbar-brand` — Mobile-only site title (visible when nav is collapsed)
 - `navbar-toggler` — Hamburger menu button for mobile
-- `navbar-nav` — The navigation links
+- `navbar-nav` — The navigation links list
 - `aria-label="Main navigation"` — Identifies this nav region for screen readers (required when a page has multiple `<nav>` elements, good practice always)
+- `dropdown-toggle` / `dropdown-menu` — Bootstrap 5 dropdown components, keyboard-accessible by default
+- `aria-labelledby` on each `<ul class="dropdown-menu">` — Associates the dropdown's items with the toggle button's `id`
 
 **To modify:**
-- **Adding a page** — Add new `<li>` element matching the pattern
-- **Renaming a page** — Update both the `href` and link text
-- **IMPORTANT:** Navigation must be identical across all pages. Edit all files when making changes, or update the shared `/partials/navbar.html` partial when the partial architecture ships.
+- **Adding a new top-level item** — Add new `<li class="nav-item px-lg-4">` following the direct-link pattern, or `<li class="nav-item dropdown px-lg-4">` for dropdowns
+- **Adding a sub-item under a dropdown** — Add new `<li><a class="dropdown-item" href="...">Label</a></li>` inside the appropriate `<ul class="dropdown-menu">`
+- **Renaming a page** — Update both the `href` and link text in every file where the nav appears
+- **IMPORTANT:** Navigation must be identical across all pages. Edit all files when making changes, or update the shared `/partials/navbar.html` partial when the partial architecture ships (see Phase 2.3 of the sprint scoping doc)
 
 **Accessibility notes:**
-- Bootstrap handles keyboard navigation (Tab through links, Enter to activate) — do not override this
+- Bootstrap 5 handles all dropdown keyboard interaction natively — do not override it. The dropdown-toggle supports Tab (enter), Enter/Space (expand), Arrow keys (navigate items), Escape (close), and Home/End (jump to first/last item)
 - The `aria-controls`, `aria-expanded`, and `aria-label` attributes on the toggler button are required for the mobile menu to be accessible — do not remove them
+- The `role="button"` and `aria-expanded` on each dropdown toggle are required for screen reader users to understand that the element expands a submenu
+- When a dropdown item is the current page, mark it with `aria-current="page"` (set programmatically via scripts.js — see the DOM initialization function in JAVASCRIPT.md)
+- Focus indicators (gold ring, 5.04:1 contrast) apply to all dropdown toggles and items via the global `*:focus-visible` rule
+
+**Route reference:**
+
+Every dropdown item corresponds to a route defined in the Phase 2.2 URL structure:
+
+| Nav Item | Route |
+|----------|-------|
+| Home | `/` |
+| About → The Project | `/about/project` |
+| About → The Badman Tradition | `/about/tradition` |
+| About → Methodology | `/about/methodology` |
+| Archive → Figures | `/figures` |
+| Archive → Primary Sources | `/sources` |
+| Visualizations → Map | `/map` |
+| Visualizations → Network | `/network` |
+| Engagement → Submit a Figure | `/engagement/submit` |
+| Engagement → Events | `/engagement/events` |
+| Contact | `/contact` |
+
+Individual figure and source pages (`/figures/[slug]` and `/sources/[slug]`) are linked from the Figures and Primary Sources landing pages, not from the top navigation.
 
 ---
 
@@ -693,99 +767,249 @@ Note: Evidence tier dash patterns (documented/evidenced/interpretive) are a sepa
 
 ---
 
-### repository.html
+### about/project.html, about/tradition.html, about/methodology.html
 
-**Key section:** The submission button (currently placeholder)
+Three pages under the About dropdown, each with a distinct load-bearing function.
+
+**about/project.html — The Project**
+- What the BDA is, who runs it, what it's trying to do
+- Plain language, homepage-adjacent in tone
+- Target audience: anyone arriving cold, community members evaluating whether to engage
+
+**about/tradition.html — The Badman Tradition**
+- The five criteria explained in plain language
+- Gateway to the framework without requiring scholarly vocabulary
+- Target audience: community-facing readers, educators, students
+
+**about/methodology.html — Methodology**
+- The scholarly apparatus
+- Structure: Research Questions, Theoretical Framework, Sources & Data, Analytical Approach, Critical Approach, Limitations, Transparency statement
+- Target audience: scholars, peer reviewers, grant funders
+
+**Heading hierarchy (all three):**
+```
+<h1> Detroit Badman Archive / [Page Title] (in header)
+  <h2> Major section headings specific to each page
+    <h3> Subsections as needed
+```
+
+**To modify:**
+- Each page is independently editable — changes to one do not require changes to others
+- Keep the three pages thematically distinct: Project (the what), Tradition (the why), Methodology (the how)
+- When updating methodology content, ensure cross-references to the BDA_Modality_Sorting_Framework.pdf remain accurate
+
+---
+
+### figures.html (Figures Landing)
+
+Grid of all figures organized by modality, alphabetical within modality.
+
+**Structure:**
+- Modality filter at top (multi-select)
+- Grid of figure cards: name, dates/era, modality badge, one-line descriptor, thumbnail if available
+- Pending modalities (Gangsta-Pimp, Folk Hero-Outlaw) appear grayed-out in filters with "(pending)" annotation
+- Each card links to `figures/[slug].html`
+
+**Heading hierarchy:**
+```
+<h1> Detroit Badman Archive / Figures (in header)
+  <h2> Modality section headings (Detective, Revolutionary, Superhero-Villain)
+    <h3> Individual figure card headings (figure name)
+```
+
+**Accessibility:**
+- Modality filter uses accessible `<fieldset>` / `<legend>` / `<input type="checkbox">` pattern
+- Grid renders as semantic list (`<ul>` with `<li>` per figure) for screen reader navigation
+- Pending modality controls have `aria-disabled="true"` with accompanying text explaining the pending state
+
+**To modify:**
+- Adding a figure: the card appears automatically once the figure entry is added to `detroit.json` — no template changes required
+- Changing modality organization: update the template's modality iteration order
+
+---
+
+### figures/[slug].html (Individual Figure Page)
+
+The heaviest single template in the system. This page renders a single figure with full biographical, scored, networked, and sourced detail.
+
+**Sections, in order:**
+1. Header with modality badge
+2. Justification essay (serif, ~640px max-width)
+3. Biography (overview + timeline)
+4. Five-criteria evaluation with justifications
+5. Connections grouped by edge type
+6. Geography with map preview
+7. Primary sources grid
+8. Related figures
+9. Citation block
+
+**Right-rail credentialing (sticky, visible throughout scroll):**
+- Author block: headshot, name, pronouns, institutional affiliation, short project bio, link to About
+- Below author block: "On this page" anchor navigation
+
+**Heading hierarchy:**
+```
+<h1> Figure Name (in header; replaces generic page title)
+  <h2> Section headings (Justification, Biography, Evaluation, Connections, Geography, Sources, Related Figures, Citation)
+    <h3> Subsection headings (individual criteria, edge type groupings, source items)
+```
+
+**Accessibility:**
+- Credentialing rail uses `<aside>` with `aria-label="About the author"`
+- Anchor navigation uses `<nav aria-label="On this page">` with internal page links
+- Map preview uses the same `role="img"` + `aria-label` pattern as map.html
+- Five-criteria scores use a definition list (`<dl>`) rather than a table for semantic accuracy
+
+**To modify:**
+- Template structure is stable — modifications to content happen in `detroit.json`, not in HTML
+- Adding a new section: add to the ordered list above, update heading hierarchy, update anchor navigation
+
+---
+
+### sources.html (Primary Sources Landing)
+
+Filterable grid of primary sources with three-zone layout.
+
+**Structure:**
+1. **Breadcrumb / intro strip** — top of page
+2. **Left-side filter rail** — figure, modality, type, repository filters
+3. **Main grid of source cards** — thumbnail, title, figure association, date; click → individual source page
+
+**Pending modalities** appear grayed-out in the modality filter with `(pending)` annotation.
+
+**Heading hierarchy:**
+```
+<h1> Detroit Badman Archive / Primary Sources (in header)
+  <h2> Filter section heading
+  <h2> Source grid heading (optionally by type or repository)
+    <h3> Individual source card headings (source title)
+```
+
+**To modify:**
+- Adding a source: card appears automatically once the source entry is added to `detroit.json` — no template changes required
+- Adjusting filter options: update the filter rail's fieldset and the JavaScript filter logic
+
+---
+
+### sources/[slug].html (Individual Source Page)
+
+Source viewer as dominant element with metadata rail.
+
+**Structure:**
+- Source viewer (dominant element): zoom, description toggle, download controls
+- Right-side metadata rail: type, date, author, repository, rights, extent, language, permalink
+- Below source:
+  - "Cited in" section with links back to figure essays showing how the source is used
+  - Related sources grid
+  - Citation block with copy-to-clipboard
+
+**Heading hierarchy:**
+```
+<h1> Source Title (in header)
+  <h2> Section headings (Metadata, Cited In, Related Sources, Citation)
+    <h3> Individual cited-in figure references
+```
+
+**Accessibility:**
+- Source viewer includes alt text for images and transcript for audio/video
+- Copy-to-clipboard button includes aria-live region that announces "Citation copied" on success
+- Cited-in links use in-prose underline per the WCAG 1.4.1 mitigation
+
+---
+
+### engagement/submit.html (Submit a Figure)
+
+Community submission page with two-stage review process.
+
+**Structure:**
+1. **What We're Looking For** — five criteria in submission-guidance language
+2. **What to Include** — submission form fields overview
+3. **Cultural Sensitivity** — trust-building protections (access levels, anonymization options, community controls)
+4. **Review Process** — two-stage callout explaining the eight-stage curation pipeline in plain language
+5. **Embedded or linked Google Form** — the submission mechanism itself
+
+**Key element:** The submission button
 
 ```html
-<a class="btn btn-primary btn-xl" href="#" target="_blank" rel="noopener noreferrer">
-    Submit a Badman
+<a class="btn btn-primary btn-xl" href="[google-form-url]" target="_blank" rel="noopener noreferrer">
+    Submit a Figure
     <span class="sr-only">(opens in new tab)</span>
 </a>
 ```
 
 **To modify:**
-- Replace `href="#"` with actual Google Form URL
-- Remove the "Google Form link coming soon" note
+- Replace `href="[google-form-url]"` with actual Google Form URL when available
+- Update "What We're Looking For" language if the five criteria are revised (should be rare)
 
-**Future accessibility note:** When the full Repository submission form is built (not the Google Form placeholder), it must meet WCAG form accessibility requirements: visible labels for all inputs, error identification, required field indicators, and keyboard operability. MSU's full Technical Guidelines go deeper on forms than the Basic Checklist covers.
-
-**Heading hierarchy:**
-```
-<h1> Detroit Badman Archive / Community Repository (in header)
-  <h2> Section headings (What Is the Repository, How to Submit, etc.)
-```
-
----
-
-### resources.html
-
-**Bibliography structure:**
-```html
-<h2 style="color: #50c878;">Theoretical</h2>
-<p>Author. <em>Title</em>. Publisher, Year.</p>
-
-<h2 style="color: #50c878;">Detective Modality</h2>
-<!-- Sources for this modality -->
-```
-
-**Change from previous template:** Section headings are `<h2>` (not `<h4>`), maintaining the heading hierarchy under the page-level `<h1>`.
-
-**To add new sources:**
-1. Find the correct section (Theoretical, Detective, Revolutionary, etc.)
-2. Add new `<p>` element with citation in Chicago format
-3. Maintain alphabetical order within each section
-
----
-
-### about.html
-
-**Sections:**
-1. Project Background — General archive description
-2. Methodology — Five modalities + five criteria
-3. About the Creator — Bio
-4. Acknowledgments — CHI + community partners
+**Future accessibility note:** When the custom submission form is built (replacing the Google Form placeholder), it must meet WCAG form accessibility requirements: visible labels for all inputs, error identification, required field indicators, and keyboard operability. MSU's full Technical Guidelines go deeper on forms than the Basic Checklist covers.
 
 **Heading hierarchy:**
 ```
-<h1> Detroit Badman Archive / About (in header)
-  <h2> Project Background
-  <h2> Methodology
-    <h3> The Five Modalities
-    <h3> The Five Criteria
-  <h2> About the Creator
-  <h2> Acknowledgments
+<h1> Detroit Badman Archive / Submit a Figure (in header)
+  <h2> What We're Looking For
+  <h2> What to Include
+  <h2> Cultural Sensitivity
+  <h2> Review Process
+  <h2> Submit Your Figure
 ```
 
 ---
 
-### how-to-use.html
+### engagement/events.html (Events)
 
-**Sections:**
-1. Getting Started — Overview
-2. Using the Map — Markers, colors, polygons, navigation
-3. Using the Network — Nodes, edges, timeline, interaction
-4. Reading Profiles — Designation, scores, sources
+Program description and upcoming events calendar.
+
+**Structure:**
+- Program description (what the events program is, what it's for)
+- Partner institution acknowledgment
+- What to expect at events (preparing community members)
+- Upcoming events section (can be empty at launch)
+
+**Heading hierarchy:**
+```
+<h1> Detroit Badman Archive / Events (in header)
+  <h2> About the Events Program
+  <h2> Partner Institutions
+  <h2> What to Expect
+  <h2> Upcoming Events
+```
 
 **To modify:**
-- Update instructions when visualizations change
-- Add screenshots/GIFs when available — **always include alt text on images**
-- Instructions must describe interactions without relying on visual references alone. Say "select a figure" not "click the blue marker"
+- Adding an event: add entry to upcoming events section; when events are past, move to a separate "Past Events" section (future enhancement)
+
+---
+
+### contact.html
+
+Contact page with multiple pathways.
+
+**Structure:**
+- Project Director contact (Harry M. Foster, pronouns, role, institutional affiliation, email)
+- General inquiries (email address, what kinds of questions fit here)
+- Press and media inquiries (separate pathway)
+- Community partnership inquiries (separate pathway)
+- Submission-related inquiries (pointer to Submit a Figure page)
 
 **Heading hierarchy:**
 ```
-<h1> Detroit Badman Archive / How to Use (in header)
-  <h2> Getting Started
-  <h2> Using the Map
-  <h2> Using the Network
-  <h2> Reading Profiles
+<h1> Detroit Badman Archive / Contact (in header)
+  <h2> Project Director
+  <h2> General Inquiries
+  <h2> Press and Media
+  <h2> Community Partnerships
+  <h2> Submissions
 ```
+
+**Accessibility:**
+- Email addresses use `mailto:` links with descriptive text, not bare email strings
+- Phone numbers (if added later) use `tel:` links
+
 
 ---
 
 ## Adding a New Page
 
-1. Copy an existing page (e.g., `about.html`)
+1. Copy an existing page (e.g., `about/project.html`)
 2. Update `<title>` and `<meta description>`
 3. Update header subtitle
 4. Verify the skip-to-content link targets `#main-content`
