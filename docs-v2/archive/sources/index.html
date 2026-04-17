@@ -10,7 +10,6 @@
   <!-- Bootstrap 5 CSS -->
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-
   <!-- BDA styles -->
   <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
@@ -25,18 +24,199 @@
   <!-- Page content -->
   <div class="bda-page-main">
     <main id="bda-main-content" tabindex="-1">
-      <div class="bda-stub-banner" role="note">
-        <strong>Stub page.</strong> Content for this page is scheduled for Phase 3.2 of the pre-launch sprint.
+
+      <!-- Breadcrumb / Intro strip -->
+      <div class="container bda-sources-intro">
+        <nav aria-label="Breadcrumb" class="bda-breadcrumb">
+          <a href="/">Home</a> <span aria-hidden="true">/</span>
+          <a href="/archive/">Archive</a> <span aria-hidden="true">/</span>
+          <span aria-current="page">Primary Sources</span>
+        </nav>
+
+        <h1 class="bda-page-title">Primary Sources</h1>
+        <p class="bda-page-lede">
+          The documents, photographs, news clippings, and external references that
+          substantiate the claims made in the figure essays. Browse by figure, modality,
+          category, type, or repository.
+        </p>
       </div>
-      <h1>Primary Sources</h1>
-      <p>
-        Browse the archive's primary source collection — novels, films, speeches, and archival materials documenting Detroit's badman tradition.
-      </p>
-      <p class="bda-stub-note">
-        <em>Full content lands in Phase 3.2.</em>
-      </p>
+
+      <!-- Three-zone layout: filter rail + main grid -->
+      <div class="container bda-sources-layout">
+
+        <!-- Mobile filter toggle (collapsed on small screens) -->
+        <button type="button"
+                class="bda-sources-filter-toggle d-lg-none"
+                id="bda-sources-filter-toggle"
+                aria-expanded="false"
+                aria-controls="bda-sources-filter-rail">
+          <span class="bda-sources-filter-toggle-label">Filters</span>
+          <span class="bda-sources-filter-toggle-count" id="bda-sources-active-count" aria-hidden="true"></span>
+          <span class="bda-sources-filter-toggle-chev" aria-hidden="true">▾</span>
+        </button>
+
+        <!-- ======================= FILTER RAIL ======================= -->
+        <aside class="bda-sources-filter-rail"
+               id="bda-sources-filter-rail"
+               aria-label="Filter primary sources">
+
+          <div class="bda-filter-rail-header">
+            <h2 class="bda-filter-rail-heading">Filters</h2>
+            <button type="button"
+                    class="bda-filter-reset"
+                    id="bda-filter-reset"
+                    aria-label="Reset all filters">
+              Reset
+            </button>
+          </div>
+
+          <!-- Modality (short list — always visible) -->
+          <fieldset class="bda-filter-group">
+            <legend class="bda-filter-group-label">Modality</legend>
+            <div class="bda-filter-options" id="bda-filter-modality"></div>
+          </fieldset>
+
+          <!-- Category (3 items — always visible) -->
+          <fieldset class="bda-filter-group">
+            <legend class="bda-filter-group-label">Category</legend>
+            <div class="bda-filter-options" id="bda-filter-category"></div>
+          </fieldset>
+
+          <!-- Figure (collapsible, 15 items) -->
+          <fieldset class="bda-filter-group bda-filter-group-collapsible">
+            <legend class="bda-filter-group-label">
+              <button type="button"
+                      class="bda-filter-collapse-btn"
+                      aria-expanded="false"
+                      aria-controls="bda-filter-figure-options"
+                      data-target="bda-filter-figure-options">
+                <span>Figure</span>
+                <span class="bda-filter-count-badge" id="bda-filter-figure-count" aria-hidden="true"></span>
+                <span class="bda-filter-chev" aria-hidden="true">▾</span>
+              </button>
+            </legend>
+            <div class="bda-filter-options bda-filter-options-scrollable"
+                 id="bda-filter-figure-options" hidden></div>
+          </fieldset>
+
+          <!-- Type (collapsible, 32 items, searchable) -->
+          <fieldset class="bda-filter-group bda-filter-group-collapsible">
+            <legend class="bda-filter-group-label">
+              <button type="button"
+                      class="bda-filter-collapse-btn"
+                      aria-expanded="false"
+                      aria-controls="bda-filter-type-options"
+                      data-target="bda-filter-type-options">
+                <span>Type</span>
+                <span class="bda-filter-count-badge" id="bda-filter-type-count" aria-hidden="true"></span>
+                <span class="bda-filter-chev" aria-hidden="true">▾</span>
+              </button>
+            </legend>
+            <div class="bda-filter-options bda-filter-options-scrollable"
+                 id="bda-filter-type-options" hidden>
+              <label class="bda-filter-search-label">
+                <span class="sr-only">Search source types</span>
+                <input type="search"
+                       class="bda-filter-search-input"
+                       id="bda-filter-type-search"
+                       placeholder="Search types…"
+                       aria-label="Search source types">
+              </label>
+              <div class="bda-filter-options-inner" id="bda-filter-type-list"></div>
+            </div>
+          </fieldset>
+
+          <!-- Repository (collapsible, 11 items) -->
+          <fieldset class="bda-filter-group bda-filter-group-collapsible">
+            <legend class="bda-filter-group-label">
+              <button type="button"
+                      class="bda-filter-collapse-btn"
+                      aria-expanded="false"
+                      aria-controls="bda-filter-repository-options"
+                      data-target="bda-filter-repository-options">
+                <span>Repository</span>
+                <span class="bda-filter-count-badge" id="bda-filter-repository-count" aria-hidden="true"></span>
+                <span class="bda-filter-chev" aria-hidden="true">▾</span>
+              </button>
+            </legend>
+            <div class="bda-filter-options bda-filter-options-scrollable"
+                 id="bda-filter-repository-options" hidden></div>
+          </fieldset>
+
+        </aside>
+
+        <!-- ======================= MAIN GRID ======================= -->
+        <section class="bda-sources-main" aria-label="Primary source results">
+
+          <!-- Results header: count + sort -->
+          <div class="bda-sources-results-header">
+            <div class="bda-sources-count"
+                 id="bda-sources-count"
+                 aria-live="polite"
+                 aria-atomic="true">
+              <!-- Populated by JS -->
+            </div>
+            <label class="bda-sources-sort-label">
+              <span class="bda-sources-sort-label-text">Sort:</span>
+              <select id="bda-sources-sort" class="bda-sources-sort-select">
+                <option value="figure-az">Figure (A–Z)</option>
+                <option value="figure-za">Figure (Z–A)</option>
+                <option value="year-desc">Year (newest first)</option>
+                <option value="year-asc">Year (oldest first)</option>
+                <option value="title-az">Title (A–Z)</option>
+                <option value="title-za">Title (Z–A)</option>
+              </select>
+            </label>
+          </div>
+
+          <!-- Active filter chips -->
+          <div class="bda-sources-active-filters"
+               id="bda-sources-active-filters"
+               aria-label="Active filters"
+               hidden></div>
+
+          <!-- Results grid -->
+          <div class="bda-sources-grid"
+               id="bda-sources-grid"
+               aria-label="Primary sources"
+               aria-live="polite"
+               aria-busy="true">
+            <div class="bda-sources-loading">Loading sources…</div>
+          </div>
+
+          <!-- Empty state -->
+          <div class="bda-sources-empty" id="bda-sources-empty" hidden>
+            <p class="bda-sources-empty-heading">No sources match your filters.</p>
+            <p class="bda-sources-empty-body">
+              Try removing a filter or
+              <button type="button"
+                      class="bda-btn-inline-link"
+                      id="bda-sources-empty-reset">reset all filters</button>
+              to see the full archive.
+            </p>
+          </div>
+
+          <!-- SR-only data table (WCAG 1.1.1 alternative) -->
+          <table class="sr-only" id="bda-sources-sr-table"
+                 aria-label="Primary sources data table">
+            <caption>Primary sources with figure, type, year, and repository.</caption>
+            <thead>
+              <tr>
+                <th scope="col">Title</th>
+                <th scope="col">Figure</th>
+                <th scope="col">Type</th>
+                <th scope="col">Year</th>
+                <th scope="col">Repository</th>
+              </tr>
+            </thead>
+            <tbody id="bda-sources-sr-tbody"></tbody>
+          </table>
+
+        </section>
+
+      </div><!-- /.bda-sources-layout -->
+
     </main>
-    
   </div>
 
   <!-- Footer (loaded by partials.js) -->
@@ -44,11 +224,9 @@
 
   <!-- Bootstrap 5 JS (for dropdowns, collapse) -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
   <!-- BDA partial loader -->
   <script src="/assets/js/partials.js"></script>
-
-
-
+  <!-- Page script -->
+  <script src="/assets/js/sources.js"></script>
 </body>
 </html>
