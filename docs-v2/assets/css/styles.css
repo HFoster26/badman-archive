@@ -248,3 +248,805 @@ h1, h2, h3, h4, h5, h6 {
     scroll-behavior: auto !important;
   }
 }
+/* ============================================
+   PRIMARY SOURCES LANDING (3.2)
+   Appended to styles.css.
+   All colors reference existing CSS variables in :root.
+   ============================================ */
+
+/* --------------------------------------------
+   Intro strip: breadcrumb, title, lede
+   -------------------------------------------- */
+
+.bda-sources-intro {
+    padding-top: 2rem;
+    padding-bottom: 1.5rem;
+}
+
+.bda-breadcrumb {
+    font-size: 0.8125rem;
+    color: var(--dba-text-muted);
+    letter-spacing: 0.02em;
+    margin-bottom: 0.75rem;
+}
+
+.bda-breadcrumb a {
+    color: var(--dba-text-muted);
+    text-decoration: none;
+}
+
+.bda-breadcrumb a:hover,
+.bda-breadcrumb a:focus {
+    color: var(--dba-emerald);
+    text-decoration: underline;
+}
+
+.bda-breadcrumb span[aria-current="page"] {
+    color: var(--dba-text-primary);
+}
+
+.bda-page-title {
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--dba-text-primary);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+
+.bda-page-lede {
+    font-size: 1rem;
+    color: var(--dba-text-secondary);
+    max-width: 42rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* --------------------------------------------
+   Three-zone layout
+   Desktop: 220px filter rail + fluid main grid
+   Mobile: single column, filter rail collapsible
+   -------------------------------------------- */
+
+.bda-sources-layout {
+    display: grid;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 1.75rem;
+    padding-bottom: 4rem;
+}
+
+@media (max-width: 991.98px) {
+    .bda-sources-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+/* --------------------------------------------
+   Mobile filter toggle
+   -------------------------------------------- */
+
+.bda-sources-filter-toggle {
+    display: none;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+@media (max-width: 991.98px) {
+    .bda-sources-filter-toggle {
+        display: inline-flex;
+    }
+}
+
+.bda-sources-filter-toggle-count:not(:empty) {
+    display: inline-block;
+    min-width: 1.25rem;
+    padding: 0 0.375rem;
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+    border-radius: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+}
+
+.bda-sources-filter-toggle-chev {
+    margin-left: auto;
+    transition: transform 0.15s ease;
+}
+
+.bda-sources-filter-toggle[aria-expanded="true"] .bda-sources-filter-toggle-chev {
+    transform: rotate(180deg);
+}
+
+/* --------------------------------------------
+   Filter rail
+   -------------------------------------------- */
+
+.bda-sources-filter-rail {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    height: fit-content;
+    position: sticky;
+    top: 1rem;
+}
+
+@media (max-width: 991.98px) {
+    .bda-sources-filter-rail {
+        position: static;
+        display: none;
+    }
+    .bda-sources-filter-rail.is-open {
+        display: block;
+    }
+}
+
+.bda-filter-rail-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding-bottom: 0.75rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-filter-rail-heading {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--dba-text-primary);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.bda-filter-reset {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--dba-emerald);
+    font-size: 0.8125rem;
+    cursor: pointer;
+}
+
+.bda-filter-reset:hover,
+.bda-filter-reset:focus-visible {
+    color: var(--dba-gold);
+    text-decoration: underline;
+}
+
+.bda-filter-reset[disabled] {
+    color: var(--dba-text-muted);
+    cursor: not-allowed;
+    text-decoration: none;
+}
+
+/* --------------------------------------------
+   Filter groups
+   -------------------------------------------- */
+
+.bda-filter-group {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+}
+
+.bda-filter-group-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--dba-text-primary);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.625rem;
+    padding: 0;
+    width: 100%;
+    float: none; /* Reset fieldset legend default */
+}
+
+/* Collapsible toggle button inside legend */
+.bda-filter-collapse-btn {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bda-filter-collapse-btn > span:first-child {
+    flex: 1;
+}
+
+.bda-filter-count-badge:not(:empty) {
+    display: inline-block;
+    min-width: 1.125rem;
+    padding: 0 0.375rem;
+    margin-right: 0.5rem;
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+    border-radius: 0.625rem;
+    font-size: 0.6875rem;
+    font-weight: 700;
+    text-align: center;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.bda-filter-chev {
+    display: inline-block;
+    transition: transform 0.15s ease;
+    color: var(--dba-text-muted);
+    font-size: 0.75rem;
+}
+
+.bda-filter-collapse-btn[aria-expanded="true"] .bda-filter-chev {
+    transform: rotate(180deg);
+}
+
+/* --------------------------------------------
+   Filter options (checkboxes)
+   -------------------------------------------- */
+
+.bda-filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.bda-filter-options-scrollable {
+    max-height: 14rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+    margin-top: 0.5rem;
+}
+
+.bda-filter-options-scrollable::-webkit-scrollbar {
+    width: 6px;
+}
+
+.bda-filter-options-scrollable::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.bda-filter-options-scrollable::-webkit-scrollbar-thumb {
+    background-color: var(--dba-border-green);
+    border-radius: 3px;
+}
+
+.bda-filter-options-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.bda-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0;
+    font-size: 0.8125rem;
+    color: var(--dba-text-secondary);
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.bda-filter-option:hover {
+    color: var(--dba-text-primary);
+}
+
+.bda-filter-option input[type="checkbox"] {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--dba-emerald);
+    cursor: pointer;
+    margin: 0;
+}
+
+.bda-filter-option.is-disabled {
+    color: var(--dba-text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.bda-filter-option.is-disabled input {
+    cursor: not-allowed;
+}
+
+/* Modality shape indicators in filter options
+   (matches map legend shape system — WCAG 1.4.1) */
+.bda-filter-modality-marker {
+    display: inline-block;
+    width: 0.875rem;
+    height: 0.875rem;
+    flex-shrink: 0;
+}
+
+.bda-filter-modality-marker.bda-mm-detective {
+    background-color: var(--dba-detective);
+    border-radius: 50%;
+}
+
+.bda-filter-modality-marker.bda-mm-revolutionary {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+.bda-filter-modality-marker.bda-mm-superhero_villain {
+    background-color: var(--dba-shv);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.bda-filter-modality-marker.bda-mm-gangsta_pimp {
+    background-color: var(--dba-gangsta-pimp);
+    border-radius: 2px;
+}
+
+.bda-filter-modality-marker.bda-mm-folk_hero_outlaw {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.bda-filter-modality-marker.is-pending {
+    opacity: 0.4;
+}
+
+.bda-filter-pending-tag {
+    font-size: 0.6875rem;
+    color: var(--dba-text-muted);
+    margin-left: 0.25rem;
+    font-style: italic;
+}
+
+/* --------------------------------------------
+   Filter search (type filter)
+   -------------------------------------------- */
+
+.bda-filter-search-label {
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.bda-filter-search-input {
+    width: 100%;
+    padding: 0.375rem 0.625rem;
+    background-color: var(--dba-dark-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+}
+
+.bda-filter-search-input::placeholder {
+    color: var(--dba-text-muted);
+}
+
+.bda-filter-search-input:focus-visible {
+    border-color: var(--dba-emerald);
+    outline-offset: 0 !important; /* Override global focus-visible offset for inset border */
+}
+
+/* --------------------------------------------
+   Results header: count + sort
+   -------------------------------------------- */
+
+.bda-sources-main {
+    min-width: 0; /* Allow grid cell to shrink below content width */
+}
+
+.bda-sources-results-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    padding-bottom: 0.875rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-sources-count {
+    font-size: 0.875rem;
+    color: var(--dba-text-secondary);
+}
+
+.bda-sources-count strong {
+    color: var(--dba-text-primary);
+    font-weight: 600;
+}
+
+.bda-sources-sort-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8125rem;
+    color: var(--dba-text-secondary);
+    margin: 0;
+}
+
+.bda-sources-sort-select {
+    padding: 0.375rem 0.625rem;
+    background-color: var(--dba-dark-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.8125rem;
+    cursor: pointer;
+}
+
+/* --------------------------------------------
+   Active filter chips
+   -------------------------------------------- */
+
+.bda-sources-active-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem;
+    margin-bottom: 1rem;
+}
+
+.bda-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.625rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 1rem;
+    font-size: 0.75rem;
+    color: var(--dba-text-primary);
+}
+
+.bda-filter-chip-label {
+    color: var(--dba-text-muted);
+}
+
+.bda-filter-chip-remove {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0 0 0 0.125rem;
+    width: 1rem;
+    height: 1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--dba-text-muted);
+    cursor: pointer;
+    font-size: 1rem;
+    line-height: 1;
+    border-radius: 50%;
+}
+
+.bda-filter-chip-remove:hover,
+.bda-filter-chip-remove:focus-visible {
+    color: var(--dba-gold);
+    background-color: var(--dba-darkest-green);
+}
+
+/* --------------------------------------------
+   Sources grid
+   -------------------------------------------- */
+
+.bda-sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+    gap: 0.875rem;
+}
+
+.bda-sources-loading {
+    grid-column: 1 / -1;
+    padding: 3rem 1rem;
+    text-align: center;
+    color: var(--dba-text-muted);
+    font-size: 0.875rem;
+}
+
+/* --------------------------------------------
+   Source card (visual-first: thumbnail leads)
+   -------------------------------------------- */
+
+.bda-source-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.12s ease, transform 0.1s ease;
+}
+
+.bda-source-card:hover,
+.bda-source-card:focus-visible {
+    border-color: var(--dba-emerald);
+    transform: translateY(-1px);
+    text-decoration: none;
+    color: inherit;
+}
+
+.bda-source-card-thumb {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    background-color: var(--dba-medium-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+/* Thumbnail glyphs (CSS-drawn icons per source type) */
+.bda-source-thumb-glyph {
+    width: 2.5rem;
+    height: 3rem;
+    position: relative;
+    color: var(--dba-text-muted);
+}
+
+/* Document-style glyph (default for text-based types) */
+.bda-source-thumb-glyph.bda-thumb-doc {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 2px;
+}
+
+.bda-source-thumb-glyph.bda-thumb-doc::before,
+.bda-source-thumb-glyph.bda-thumb-doc::after {
+    content: "";
+    position: absolute;
+    left: 0.375rem;
+    right: 0.375rem;
+    height: 1.5px;
+    background-color: var(--dba-border-green);
+}
+
+.bda-source-thumb-glyph.bda-thumb-doc::before {
+    top: 0.625rem;
+}
+
+.bda-source-thumb-glyph.bda-thumb-doc::after {
+    top: 1rem;
+    right: 0.875rem;
+}
+
+/* Photo glyph */
+.bda-source-thumb-glyph.bda-thumb-photo {
+    width: 2.75rem;
+    height: 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.bda-source-thumb-glyph.bda-thumb-photo::before {
+    content: "";
+    position: absolute;
+    bottom: 0.375rem;
+    left: 0.375rem;
+    width: 0.625rem;
+    height: 0.625rem;
+    background-color: var(--dba-border-green);
+    border-radius: 50%;
+}
+
+/* Film/video glyph */
+.bda-source-thumb-glyph.bda-thumb-film {
+    width: 2.75rem;
+    height: 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 2px;
+}
+
+.bda-source-thumb-glyph.bda-thumb-film::before {
+    content: "▶";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--dba-emerald);
+    font-size: 0.875rem;
+}
+
+/* Audio glyph (waveform) */
+.bda-source-thumb-glyph.bda-thumb-audio {
+    width: 2.75rem;
+    height: 1rem;
+    background: repeating-linear-gradient(
+        90deg,
+        var(--dba-emerald) 0,
+        var(--dba-emerald) 2px,
+        transparent 2px,
+        transparent 5px,
+        var(--dba-emerald) 5px,
+        var(--dba-emerald) 9px,
+        transparent 9px,
+        transparent 12px
+    );
+    opacity: 0.6;
+    border-radius: 2px;
+}
+
+/* Book glyph */
+.bda-source-thumb-glyph.bda-thumb-book {
+    width: 2.25rem;
+    height: 3rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-left: 3px solid var(--dba-emerald);
+    border-radius: 1px 2px 2px 1px;
+}
+
+/* Newspaper glyph */
+.bda-source-thumb-glyph.bda-thumb-news {
+    width: 2.75rem;
+    height: 2.75rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 1px;
+}
+
+.bda-source-thumb-glyph.bda-thumb-news::before {
+    content: "";
+    position: absolute;
+    top: 0.25rem;
+    left: 0.25rem;
+    right: 0.25rem;
+    height: 2px;
+    background-color: var(--dba-emerald);
+}
+
+.bda-source-thumb-glyph.bda-thumb-news::after {
+    content: "";
+    position: absolute;
+    top: 0.625rem;
+    left: 0.25rem;
+    right: 0.75rem;
+    bottom: 0.25rem;
+    background-image:
+        linear-gradient(var(--dba-border-green) 1px, transparent 1px);
+    background-size: 100% 4px;
+}
+
+/* External-link badge on thumb (for non-hosted sources) */
+.bda-source-card-external {
+    position: absolute;
+    top: 0.375rem;
+    right: 0.375rem;
+    background-color: rgba(10, 31, 18, 0.75);
+    color: var(--dba-emerald);
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.75rem;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* Category corner badge (primary / archival / secondary) */
+.bda-source-card-category {
+    position: absolute;
+    top: 0.375rem;
+    left: 0.375rem;
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.75rem;
+    letter-spacing: 0.04em;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.bda-source-card-category.bda-cat-primary {
+    background-color: rgba(80, 200, 120, 0.18);
+    color: var(--dba-emerald);
+    border: 1px solid rgba(80, 200, 120, 0.4);
+}
+
+.bda-source-card-category.bda-cat-archival {
+    background-color: rgba(212, 175, 55, 0.18);
+    color: var(--dba-gold);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+}
+
+.bda-source-card-category.bda-cat-secondary {
+    background-color: rgba(176, 176, 176, 0.12);
+    color: var(--dba-text-muted);
+    border: 1px solid rgba(176, 176, 176, 0.3);
+}
+
+/* Card info block */
+.bda-source-card-info {
+    padding: 0.625rem 0.75rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+}
+
+.bda-source-card-title {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--dba-text-primary);
+    line-height: 1.3;
+    margin: 0;
+    /* Clamp to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bda-source-card-meta {
+    font-size: 0.6875rem;
+    color: var(--dba-text-muted);
+    line-height: 1.4;
+    margin: 0;
+    /* Clamp to 2 lines */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.bda-source-card-figure {
+    font-size: 0.6875rem;
+    color: var(--dba-text-secondary);
+    margin: 0;
+}
+
+/* --------------------------------------------
+   Empty state
+   -------------------------------------------- */
+
+.bda-sources-empty {
+    padding: 3rem 1rem;
+    text-align: center;
+    background-color: var(--dba-content-green);
+    border: 1px dashed var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-sources-empty-heading {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--dba-text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.bda-sources-empty-body {
+    font-size: 0.875rem;
+    color: var(--dba-text-secondary);
+    margin: 0;
+}
+
+.bda-btn-inline-link {
+    background: none;
+    border: none;
+    padding: 0;
+    color: var(--dba-emerald);
+    text-decoration: underline;
+    font: inherit;
+    cursor: pointer;
+}
+
+.bda-btn-inline-link:hover,
+.bda-btn-inline-link:focus-visible {
+    color: var(--dba-gold);
+}
