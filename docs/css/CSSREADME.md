@@ -76,7 +76,10 @@ styles.css
 ├── Sources Landing (.bda-sources-* / .bda-source-card-* / .bda-filter-*)
 ├── Source Page (.bda-source-viewer-* / metadata rail / citation)
 ├── Figure Page (.bda-figure-*)
-├── Credentialing Rail
+├── ├── Credentialing Rail
+│   ├── Sticky rail container & TOC
+│   ├── Author block sub-elements
+│   └── Mobile collapsible TOC
 └── Utility Classes
 ```
 
