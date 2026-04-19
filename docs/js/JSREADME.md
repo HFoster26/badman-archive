@@ -1,562 +1,626 @@
-# Network Visualization Tool (NVT) Documentation
+# Site-Wide JavaScript Documentation
 
 ## Overview
 
-The Network Visualization Tool (NVT) is a D3.js-powered force-directed graph that visualizes relationships between badman figures in the Detroit Badman Archive. It displays how figures influenced each other across time, with dynamic node sizing based on curated scholarly influence estimates, evidence-tiered edge rendering, interactive metrics panels, and a timeline slider that drives the entire visualization.
+Two JavaScript files load on every page of the Detroit Badman Archive. Together they provide the runtime foundation that every page — static or interactive — depends on.
+
+| File | Responsibility |
+|------|----------------|
+| `scripts.js` | Shared utilities: data loading, score calculation, modality configuration, detail panel construction |
+| `bda-partials-loader.js` | Page lifecycle: partial injection (navbar, footer, credentialing rail), nav active-state, page TOC generation, footer year |
+
+Page-specific scripts (figures landing, sources landing, individual figure pages, individual source pages) live in the relevant page folders and load only where needed. The map and network visualization tools keep their JS embedded inline in `map.html` and `network.html` per their respective READMEs.
+
+This document describes the **intended state** of both site-wide files. Where current code diverges from this spec (inline styles where classes are documented, dead nav-handling code), the code will be updated to match this document. The spec is the destination; the fix-up work is the path.
 
 ---
 
-## Features
+## Accessibility Standards
 
-### Core Functionality
-- **Force-directed layout**: Nodes float and cluster organically based on their connections
-- **Drag interaction**: Click and drag any node to rearrange the graph; connected nodes respond
-- **Zoom and pan**: Scroll to zoom, drag empty space to pan
-- **Click-to-focus**: Click a node to highlight it and its connections; everything else fades
-- **Click edges**: Click any connection line to view its evidence and classification
-- **Detail panels**: Sidebar panel shows figure info on click; metrics panels show network statistics and figure-level analysis
-- **Timeline slider**: Scrub through time to see figures emerge, grow, and persist based on cultural influence
-- **Modality filtering**: Toggle modalities on and off via the `activeModalities` array to isolate parts of the network
-- **Keyboard accessible**: D3 nodes receive `tabindex="0"` and `role="button"` for keyboard operability (WCAG 2.1.1)
+Every function in these files that touches the DOM must comply with:
 
-### Visual Encoding
-- **Node color and shape**: Indicates modality — values pulled from `getModalityConfig()` in scripts.js (single source of truth). At launch: Detective (blue pin/circle), Revolutionary (red star/diamond), Superhero-Villain (orange hexagon).
-- **Node size**: Scales dynamically with influence value at the current timeline year (square root scale, 0–45px radius)
-- **Edge color**: Indicates connection type (see Connection Types below)
-- **Edge line style**: Indicates evidence tier (solid = Documented, dashed = Evidenced, dotted = Interpretive)
-- **Edge opacity**: Decreases with lower evidence tiers
-- **Arrowheads**: Directed connections display arrowhead markers colored by edge type
-- **Labels**: Figure names displayed above each node, offset scales with node size
+- **WCAG 2.2 Level AA** — Minimum compliance target
+- **MSU Digital Accessibility Policy** — webaccess.msu.edu/policy/technical-guidelines
+- **MSU Basic Checklist** — webaccess.msu.edu/basiclist
+
+The specific WCAG success criteria that govern these files are called out in each function's documentation below. A function that violates any of them is a bug, not a style preference.
+
+### Testing Tools
+
+Every change to a site-wide JS file must be verified against at least two of:
+
+- **axe DevTools** — Chrome extension, automated WCAG scanning
+- **WAVE Browser Extension** — wave.webaim.org, automated WCAG scanning
+- **NVDA** — Free Windows screen reader for manual verification
+- **VoiceOver** — Built-in macOS/iOS screen reader
+- **Keyboard-only navigation** — Tab through the entire page with no mouse
 
 ---
 
-## Connection Types
+## File 1: scripts.js
 
-| Code | Name | Color | Description |
-|------|------|-------|-------------|
-| `META` | Creator → Creation | Gold (`#d4af37`) | Real person creates fictional figure (e.g., Goines → Kenyatta) |
-| `P2C` | Person → Creation | Red (`#dc3545`) | Real figure inspires fiction OR fiction inspires real person |
-| `C2C` | Creator ↔ Creator | Green (`#50c878`) | One artist's work influences another's |
-| `ORG` | Organizational / Ideological | Blue (`#3388ff`) | Shared membership, ideology, or institutional connection |
-| `CC` | Creation Continuity | Pink (`#e83e8c`) | Fictional characters sharing a universe or continuity (e.g., Static ↔ Hardware) |
+### Purpose
 
-Edge type definitions are stored in the `edge_types` object at the top of `detroit.json` and read directly by the visualization. See DATAREADME.md for the full schema.
+`scripts.js` is a utility library, not a page bootstrapper. Functions are defined and exported (via the implicit global scope) for use by page-specific scripts and by inline scripts in `map.html` / `network.html`. Nothing in `scripts.js` should run on DOMContentLoaded except a console log confirming the file loaded.
 
-## Evidence Tiers
+### Authority boundaries
 
-| Tier | Label | Line Style | Opacity | Description |
-|------|-------|------------|---------|-------------|
-| 1 | Documented | Solid | 0.9 | Direct archival or published evidence proves the connection |
-| 2 | Evidenced (unverified) | Dashed (8,4) | 0.6 | Strong indicators exist but primary source confirmation is pending |
-| 3 | Interpretive | Dotted (2,4) | 0.35 | Scholarly argument based on thematic, geographic, or modality-level analysis |
+- `scripts.js` **does not** handle navigation highlighting. That is the partial loader's job — the navbar doesn't exist in the DOM when `scripts.js` runs.
+- `scripts.js` **does not** render DOM structure for site chrome (navbar, footer, credentialing rail). That is the partial loader's job.
+- `scripts.js` **does** provide utilities that page scripts call.
+- `scripts.js` **does** build dynamic detail panel content for map markers, network nodes, and screen-reader data table rows.
 
-Tier rendering rules are stored in the `evidence_tiers` object in `detroit.json` and read directly by the visualization.
+### Style rule
 
----
+No hardcoded hex color values in this file. Every color must resolve to a CSS variable (defined in `styles.css`). Every visual property applied to DOM elements must come from a CSS class defined in `styles.css`, not from inline `style="..."` attributes. Inline styles in JavaScript template strings cannot be audited by CSS contrast tooling and cannot be overridden by future theme changes — they are a violation of the single-source-of-truth convention documented in `CSS_DOCUMENTATION.md`.
 
-## Metrics Panels
+### Script loading
 
-Two metrics panels span the full page width below the visualization and timeline slider.
+`scripts.js` must load after Bootstrap's JS bundle and before any page-specific script that depends on it. In each page's HTML:
 
-### Network Summary (Left Panel)
-
-Displays five network-level statistics that recalculate every time the timeline slider moves:
-
-| Metric | Calculation | What It Shows |
-|--------|-------------|---------------|
-| **Active Figures** | Count of nodes where `getInfluenceAtYear()` > 0 | How many figures are culturally active at the selected year |
-| **Active Connections** | Count of edges where both endpoints are active | How many relationships exist at the selected year |
-| **Network Density** | Active connections ÷ possible connections (n × (n-1) for directed) | How interconnected the active network is |
-| **Reciprocity** | Mutual directed pairs ÷ total directed edges | Whether influence flows both ways or is one-directional |
-| **Cross-Modality** | Count of edges where source.modality ≠ target.modality | How much the active modalities intersect with each other |
-
-### Selected Figure Metrics (Right Panel)
-
-Populates on node click with figure-specific analysis:
-
-- **Degree**: Total connections with in/out breakdown
-- **Influence bar**: Visual bar showing influence value at current year (0–10 scale) with scholarly justification text from the active phase
-- **Connections list**: Each connection displays the other figure's name, direction arrow (→ or ←), and a colored tier badge (Documented, Evidenced, or Interpretive)
-
-Populates on edge click with connection details:
-
-- **Direction**: Source → Target (or ↔ for mutual connections)
-- **Type**: Connection type with color coding (five types at launch: META, P2C, C2C, ORG, CC)
-- **Evidence Tier**: Colored badge
-- **Evidence**: Source citation or description text
-
-Clicking the SVG background or the same node again resets both panels to their default state.
-
----
-
-## File Structure
-
-```
-badman-archive/
-├── data/
-│   ├── detroit.json        # Data source for NVT and Map
-│   └── DATAREADME.md       # Data schema documentation
-├── visualizations/
-│   ├── network.html        # NVT page (HTML + embedded JS)
-│   └── map.html            # Map tool page
-├── css/
-│   └── styles.css          # Site-wide styles including legend classes
-├── js/
-│   └── scripts.js          # Site-wide scripts including getModalityConfig() and showFigureDetails()
-└── docs/
-    ├── NVTREADME.md        # This file
-    ├── MAPREADME.md        # Map Visualization Tool docs
-    └── HTML_TEMPLATES.md   # Page template and accessibility patterns
+```html
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="/js/scripts.js"></script>
+<script src="/js/bda-partials-loader.js"></script>
+<!-- Page-specific scripts, if any, load here -->
 ```
 
----
+### Functions
 
-## Data Requirements
+#### `loadArchiveData(url)`
 
-The NVT reads from `data/detroit.json`. Each figure requires the following fields:
+Utility for fetching JSON data.
 
-### Required for Node Display
+**Signature:** `async function loadArchiveData(url) → Promise<object | null>`
 
-```json
-{
-  "id": "figure_id",
-  "name": "Display Name",
-  "type": "real | fictional",
-  "modality": "detective | revolutionary | superhero_villain",
-  "meta_badman": false,
-  "emergence": {
-    "year": 1968
-  },
-  "years": {
-    "active_start": 1941,
-    "active_end": 2014
-  }
-}
-```
+**Behavior:**
+- Fetches the JSON file at `url`
+- Returns parsed JSON on success
+- Returns `null` on any error (network failure, non-2xx response, parse failure)
+- Logs errors to the browser console for developer visibility
 
-At launch, only figures with modality `detective`, `revolutionary`, or `superhero_villain` render. Figures with modality `gangsta_pimp` or `folk_hero_outlaw` are filtered out via the `activeModalities` array.
+**Consumers:** map inline JS, network inline JS, `bda-sources.js`, `bda-figures.js`, individual figure pages.
 
-### Required for Dynamic Node Sizing
+**Accessibility:** N/A (data loading has no user-facing surface). Downstream consumers must handle the `null` return by rendering a user-visible error message that includes `role="alert"` or `aria-live="assertive"` so screen readers announce the failure.
 
-```json
-{
-  "influence": {
-    "scale": "1-10",
-    "metric_type": "curated_scholarly_estimate",
-    "phases": [
-      {
-        "start": 1941,
-        "end": 1967,
-        "value": 6,
-        "justification": "Scholarly description of influence during this period.",
-        "source": "Citation or TBD"
-      }
-    ]
-  }
-}
-```
-
-Each phase defines a time range and an influence value (1–10 scale). The `getInfluenceAtYear()` function checks the current timeline year against these phases. If the year falls past all defined phases, the last phase's value persists (posthumous legacy).
-
-### Required for Edge Display
-
-```json
-{
-  "connections": [
-    {
-      "target_id": "other_figure_id",
-      "type": "META | P2C | C2C | ORG | CC",
-      "tier": 1,
-      "direction": "outgoing | incoming | mutual",
-      "start_year": 1974,
-      "end_year": 1975,
-      "evidence": "Description of the connection with source citation.",
-      "source": "Citation"
+```javascript
+async function loadArchiveData(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.json();
+    } catch (error) {
+        console.error('Error loading archive data:', error);
+        return null;
     }
-  ]
-}
-```
-
-Edges are built from the `connections` array. Only `outgoing` and `mutual` directions create edge entries to avoid duplication.
-
-### Required for Evidence Tier Rendering (Top-Level)
-
-```json
-{
-  "evidence_tiers": {
-    "1": { "label": "Documented",             "line_style": "solid",  "opacity": 0.9  },
-    "2": { "label": "Evidenced (unverified)", "line_style": "dashed", "opacity": 0.6  },
-    "3": { "label": "Interpretive",           "line_style": "dotted", "opacity": 0.35 }
-  }
-}
-```
-
-### Required for Edge Type Styling (Top-Level)
-
-```json
-{
-  "edge_types": {
-    "META": { "label": "Creator → Creation",          "color": "#d4af37" },
-    "P2C":  { "label": "Person → Creation",           "color": "#dc3545" },
-    "C2C":  { "label": "Creator ↔ Creator",           "color": "#50c878" },
-    "ORG":  { "label": "Organizational / Ideological","color": "#3388ff" },
-    "CC":   { "label": "Creation Continuity",         "color": "#e83e8c" }
-  }
 }
 ```
 
 ---
 
-## Code Structure
+#### `calculateBadmanScore(scores)`
 
-The NVT JavaScript is embedded in `network.html` within `<script>` tags at the bottom of the body. It consists of these sections:
+Computes the total 1–25 badman score from a figure's five-criteria object.
 
-### 1. Setup & Configuration Access
+**Signature:** `function calculateBadmanScore(scores) → number`
+
+**Behavior:**
+- Sums the five `.score` values from the five-criteria scoring object
+- Returns an integer 5–25
+
+**Consumers:** detail panels, sr-only data tables, figure landing cards, individual figure pages.
+
+**Accessibility:** N/A (pure computation). Callers that display the result must include unit context ("15/25") so screen readers can announce it meaningfully.
+
 ```javascript
-const container = document.getElementById('network-container');
-// Modality styling comes from getModalityConfig() in scripts.js — no local nodeColors object.
-// Edge colors and evidence tiers come from data.edge_types and data.evidence_tiers in the JSON.
-```
-Defines the container and establishes that modality and edge styling are pulled from their authoritative sources rather than duplicated locally.
-
-### 2. Utility: Influence Lookup
-```javascript
-function getInfluenceAtYear(node, year) { ... }
-```
-Returns the influence value (0–10) for a given node at a given year by checking against the node's `influence_phases` array. Returns 0 if the year precedes `active_start`. Returns the last phase's value if the year exceeds all defined phases.
-
-### 3. SVG Canvas
-```javascript
-const svg = d3.select('#network-container').append('svg')...;
-const g = svg.append('g');
-```
-Creates the drawing surface with zoom/pan behavior and a group element for all visual content. Includes arrowhead marker definitions for each edge type (META, P2C, C2C, ORG, CC).
-
-### 4. Data Loading & Transformation
-```javascript
-d3.json('data/detroit.json').then(function(data) { ... });
-```
-Loads JSON data and transforms figures into `nodes` array (with `influence_phases` pulled into each node object) and `edges` array (with tier, type, direction, and evidence fields). The `edge_types` and `evidence_tiers` objects from the JSON are made available to all subsequent rendering functions.
-
-### 5. Modality Filter
-```javascript
-const activeModalities = ['detective', 'revolutionary', 'superhero_villain'];
-nodes = nodes.filter(n => activeModalities.includes(n.modality));
-```
-Filters nodes by modality before rendering. At launch, three modalities are active. When Gangsta-Pimp or Folk Hero-Outlaw go live, add their string to this array.
-
-### 6. Force Simulation
-```javascript
-const simulation = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(edges).id(d => d.id).distance(150))
-    .force('charge', d3.forceManyBody().strength(-400))
-    .force('center', d3.forceCenter(width / 2, height / 2))
-    .force('collision', d3.forceCollide().radius(...));
-```
-Creates the physics engine. Collision radius scales with current influence-based node size.
-
-### 7. Reduced Motion Handling
-```javascript
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    for (var i = 0; i < 300; i++) simulation.tick();
-    simulation.stop();
+function calculateBadmanScore(scores) {
+    return (
+        scores.outlaw_relationship.score +
+        scores.community_authorization.score +
+        scores.violence_as_language.score +
+        scores.cultural_preservation.score +
+        scores.hypermasculine_performance.score
+    );
 }
 ```
-Respects the user's OS-level motion preference. If reduced motion is enabled, runs one batch of simulation ticks to establish node positions, then stops the simulation immediately. See HTML_TEMPLATES.md for the full WCAG 2.3.3 requirement.
 
-### 8. Edge Hit Areas
-```javascript
-const edgeHitArea = g.append('g').attr('class', 'edge-hit-areas')...;
-```
-Invisible 15px-wide lines behind visible edges that capture click events. Solves the problem of thin SVG lines being difficult to click.
+---
 
-### 9. Edge Rendering
-```javascript
-const edge = g.append('g').attr('class', 'edges')...;
-```
-Visible connection lines with stroke color pulled from `data.edge_types[edge.type].color`, stroke-dasharray from `data.evidence_tiers[edge.tier].line_style`, opacity from `data.evidence_tiers[edge.tier].opacity`, and arrowhead markers for directed edges.
+#### `formatFigureType(type, metaBadman)`
 
-### 10. Node Rendering
-```javascript
-const node = g.append('g').attr('class', 'nodes')...;
-```
-Circle or shape elements with radius from `radiusScale(getInfluenceAtYear())`, fill color from `getModalityConfig(d.modality).color`, shape from `getModalityConfig(d.modality).networkShape`, accessible label from `getModalityConfig(d.modality).label`, white stroke border, and drag behavior. Also sets `tabindex="0"`, `role="button"`, and `aria-label` for keyboard/screen reader access.
+Formats a figure's type for display.
 
-### 11. Tick Function
-```javascript
-simulation.on('tick', function() { ... });
-```
-Updates positions of edge hit areas, visible edges, nodes, and labels on every animation frame.
+**Signature:** `function formatFigureType(type, metaBadman = false) → string`
 
-### 12. Labels
-```javascript
-const label = g.append('g').attr('class', 'labels')...;
-```
-Text elements positioned above nodes with vertical offset that scales with node size.
+**Behavior:**
+- If `metaBadman === true`, returns `"Meta-Badman"` regardless of `type`
+- Otherwise capitalizes the first letter of `type` (`"real"` → `"Real"`, `"fictional"` → `"Fictional"`)
 
-### 13. Click-to-Focus Behavior
-```javascript
-node.on('click', function(event, d) { ... });
-```
-Handles node click: highlights clicked node and its connections, fades everything else, updates sidebar Connection Details panel via `showFigureDetails()`, and populates Selected Figure Metrics panel with degree, influence bar, and connections list.
+**Consumers:** detail panels, figure cards.
 
-### 14. Keyboard Handler (WCAG 2.1.1)
+**Accessibility:** N/A.
+
+---
+
+#### `getModalityConfig(modality)`
+
+Returns the full visual identity configuration for a modality. This is the single source of truth for modality display properties.
+
+**Signature:** `function getModalityConfig(modality) → { color, markerShape, networkShape, icon, displayLabel, legendLabel }`
+
+**WCAG basis:**
+- **1.4.1 Use of Color** — color alone cannot differentiate modalities. Every modality must have color + shape + icon.
+
+**Return shape:**
+
+| Field | Type | Purpose |
+|-------|------|---------|
+| `color` | string | Hex value matching the CSS variable for this modality |
+| `markerShape` | string | Shape name used by the map's marker library (`"circle"`, `"star"`, `"hexagon"`, `"square"`, `"triangle"`) |
+| `networkShape` | string | Shape name used by the D3 network visualization. Differs from `markerShape` for Revolutionary (star on map, diamond in network) because D3 renders diamond polygons more cleanly at small sizes. |
+| `icon` | string | Icon identifier rendered inside map markers (`"magnifying-glass"`, `"raised-fist"`, `"lightning-bolt"`, `"dollar-sign"`, `"triangle"`) |
+| `displayLabel` | string | Clean modality name for filter checkboxes, card badges, and prose contexts (`"Detective"`, `"Revolutionary"`, etc.) |
+| `legendLabel` | string | Descriptive label for map/network legend entries (`"Circle marker — Detective Modality"`). Describes **shape first**, not color, because color is not a reliable identifier for users with color vision differences. |
+
+**Why two labels?** The previous single-label approach forced consumers to choose between a clean name (good for filter UI) and a descriptive one (required for legend accessibility). Splitting them lets both surfaces use the right string for their context.
+
+**Unknown modality fallback:** Returns a neutral gray config with `displayLabel: "Unknown Modality"`. Callers should not rely on this — all modalities in the archive should resolve to a real entry.
+
+**Consumers:** map inline JS, network inline JS, `bda-sources.js`, `bda-figures.js`, individual figure pages.
+
+**Accessibility implications:**
+- Callers rendering a legend must use `legendLabel`, not `displayLabel`. The legend must also render the shape (via the `.legend-[modality]` or `.legend-node-[modality]` CSS classes) so shape information is conveyed visually AND in the label text.
+- Callers rendering filter UI use `displayLabel`.
+- The `color` value is for rendering only. It must never be the sole signal of modality identity anywhere in the UI.
+
+**Reference table:**
+
+| Modality (code) | color | markerShape | networkShape | icon | displayLabel | legendLabel |
+|-----------------|-------|-------------|--------------|------|--------------|-------------|
+| `detective` | `#3388ff` | circle | circle | magnifying-glass | Detective | Circle marker — Detective Modality |
+| `revolutionary` | `#dc3545` | star | diamond | raised-fist | Revolutionary | Star marker — Revolutionary Modality |
+| `superhero_villain` | `#fd7e14` | hexagon | hexagon | lightning-bolt | Superhero-Villain | Hexagon marker — Superhero-Villain Modality |
+| `gangsta_pimp` | `#6f42c1` | square | square | dollar-sign | Gangsta-Pimp | Square marker — Gangsta-Pimp Modality |
+| `folk_hero_outlaw` | `#d4af37` | triangle | triangle | triangle | Folk Hero-Outlaw | Triangle marker — Folk Hero-Outlaw Modality |
+
+This table must stay in sync with:
+- The `.legend-[modality]` classes in `styles.css`
+- The `.legend-node-[modality]` classes in `styles.css`
+- The Modality Visual Identity System table in `HTML_TEMPLATES.md`
+- The Modality Reference table in `DATAREADME.md`
+
+When any of these change, all five sources update together or the change is not complete.
+
+---
+
+#### `getModalityColor(modality)`
+
+Backward-compatibility shim that returns only the hex color for a modality.
+
+**Signature:** `function getModalityColor(modality) → string`
+
+**Behavior:** Wraps `getModalityConfig(modality).color`.
+
+**When to use:** Legacy code paths that need only the color. New code should call `getModalityConfig()` directly and destructure what it needs.
+
+---
+
+#### `buildSourceLinks(sources)`
+
+Builds an accessible HTML list of source links for detail panels.
+
+**Signature:** `function buildSourceLinks(sources) → string`
+
+**WCAG basis:**
+- **1.3.1 Info and Relationships** — use semantic list structure (`<ul>`/`<li>`), never `<br>` separators, for groups of items.
+- **2.4.4 Link Purpose (In Context)** — every link's purpose must be clear from the link text or surrounding context.
+- **3.2.5 Change on Request** — links that open in a new tab must warn the user.
+
+**Parameters:**
+- `sources` — array of source objects, each with `url` and `title`. If the array is empty or `null`, returns a "No sources available" message.
+
+**Return:** HTML string containing a `<ul class="source-links">` with one `<li class="source-link-item">` per source. Each `<li>` contains an `<a>` with `target="_blank"` and `rel="noopener noreferrer"`, plus a visually hidden "(opens in new tab)" span.
+
+**Style rule:**
+- Uses the `.source-links` and `.source-link-item` classes defined in `styles.css`.
+- No inline `style="..."` attributes.
+- Link color, underline, and hover states are handled by the in-prose link rule in `styles.css` (which includes `.source-link-item a` in its selector chain).
+
+**Empty state:**
+- When `sources` is empty, returns a paragraph with class `.source-links-empty` (defined in `styles.css`) rather than inline color styling.
+
 ```javascript
-node.on('keydown', function(event, d) {
-    if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        node.dispatch('click', { detail: d });
+function buildSourceLinks(sources) {
+    if (!sources || sources.length === 0) {
+        return '<p class="source-links-empty">No sources available.</p>';
     }
+
+    let html = '<ul class="source-links list-unstyled">';
+    for (let i = 0; i < sources.length; i++) {
+        html +=
+            '<li class="source-link-item">' +
+                '<a href="' + sources[i].url + '" target="_blank" rel="noopener noreferrer">' +
+                    sources[i].title +
+                    '<span class="sr-only"> (opens in new tab)</span>' +
+                '</a>' +
+            '</li>';
+    }
+    html += '</ul>';
+    return html;
+}
+```
+
+**Accessibility checklist (for anyone modifying this function):**
+- [ ] Output uses `<ul>`/`<li>`, not `<br>` separators
+- [ ] Every `target="_blank"` has `rel="noopener noreferrer"` AND an sr-only "(opens in new tab)" span
+- [ ] No inline styles
+- [ ] Empty state uses a class, not inline styling
+- [ ] Link text is the source title (descriptive), not "click here" or "source"
+
+---
+
+#### `showFigureDetails(figure, panelContentId, panelId)`
+
+Builds and injects figure detail content into a shared detail panel. Called from map marker clicks, network node clicks, and screen-reader data table row activations.
+
+**Signature:** `function showFigureDetails(figure, panelContentId, panelId) → void`
+
+**Parameters:**
+- `figure` — full figure object from the JSON data
+- `panelContentId` — ID of the content element inside the panel (e.g., `'info-content'`)
+- `panelId` — ID of the panel container (e.g., `'info-panel'`)
+
+**WCAG basis:**
+- **1.3.1 Info and Relationships** — figure name is an `<h3>` (proper hierarchy under the panel's `<h2>` heading)
+- **2.4.4 Link Purpose (In Context)** — "Read more" link includes an `aria-label` that names the figure
+- **4.1.3 Status Messages** — panel container has `aria-live="polite"` and `aria-atomic="true"` (set in HTML, see `HTML_TEMPLATES.md`); content updates are announced automatically
+- **2.4.3 Focus Order** — after content injection, focus moves to the panel so keyboard users are oriented to the new content
+- **1.4.1 Use of Color** — modality identity is conveyed via the modality name text, not color alone
+
+**Behavior:**
+1. Compute the figure's total badman score (1–25) via `calculateBadmanScore()`
+2. Truncate the biography description to ~200 characters for the default view; retain the full text for expansion
+3. Build the source links list via `buildSourceLinks()` using the figure's primary sources (resolved from `source_ids`)
+4. Construct the panel HTML using CSS classes — no inline styles
+5. Inject the HTML into the content element
+6. Move programmatic focus to the panel container
+7. Wire up the Read more / Show less toggle
+
+**Required classes in output HTML:**
+
+| Element | Class | Purpose |
+|---------|-------|---------|
+| `<h3>` figure name | `.figure-detail-name` | Name heading |
+| `<a>` read-more toggle | `.read-more-toggle` | Expansion control |
+| `<hr>` divider | `.panel-divider` | Visual separator before sources |
+| Source list | `.source-links` (via `buildSourceLinks()`) | List container |
+
+**Source resolution:** `figure.source_ids` is an array of source ID strings that reference entries in the top-level `sources` array of the JSON. `showFigureDetails()` expects the caller to have already resolved these IDs to full source objects and passed them as `figure.sources.primary` (the `.primary` filtering happens at the call site, using the `category` field on each source). This separation keeps `showFigureDetails()` free of JSON-loading responsibility.
+
+**Read more / Show less toggle:**
+- Uses a single `<a>` element with class `.read-more-toggle` and `href="#"`
+- On click: toggles between short and full description; updates the `aria-label` to reflect the new action ("Show less about [name]" / "Read more about [name]")
+- `e.preventDefault()` on the click handler prevents the `#` from jumping the page
+
+**Event listener note:** `showFigureDetails()` is called repeatedly as users click different figures. Each call rebuilds the HTML, which means the old `.read-more-toggle` element is removed from the DOM. The listener goes with it. No listener accumulation occurs, but the function must not capture external state that survives rebuilds — the `expanded` boolean must be local to each call.
+
+**Consumers:**
+- Map: marker click → `showFigureDetails(figure, 'info-content', 'info-panel')`
+- Network: node click → `showFigureDetails(figure, 'info-content', 'info-panel')`
+- Sr-only data tables on map.html and network.html: row activation → same call
+
+**Accessibility checklist (for anyone modifying this function):**
+- [ ] Figure name is an `<h3>`, never `<strong>` or a styled `<div>`
+- [ ] No inline `style="..."` attributes anywhere in the output HTML
+- [ ] Every class referenced exists in `styles.css`
+- [ ] Panel container receives focus after injection (`panel.focus()`)
+- [ ] Read more toggle has `aria-label` that names the figure
+- [ ] Read more toggle updates its `aria-label` when state changes
+- [ ] Source links are built via `buildSourceLinks()`, not hand-assembled
+- [ ] Short description truncation does not cut off mid-sentence in a way that misrepresents the figure
+
+---
+
+### Initialization
+
+`scripts.js` should not attach a DOMContentLoaded listener for anything except a debug confirmation log. All active work happens in functions called by other scripts or inline handlers.
+
+```javascript
+window.addEventListener('DOMContentLoaded', () => {
+    console.log('Detroit Badman Archive: scripts.js loaded');
 });
 ```
-Triggers the same click behavior on keyboard activation. Required because D3 nodes are not natively keyboard-operable.
 
-### 15. Edge Click Behavior
-```javascript
-edgeHitArea.on('click', function(event, d) { ... });
-```
-Handles edge click: populates Selected Figure Metrics panel with connection type, evidence tier badge, direction, and evidence text. Highlights clicked edge and fades others.
+**What was removed and why:** Prior versions of `scripts.js` attached navigation active-state handling on DOMContentLoaded. This was removed because:
 
-### 16. Unfocus
-```javascript
-function unfocus() { ... }
-```
-Resets all visual elements to default opacity, clears both the sidebar panel and the figure metrics panel.
+1. At DOMContentLoaded, the navbar partial has not yet been injected, so `.nav-link` queries return nothing. The code did no useful work.
+2. The partial loader (`bda-partials-loader.js`) owns nav active-state after partials inject. Duplicating the logic created two code paths with different matching rules (flat filename vs. nested route prefix).
+3. The prior version also set `link.style.color = '#d4af37'` directly, violating the "no hardcoded hex in JS" convention and making the active color un-themeable via CSS variables.
 
-### 17. Timeline Slider
-```javascript
-document.getElementById('timeline-slider').addEventListener('input', function() { ... });
-```
-On slider input: updates node sizes with animated transitions (respecting reduced-motion), shows/hides nodes based on `active_start`, shows/hides edges based on both endpoints being active, updates collision radii, restarts simulation, and calls `updateNetworkMetrics()`.
-
-### 18. Network Metrics Calculations
-```javascript
-function updateNetworkMetrics(year) { ... }
-```
-Calculates and writes to DOM: Active Figures, Active Connections, Network Density, Reciprocity, and Cross-Modality Connections. Called on initial load and every slider input.
-
-### 19. Selected Figure Metrics
-```javascript
-function showFigureMetrics(nodeData, year) { ... }
-```
-Builds HTML for the right panel: degree with in/out breakdown, influence bar with percentage width and justification text, and connections list with tier badges.
-
-### 20. Pause/Resume Button
-```javascript
-document.getElementById('pause-animation').addEventListener('click', function() { ... });
-```
-Toggles the force simulation pause state. Required by WCAG 2.2.2 (Pause, Stop, Hide) for auto-animating content.
+Navigation active-state is now handled exclusively in `markCurrentNavItem()` in `bda-partials-loader.js`.
 
 ---
 
-## Customization
+## File 2: bda-partials-loader.js
 
-### Changing Modality Colors or Shapes
+### Purpose
 
-Modality styling is controlled by `getModalityConfig()` in `scripts.js` — the single source of truth. Do not hardcode modality colors in network.html. To change a modality's color or shape:
+`bda-partials-loader.js` is the page lifecycle bootstrapper. It runs on every page and is responsible for:
 
-1. Update the CSS variable in `styles.css` (e.g., `--dba-detective`)
-2. Update the corresponding `color`, `markerShape`, `networkShape`, or `icon` value in `getModalityConfig()` in `scripts.js`
-3. Update the Modality Visual Identity System table in `HTML_TEMPLATES.md`
-4. Re-run the Color Contrast Reference Table verification
+1. Fetching shared HTML partials (`navbar.html`, `footer.html`, `credentialing-rail.html`) and injecting them into placeholder elements
+2. Setting the active-state on the current nav item after the navbar has been injected
+3. Building the "On this page" TOC in the credentialing rail (where present) from the `<main>` element's `<h2>` headings
+4. Setting the footer copyright year from the current date
+5. Dispatching a `bda:partials-loaded` custom event so downstream scripts can react
 
-### Changing Edge Colors or Styling
+The partial loader is the site's navigation authority. No other script should manipulate nav state, partial content, or the TOC.
 
-Edge styling is stored in the JSON's top-level `edge_types` object. To change:
+### Partial placeholders
 
-1. Update the color hex in `detroit.json`'s `edge_types` block
-2. Update the Connection Types table in this README and DATAREADME
-3. Update legend items in network.html to match
-4. Verify contrast against the dark background (WCAG AA minimum 3:1 for non-text contrast)
+Every page must include three placeholder elements. The loader fills them if present; absent placeholders are silently skipped.
 
-### Changing Node Size Range
-
-Edit the radius scale in network.html:
-
-```javascript
-var radiusScale = d3.scaleSqrt().domain([0, 10]).range([0, 45]);
+```html
+<div id="bda-navbar"></div>
+<!-- page content -->
+<div id="bda-footer"></div>
 ```
 
-- `domain([0, 10])` — maps to influence values (1–10 scale)
-- `range([0, 45])` — minimum and maximum pixel radius
+Pages with a credentialing rail (individual figure pages and others that warrant it) also include:
 
-### Changing Force Behavior
+```html
+<aside id="bda-credentialing-rail" aria-label="About the author"></aside>
+```
 
-Adjust these values in the simulation setup:
+The `aria-label` on the `<aside>` is applied in the page HTML, not injected by the loader, so screen readers have the landmark labeled even before the partial arrives.
 
-| Parameter | Effect | Default |
-|-----------|--------|---------|
-| `.distance(150)` | Edge length | 150px |
-| `.strength(-400)` | Node repulsion | -400 (negative = repel) |
-| Collision `.radius()` | Buffer around nodes | `radiusScale(influence) + 5` |
+### FOUC (flash of unstyled content) mitigation
 
-### Activating a Dormant Modality
+Placeholder elements have `min-height` values defined in `styles.css` matching the expected partial heights. This prevents content below them from reflowing when the partial arrives. Do not remove these CSS rules.
 
-When a currently-dormant modality (Gangsta-Pimp, Folk Hero-Outlaw) goes live:
+### Functions
 
-1. Verify `getModalityConfig()` already includes the modality (it should — all five are scaffolded)
-2. Add the modality string to the `activeModalities` array in network.html
-3. Verify legend entries exist in the network.html legend markup
-4. Verify the legend CSS classes exist in `styles.css`
-5. Test that the new modality's figures render with correct color and shape
+#### `loadPartial(selector, url)`
 
-No code changes to network.html's core rendering are required — the `getModalityConfig()` lookup and `activeModalities` filter handle activation automatically.
+Fetches a partial HTML file and injects it into a placeholder element.
 
-### Adding New Edge Types
+**Signature:** `async function loadPartial(selector, url) → Promise<HTMLElement | null>`
 
-1. Add the type object to `edge_types` in `detroit.json` with label and color
-2. Add the type to the arrowhead marker `.data()` array in the SVG setup
-3. Update legend entries in network.html
-4. Update `typeLabels` in the edge click handler
-5. Update Connection Types table in this README and DATAREADME
+**Behavior:**
+- Queries the DOM for `selector`. If no element is found, returns `null` immediately (placeholder not present on this page — graceful skip).
+- Fetches `url`. On non-2xx response, logs a warning and returns `null`.
+- On fetch failure (network error), logs a warning and returns `null`.
+- On success, sets `element.innerHTML` to the fetched HTML and returns the element.
 
-### Adding New Evidence Tiers
-
-1. Add tier object to `evidence_tiers` in `detroit.json`
-2. The visualization reads line style and opacity directly from the data — no code changes needed for rendering
-3. Update `tierBadge()` functions in both `showFigureMetrics` and the edge click handler to include the new tier label and color
+**Accessibility note:** After injection, the partial's ARIA landmarks (`<nav aria-label="...">`, `<footer>`, etc.) become active. Screen readers that have already announced the page structure will not re-announce these automatically — this is a known limitation of partial-loaded architecture, mitigated by the fact that landmark navigation is a user-initiated action in screen readers and the updated DOM is available the next time the user invokes it.
 
 ---
 
-## Dependencies
+#### `topLevelRoute()`
 
-| Library | Version | CDN |
-|---------|---------|-----|
-| D3.js | 7.x | `https://d3js.org/d3.v7.min.js` |
-| Bootstrap | 5.2.3 | `https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js` |
+Determines the top-level route segment of the current page for nav matching.
 
-No additional dependencies. All visualization logic is vanilla JavaScript.
+**Signature:** `function topLevelRoute() → string`
 
----
+**Behavior:**
+- For `/` or `/index.html` → returns `/`
+- For `/about/project/` → returns `/about/`
+- For `/archive/figures/baker_gordon/` → returns `/archive/`
+- For any other nested path → returns `/` + first path segment + `/`
 
-## Browser Support
-
-Tested on:
-- Chrome 90+
-- Firefox 88+
-- Safari 14+
-- Edge 90+
-
-Requires JavaScript enabled. SVG support required.
+**Design choice:** Highlighting the top-level nav parent (not the dropdown child) is intentional. When a user is on `/archive/figures/baker_gordon/`, the "Archive" nav item gets `aria-current="page"` — the page is under the Archive section, so Archive is the active top-level. Dropdown sub-items (Figures, Sources, Map, Network, etc.) do not receive individual active-state. This matches how most scholarly sites handle deep-page navigation and keeps the visible active-state stable as users navigate within a section.
 
 ---
 
-## Known Limitations
+#### `markCurrentNavItem()`
 
-1. **Mobile**: Functional but not optimized for touch interaction or small screens
-2. **Edge hit areas on zoom**: Hit area width is fixed at 15px regardless of zoom level
-3. **Influence data gaps**: Phases use curated scholarly estimates; methodology documented in justification fields. Some phases remain marked `PLACEHOLDER` with `TBD` sources pending archival verification.
-4. **Network scale**: At launch, the network contains 15 rendering figures across three modalities. Metrics like density, clustering, and cross-modality reciprocity become more analytically meaningful as the network grows.
+Sets `aria-current="page"` and an `.active` class on the nav item matching the current top-level route.
+
+**Signature:** `function markCurrentNavItem() → void`
+
+**WCAG basis:**
+- **2.4.8 Location** — users should be able to determine their location within a set of pages. `aria-current="page"` is the programmatic signal; the `.active` class provides the visual one.
+- **1.4.1 Use of Color** — visual active-state must not rely on color alone. The gold color from `.nav-link.active` in `styles.css` is paired with font weight (bold) and should also be signaled by `aria-current` (the programmatic equivalent) so both visual and non-visual users receive the same information.
+
+**Behavior:**
+- Queries `#bda-navbar [data-route]` — every nav link in `navbar.html` must have a `data-route` attribute
+- For each link, compares its `data-route` to the current top-level route
+- On match: sets `aria-current="page"` and adds `.active` class
+
+**Contract with `navbar.html`:** Every top-level nav link must carry a `data-route` attribute whose value is the route prefix it represents:
+
+```html
+<a class="nav-link" href="/" data-route="/">Home</a>
+<a class="nav-link dropdown-toggle" href="#" data-route="/about/">About</a>
+<a class="nav-link dropdown-toggle" href="#" data-route="/archive/">Archive</a>
+<a class="nav-link dropdown-toggle" href="#" data-route="/visualizations/">Visualizations</a>
+<a class="nav-link dropdown-toggle" href="#" data-route="/engagement/">Engagement</a>
+<a class="nav-link" href="/contact/" data-route="/contact/">Contact</a>
+```
+
+Links without `data-route` are ignored by the matcher. This is intentional — it lets dropdown child links exist in the markup without competing for active-state with their parent.
+
+**Style rule:** This function does not set inline color. The `.nav-link.active` class in `styles.css` handles the visual appearance.
 
 ---
 
-## Future Development
+#### `buildPageTOC()`
 
-### Phase 2: Enhanced Interactivity
-- Hover tooltips with quick info
-- Search/filter by name or modality
-- Edge hover preview before click
-- Additional keyboard shortcuts (Escape to unfocus)
+Builds the "On this page" table of contents inside the credentialing rail by scanning the page's `<main>` element for `<h2>` headings.
 
-### Phase 3: Mobile Optimization
-- Touch-friendly hit areas
-- Responsive panel layout
-- Swipe gestures for timeline
+**Signature:** `function buildPageTOC() → void`
 
-### Phase 4: Multi-City Support
-- Load different city JSON files
-- Cross-city connection visualization
-- City selector dropdown
-- Shared `evidence_tiers` and `edge_types` schema across modules
+**WCAG basis:**
+- **2.4.1 Bypass Blocks** — the TOC is a secondary skip mechanism alongside the main skip-to-content link
+- **2.4.6 Headings and Labels** — auto-generated anchor IDs use the heading text, preserving the heading's identity as its anchor
+- **2.4.5 Multiple Ways** — provides an additional way to locate content within a long page
 
-### Phase 5: Modality Activation
-- Gangsta-Pimp modality activation (when GPM figures beyond Goines enter the archive)
-- Folk Hero-Outlaw modality activation (when first FHOM figures are documented)
+**Behavior:**
+- Exits silently if no element with ID `bda-page-toc-list` exists (TOC not wanted on this page)
+- Exits silently if no `<main>` element exists
+- Finds all `<h2>` elements inside `<main>`
+- If no `<h2>`s exist, hides the entire TOC container (`#bda-page-toc`) and exits
+- For each `<h2>`:
+  - If the `<h2>` has no `id`, generates one from its text content (lowercased, non-alphanumerics replaced with hyphens, trimmed of leading/trailing hyphens, truncated to 50 chars)
+  - Creates a `<li>` containing an `<a href="#[id]">[heading text]</a>` and appends it to the TOC list
+
+**Known edge case — duplicate heading IDs:** If two `<h2>` elements have identical text, they generate the same auto-ID and the second one's ID collides with the first. The anchor still works for whichever element the browser resolves first. Page authors should give duplicate headings explicit unique IDs to avoid this. Not currently enforced by the loader.
+
+**Accessibility note:** The TOC `<nav>` element (defined in `credentialing-rail.html`) must carry `aria-label="On this page"` so screen reader users can identify it among other nav regions on the page.
+
+---
+
+#### `setFooterYear()`
+
+Populates the footer's copyright year with the current year.
+
+**Signature:** `function setFooterYear() → void`
+
+**Behavior:**
+- Finds the element with ID `bda-footer-year` (defined in `footer.html`)
+- Sets its text content to the current four-digit year
+
+**Contract with `footer.html`:** The footer partial must contain `<span id="bda-footer-year"></span>` where the year should appear:
+
+```html
+<p class="m-0 small">
+    Copyright &copy; Detroit Badman Archive <span id="bda-footer-year"></span>
+</p>
+```
+
+**Accessibility note:** The year is a text-content update with no interaction implications. No ARIA is required.
+
+---
+
+#### `init()`
+
+The loader's entry point. Runs on DOMContentLoaded (or immediately if the document has already loaded past that point).
+
+**Signature:** `async function init() → void`
+
+**Behavior:**
+1. Fire off all three partial loads in parallel via `Promise.all`
+2. Once all partials have resolved (successfully or not), run post-load wiring in order:
+   - `markCurrentNavItem()` — requires navbar in DOM
+   - `buildPageTOC()` — requires credentialing rail in DOM (on pages that have one)
+   - `setFooterYear()` — requires footer in DOM
+3. Dispatch a `bda:partials-loaded` custom event on `document`
+
+**Order matters:** Nav marking must run after navbar injection; TOC building must run after credentialing rail injection. `Promise.all` ensures all three injections complete before any wiring runs.
+
+**Event dispatch:** The `bda:partials-loaded` event signals downstream scripts that the full DOM (including injected partials) is ready. Any script that interacts with partial content must either run after this event OR verify partial presence itself before acting.
+
+---
+
+### The `bda:partials-loaded` event
+
+Because partials load asynchronously, any code that interacts with navbar, footer, or credentialing rail content must wait for the event:
+
+```javascript
+document.addEventListener('bda:partials-loaded', () => {
+    // Safe to query navbar, footer, credentialing rail here
+});
+```
+
+**Required consumer: Bootstrap dropdown re-initialization.** Bootstrap's dropdown JavaScript scans the DOM on page load and wires up `.dropdown-toggle` elements. If the navbar partial loads after Bootstrap initializes, the navbar dropdowns will not function. A listener on `bda:partials-loaded` must re-invoke Bootstrap's dropdown setup. The recommended pattern:
+
+```javascript
+document.addEventListener('bda:partials-loaded', () => {
+    const dropdownToggles = document.querySelectorAll('#bda-navbar [data-bs-toggle="dropdown"]');
+    dropdownToggles.forEach((toggle) => {
+        new bootstrap.Dropdown(toggle);
+    });
+});
+```
+
+This listener lives in `scripts.js` (because it applies site-wide) and is wired alongside the other scripts.js initialization. Without it, the dropdown menu system is broken on every page.
+
+**Accessibility consequence of missing this listener:** Users cannot reach any page linked through a dropdown. This is a **WCAG 2.1.1 Keyboard** failure and a **WCAG 2.4.3 Focus Order** failure. Do not ship without it.
+
+---
+
+## Cross-file contracts
+
+The two site-wide files have the following contracts with each other and with the HTML/CSS layers. Violating any of these creates a runtime bug.
+
+### scripts.js ↔ styles.css
+
+- Every class `scripts.js` emits (`.figure-detail-name`, `.read-more-toggle`, `.panel-divider`, `.source-links`, `.source-link-item`, `.source-links-empty`) must be defined in `styles.css`
+- Every modality color returned by `getModalityConfig()` must match a CSS variable in `styles.css` (`--dba-detective`, `--dba-revolutionary`, etc.)
+- `scripts.js` must not set inline colors or inline styles anywhere
+
+### bda-partials-loader.js ↔ partials
+
+- `navbar.html` must contain nav links with `data-route` attributes for every top-level nav item
+- `footer.html` must contain `<span id="bda-footer-year"></span>`
+- `credentialing-rail.html` must contain a `<ul id="bda-page-toc-list">` inside a `<nav id="bda-page-toc" aria-label="On this page">`
+
+### bda-partials-loader.js ↔ page HTML
+
+- Every page must include `<div id="bda-navbar"></div>` and `<div id="bda-footer"></div>` at the appropriate positions
+- Pages with a credentialing rail include `<aside id="bda-credentialing-rail" aria-label="About the author"></aside>` where the rail belongs
+- Placeholders have `min-height` CSS to prevent FOUC reflow
+
+### scripts.js ↔ bda-partials-loader.js
+
+- `scripts.js` does NOT attach any logic to DOMContentLoaded that depends on partial content
+- `scripts.js` owns the `bda:partials-loaded` event listener for Bootstrap dropdown re-initialization (documented above)
+- The partial loader owns all nav active-state management
+
+---
+
+## Site-wide accessibility checklist
+
+Before committing any change to a site-wide JS file, verify:
+
+- [ ] No hardcoded hex color values anywhere in the file (use CSS variables via classes)
+- [ ] No inline `style="..."` attributes in any HTML the script emits
+- [ ] All dynamic content that may change is wrapped in an element with appropriate ARIA (`aria-live`, `aria-atomic`, `role="status"` / `role="alert"`)
+- [ ] All interactive elements are keyboard-operable (reachable by Tab, activatable by Enter/Space)
+- [ ] Focus is managed explicitly after content updates that change context
+- [ ] All `target="_blank"` links have `rel="noopener noreferrer"` and sr-only "(opens in new tab)" text
+- [ ] Color is never the sole signal of information (WCAG 1.4.1)
+- [ ] Headings in injected content follow sequential order (no skipped levels)
+- [ ] Alt text and aria-labels are descriptive (no "click here", "link", "image")
+- [ ] New CSS classes emitted by JS exist in `styles.css` and have been contrast-verified
 
 ---
 
 ## Troubleshooting
 
-### Graph doesn't appear
-1. Check browser console for errors (F12 → Console)
-2. Verify `detroit.json` exists in `/data/` folder
-3. Confirm JSON syntax is valid (use jsonlint.com)
-4. Check that `edge_types` and `evidence_tiers` objects exist at the top level of the JSON
+### Navbar dropdowns don't open
+- Confirm the `bda:partials-loaded` event listener in `scripts.js` is present and calls `new bootstrap.Dropdown(toggle)` on each toggle
+- Verify `bootstrap.Dropdown` is defined (Bootstrap JS bundle loaded before `scripts.js`)
+- Check browser console for errors during `init()`
 
-### Nodes cluster in corner
-1. Check container has explicit height in CSS (`#network-container { height: 600px; }`)
-2. Verify `width` and `height` variables are not 0
+### Nav active-state doesn't appear on the current page
+- Verify the current page's top-level route matches a `data-route` value in `navbar.html`
+- Confirm `navbar.html` has been updated to include `data-route` on every top-level link
+- Check that the navbar partial loaded successfully (browser console → no 404 on `/partials/navbar.html`)
 
-### Metrics panel shows all zeros
-1. Confirm `influence.phases` arrays exist for each figure in the JSON
-2. Verify `active_start` values are within the slider range (1930–2020)
-3. Check that `updateNetworkMetrics()` is called after data loads
+### TOC doesn't appear in the credentialing rail
+- Confirm the page has a `<main>` element
+- Confirm the page has at least one `<h2>` inside `<main>`
+- Confirm `credentialing-rail.html` contains `<ul id="bda-page-toc-list">`
+- If multiple `<h2>`s share the same text, only the first anchor will work — give duplicates explicit unique IDs
 
-### Edge click doesn't work
-1. Verify `edgeHitArea` is created before visible `edge` in the code
-2. Confirm `edgeHitArea` positions update in the tick function
-3. Check console for `event.stopPropagation()` errors
+### Footer year shows as blank
+- Confirm `footer.html` contains `<span id="bda-footer-year"></span>`
+- Check the browser console for `init()` errors — if an earlier step threw, `setFooterYear()` may not have run
 
-### Node click doesn't populate figure metrics
-1. Verify `showFigureMetrics(d, currentYear)` is called inside the node click handler after `showFigureDetails(d, ...)`
-2. Confirm `influence_phases` is pulled into each node object during data transformation
+### Detail panel shows raw HTML
+- The caller may be using `.textContent` instead of `.innerHTML` — `showFigureDetails()` returns HTML and expects `innerHTML` assignment (handled internally by the function itself, so this is only an issue if someone has reimplemented it)
 
-### Edges wrong color or style
-1. Verify connection `type` in JSON matches exactly one of: `META`, `P2C`, `C2C`, `ORG`, `CC`
-2. Verify `tier` values are numbers (1, 2, or 3), not strings
-3. Check `evidence_tiers` object has matching keys as strings ("1", "2", "3")
-4. Check `edge_types` object has the type key defined with color property
+### Detail panel is un-themed (all black or unstyled)
+- CSS classes referenced by `showFigureDetails()` may be missing from `styles.css`. Verify `.figure-detail-name`, `.read-more-toggle`, `.panel-divider`, `.source-links`, `.source-link-item`, `.source-links-empty` all exist.
 
-### CC edges don't render
-1. Verify `CC` is present in `edge_types` at top of JSON
-2. Check that connections using `"type": "CC"` have all required fields
-3. Verify arrowhead marker for CC is defined in SVG marker definitions
+### Source links don't have underlines
+- The in-prose link underline rule in `styles.css` must include `.source-link-item a` in its selector chain. Verify that rule has not been altered.
 
-### Nodes wrong color or shape
-1. Verify figure's `modality` field exactly matches a key in `getModalityConfig()` (lowercase, underscores: `"superhero_villain"` not `"superhero-villain"`)
-2. Check that the modality is in the `activeModalities` array
-3. Verify `getModalityConfig()` in scripts.js is loaded before network.html's inline script runs
-
-### Labels not visible
-1. Check `fill` color contrasts with background
-2. Verify labels are added after nodes in code (SVG draw order matters)
-3. Label `dy` offset should be negative (above the node)
-
-### Keyboard navigation doesn't work on nodes
-1. Verify each node has `tabindex="0"` and `role="button"` attributes
-2. Confirm the keydown handler is attached and checks for Enter/Space keys
-3. Test with Tab key to see focus ring; test with Enter/Space to trigger node action
-
-### Animation doesn't pause for reduced-motion users
-1. Verify the `prefers-reduced-motion` media query check runs before `simulation.start()`
-2. Confirm simulation ticks run to establish positions before `.stop()` is called
-3. Test by enabling "Reduce motion" in OS accessibility settings
-
----
-
-## Contributing
-
-When modifying the NVT:
-
-1. Test with browser console open to catch errors
-2. Verify all figures from all active modalities render correctly at slider value 2020
-3. Slide timeline to 1930 and back to 2020 — verify nodes appear/disappear and metrics update
-4. Test click-to-focus on each modality's nodes — verify both sidebar and metrics panels populate
-5. Test edge click on each connection type (META, P2C, C2C, ORG, CC) — verify connection details panel populates
-6. Click empty space — verify all panels reset
-7. Test zoom, pan, and drag behavior
-8. Test keyboard navigation — Tab to nodes, Enter/Space to activate, verify focus ring visible
-9. Test with OS "Reduce motion" enabled — verify simulation settles immediately
-10. Run WAVE and axe on network.html — address any new violations
-11. Update this README if adding features
-
----
-
-## Credits
-
-- **D3.js**: Mike Bostock and contributors (BSD license)
-- **Force-directed layout**: Standard D3 pattern
-- **Design**: Detroit Badman Archive project, CHI Fellowship, Michigan State University
+### Screen reader doesn't announce panel updates
+- Verify the panel container in the page HTML has `aria-live="polite"` and `aria-atomic="true"`
+- These attributes are set in the page HTML per `HTML_TEMPLATES.md`, not by `scripts.js`
 
 ---
 
@@ -564,6 +628,4 @@ When modifying the NVT:
 
 | Version | Date | Changes |
 |---------|------|---------|
-| 1.0 | January 2026 | Initial implementation: force layout, focus behavior, detail panel |
-| 2.0 | February 2026 | Phase-based dynamic node sizing, evidence-tiered edge rendering with arrowheads, timeline slider driving node/edge visibility, network summary metrics panel, selected figure metrics panel with degree/influence/connections, edge click behavior with hit areas, unfocus reset for all panels |
-| 3.0 | April 2026 | Three-modality launch (Detective, Revolutionary, Superhero-Villain). Added CC (Creation Continuity) edge type. Migrated modality styling to `getModalityConfig()` single source of truth. Added keyboard operability (WCAG 2.1.1) and reduced-motion support (WCAG 2.3.3). Fifteen figures at launch. |
+| 1.0 | April 2026 | Initial site-wide JS documentation. Documents intended state of `scripts.js` and `bda-partials-loader.js` post-cleanup. |
