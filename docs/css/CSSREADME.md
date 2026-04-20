@@ -2,19 +2,19 @@
 
 ## File: `styles.css`
 
-This file contains **only** custom styles for the Detroit Badman Archive. Bootstrap 5 is loaded via CDN in the HTML `<head>` section—it is not bundled in this file.
+Site-wide stylesheet for the Detroit Badman Archive. Contains **only** custom styles; Bootstrap 5 is loaded via CDN in each page's `<head>`, not bundled here.
 
-**Total lines:** ~400 (expanded from ~340 to include Detail Panel Classes, network node legend classes, and edge type legend dash patterns)
+This document describes the **intended state** of `styles.css` — the destination the file is being updated to match. Where current code diverges (hardcoded `#e83e8c`, missing `.bda-*` class definitions, incomplete network legend classes), the file gets brought in line with this spec during the CSS cleanup pass.
 
 ---
 
 ## Important: Bootstrap CDN Required
 
-Each HTML file must include Bootstrap CSS in the `<head>`:
+Each HTML file must include Bootstrap CSS before `styles.css`:
 
 ```html
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="css/styles.css" rel="stylesheet" />
+<link href="/css/styles.css" rel="stylesheet">
 ```
 
 And Bootstrap JS before the closing `</body>`:
@@ -25,50 +25,75 @@ And Bootstrap JS before the closing `</body>`:
 
 ---
 
+## Standards
+
+- **WCAG 2.2 Level AA** — minimum compliance target
+- **MSU Digital Accessibility Policy** — webaccess.msu.edu/policy/technical-guidelines
+- **MSU Basic Checklist** — webaccess.msu.edu/basiclist
+
+All text/background combinations in this file must meet WCAG AA contrast minimums: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold) and UI components. Every new color combination added to the stylesheet must be verified via the WebAIM Contrast Checker (webaim.org/resources/contrastchecker) before committing, and the result must be added to the Color Contrast Reference Table below.
+
+---
+
+## Core Rules
+
+1. **No hardcoded hex values outside `:root`.** Every color used anywhere in the stylesheet must resolve to a CSS variable defined in `:root`. No exceptions — if a color appears in a rule, it needs a variable.
+
+2. **No inline `style="..."` attributes in HTML.** All visual properties come from classes defined in this file. The only exception is CSS custom property declarations used as runtime values (e.g., `style="--criterion-value: 5;"` for the figure page's score bars). Those are *values*, not style overrides.
+
+3. **Shape, not color, is the identity carrier.** Modality identity, edge type identity, evidence tier identity, and access level identity all use shape + color + text. Color is a reinforcing signal, never the sole signal (WCAG 1.4.1).
+
+4. **Every class this document names must exist in `styles.css`.** This is the source of truth for the class vocabulary. When a new class is added to a page, JS file, or partial, it must be documented here and defined in the stylesheet simultaneously.
+
+---
+
 ## File Structure
 
 ```
-styles.css (~340 lines)
-├── CSS Variables (Lines 14-41)
-├── Base Styles (Lines 43-48)
-├── Accessibility Utilities (Lines 50-85)
-│   ├── .sr-only / .sr-only-focusable
+styles.css
+├── CSS Variables (:root)
+├── Base Styles (body, headings)
+├── Accessibility Utilities
+│   ├── .sr-only / .visually-hidden
 │   ├── Focus styles
 │   └── Reduced motion
-├── In-Prose Link Underlines (Lines 87-98)
-├── Detail Panel Classes (new)
-│   ├── .figure-detail-name
-│   ├── .read-more-toggle
-│   ├── .panel-divider
-│   ├── .source-links
-│   └── .source-link-item
-├── Header (Lines 100-125)
-├── Navigation (Lines 127-153)
-├── Page Sections (Lines 155-170)
-├── Content Boxes (Lines 172-195)
-├── Section Headings (Lines 197-213)
-├── Buttons (Lines 215-235)
-├── Intro Section (Lines 237-275)
-├── Text Colors (Lines 277-285)
-├── Footer (Lines 287-291)
-├── About Page Styles (Lines 293-305)
-├── Legend Styles (Lines 307-333)
-└── Utility Classes (Lines 335-353)
+├── In-Prose Link Underlines
+├── Partial Placeholder Min-Heights (FOUC mitigation)
+├── Site Chrome
+│   ├── Header
+│   ├── Navigation
+│   ├── Footer
+├── Page Sections & Content Boxes
+├── Section Headings
+├── Buttons
+├── Intro Section (home page)
+├── Detail Panel Classes
+├── Legend Styles
+│   ├── Map legend (shape markers)
+│   ├── Network legend (shape nodes)
+│   └── Edge type legend (dash patterns)
+├── Figures Landing (.bda-figures-*)
+├── Sources Landing (.bda-sources-* / .bda-source-card-* / .bda-filter-*)
+├── Source Page (.bda-source-viewer-* / metadata rail / citation)
+├── Figure Page (.bda-figure-*)
+├── ├── Credentialing Rail
+│   ├── Sticky rail container & TOC
+│   ├── Author block sub-elements
+│   └── Mobile collapsible TOC
+└── Utility Classes
 ```
 
 ---
 
-## Color Palette
+## CSS Variables (`:root`)
 
-The archive uses a dark green base with **purple and gold accents as an homage to Kobe Bryant**.
+All colors are defined as variables at the top of the file. Editing a variable updates every use globally.
 
-### CSS Variables (Lines 14-41)
-
-All colors are defined as CSS variables in `:root`. Edit these to change colors globally:
+### Core palette
 
 ```css
 :root {
-    /* Primary Greens */
+    /* Primary Greens — the archive's dominant visual field */
     --dba-darkest-green: #0a1f12;
     --dba-dark-green: #0d2818;
     --dba-medium-green: #143d26;
@@ -77,7 +102,7 @@ All colors are defined as CSS variables in `:root`. Edit these to change colors 
     --dba-emerald: #50c878;
     --dba-network-bg: #0a1a0f;
 
-    /* Kobe Tribute - Purple & Gold */
+    /* Kobe Tribute — Purple & Gold accent system */
     --dba-purple: #552583;
     --dba-gold: #d4af37;
 
@@ -94,57 +119,131 @@ All colors are defined as CSS variables in `:root`. Edit these to change colors 
     --dba-gangsta-pimp: #6f42c1;
     --dba-folk-hero: #d4af37;
 
+    /* Edge Type Colors (decoupled from modality variables) */
+    --dba-edge-meta: #d4af37;
+    --dba-edge-p2c: #dc3545;
+    --dba-edge-c2c: #50c878;
+    --dba-edge-org: #3388ff;
+    --dba-edge-cc: #e83e8c;
+
     /* Focus */
     --dba-focus-ring: #d4af37;
 }
 ```
 
-**Rule:** No color should be hardcoded in inline styles on HTML elements. If a color is used in the archive, it gets a CSS variable. This keeps the contrast reference table accurate and makes global changes possible.
+### Why edge variables are decoupled
 
-### Color Contrast Reference Table
+Previously, edge type rules referenced modality variables (`--dba-revolutionary`, `--dba-detective`) and core palette variables (`--dba-gold`, `--dba-emerald`) for their colors. This was accidental coupling — a modality color change would also change an unrelated edge color.
 
-All text/background combinations meet WCAG AA minimums: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold) and UI components. Contrast verified via WebAIM Contrast Checker in April 2026.
+The five `--dba-edge-*` variables decouple edges from the other layers. They happen to use the same initial hex values as their predecessors, but future changes to modality or palette colors no longer propagate to edges.
 
-| Element | Foreground | Background | Ratio | AA | Status |
-|---------|-----------|------------|-------|----|----|
-| Primary text | `--dba-text-primary` (`#e8e8e8`) | `--dba-content-green` (`#1a472a`) | 8.66:1 | Pass | ✅ |
-| Secondary text | `--dba-text-secondary` (`#c8c8c8`) | `--dba-content-green` (`#1a472a`) | 6.34:1 | Pass | ✅ |
-| Muted text | `--dba-text-muted` (`#b0b0b0`) | `--dba-content-green` (`#1a472a`) | 4.89:1 | Pass | ✅ |
-| Link text (on content bg) | `--dba-emerald` (`#50c878`) | `--dba-dark-green` (`#0d2818`) | 7.4:1 | Pass | ✅ |
-| Link vs. adjacent primary text | `--dba-emerald` (`#50c878`) | `--dba-text-primary` (`#e8e8e8`) | 1.73:1 | Fail | ✅ via underline* |
-| Heading accent | `--dba-emerald` (`#50c878`) | `--dba-dark-green` (`#0d2818`) | 7.4:1 | Pass | ✅ |
-| Nav hover / active | `--dba-gold` (`#d4af37`) | `--dba-darkest-green` (`#0a1f12`) | 8.2:1 | Pass | ✅ |
-| Footer text | `--dba-text-primary` (`#e8e8e8`) | `--dba-darkest-green` (`#0a1f12`) | 14.07:1 | Pass | ✅ |
-| Focus ring | `--dba-focus-ring` (`#d4af37`) | `--dba-content-green` (`#1a472a`) | 5.04:1 | Pass | ✅ |
-| Button text | `--dba-white` (`#ffffff`) | `--dba-purple` (`#552583`) | 10.61:1 | Pass | ✅ |
+**Rule:** Legend classes, arrowhead markers, and anything else coloring an edge references `--dba-edge-*`, never `--dba-revolutionary` or `--dba-gold` directly.
 
-*\* **Link vs. adjacent primary text:** The emerald link color fails adjacent-text contrast against `#e8e8e8` primary text in isolation (1.73:1). This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. See "In-Prose Link Underlines" section below for the CSS rule. Do not remove underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines.*
+### `--dba-network-bg`
 
-**Note on `--dba-text-muted`:** This variable replaced a previously-used hardcoded `#a0a0a0`, which was flagged as a suspected failure in the March 2026 accessibility audit. `#a0a0a0` on `#1a472a` yields approximately 3.9:1 (fails AA for normal text). The upgrade to `#b0b0b0` brought the ratio to a verified 4.89:1, just above the AA threshold. Do not downgrade this value without re-testing.
+`#0a1a0f` — intentionally darker than `--dba-darkest-green` (`#0a1f12`) — is used only as the background for the D3 network visualization SVG in `network.html`. Darker background increases contrast with node colors for readability. Do not use this variable outside the network visualization.
 
-### Modality Colors (for map markers and network nodes)
+### `--dba-text-muted` — known migration requirement
 
-| Modality | Variable | Hex |
-|----------|----------|-----|
-| Detective | `--dba-detective` | `#3388ff` (Blue) |
-| Revolutionary | `--dba-revolutionary` | `#dc3545` (Red) |
-| Superhero-Villain | `--dba-shv` | `#fd7e14` (Orange) |
-| Gangsta-Pimp | `--dba-gangsta-pimp` | `#6f42c1` (Purple) |
-| Folk Hero-Outlaw | `--dba-folk-hero` | `#d4af37` (Gold) |
+`--dba-text-muted` resolves to `#b0b0b0`, which provides a verified 4.89:1 contrast against `--dba-content-green` — just above the WCAG AA threshold for normal text.
 
-At launch, three modalities render: Detective, Revolutionary, and Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw variables are defined but filtered out via the `activeModalities` array in map.html and network.html pending post-launch activation.
-
-**Note:** Color alone cannot differentiate modalities (WCAG 1.4.1). Each modality also requires a distinct marker shape and icon. See the Modality Visual Identity System table in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT_DOCUMENTATION.md for the full specification.
-
-### Network Background
-
-The `--dba-network-bg` variable (`#0a1a0f`) is a darker-than-darkest green used specifically as the background for the D3 network visualization SVG in network.html. It is intentionally darker than `--dba-darkest-green` (`#0a1f12`) to increase contrast with node colors and make the force-directed graph easier to read. Do not use this variable outside the network visualization context.
+A prior value of `#a0a0a0` (approximately 3.9:1 on the same background) fails AA. The migration of `#a0a0a0` references to `--dba-text-muted` is a **launch-blocker requirement**. At launch, no hardcoded `#a0a0a0` values may exist anywhere in the codebase. Current known instances are tracked in the Inline Style Cleanup table below.
 
 ---
 
-## Section Breakdown
+## Color Contrast Reference Table
 
-### Base Styles (Lines 43-48)
+All text/background combinations must meet WCAG AA minimums. Contrast ratios verified via WebAIM Contrast Checker in April 2026.
+
+| Element | Foreground | Background | Ratio | AA | Status |
+|---------|-----------|------------|-------|----|----|
+| Primary text | `--dba-text-primary` | `--dba-content-green` | 8.66:1 | Pass | ✅ |
+| Secondary text | `--dba-text-secondary` | `--dba-content-green` | 6.34:1 | Pass | ✅ |
+| Muted text | `--dba-text-muted` | `--dba-content-green` | 4.89:1 | Pass | ✅ |
+| Link text (in-prose) | `--dba-emerald` | `--dba-dark-green` | 7.4:1 | Pass | ✅ |
+| Link vs. adjacent primary text | `--dba-emerald` | `--dba-text-primary` | 1.73:1 | Fail | ✅ via underline* |
+| Heading accent | `--dba-emerald` | `--dba-dark-green` | 7.4:1 | Pass | ✅ |
+| Nav hover / active | `--dba-gold` | `--dba-darkest-green` | 8.2:1 | Pass | ✅ |
+| Footer text | `--dba-text-primary` | `--dba-darkest-green` | 14.07:1 | Pass | ✅ |
+| Focus ring | `--dba-focus-ring` | `--dba-content-green` | 5.04:1 | Pass | ✅ |
+| Button text | `--dba-white` | `--dba-purple` | 10.61:1 | Pass | ✅ |
+
+*\* **Link vs. adjacent primary text:** The emerald link color fails adjacent-text contrast against `--dba-text-primary` in isolation (1.73:1). This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. See the "In-Prose Link Underlines" section. Do not remove underlines in body-text contexts.*
+
+**Rule:** When adding any new color combination, run it through the WebAIM Contrast Checker before committing. Add the result to this table with the status icon.
+
+---
+
+## Modality Visual Identity
+
+Color alone does not differentiate modalities (WCAG 1.4.1). Every modality has three distinguishable properties: color, marker shape, and icon.
+
+| Modality | Color | Variable | Hex | Map Marker | Network Shape | Icon |
+|----------|-------|----------|-----|------------|---------------|------|
+| Detective | Blue | `--dba-detective` | `#3388ff` | Circle | Circle | Magnifying glass |
+| Revolutionary | Red | `--dba-revolutionary` | `#dc3545` | Star | Diamond | Raised fist |
+| Superhero-Villain | Orange | `--dba-shv` | `#fd7e14` | Hexagon | Hexagon | Lightning bolt |
+| Gangsta-Pimp | Purple | `--dba-gangsta-pimp` | `#6f42c1` | Square | Square | Dollar sign |
+| Folk Hero-Outlaw | Gold | `--dba-folk-hero` | `#d4af37` | Triangle | Triangle | Star |
+
+At launch, three modalities render (Detective, Revolutionary, Superhero-Villain). Gangsta-Pimp and Folk Hero-Outlaw are defined in all visual systems but filtered out via the `activeModalities` array pending activation.
+
+This table is synchronized with:
+- `getModalityConfig()` in `scripts.js`
+- Modality Reference in `DATAREADME.md`
+- Modality Visual Identity System in `HTML_TEMPLATES.md`
+
+Revolutionary uses a star on the map and a diamond in the network. D3 force-directed graphs render cleaner with diamond nodes than star polygons at small sizes. All other modalities share the same shape across map and network.
+
+---
+
+## Edge Type Visual Identity
+
+Five edge types, each with a color variable and a dash pattern. The dash pattern is the non-color differentiator (WCAG 1.4.1). Color reinforces; shape carries.
+
+| Edge Type | Variable | Hex | Dash Pattern |
+|-----------|----------|-----|--------------|
+| META (Creator → Creation) | `--dba-edge-meta` | `#d4af37` | Solid |
+| P2C (Person → Creation) | `--dba-edge-p2c` | `#dc3545` | Long dash (12,6) |
+| C2C (Creator ↔ Creator) | `--dba-edge-c2c` | `#50c878` | Short dash (6,4) |
+| ORG (Organizational / Ideological) | `--dba-edge-org` | `#3388ff` | Dot-dash (2+4+8+4) |
+| CC (Creation Continuity) | `--dba-edge-cc` | `#e83e8c` | Dotted (2,2) |
+
+**Note on evidence tiers:** Evidence tier rendering (documented / evidenced / interpretive) uses its own dash patterns in the actual SVG network edges, driven by `data.evidence_tiers[tier].line_style`. The edge type dash patterns in this CSS apply only to **legend markers** — the flat indicators in legends and inline edge-type callouts. The network graph SVG edges themselves use edge color + evidence tier dash, not edge type dash. This separation is documented in `NVTREADME.md`.
+
+---
+
+## Evidence Tier Visual Identity
+
+Three tiers with dash patterns, opacity, and badge color. Used by network SVG edges and tier badges on source/figure pages.
+
+| Tier | Label | Line Style | Opacity | Badge Color |
+|------|-------|------------|---------|-------------|
+| 1 | Documented | Solid | 0.9 | `--dba-emerald` |
+| 2 | Evidenced (unverified) | Dashed (8,4) | 0.6 | `--dba-gold` |
+| 3 | Interpretive | Dotted (2,4) | 0.35 | `--dba-text-muted` |
+
+Badge colors must have 4.5:1 contrast when used as text on `--dba-content-green`. All three pass.
+
+---
+
+## Access Level Badge Identity
+
+Four access levels with badge styling for the source page metadata rail:
+
+| Access Level | Class | Display |
+|--------------|-------|---------|
+| `public` | *(no badge — default state)* | No visual element |
+| `restricted` | `.bda-access-badge-restricted` | Amber/gold badge — "Restricted" |
+| `embargoed` | `.bda-access-badge-embargoed` | Red badge — "Embargoed" |
+| `consent_required` | `.bda-access-badge-consent` | Purple badge — "Consent required" |
+
+At launch, every source is `public`. The other three classes are defined in CSS so post-IRB interview integration does not require a stylesheet change.
+
+---
+
+## Base Styles
+
 ```css
 body {
     background-color: var(--dba-dark-green) !important;
@@ -152,17 +251,18 @@ body {
     background-image: none !important;
 }
 ```
-Sets the dark green page background and removes any background images.
+
+Sets the dark green page background. Removes any background images that might be introduced by Bootstrap or inherited from the theme template.
+
+Heading styles inherit from Bootstrap defaults with custom section-heading overrides documented below.
 
 ---
 
-### Accessibility Utilities (Lines 50-85)
+## Accessibility Utilities
 
-These classes support WCAG compliance across the archive.
+### Screen-reader-only content
 
-#### Screen-reader-only content
-
-Bootstrap 5 uses `visually-hidden` instead of Bootstrap 4's `sr-only`. The BDA codebase uses `sr-only` for brevity. Both are defined here for compatibility:
+Bootstrap 5 renamed `.sr-only` to `.visually-hidden`. The BDA codebase uses both. Both are defined here for compatibility.
 
 ```css
 .sr-only,
@@ -195,11 +295,9 @@ Bootstrap 5 uses `visually-hidden` instead of Bootstrap 4's `sr-only`. The BDA c
 }
 ```
 
-**Why both names?** Bootstrap 5 renamed `sr-only` to `visually-hidden`. Defining both prevents breakage if code references either convention. The skip-to-content link uses `sr-only sr-only-focusable` — it's invisible until a keyboard user tabs to it, then appears on screen as a gold bar.
+**Used by:** skip-to-content links, "(opens in new tab)" text on external links, data-table alternatives for visualizations, sr-only table body rows, hidden labels for search inputs where placeholder is not accessible name.
 
-**Used by:** Skip-to-content links, "(opens in new tab)" text on external links, data table alternatives for visualizations.
-
-#### Focus styles
+### Focus styles
 
 ```css
 *:focus-visible {
@@ -214,13 +312,13 @@ a:focus-visible {
 }
 ```
 
-**Why this exists:** The default browser focus outline (thin blue ring) is nearly invisible on dark green backgrounds. WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The gold ring (`#d4af37`) on dark green provides verified 5.04:1 contrast on content backgrounds and 8.2:1 on the darkest-green nav background.
+**Why `:focus-visible` not `:focus`:** The ring appears only for keyboard navigation, not mouse clicks. This is the modern best practice — keyboard users see the ring, mouse users don't.
 
-**`:focus-visible` vs. `:focus`:** Using `:focus-visible` instead of `:focus` means the ring only appears for keyboard navigation, not for mouse clicks. This is the modern best practice — keyboard users see the ring, mouse users don't.
+**Why this exists:** WCAG 2.4.7 (Focus Visible) requires a visible focus indicator. The default browser ring is nearly invisible on dark green backgrounds. Gold ring against dark green is verified 5.04:1 on content backgrounds and 8.2:1 on the darkest-green nav background.
 
-**Do not remove these styles.** Without them, keyboard users cannot see where they are on the page.
+**Rule:** Do not remove these styles and do not override with `outline: none` without providing an equivalent focus indicator.
 
-#### Reduced motion
+### Reduced motion
 
 ```css
 @media (prefers-reduced-motion: reduce) {
@@ -235,56 +333,236 @@ a:focus-visible {
 }
 ```
 
-**Why this exists:** WCAG 2.3.3 (Animation from Interactions) and the `prefers-reduced-motion` media query. Users who have enabled "Reduce motion" in their OS settings will see no CSS animations or transitions. The D3 network simulation is handled separately in JavaScript (see network.html and JAVASCRIPT_DOCUMENTATION.md), but this CSS rule catches any transitions on hover states, nav toggles, or future animated elements.
+**Why this exists:** WCAG 2.3.3 and the `prefers-reduced-motion` OS preference. Users with motion sensitivity see no CSS animations or transitions. The D3 network simulation handles motion separately in JavaScript (see `NVTREADME.md`); this CSS rule handles hover transitions, nav toggles, dropdown animations, and any other CSS-driven motion.
 
 ---
 
-### In-Prose Link Underlines (Lines 87-98)
+## In-Prose Link Underlines
 
 ```css
 .essay a,
 p a,
 .bio-overview a,
 .data-section a,
-.cited-in-desc a {
+.cited-in-desc a,
+.bda-figure-biography a,
+.bda-source-notes a,
+.bda-connection-evidence a,
+.source-link-item a {
     text-decoration: underline;
     text-underline-offset: 2px;
 }
 ```
 
-**Why this exists:** The emerald link color (`--dba-emerald`, `#50c878`) does not provide sufficient contrast against primary text color (`#e8e8e8`) in isolation — the two colors measure 1.73:1, below the WCAG 1.4.11 non-text contrast threshold. Without an underline, a color-blind user reading body prose cannot tell that a green word is a hyperlink.
+**Why this exists:** Emerald link color against primary text color measures 1.73:1, below the WCAG 1.4.11 non-text contrast threshold. Without an underline, a color-blind user reading body prose cannot distinguish a green word from regular text.
 
-The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). This is the industry-standard pattern used by NYT, JSTOR, Wikipedia, and academic journals for in-prose links.
+The underline is the non-color cue that satisfies WCAG 1.4.1 (Use of Color). Industry-standard pattern used by NYT, JSTOR, Wikipedia, and academic journals.
 
-**What gets underlined:**
-- Links inside essay paragraphs (`<article class="essay">`, `<p>`)
-- Links inside biography overview (`.bio-overview`)
-- Links inside data-section content (`.data-section`)
-- Links inside cited-in descriptions on source pages
+**Contexts that get underlines:**
+- Essay paragraphs
+- Biography body text
+- Source notes
+- Connection evidence descriptions
+- Cited-in description contexts
+- Source link items in detail panels
 
-**What does NOT get underlined:**
-- Navigation links — structurally signaled as navigation
-- Buttons — structurally signaled as interactive
-- "Read more" toggles in detail panels — structurally signaled as controls
-- Heading-accent emerald text (`.section-heading-upper`) — not a link, just colored text
+**Contexts that do NOT get underlines** (signaled by structure, not color):
+- Navigation links
+- Buttons
+- "Read more" toggles — signaled as controls
+- Heading accent text (`.section-heading-upper`) — not a link
+- Card links — signaled as cards via layout
 
-**Do not remove this rule.** The archive cannot ship without it and remain WCAG-compliant.
+**Rule:** When a new in-prose context is introduced, add its selector to this rule. Do not remove the underline globally — it is a WCAG compliance requirement.
 
 ---
 
-### Detail Panel Classes
+## Partial Placeholder Min-Heights (FOUC Mitigation)
 
-These classes style the figure detail panel populated dynamically by `showFigureDetails()` and `buildSourceLinks()` in scripts.js. They replace hardcoded inline hex values that were previously written directly into JavaScript template strings.
+The partial loader injects navbar, footer, and credentialing rail content asynchronously. Without min-heights on the placeholders, page content reflows when partials arrive — jarring for users, especially keyboard users whose scroll position can jump.
 
 ```css
-/* ============================================
-   DETAIL PANEL CLASSES
-   ============================================ */
+#bda-navbar {
+    min-height: 84px;  /* Match rendered navbar height at lg breakpoint */
+}
 
-/*
- * Figure name heading in detail panels.
- * Used on <h3> element inside #info-content and #figure-metrics-content.
- */
+#bda-footer {
+    min-height: 72px;
+}
+
+#bda-credentialing-rail {
+    min-height: 400px;  /* Desktop only; see mobile rules below */
+}
+
+@media (max-width: 991px) {
+    #bda-credentialing-rail {
+        min-height: 120px;  /* Mobile: smaller because rail collapses */
+    }
+}
+```
+
+**Rule:** If a partial's content changes height materially, update the corresponding min-height here. These values are documented so that future template changes don't inadvertently reintroduce FOUC reflow.
+
+---
+
+## Site Chrome
+
+### Header (home page and legacy pages)
+
+```css
+.site-heading { /* ... */ }
+.site-heading-upper {
+    color: var(--dba-gold);
+    /* ... */
+}
+.site-heading-lower {
+    color: var(--dba-text-primary);
+    /* ... */
+}
+```
+
+Used on the home page's large desktop header. Hidden on mobile (`d-none d-lg-block` via Bootstrap).
+
+### Navigation
+
+Applies to the navbar partial injected by `bda-partials-loader.js`:
+
+```css
+#mainNav { /* ... */ }
+
+.nav-link {
+    color: var(--dba-text-primary);
+    /* ... */
+}
+
+.nav-link:hover {
+    color: var(--dba-gold);
+}
+
+.nav-link.active {
+    color: var(--dba-gold);
+    font-weight: bold;  /* Non-color signal per WCAG 1.4.1 */
+}
+```
+
+**Accessibility rule:** The `.active` class provides the visual active-state signal; `aria-current="page"` (set by `markCurrentNavItem()` in `bda-partials-loader.js`) provides the programmatic signal. Both are required.
+
+The `font-weight: bold` on `.nav-link.active` is the non-color signal — without it, color vision differences could obscure which nav item is current.
+
+### Footer
+
+```css
+.footer {
+    background-color: var(--dba-darkest-green) !important;
+    color: var(--dba-text-primary);
+}
+```
+
+Matches the nav background for visual consistency. The `#bda-footer-year` span inside is populated by JS and inherits from the footer's color rules.
+
+---
+
+## Page Sections & Content Boxes
+
+```css
+.page-section {
+    padding: 5rem 0;
+}
+
+.page-section.cta {
+    background-color: var(--dba-medium-green);
+}
+
+.bg-faded {
+    background-color: var(--dba-content-green);
+}
+
+.cta-inner {
+    background-color: var(--dba-content-green);
+    position: relative;
+}
+
+.cta-inner::before {
+    /* Purple accent border effect */
+    border: 2px solid var(--dba-purple);
+    /* ... */
+}
+```
+
+Alternating `page-section` and `page-section.cta` creates visual rhythm on long pages.
+
+---
+
+## Section Headings
+
+```css
+.section-heading { /* ... */ }
+
+.section-heading-upper {
+    color: var(--dba-emerald);
+    /* Smaller text above the main heading */
+}
+
+.section-heading-lower {
+    color: var(--dba-text-primary);
+    /* Large main heading text */
+}
+```
+
+The emerald color on `.section-heading-upper` measures 7.4:1 against content-green — WCAG AAA.
+
+---
+
+## Buttons
+
+```css
+.btn-primary {
+    background-color: transparent;
+    color: var(--dba-text-primary);
+    border: 2px solid var(--dba-purple);
+}
+
+.btn-primary:hover {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+    border-color: var(--dba-gold);
+}
+
+.btn-xl {
+    /* Extra large variant */
+}
+```
+
+Button text color on fill (`--dba-white` on `--dba-purple`) measures 10.61:1 — WCAG AAA.
+
+Focus state inherits from the global `*:focus-visible` rule — gold ring at 5.04:1 on any background.
+
+---
+
+## Intro Section (Home Page)
+
+```css
+.intro { /* ... */ }
+.intro-img { /* ... */ }
+.intro-text { /* Overlapping text box */ }
+.intro-button { /* ... */ }
+
+@media (min-width: 992px) {
+    /* Desktop: text box overlaps image */
+}
+
+@media (max-width: 991px) {
+    /* Mobile: stacked vertically */
+}
+```
+
+---
+
+## Detail Panel Classes
+
+Used by `showFigureDetails()` and `buildSourceLinks()` in `scripts.js` for the shared detail panel on the map and network pages.
+
+```css
 .figure-detail-name {
     color: var(--dba-text-primary);
     font-size: 1.5rem;
@@ -293,15 +571,12 @@ These classes style the figure detail panel populated dynamically by `showFigure
     margin-bottom: 1rem;
 }
 
-/*
- * Read more / Show less toggle link in detail panels.
- * In-prose context — inherits underline from the in-prose link rule above.
- */
 .read-more-toggle {
     color: var(--dba-emerald);
     display: block;
     margin-top: 0.5rem;
     cursor: pointer;
+    /* In-prose context — inherits underline from the in-prose link rule */
 }
 
 .read-more-toggle:hover,
@@ -309,201 +584,45 @@ These classes style the figure detail panel populated dynamically by `showFigure
     color: var(--dba-gold);
 }
 
-/*
- * Horizontal divider separating biography from sources in detail panels.
- */
 .panel-divider {
     border: 0;
     border-top: 1px solid var(--dba-border-green);
     margin: 1rem 0;
 }
 
-/*
- * Source link list container (ul) inside detail panels.
- * Uses Bootstrap's list-unstyled for structure; this class adds spacing.
- */
 .source-links {
     margin-top: 0.5rem;
     margin-bottom: 0;
 }
 
-/*
- * Individual source link item (li) inside detail panels.
- * Links inside are in-prose context — they receive the underline
- * automatically via the in-prose link rule above.
- */
 .source-link-item {
     margin-bottom: 0.3rem;
 }
 
 .source-link-item a {
     color: var(--dba-emerald);
+    /* In-prose — gets underline from the in-prose link rule */
 }
 
 .source-link-item a:hover,
 .source-link-item a:focus {
     color: var(--dba-gold);
 }
-```
 
-**Why these exist:** The previous `showFigureDetails()` and `buildSourceLinks()` functions in scripts.js built detail panel content via HTML template strings with inline styles like `style="color: #e8e8e8; font-size: 1.5rem;"` hardcoded directly. This violated the "no hardcoded hex in JavaScript" convention (see JAVASCRIPT_DOCUMENTATION.md) and duplicated color authority across the codebase. Moving these to CSS classes centralizes styling and lets the in-prose link underline rule apply automatically to panel links.
-
-**Class reference:**
-
-| Class | Applied To | Purpose |
-|-------|-----------|---------|
-| `.figure-detail-name` | `<h3>` inside `#info-content` / `#figure-metrics-content` | Figure name heading |
-| `.read-more-toggle` | `<a>` linking to biography expansion | Read more / Show less control |
-| `.panel-divider` | `<hr>` inside detail panel | Visual separator above sources |
-| `.source-links` | `<ul>` wrapping sources | List container spacing |
-| `.source-link-item` | `<li>` for each source | Individual item spacing; anchors inherit color + underline |
-
-**Accessibility notes:**
-- The `.figure-detail-name` class uses `var(--dba-text-primary)` at 8.66:1 contrast — WCAG AAA.
-- The `.read-more-toggle` and source link anchors use `var(--dba-emerald)` which is 7.4:1 against content-green backgrounds, and they are in-prose context so they receive the required underline from the rule above.
-- Hover/focus states transition to `var(--dba-gold)` — verified at 5.04:1 against content-green (WCAG AA).
-- `.panel-divider` is a decorative `<hr>`; screen readers ignore it.
-
-**When modifying:**
-- Do not add `text-decoration: none` to `.read-more-toggle` or `.source-link-item a` — this would break the in-prose underline WCAG mitigation
-- Do not reintroduce hardcoded hex values in the JavaScript that populates these classes
-- If the detail panel structure changes (e.g., adding a new field), add a new class here rather than styling inline in JS
-
----
-
-### Header (Lines 100-125)
-
-**Classes:**
-- `.site-heading` — Container for the large desktop header
-- `.site-heading-upper` — "Detroit Badman Archive" (gold)
-- `.site-heading-lower` — Page subtitle (off-white)
-
-**To modify:**
-- Change `--dba-gold` to adjust the site title color
-- Adjust `font-size` values to resize heading text
-
----
-
-### Navigation (Lines 127-153)
-
-**Classes:**
-- `#mainNav` — The navigation bar container
-- `.navbar-brand` — Mobile site title
-- `.nav-link` — Individual navigation links
-- `.nav-link:hover` — Hover state (gold)
-- `.nav-link.active` — Current page (gold)
-
-**To modify:**
-- Change `--dba-darkest-green` to adjust nav background
-- Change `--dba-gold` to adjust hover/active color
-
-**Accessibility note:** The active link also receives `aria-current="page"` via JavaScript (see JAVASCRIPT_DOCUMENTATION.md). The gold color is a visual indicator; `aria-current` is the screen reader indicator. Both are required.
-
----
-
-### Page Sections (Lines 155-170)
-
-**Classes:**
-- `.page-section` — Standard section (dark green background)
-- `section.cta` — Call-to-action section (medium green background)
-
-**Pattern:** Alternating these creates visual rhythm on the page.
-
----
-
-### Content Boxes (Lines 172-195)
-
-**Classes:**
-- `.bg-faded` — The green rounded boxes containing content
-- `.cta-inner` — Inner box within CTA sections
-
-**Key detail:** `.cta-inner:before` creates a purple border effect around CTA boxes using the `--dba-purple` variable.
-
-**To modify:**
-- Change `--dba-content-green` to adjust box background
-- Change `--dba-purple` in the `:before` pseudo-element to change accent border
-
----
-
-### Section Headings (Lines 197-213)
-
-**Classes:**
-- `.section-heading` — Container
-- `.section-heading-upper` — Small text above title (emerald)
-- `.section-heading-lower` — Large title text (off-white)
-
-**To modify:**
-- Change `--dba-emerald` to adjust the small heading color
-
----
-
-### Buttons (Lines 215-235)
-
-**Classes:**
-- `.btn-primary` — Standard button (purple outline)
-- `.btn-primary:hover` — Hover state (purple fill, gold border)
-- `.btn-xl` — Extra large button size
-
-**Key detail:** Buttons use purple border by default and fill with purple on hover, with gold border accent.
-
-**Accessibility note:** Button focus state uses the global `*:focus-visible` gold ring. Button text color `#ffffff` against purple button fill `#552583` is verified at 10.61:1 (WCAG AAA).
-
-**To modify:**
-- Change `--dba-purple` to adjust button color
-- Change `--dba-gold` to adjust hover border color
-- Change `border-radius` value to add rounded corners
-
----
-
-### Intro Section (Lines 237-275)
-
-Home page specific styles for the overlapping image and text layout.
-
-**Classes:**
-- `.intro` — Container
-- `.intro-img` — The large image
-- `.intro-text` — The overlapping text box
-- `.intro-button` — The CTA button container
-
-**Responsive behavior:**
-- Desktop (992px+): Text box overlaps image
-- Mobile: Stacked vertically
-
----
-
-### Text Colors (Lines 277-285)
-
-```css
-p {
-    color: var(--dba-text-secondary) !important;
-}
-
-.text-faded {
-    color: var(--dba-text-primary) !important;
+.source-links-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0.5rem 0;
 }
 ```
 
-Paragraphs use lighter gray (`--dba-text-secondary`); `.text-faded` class uses brighter off-white (`--dba-text-primary`).
-
-**Important:** Do not use `#a0a0a0` for any text on `--dba-content-green` backgrounds. That combination fails WCAG 4.5:1 contrast. Use `--dba-text-muted` (`#b0b0b0`) as the minimum for muted text.
+**Rule:** `showFigureDetails()` and `buildSourceLinks()` must emit these classes and nothing else for color/typography. No inline `style="color: ..."` attributes in the JS-emitted HTML.
 
 ---
 
-### Footer (Lines 287-291)
+## Legend Styles
 
-```css
-.footer {
-    background-color: var(--dba-darkest-green) !important;
-}
-```
-
-Matches the navigation bar color for visual consistency.
-
----
-
-### Legend Styles (Lines 307-333)
-
-Styles for the modality legends on map.html and network.html.
+### Container
 
 ```css
 .map-legend,
@@ -519,8 +638,13 @@ Styles for the modality legends on map.html and network.html.
     align-items: center;
     margin-bottom: 0.5rem;
 }
+```
 
-/* Modality markers — shape + color */
+### Map legend markers (shape + color)
+
+All five modalities defined. At launch, only three render (the others are filtered out of the legend HTML by the page, not by CSS).
+
+```css
 .legend-marker {
     width: 20px;
     height: 20px;
@@ -530,12 +654,15 @@ Styles for the modality legends on map.html and network.html.
 
 .legend-detective {
     background-color: var(--dba-detective);
-    border-radius: 50%;  /* Circle shape */
+    border-radius: 50%;  /* Circle */
 }
 
 .legend-revolutionary {
     background-color: var(--dba-revolutionary);
-    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);  /* Star shape */
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+        50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+    );  /* Star */
 }
 
 .legend-superhero-villain {
@@ -545,7 +672,7 @@ Styles for the modality legends on map.html and network.html.
 
 .legend-gangsta-pimp {
     background-color: var(--dba-gangsta-pimp);
-    border-radius: 2px;  /* Square with slightly rounded corners */
+    border-radius: 2px;  /* Square */
 }
 
 .legend-folk-hero {
@@ -554,27 +681,9 @@ Styles for the modality legends on map.html and network.html.
 }
 ```
 
-**Why shapes?** The previous version used identical circles with different colors for each modality. WCAG 1.4.1 (Use of Color) requires a non-color differentiator. Each modality now has a distinct CSS shape that matches the Modality Visual Identity System defined in HTML_TEMPLATES.md and `getModalityConfig()` in JAVASCRIPT_DOCUMENTATION.md.
+### Network legend markers (shape + color — network-specific shapes)
 
-**Shape reference:**
-
-| Modality | CSS Shape | Technique |
-|----------|-----------|-----------|
-| Detective | Circle | `border-radius: 50%` |
-| Revolutionary | Star | `clip-path: polygon` |
-| Superhero-Villain | Hexagon | `clip-path: polygon` |
-| Gangsta-Pimp | Square | Default with slight `border-radius` |
-| Folk Hero-Outlaw | Triangle | `clip-path: polygon` |
-
-**Launch state:** At launch, legend items for Detective, Revolutionary, and Superhero-Villain render. Gangsta-Pimp and Folk Hero-Outlaw classes are defined but not displayed because no active figures in those modalities exist in the rendered dataset. When a modality goes live, its legend entry appears automatically via the shared legend rendering logic.
-
-**When adding a new modality:** Add a `.legend-[modality]` class here with the appropriate shape, add the modality to `getModalityConfig()` in scripts.js, and add it to the Modality Visual Identity System table in HTML_TEMPLATES.md. All three must stay in sync.
-
-**Accessibility note:** The legend marker spans use `aria-hidden="true"` in the HTML because they are decorative — the adjacent text label carries the information. See HTML_TEMPLATES.md for the full legend markup pattern.
-
-### Network Node Legend Classes
-
-The network visualization uses different shapes than the map legend — circles, diamonds, and hexagons rather than pins, stars, and hexagons. These classes provide distinct legend markers for network.html:
+All five modalities defined, not just the three that render at launch. Scaffolded so dormant modality activation requires no CSS changes.
 
 ```css
 .legend-node-detective {
@@ -591,21 +700,31 @@ The network visualization uses different shapes than the map legend — circles,
     background-color: var(--dba-shv);
     clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);  /* Hexagon */
 }
+
+.legend-node-gangsta-pimp {
+    background-color: var(--dba-gangsta-pimp);
+    border-radius: 2px;  /* Square */
+}
+
+.legend-node-folk-hero {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);  /* Triangle */
+}
 ```
 
-**Shape reference (network vs. map):**
+### Shape reference (map vs. network)
 
-| Modality | Map Legend Shape | Network Legend Shape |
-|----------|------------------|----------------------|
+| Modality | Map Legend | Network Legend |
+|----------|-----------|----------------|
 | Detective | Circle | Circle |
 | Revolutionary | Star | Diamond |
 | Superhero-Villain | Hexagon | Hexagon |
+| Gangsta-Pimp | Square | Square |
+| Folk Hero-Outlaw | Triangle | Triangle |
 
-Detective and SHV use the same shape in both legends; Revolutionary uses a star on the map but a diamond in the network because D3 force-directed graphs render cleaner with diamond nodes than star polygons at small sizes.
+Only Revolutionary differs between map and network (star vs. diamond) — D3 force-directed graphs render cleaner with diamond polygons at small sizes.
 
-### Edge Type Legend Classes
-
-The network's edge legend uses distinct dash patterns for each connection type (WCAG 1.4.1 — dash pattern serves as non-color differentiator when color is unavailable or ambiguous). All edge type legend lines share this base:
+### Edge type legend (dash patterns)
 
 ```css
 .legend-line {
@@ -613,203 +732,1486 @@ The network's edge legend uses distinct dash patterns for each connection type (
     height: 3px;
     margin-right: 10px;
 }
-```
 
-The dash patterns are implemented with `repeating-linear-gradient`:
-
-```css
-/* META: Solid */
 .legend-meta {
-    background-color: var(--dba-gold);
+    background-color: var(--dba-edge-meta);
 }
 
-/* P2C: Long dash */
 .legend-p2c {
     background-color: transparent;
     background-image: repeating-linear-gradient(
         90deg,
-        var(--dba-revolutionary) 0px,
-        var(--dba-revolutionary) 12px,
+        var(--dba-edge-p2c) 0px,
+        var(--dba-edge-p2c) 12px,
         transparent 12px,
         transparent 18px
     );
 }
 
-/* C2C: Short dash */
 .legend-c2c {
     background-color: transparent;
     background-image: repeating-linear-gradient(
         90deg,
-        var(--dba-emerald) 0px,
-        var(--dba-emerald) 6px,
+        var(--dba-edge-c2c) 0px,
+        var(--dba-edge-c2c) 6px,
         transparent 6px,
         transparent 10px
     );
 }
 
-/* ORG: Dot-dash */
 .legend-org {
     background-color: transparent;
     background-image: repeating-linear-gradient(
         90deg,
-        var(--dba-detective) 0px,
-        var(--dba-detective) 2px,
+        var(--dba-edge-org) 0px,
+        var(--dba-edge-org) 2px,
         transparent 2px,
         transparent 6px,
-        var(--dba-detective) 6px,
-        var(--dba-detective) 14px,
+        var(--dba-edge-org) 6px,
+        var(--dba-edge-org) 14px,
         transparent 14px,
         transparent 18px
     );
 }
 
-/* CC: Dotted */
 .legend-cc {
     background-color: transparent;
     background-image: repeating-linear-gradient(
         90deg,
-        #e83e8c 0px,
-        #e83e8c 2px,
+        var(--dba-edge-cc) 0px,
+        var(--dba-edge-cc) 2px,
         transparent 2px,
         transparent 4px
     );
 }
 ```
 
-**Edge type dash pattern reference:**
-
-| Edge Type | Color Variable | Color Hex | Dash Pattern |
-|-----------|---------------|-----------|--------------|
-| META | `--dba-gold` | `#d4af37` | Solid |
-| P2C | `--dba-revolutionary` | `#dc3545` | Long dash (12px on, 6px off) |
-| C2C | `--dba-emerald` | `#50c878` | Short dash (6px on, 4px off) |
-| ORG | `--dba-detective` | `#3388ff` | Dot-dash (2+4+8+4 pattern) |
-| CC | Pink | `#e83e8c` | Dotted (2px on, 2px off) |
-
-**Note on CC color:** The CC edge type uses hex `#e83e8c` directly rather than a CSS variable because it is the only place in the codebase that needs this pink. If CC-styled elements appear elsewhere in future development, create a `--dba-cc-pink` variable and update this class.
-
-**Pattern synchronization:** These CSS dash patterns must match the `edgeDashPatterns` JavaScript object in network.html's inline script. When adjusting any dash pattern, update both simultaneously.
+**Pattern sync rule:** These dash patterns must match the `edgeDashPatterns` object in `network.html`'s inline script. When a dash pattern changes, both must update simultaneously.
 
 ---
 
-### Utility Classes (Lines 335-353)
+## Sources & Figures Landing — Shared Filter Rail
 
-Custom utility classes you can add to any element:
+The sources landing (`bda-sources.js`) and figures landing (`bda-figures.js`) share a filter rail vocabulary. These classes are defined once and used by both.
 
-```css
-.border-purple  /* Adds purple border */
-.text-gold      /* Gold text color */
-.text-purple    /* Purple text color */
-.text-emerald   /* Emerald green text color */
-```
-
-**Usage example:**
-```html
-<h3 class="text-gold">Gold Heading</h3>
-<div class="bg-faded border-purple p-4">Purple-bordered box</div>
-<span class="text-emerald">Accented inline text</span>
-```
-
----
-
-## How to Change Colors
-
-### Option 1: Change CSS Variables (Recommended)
-
-Edit the values in the `:root` section at the top of the file. All elements using that variable will update automatically.
+### Filter option rows
 
 ```css
-:root {
-    --dba-purple: #552583;  /* Change this hex value */
+.bda-filter-option {
+    display: flex;
+    align-items: center;
+    padding: 0.4rem 0.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.bda-filter-option:hover {
+    background-color: var(--dba-medium-green);
+}
+
+.bda-filter-option input[type="checkbox"] {
+    margin-right: 0.5rem;
+    /* Native checkbox, inherits browser styling */
+}
+
+.bda-filter-option.is-disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.bda-filter-option.is-disabled:hover {
+    background-color: transparent;
 }
 ```
 
-**After any color change:** Re-check the affected rows in the Color Contrast Reference Table above. Run the new value through the WebAIM Contrast Checker (webaim.org/resources/contrastchecker/) against every background it appears on. Update the table with the new ratio.
+### Modality shape markers (used in filter rail, cited-in headings, figure cards)
 
-### Option 2: Override Specific Elements
-
-Add new rules at the bottom of the file:
+All five modalities, matching the map legend shapes:
 
 ```css
-/* Custom override */
-.btn-primary {
-    border-color: #ff0000 !important;  /* Red buttons */
+.bda-filter-modality-marker {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.bda-mm-detective {
+    background-color: var(--dba-detective);
+    border-radius: 50%;
+}
+
+.bda-mm-revolutionary {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+        50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+    );
+}
+
+.bda-mm-superhero-villain {
+    background-color: var(--dba-shv);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.bda-mm-gangsta-pimp {
+    background-color: var(--dba-gangsta-pimp);
+    border-radius: 2px;
+}
+
+.bda-mm-folk-hero-outlaw {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+.bda-filter-modality-marker.is-pending {
+    opacity: 0.5;
+}
+```
+
+### Pending tag / count badges
+
+```css
+.bda-filter-pending-tag {
+    color: var(--dba-text-muted);
+    font-size: 0.85em;
+    margin-left: 0.25em;
+}
+```
+
+### Filter collapse buttons
+
+```css
+.bda-filter-collapse-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    border: none;
+    color: var(--dba-text-primary);
+    padding: 0.5rem 0;
+    cursor: pointer;
+}
+
+.bda-filter-collapse-btn[aria-expanded="true"]::after {
+    content: "▾";
+}
+
+.bda-filter-collapse-btn[aria-expanded="false"]::after {
+    content: "▸";
+}
+```
+
+### Active filter chips
+
+```css
+.bda-filter-chip {
+    display: inline-flex;
+    align-items: center;
+    background-color: var(--dba-medium-green);
+    color: var(--dba-text-primary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 1rem;
+    margin: 0.2rem;
+    font-size: 0.9em;
+}
+
+.bda-filter-chip-label {
+    color: var(--dba-text-secondary);
+    margin-right: 0.25rem;
+}
+
+.bda-filter-chip-remove {
+    background: transparent;
+    border: none;
+    color: var(--dba-text-primary);
+    margin-left: 0.5rem;
+    font-size: 1.2em;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+}
+
+.bda-filter-chip-remove:hover,
+.bda-filter-chip-remove:focus {
+    color: var(--dba-gold);
 }
 ```
 
 ---
 
-## Adding New Styles
+## Sources Landing
 
-Add new styles at the end of the file before the closing of the document.
+### Page layout
 
-**Best practices:**
-1. Use CSS variables for colors — never hardcode hex values in inline styles or new rules
-2. Add a comment header for new sections
-3. Use `!important` sparingly — only when overriding Bootstrap
-4. If adding a new color, add it to `:root` as a variable and add a row to the Color Contrast Reference Table
-5. If adding hover/transition effects, verify they respect `prefers-reduced-motion` (the global rule handles most cases, but complex animations may need explicit handling)
-6. If adding interactive elements, verify the `*:focus-visible` gold ring is visible against the element's background
-7. If adding in-prose link contexts, add the selector to the in-prose link underlines rule
-
-**Example:**
 ```css
-/* ============================================
-   CUSTOM MAP STYLES
-   ============================================ */
+.bda-sources-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
 
-.map-container {
+.bda-sources-loading {
+    color: var(--dba-text-muted);
+    text-align: center;
+    padding: 2rem;
+}
+
+.bda-sources-loading[role="alert"] {
+    color: var(--dba-revolutionary);
+}
+```
+
+### Source cards (used on sources landing, source page related, figure page primary sources)
+
+```css
+.bda-source-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dba-content-green);
     border: 2px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.bda-source-card:hover {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+}
+
+.bda-source-card:focus-visible {
+    /* Inherits global focus ring */
+}
+
+.bda-source-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.bda-source-card-category {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.bda-cat-primary {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+}
+
+.bda-cat-secondary {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.bda-cat-archival {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+
+.bda-source-card-external {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    /* Similar styling */
+}
+
+.bda-source-thumb-glyph {
+    font-size: 3rem;
+    color: var(--dba-emerald);
+}
+
+.bda-thumb-book::before { content: "📖"; }
+.bda-thumb-doc::before { content: "📄"; }
+.bda-thumb-news::before { content: "📰"; }
+.bda-thumb-photo::before { content: "🖼"; }
+.bda-thumb-audio::before { content: "🎧"; }
+.bda-thumb-film::before { content: "🎞"; }
+
+.bda-source-card-info {
+    padding: 1rem;
+}
+
+.bda-source-card-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--dba-text-primary);
+    margin: 0 0 0.5rem 0;
+}
+
+.bda-source-card-figure {
+    font-size: 0.9em;
+    color: var(--dba-emerald);
+    margin: 0 0 0.25rem 0;
+}
+
+.bda-source-card-meta {
+    font-size: 0.85em;
+    color: var(--dba-text-muted);
+    margin: 0;
+}
+```
+
+### Empty state
+
+```css
+.bda-figures-empty,
+.bda-sources-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--dba-text-secondary);
+}
+```
+
+---
+
+## Source Page
+
+### Header
+
+```css
+.bda-source-header {
+    margin-bottom: 2rem;
+}
+
+.bda-source-title {
+    color: var(--dba-text-primary);
+    font-size: 2rem;
+}
+
+.bda-source-header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.bda-source-type,
+.bda-source-year {
+    color: var(--dba-text-secondary);
+}
+
+.bda-source-permalink-btn {
+    background-color: transparent;
+    border: 1px solid var(--dba-border-green);
+    color: var(--dba-text-primary);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+}
+```
+
+### Layout (viewer + metadata rail)
+
+```css
+.bda-source-layout {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 991px) {
+    .bda-source-layout {
+        grid-template-columns: 1fr;
+    }
+}
+```
+
+### Viewer variants
+
+```css
+.bda-source-viewer {
+    background-color: var(--dba-content-green);
+    border: 2px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 2rem;
+}
+
+.bda-source-viewer-text { /* Layout for external-link sources */ }
+.bda-source-viewer-image { /* Figure with image */ }
+.bda-source-viewer-image img {
+    max-width: 100%;
+    height: auto;
+}
+
+.bda-source-viewer-audio { /* Audio player wrapper */ }
+.bda-source-viewer-multi { /* Tab UI for multi-asset — reserved */ }
+
+.bda-source-view-external {
+    /* Uses .btn-primary via markup */
+}
+
+.bda-source-access-notice {
+    background-color: var(--dba-medium-green);
+    border-left: 4px solid var(--dba-gold);
+    padding: 1.5rem;
     border-radius: 0.5rem;
 }
 ```
 
+### Metadata rail
+
+```css
+.bda-source-metadata-rail {
+    background-color: var(--dba-content-green);
+    border: 2px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.bda-source-metadata-list {
+    margin: 0;
+}
+
+.bda-source-metadata-list dt {
+    font-weight: bold;
+    color: var(--dba-emerald);
+    margin-top: 0.75rem;
+    font-size: 0.85em;
+    text-transform: uppercase;
+}
+
+.bda-source-metadata-list dd {
+    margin-left: 0;
+    color: var(--dba-text-primary);
+}
+
+.bda-source-permalink-text {
+    font-family: monospace;
+    font-size: 0.85em;
+    color: var(--dba-text-muted);
+    word-break: break-all;
+}
+
+.bda-source-permalink-copy {
+    /* Compact copy button */
+}
+
+.bda-source-notes {
+    background-color: var(--dba-medium-green);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    margin-top: 1rem;
+}
+```
+
+### Access level badges
+
+```css
+.bda-access-badge-restricted {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+    /* "Restricted" label */
+}
+
+.bda-access-badge-embargoed {
+    background-color: var(--dba-revolutionary);
+    color: var(--dba-white);
+}
+
+.bda-access-badge-consent {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+```
+
+All three meet WCAG AA contrast on their backgrounds — verified at commit time via WebAIM Contrast Checker.
+
+### Cited in (modality-grouped)
+
+```css
+.bda-source-cited-in {
+    margin: 3rem 0;
+}
+
+.bda-cited-in-modality-group {
+    margin-bottom: 1.5rem;
+}
+
+.bda-cited-in-modality-heading {
+    display: flex;
+    align-items: center;
+    color: var(--dba-text-primary);
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+}
+
+.bda-cited-in-list {
+    list-style: none;
+    padding-left: 1.5rem;  /* Visual indent from modality heading */
+}
+
+.bda-cited-in-list li {
+    margin: 0.25rem 0;
+}
+
+.bda-cited-in-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+```
+
+### Related sources
+
+```css
+.bda-source-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+}
+
+.bda-source-related-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+```
+
+### Citation block
+
+```css
+.bda-citation-block {
+    background-color: var(--dba-medium-green);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+.bda-citation-format-group {
+    border: none;
+    padding: 0;
+    margin-bottom: 1rem;
+}
+
+.bda-citation-format-group legend {
+    font-weight: bold;
+    color: var(--dba-emerald);
+    margin-bottom: 0.5rem;
+}
+
+.bda-citation-format-group label {
+    margin-right: 1rem;
+}
+
+.bda-citation-text {
+    background-color: var(--dba-darkest-green);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    font-family: Georgia, serif;
+    line-height: 1.6;
+    color: var(--dba-text-primary);
+    margin-bottom: 1rem;
+}
+
+.bda-citation-copy-btn {
+    /* Uses .btn-primary */
+}
+```
+
+### Interview panel (reserved)
+
+```css
+.bda-source-interview-panel {
+    background-color: var(--dba-medium-green);
+    border-left: 4px solid var(--dba-purple);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    margin-top: 2rem;
+}
+```
+
 ---
 
-## Inline Style Cleanup
+## Figures Landing
 
-The following inline styles in the HTML files should be migrated to CSS variables. These were identified during the accessibility audit as hardcoded values that bypass the variable system:
+### Grid layouts
 
-| File | Element | Current Inline Style | Replace With |
-|------|---------|---------------------|-------------|
-| map.html | `#info-content` | `color: #c8c8c8` | `color: var(--dba-text-secondary)` |
-| map.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
-| map.html | Legend text | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
-| network.html | `#figure-metrics-content` | `color: #a0a0a0` | `color: var(--dba-text-muted)` (upgrade to `#b0b0b0`) |
-| network.html | Panel headers | `color: #50c878` | `color: var(--dba-emerald)` |
-| network.html | Labels | `color: #e8e8e8` | `color: var(--dba-text-primary)` |
+```css
+.bda-figures-grid {
+    margin-bottom: 3rem;
+}
 
-**Why this matters:** Inline styles cannot be globally updated by changing a CSS variable. If a contrast check reveals that a color fails on a given background, you'd have to find and update every inline instance across every HTML file. With variables, you change one value in `:root` and everything updates.
+.bda-figures-grouped .bda-figure-modality-group {
+    margin-bottom: 3rem;
+}
 
-**Critical row:** The network.html `#figure-metrics-content` row currently uses `#a0a0a0`, which fails WCAG AA against dark backgrounds. This must be migrated to `--dba-text-muted` before launch. This is not a style preference — it is a compliance requirement.
+.bda-figure-modality-heading {
+    display: flex;
+    align-items: center;
+    color: var(--dba-text-primary);
+    border-bottom: 2px solid var(--dba-border-green);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.bda-figure-modality-count {
+    color: var(--dba-text-muted);
+    font-size: 0.9em;
+    margin-left: 0.5rem;
+}
+
+.bda-figure-card-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.bda-figures-flat .bda-figure-card-list {
+    /* Same grid; no modality grouping visually */
+}
+```
+
+### Figure cards
+
+```css
+.bda-figure-card {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--dba-content-green);
+    border: 2px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s, transform 0.2s;
+}
+
+.bda-figure-card:hover {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+}
+
+.bda-figure-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    padding: 2rem 1rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.bda-figure-card-type-badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.bda-type-real {
+    background-color: var(--dba-detective);
+    color: var(--dba-white);
+}
+
+.bda-type-fictional {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+
+.bda-figure-card-meta-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.75em;
+    font-weight: bold;
+}
+
+.bda-figure-card-info {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bda-figure-card-title {
+    font-size: 1.1rem;
+    color: var(--dba-text-primary);
+    margin: 0 0 0.25rem 0;
+}
+
+.bda-figure-card-era {
+    font-size: 0.9em;
+    color: var(--dba-text-muted);
+    margin: 0 0 0.5rem 0;
+}
+
+.bda-figure-card-descriptor {
+    font-size: 0.9em;
+    color: var(--dba-text-secondary);
+    flex: 1;
+    margin: 0 0 0.5rem 0;
+}
+
+.bda-figure-card-score {
+    color: var(--dba-emerald);
+    font-weight: bold;
+    margin: 0;
+}
+
+.bda-score-value {
+    font-size: 1.2em;
+}
+
+.bda-score-total {
+    color: var(--dba-text-muted);
+    font-weight: normal;
+}
+```
+
+### Loading state
+
+```css
+.bda-figures-loading {
+    color: var(--dba-text-muted);
+    text-align: center;
+    padding: 2rem;
+}
+
+.bda-figures-loading[role="alert"] {
+    color: var(--dba-revolutionary);
+}
+```
+
+---
+
+## Figure Page
+
+### Layout (content + credentialing rail)
+
+```css
+.bda-figure-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+}
+
+@media (max-width: 991px) {
+    .bda-figure-layout {
+        grid-template-columns: 1fr;
+    }
+
+    /* Mobile: credentialing rail appears ABOVE main content */
+    .bda-figure-layout {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #bda-credentialing-rail {
+        order: -1;
+    }
+}
+```
+
+### Header
+
+```css
+.bda-figure-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--dba-border-green);
+}
+
+.bda-figure-header-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.bda-figure-modality-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.75rem;
+    background-color: var(--dba-medium-green);
+    border-radius: 1rem;
+    font-size: 0.9em;
+}
+
+.bda-figure-type-badge {
+    /* Reuses .bda-type-real / .bda-type-fictional */
+}
+
+.bda-figure-meta-badge {
+    /* Reuses card meta-badge styling */
+}
+
+.bda-figure-name {
+    font-size: 2.5rem;
+    color: var(--dba-text-primary);
+    margin: 0.5rem 0;
+}
+
+.bda-figure-era {
+    color: var(--dba-text-muted);
+    font-size: 1.1em;
+}
+
+.bda-figure-score {
+    color: var(--dba-emerald);
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.bda-figure-creator {
+    color: var(--dba-text-secondary);
+    font-style: italic;
+}
+
+.bda-figure-not-found {
+    text-align: center;
+    padding: 4rem 1rem;
+}
+```
+
+### Justification
+
+```css
+.bda-figure-justification {
+    max-width: 640px;
+    margin: 0 auto 3rem;
+    font-family: Georgia, serif;
+    line-height: 1.8;
+}
+
+.bda-figure-justification-placeholder {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+```
+
+### Biography
+
+```css
+.bda-figure-biography {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 768px) {
+    .bda-figure-biography {
+        grid-template-columns: 1fr;
+    }
+}
+
+.bda-figure-biography-description { /* Left column */ }
+.bda-figure-biography-timeline {
+    background-color: var(--dba-medium-green);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.bda-figure-timeline-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.bda-figure-timeline-event {
+    display: flex;
+    margin-bottom: 1rem;
+    padding-left: 0;
+}
+
+.bda-figure-timeline-year {
+    font-weight: bold;
+    color: var(--dba-emerald);
+    min-width: 4rem;
+    flex-shrink: 0;
+}
+
+.bda-figure-timeline-content {
+    flex: 1;
+}
+
+.bda-figure-timeline-location {
+    font-size: 0.85em;
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0.25rem 0 0 0;
+}
+
+.bda-figure-biography-adaptations,
+.bda-figure-biography-credits {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dba-border-green);
+}
+```
+
+### Criteria (five-criteria evaluation)
+
+```css
+.bda-figure-criteria {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.bda-figure-criterion {
+    background-color: var(--dba-content-green);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-criterion dt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.bda-criterion-name {
+    color: var(--dba-text-primary);
+    font-weight: bold;
+    font-size: 1.1rem;
+}
+
+.bda-criterion-score {
+    color: var(--dba-emerald);
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.bda-criterion-bar {
+    width: 100%;
+    height: 8px;
+    background-color: var(--dba-darkest-green);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.bda-criterion-bar-fill {
+    height: 100%;
+    background-color: var(--dba-emerald);
+    /* Width driven by --criterion-value CSS custom property */
+    width: calc(var(--criterion-value, 0) * 20%);
+    transition: width 0.3s;
+}
+
+.bda-criterion-details summary {
+    cursor: pointer;
+    color: var(--dba-emerald);
+    font-size: 0.9em;
+}
+
+.bda-criterion-details[open] summary {
+    margin-bottom: 0.5rem;
+}
+
+.bda-figure-criterion-total {
+    background-color: var(--dba-medium-green);
+    font-size: 1.3em;
+}
+
+.bda-figure-criteria-review-notice {
+    background-color: var(--dba-medium-green);
+    border-left: 4px solid var(--dba-gold);
+    padding: 1rem 1.5rem;
+    margin-bottom: 1.5rem;
+}
+```
+
+### Connections
+
+```css
+.bda-figure-connections {
+    margin-bottom: 3rem;
+}
+
+.bda-connection-group {
+    margin-bottom: 2rem;
+}
+
+.bda-connection-group-heading {
+    display: flex;
+    align-items: center;
+    color: var(--dba-text-primary);
+    font-size: 1.15rem;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-connection-group-count {
+    color: var(--dba-text-muted);
+    font-size: 0.9em;
+    margin-left: 0.5rem;
+}
+
+.bda-edge-legend-marker {
+    display: inline-block;
+    width: 16px;
+    height: 4px;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+.bda-edge-meta { background-color: var(--dba-edge-meta); }
+.bda-edge-p2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-edge-p2c) 0, var(--dba-edge-p2c) 6px,
+        transparent 6px, transparent 10px
+    );
+}
+.bda-edge-c2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-edge-c2c) 0, var(--dba-edge-c2c) 4px,
+        transparent 4px, transparent 7px
+    );
+}
+.bda-edge-org {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-edge-org) 0, var(--dba-edge-org) 1px,
+        transparent 1px, transparent 3px,
+        var(--dba-edge-org) 3px, var(--dba-edge-org) 7px,
+        transparent 7px, transparent 9px
+    );
+}
+.bda-edge-cc {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-edge-cc) 0, var(--dba-edge-cc) 1px,
+        transparent 1px, transparent 2px
+    );
+}
+
+.bda-connection-list {
+    list-style: none;
+    padding: 0;
+}
+
+.bda-connection-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 0.75rem;
+    align-items: start;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--dba-content-green);
+    border-radius: 0.25rem;
+}
+
+.bda-connection-direction {
+    font-size: 1.3em;
+    color: var(--dba-text-muted);
+}
+
+.bda-connection-name {
+    color: var(--dba-emerald);
+    font-weight: bold;
+    /* In-prose context — gets underline */
+}
+
+.bda-connection-name-missing {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+.bda-connection-dangling {
+    opacity: 0.6;
+    border-left: 3px solid var(--dba-revolutionary);
+}
+
+.bda-connection-tier {
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.bda-tier-1 {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+}
+
+.bda-tier-2 {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.bda-tier-3 {
+    background-color: var(--dba-text-muted);
+    color: var(--dba-darkest-green);
+}
+
+.bda-connection-evidence {
+    grid-column: 2 / -1;
+    color: var(--dba-text-secondary);
+    font-size: 0.9em;
+    margin: 0;
+}
+```
+
+### Geography
+
+```css
+.bda-figure-geography {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 991px) {
+    .bda-figure-geography {
+        grid-template-columns: 1fr;
+    }
+}
+
+#bda-figure-map-preview {
+    min-height: 400px;
+    border-radius: 0.5rem;
+    border: 2px solid var(--dba-border-green);
+}
+
+.bda-figure-geography-meta {
+    background-color: var(--dba-content-green);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-geography-additional ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+.bda-figure-geography-additional li {
+    margin-bottom: 0.75rem;
+    padding-left: 1rem;
+    border-left: 3px solid var(--dba-emerald);
+}
+
+.bda-figure-geography-view-full {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dba-border-green);
+}
+```
+
+### Primary sources & related figures on figure page
+
+Reuses `.bda-source-card` styling. Adds:
+
+```css
+.bda-figure-primary-sources {
+    margin-bottom: 3rem;
+}
+
+.bda-figure-primary-sources-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 2rem;
+}
+
+.bda-figure-all-sources-link {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.bda-figure-related-grid {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.bda-figure-related-card {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+}
+
+.bda-figure-related-card:hover {
+    border-color: var(--dba-emerald);
+}
+
+.bda-figure-related-card-name {
+    flex: 1;
+    font-size: 0.95em;
+}
+
+.bda-figure-related-card-score {
+    color: var(--dba-emerald);
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.bda-figure-related-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+```
+
+---
+
+## Credentialing Rail
+
+The rail is injected by `bda-partials-loader.js` into `#bda-credentialing-rail`. These styles apply to the rail content.
+
+### Desktop: sticky side rail
+
+```css
+#bda-credentialing-rail {
+    position: sticky;
+    top: 2rem;
+    align-self: start;
+}
+
+.bda-cred-rail-inner {
+    background-color: var(--dba-content-green);
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--dba-border-green);
+}
+
+.bda-cred-author {
+    margin-bottom: 1.5rem;
+}
+
+.bda-cred-toc-heading {
+    color: var(--dba-emerald);
+    font-size: 1rem;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.05em;
+}
+
+.bda-cred-toc ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+.bda-cred-toc a {
+    display: block;
+    padding: 0.35rem 0.5rem;
+    color: var(--dba-text-secondary);
+    text-decoration: none;
+    border-left: 3px solid transparent;
+    font-size: 0.9em;
+}
+
+.bda-cred-toc a:hover {
+    color: var(--dba-text-primary);
+    border-left-color: var(--dba-border-green);
+}
+
+.bda-cred-toc a.is-active,
+.bda-cred-toc a[aria-current="true"] {
+    color: var(--dba-emerald);
+    border-left-color: var(--dba-emerald);
+    font-weight: bold;
+}
+```
+
+### Mobile: collapsible TOC via `<details>`
+
+The TOC partial includes a native `<details>` wrapper. On desktop, the `<summary>` is hidden and `<details>` is always-open. On mobile, `<summary>` is visible and collapsibility works natively.
+
+```css
+.bda-cred-toc-details {
+    /* No custom styling on desktop — behaves as always-open */
+}
+
+.bda-cred-toc-summary {
+    display: none;  /* Hidden on desktop */
+}
+
+@media (max-width: 991px) {
+    /* Mobile: rail is not sticky, appears above content */
+    #bda-credentialing-rail {
+        position: static;
+        top: auto;
+    }
+
+    .bda-cred-toc-summary {
+        display: block;
+        cursor: pointer;
+        padding: 0.5rem 0;
+        color: var(--dba-emerald);
+        font-weight: bold;
+    }
+
+    .bda-cred-toc-summary::marker {
+        /* Hide default disclosure triangle for cleaner look */
+        display: none;
+    }
+
+    .bda-cred-toc-summary::after {
+        content: "▾";
+        float: right;
+    }
+
+    .bda-cred-toc-details:not([open]) .bda-cred-toc-summary::after {
+        content: "▸";
+    }
+}
+```
+
+**Accessibility:** The native `<details>`/`<summary>` provides keyboard operation (Enter/Space to toggle) and screen reader announcement for free. No ARIA augmentation.
+
+---
+
+## Utility Classes
+
+```css
+.border-purple { border: 2px solid var(--dba-purple); }
+.text-gold { color: var(--dba-gold); }
+.text-purple { color: var(--dba-purple); }
+.text-emerald { color: var(--dba-emerald); }
+```
+
+Usage:
+
+```html
+<h3 class="text-gold">Gold Heading</h3>
+<div class="bg-faded border-purple p-4">Purple-bordered box</div>
+```
+
+---
+
+## Inline Style Cleanup (Launch-Blocker)
+
+The following inline styles must be migrated from HTML/JS to CSS variables before launch. Each is tracked here to prevent reintroduction.
+
+| Location | Current | Must Become |
+|----------|---------|-------------|
+| `scripts.js` `showFigureDetails()` — any remaining inline `style` attributes | `style="color: var(--dba-...);..."` | `.figure-detail-name` / `.read-more-toggle` / `.panel-divider` classes |
+| `scripts.js` `buildSourceLinks()` — any remaining inline `style` attributes | `style="color: var(--dba-emerald);"` | `.source-links` / `.source-link-item` classes |
+| `scripts.js` DOMContentLoaded nav block | `link.style.color = '#d4af37';` | Delete the whole block — partial loader owns nav active state |
+| `network.html` inline `#figure-metrics-content` | `color: #a0a0a0;` | `color: var(--dba-text-muted);` |
+| Any `#a0a0a0` anywhere in the codebase | `#a0a0a0` | `var(--dba-text-muted)` |
+
+**Critical row:** `#a0a0a0` on `--dba-content-green` yields approximately 3.9:1 — fails AA for normal text. This is a compliance issue, not a style preference. Must be resolved before launch.
+
+---
+
+## How to Add a New Style
+
+1. **Check if a variable covers the color you need.** If yes, use it via `var(--dba-...)`. If no, add a variable to `:root` first.
+2. **Add a comment header** naming the section the rule belongs to.
+3. **Verify contrast** via WebAIM Contrast Checker for any new text/background combination. Add the result to the Color Contrast Reference Table.
+4. **Use `!important` sparingly** — only when overriding Bootstrap. Do not use `!important` to beat other custom rules; refactor instead.
+5. **Check focus states.** If the element is interactive, verify the global `*:focus-visible` gold ring is visible against its background.
+6. **Check in-prose contexts.** If links inside this element should be underlined, add the selector to the in-prose link underlines rule.
+7. **Check `prefers-reduced-motion`.** If the rule animates, verify the global reduced-motion rule catches it, or add explicit handling.
+8. **Document the class here** in the appropriate section. Class definitions in `styles.css` must be mirrored in this document.
+
+---
+
+## Accessibility Checklist for CSS Changes
+
+Before committing any change to `styles.css`:
+
+- [ ] No hardcoded hex values added outside `:root`
+- [ ] Any new color combination verified at WCAG AA contrast minimums
+- [ ] Any interactive element's focus state visible and ≥3:1 against its background
+- [ ] Any animation respects `prefers-reduced-motion`
+- [ ] Any color-carrying identity (modality, edge type, tier, access level) has a non-color signal alongside it
+- [ ] Any `!important` usage justified by Bootstrap override, not custom-rule conflict
+- [ ] Class inventory in this document updated to match new classes in the stylesheet
+- [ ] Inline-style cleanup table updated if any known migration was completed
+- [ ] New classes have been tested against keyboard navigation (Tab, Enter, Space)
+- [ ] If the change affects layout, tested at both desktop and mobile breakpoints
 
 ---
 
 ## Troubleshooting
 
 ### Styles not applying
-1. Make sure Bootstrap CSS is loaded BEFORE styles.css
-2. Check browser cache — hard refresh with Ctrl+Shift+R
-3. Add `!important` if Bootstrap is overriding your style
 
-### Colors not matching
-1. Verify you're using the CSS variable correctly: `var(--dba-purple)`
-2. Check for typos in variable names
-3. Ensure `:root` block is at the top of the file
-4. Check for inline styles that override the CSS variable (see Inline Style Cleanup table)
+1. Verify Bootstrap CSS loads BEFORE `styles.css` in the page `<head>`
+2. Hard refresh to clear the browser CSS cache (Ctrl+Shift+R)
+3. Check for typos in variable names (`var(--dba-detecitve)` vs. `var(--dba-detective)`)
+
+### Colors not matching documented values
+
+1. Inspect the element in DevTools and check which rule is winning
+2. Check for inline `style="..."` attributes overriding the class — see Inline Style Cleanup table
+3. Confirm the `:root` variable declaration at the top of the stylesheet hasn't been inadvertently modified
 
 ### Focus ring not visible
+
 1. Verify `--dba-focus-ring` is defined in `:root`
-2. Check that the element isn't overriding `outline` with `outline: none`
-3. Test with keyboard (Tab key) — `:focus-visible` only fires for keyboard navigation
+2. Check that the element isn't overriding with `outline: none`
+3. Test with Tab key (mouse clicks don't trigger `:focus-visible` by design)
+4. For Safari: verify `-webkit-` prefixed alternatives aren't masking the outline
 
-### Underlines appearing where they shouldn't / missing where they should
-1. The in-prose link underline rule targets specific selectors (`.essay a`, `p a`, etc.)
-2. If a new context contains links, add its selector to the rule
-3. If underlines appear on a nav link, check whether the rule's selectors match the nav link's parent — if so, exclude with `:not()`
-4. Do NOT remove the underlines globally — they are a WCAG compliance requirement
+### Underlines appearing where they shouldn't
 
-### Mobile display issues
-1. Check the `@media` queries in the Intro Section
-2. Bootstrap breakpoints: sm(576px), md(768px), lg(992px), xl(1200px)
-3. Test with browser dev tools mobile emulation
+1. The in-prose link underline rule targets specific selectors. Check if the new context's parent matches one of them accidentally.
+2. Exclude with `:not()` rather than removing underlines from the main rule.
+
+### Underlines missing where they should appear
+
+1. The new in-prose context's selector is not in the underline rule. Add it.
+2. A descendant rule with `text-decoration: none` is overriding. Find and remove it.
+
+### Mobile layout breaks
+
+1. Check `@media` queries — Bootstrap breakpoints are sm(576), md(768), lg(992), xl(1200)
+2. Test with browser DevTools responsive mode
+3. Verify the credentialing rail `order: -1` rule is still active on mobile for figure pages
+
+### Legend shapes wrong or missing
+
+1. Verify the `clip-path` polygon coordinates haven't been corrupted
+2. Check the modality's variable resolves to the expected color
+3. Confirm `.is-pending` class applies `opacity: 0.5` correctly for dormant modalities
+
+### Criterion bars fill wrong width
+
+1. Verify the `--criterion-value` custom property is set on each `.bda-criterion-bar-fill` inline via `style="--criterion-value: N;"`
+2. Confirm the CSS calculation `calc(var(--criterion-value, 0) * 20%)` handles edge cases (score 0, score > 5)
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 3.0 | April 2026 | Full rewrite documenting the intended state post-cleanup. Added five `--dba-edge-*` variables decoupling edges from modality and palette variables. Scaffolded all five network node legend classes (not just three). Documented `.bda-*` vocabulary for sources landing, figures landing, source page, figure page, credentialing rail. Added partial placeholder min-heights section, mobile credentialing rail collapsible TOC pattern. Locked `--dba-text-muted` at `#b0b0b0`. Documented `#a0a0a0` migration as launch-blocker. |
+| 2.x | Earlier 2026 | Detail panel classes, in-prose link underlines, modality shape markers, edge type dash patterns. |
+| 1.0 | Project inception | Initial dark-green theme with Kobe tribute (purple/gold) accent system. |

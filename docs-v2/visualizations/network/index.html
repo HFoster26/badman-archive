@@ -1,0 +1,1176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Force-directed network visualization showing relationships between Detroit's badman figures across time.">
+    <meta name="author" content="Harry Foster">
+    <title>Network | Detroit Badman Digital Archive</title>
+    <link rel="canonical" href="https://detroit.badmandigitalarchive.com/visualizations/network/">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- BDA styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+    <!-- Skip to content (WCAG 2.4.1) -->
+    <a href="#bda-main-content" class="bda-skip-link">Skip to main content</a>
+
+    <!-- Navbar (loaded by partials.js) -->
+    <div id="bda-navbar"></div>
+
+    <main id="bda-main-content" tabindex="-1">
+
+        <section class="page-section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-11 mx-auto">
+
+                        <h1>Network</h1>
+                        <p class="lead">
+                            Force-directed graph of the relationships between Detroit's badman
+                            figures. Nodes scale with influence at the selected year; edges are
+                            colored by connection type and styled by evidence tier. Click a node
+                            to focus it and its connections; click an edge to see the connection's
+                            evidence.
+                        </p>
+
+                        <div class="row">
+
+                            <!-- ============================================================
+                                 NETWORK + TIMELINE + SR TABLE (LEFT)
+                                 ============================================================ -->
+                            <div class="col-lg-9 mb-4">
+
+                                <!-- Animation controls -->
+                                <div class="bda-network-controls mb-2">
+                                    <button type="button"
+                                            id="pause-animation"
+                                            class="bda-network-pause-btn"
+                                            aria-label="Pause network animation">
+                                        Pause Animation
+                                    </button>
+                                </div>
+
+                                <!-- Network container -->
+                                <div id="network-container"
+                                     class="bda-network-container"
+                                     role="img"
+                                     aria-label="Force-directed network visualization of Detroit badman figure relationships">
+                                    <p class="bda-network-loading">Network visualization loading&hellip;</p>
+                                </div>
+
+                                <!-- Screen-reader data table (WCAG 1.1.1, 1.3.3) -->
+                                <table class="sr-only" aria-label="Detroit badman figures network data">
+                                    <caption>Figures in the Detroit Badman Archive with modality, type, active years, and connection count. Each row is activatable with Enter or Space to open the figure details panel.</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Modality</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Active Years</th>
+                                            <th scope="col">Connections</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sr-network-table-body">
+                                        <!-- Populated by inline JS -->
+                                    </tbody>
+                                </table>
+
+                                <!-- Timeline slider -->
+                                <div class="bda-network-timeline">
+                                    <label for="timeline-slider" class="bda-network-timeline-label">
+                                        Timeline Filter
+                                    </label>
+                                    <input type="range"
+                                           id="timeline-slider"
+                                           class="bda-network-timeline-slider"
+                                           min="1930" max="2020" value="2020" step="5"
+                                           aria-valuemin="1930"
+                                           aria-valuemax="2020"
+                                           aria-valuenow="2020"
+                                           aria-label="Select year to filter network by time period">
+                                    <div class="bda-network-timeline-marks" aria-hidden="true">
+                                        <span>1930</span>
+                                        <span>1950</span>
+                                        <span>1970</span>
+                                        <span>1990</span>
+                                        <span>2020</span>
+                                    </div>
+                                    <p class="bda-network-timeline-current">
+                                        Current year: <span id="timeline-year" aria-live="polite">2020</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <!-- ============================================================
+                                 SIDEBAR (RIGHT): FILTER + LEGENDS + CONNECTION PANEL
+                                 ============================================================ -->
+                            <div class="col-lg-3">
+
+                                <!-- Modality filter -->
+                                <details class="bda-network-filter" open>
+                                    <summary class="bda-network-filter-summary">
+                                        Filter by modality
+                                    </summary>
+                                    <fieldset class="bda-network-filter-fieldset">
+                                        <legend class="sr-only">Toggle modalities in the network</legend>
+                                        <div id="bda-network-filter-options">
+                                            <!-- Populated by inline JS -->
+                                        </div>
+                                    </fieldset>
+                                </details>
+
+                                <!-- Node modality legend -->
+                                <div class="bda-network-legend mb-3" aria-labelledby="bda-network-node-legend-heading">
+                                    <h2 id="bda-network-node-legend-heading" class="bda-network-legend-heading">
+                                        Figure Modalities
+                                    </h2>
+                                    <ul id="bda-network-node-legend-list" class="list-unstyled mb-0">
+                                        <!-- Populated by inline JS -->
+                                    </ul>
+                                </div>
+
+                                <!-- Edge type legend -->
+                                <div class="bda-network-legend mb-3" aria-labelledby="bda-network-edge-legend-heading">
+                                    <h2 id="bda-network-edge-legend-heading" class="bda-network-legend-heading">
+                                        Relationship Types
+                                    </h2>
+                                    <ul id="bda-network-edge-legend-list" class="list-unstyled mb-0">
+                                        <!-- Populated by inline JS -->
+                                    </ul>
+                                </div>
+
+                                <!-- Connection details panel -->
+                                <div id="connection-panel"
+                                     class="bda-network-connection-panel"
+                                     tabindex="-1"
+                                     aria-live="polite"
+                                     aria-atomic="true"
+                                     aria-labelledby="bda-network-connection-heading">
+                                    <h2 id="bda-network-connection-heading" class="bda-network-connection-heading">
+                                        Connection Details
+                                    </h2>
+                                    <div id="connection-content">
+                                        <p>Select a figure from the network or the figures list below to view relationship details.</p>
+                                    </div>
+                                </div>
+
+                            </div><!-- /sidebar -->
+                        </div><!-- /row -->
+
+                        <!-- ============================================================
+                             METRICS PANELS (FULL WIDTH, BELOW)
+                             ============================================================ -->
+                        <div class="row mt-4">
+
+                            <!-- Network summary -->
+                            <div class="col-lg-6 mb-4">
+                                <div class="bda-network-metrics-panel"
+                                     aria-labelledby="bda-network-summary-heading">
+                                    <h2 id="bda-network-summary-heading" class="bda-network-metrics-heading">
+                                        Network Summary
+                                    </h2>
+
+                                    <dl class="bda-network-metrics-list">
+                                        <div class="bda-network-metric-row">
+                                            <dt>
+                                                <strong>Active Figures</strong>
+                                                <small>(visible nodes at current year)</small>
+                                            </dt>
+                                            <dd id="metric-active-figures">0 of 0</dd>
+                                        </div>
+                                        <div class="bda-network-metric-row">
+                                            <dt>
+                                                <strong>Active Connections</strong>
+                                                <small>(edges at current year)</small>
+                                            </dt>
+                                            <dd id="metric-active-connections">0</dd>
+                                        </div>
+                                        <div class="bda-network-metric-row">
+                                            <dt>
+                                                <strong>Network Density</strong>
+                                                <small>(existing \u00f7 possible connections)</small>
+                                            </dt>
+                                            <dd id="metric-density">0%</dd>
+                                        </div>
+                                        <div class="bda-network-metric-row">
+                                            <dt>
+                                                <strong>Reciprocity</strong>
+                                                <small>(mutual \u00f7 directed connections)</small>
+                                            </dt>
+                                            <dd id="metric-reciprocity">0 / 0</dd>
+                                        </div>
+                                        <div class="bda-network-metric-row">
+                                            <dt>
+                                                <strong>Cross-Modality</strong>
+                                                <small>(edges spanning different modalities)</small>
+                                            </dt>
+                                            <dd id="metric-cross-modality">0</dd>
+                                        </div>
+                                    </dl>
+                                </div>
+                            </div>
+
+                            <!-- Selected figure metrics -->
+                            <div class="col-lg-6 mb-4">
+                                <div id="figure-metrics-panel"
+                                     class="bda-network-metrics-panel"
+                                     tabindex="-1"
+                                     aria-live="polite"
+                                     aria-atomic="true"
+                                     aria-labelledby="bda-network-figure-metrics-heading">
+                                    <h2 id="bda-network-figure-metrics-heading" class="bda-network-metrics-heading">
+                                        Selected Figure Metrics
+                                    </h2>
+                                    <div id="figure-metrics-content">
+                                        <p>Select a figure from the network or the figures list to view detailed metrics.</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (loaded by partials.js) -->
+    <div id="bda-footer"></div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- D3 v7 -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- Site-wide scripts -->
+    <script src="/assets/js/scripts.js"></script>
+    <!-- Partial loader -->
+    <script src="/assets/js/partials.js"></script>
+
+    <!-- ============================================================
+         NETWORK INITIALIZATION
+         ============================================================ -->
+    <script>
+    (function () {
+        'use strict';
+
+        // =====================================================================
+        // Configuration
+        // =====================================================================
+
+        var DATA_URL = '/data/detroit.json';
+
+        var ACTIVE_MODALITIES = ['detective', 'revolutionary', 'superhero_villain'];
+        var PENDING_MODALITIES = ['gangsta_pimp', 'folk_hero_outlaw'];
+
+        // Edge color + dash pattern lookup built from data.edge_types at load.
+        var edgeColors = {};
+        var edgeDashPatterns = {
+            'META': null,        // solid
+            'P2C': '12,6',       // long dash
+            'C2C': '6,4',        // short dash
+            'ORG': '2,4,8,4',    // dot-dash
+            'CC':  '2,2'         // dot-dot
+        };
+
+        var edgeTypeLabels = {
+            'META': 'Meta-Creative (Creator \u2192 Creation)',
+            'P2C':  'Person to Creator',
+            'C2C':  'Creator to Creator',
+            'ORG':  'Organizational Affiliation',
+            'CC':   'Creation Continuity'
+        };
+
+        var edgeDashLabels = {
+            'META': 'Solid line',
+            'P2C':  'Long dash',
+            'C2C':  'Short dash',
+            'ORG':  'Dot-dash',
+            'CC':   'Dot-dot'
+        };
+
+        // =====================================================================
+        // State
+        // =====================================================================
+
+        var activeModalities = ACTIVE_MODALITIES.slice();
+        var allFigures = [];
+        var sourceIndex = {};
+        var figureById = {};
+        var evidenceTiers = null;
+
+        var svg = null;
+        var g = null;
+        var simulation = null;
+        var node = null;
+        var edge = null;
+        var edgeHitArea = null;
+        var label = null;
+        var nodesData = [];
+        var edgesData = [];
+        var focusedNode = null;
+        var animationPaused = false;
+        var currentYear = 2020;
+        var reducedMotion = false;
+
+        var radiusScale = null;
+
+        // =====================================================================
+        // Source resolution (same pattern as map)
+        // =====================================================================
+
+        function indexSources(data) {
+            sourceIndex = {};
+            if (!Array.isArray(data.sources)) return;
+            data.sources.forEach(function (s) {
+                if (s && s.id) sourceIndex[s.id] = s;
+            });
+        }
+
+        function figureWithResolvedSources(figure) {
+            var ids = figure.source_ids || [];
+            var primary = [];
+            for (var i = 0; i < ids.length; i++) {
+                var src = sourceIndex[ids[i]];
+                if (src && src.category === 'primary') {
+                    primary.push(src);
+                }
+            }
+            return Object.assign({}, figure, {
+                sources: { primary: primary }
+            });
+        }
+
+        // =====================================================================
+        // Influence lookup
+        // =====================================================================
+
+        function getInfluenceAtYear(nodeDatum, year) {
+            if (year < nodeDatum.active_start) return 0;
+            if (!nodeDatum.influence_phases || nodeDatum.influence_phases.length === 0) return 0;
+
+            for (var i = 0; i < nodeDatum.influence_phases.length; i++) {
+                var phase = nodeDatum.influence_phases[i];
+                if (year >= phase.start && year <= phase.end) return phase.value;
+            }
+            // Past all defined phases — posthumous legacy: persist last phase value
+            var lastPhase = nodeDatum.influence_phases[nodeDatum.influence_phases.length - 1];
+            return lastPhase.value;
+        }
+
+        // =====================================================================
+        // Filter + legend UI
+        // =====================================================================
+
+        function buildFilterUi() {
+            var container = document.getElementById('bda-network-filter-options');
+            if (!container) return;
+
+            var html = '';
+
+            ACTIVE_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                var checked = activeModalities.indexOf(mod) !== -1 ? ' checked' : '';
+                html +=
+                    '<label class="bda-filter-option">' +
+                        '<input type="checkbox" data-modality="' + escapeHtml(mod) + '"' + checked + '> ' +
+                        '<span class="bda-filter-modality-marker bda-mm-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(cfg.displayLabel) + '</span>' +
+                    '</label>';
+            });
+
+            PENDING_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                html +=
+                    '<label class="bda-filter-option is-disabled">' +
+                        '<input type="checkbox" disabled aria-disabled="true"> ' +
+                        '<span class="bda-filter-modality-marker bda-mm-' + escapeHtml(suffix) + ' is-pending" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(cfg.displayLabel) +
+                            ' <span class="bda-filter-pending-tag">(pending)</span></span>' +
+                    '</label>';
+            });
+
+            container.innerHTML = html;
+
+            container.addEventListener('change', function (e) {
+                var t = e.target;
+                if (!t || t.tagName !== 'INPUT' || t.type !== 'checkbox') return;
+                var mod = t.getAttribute('data-modality');
+                if (!mod) return;
+                if (t.checked) {
+                    if (activeModalities.indexOf(mod) === -1) activeModalities.push(mod);
+                } else {
+                    activeModalities = activeModalities.filter(function (m) { return m !== mod; });
+                }
+                rebuildVisualization();
+            });
+        }
+
+        function buildNodeLegend() {
+            var list = document.getElementById('bda-network-node-legend-list');
+            if (!list) return;
+            var html = '';
+            ACTIVE_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                // The network uses networkShape (diamond for revolutionary, etc.)
+                // Legend label describes the network shape specifically.
+                var shapeName = cfg.networkShape.charAt(0).toUpperCase() + cfg.networkShape.slice(1);
+                html +=
+                    '<li class="bda-network-legend-item">' +
+                        '<span class="bda-legend-node-marker bda-legend-node-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(shapeName + ' \u2014 ' + cfg.displayLabel + ' Modality') + '</span>' +
+                    '</li>';
+            });
+            list.innerHTML = html;
+        }
+
+        function buildEdgeLegend() {
+            var list = document.getElementById('bda-network-edge-legend-list');
+            if (!list) return;
+            var types = ['META', 'P2C', 'C2C', 'ORG', 'CC'];
+            var html = '';
+            types.forEach(function (t) {
+                var suffix = t.toLowerCase();
+                html +=
+                    '<li class="bda-network-legend-item">' +
+                        '<span class="bda-legend-line bda-legend-edge-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(edgeDashLabels[t] + ' \u2014 ' + t + ': ' + edgeTypeLabels[t]) + '</span>' +
+                    '</li>';
+            });
+            list.innerHTML = html;
+        }
+
+        // =====================================================================
+        // Build nodes + edges from loaded data and active filter
+        // =====================================================================
+
+        function buildGraphData() {
+            var figures = allFigures.filter(function (f) {
+                return activeModalities.indexOf(f.modality) !== -1;
+            });
+
+            nodesData = figures.map(function (figure) {
+                return {
+                    id: figure.id,
+                    name: figure.name,
+                    type: figure.type,
+                    modality: figure.modality,
+                    emergence: (figure.emergence && figure.emergence.year) || null,
+                    meta_badman: figure.meta_badman || false,
+                    active_start: (figure.years && figure.years.active_start) || 1930,
+                    active_end: (figure.years && figure.years.active_end) || 2020,
+                    influence_phases: (figure.influence && figure.influence.phases) || [],
+                    _figure: figure
+                };
+            });
+
+            var activeIds = {};
+            nodesData.forEach(function (n) { activeIds[n.id] = true; });
+
+            edgesData = [];
+            figures.forEach(function (figure) {
+                if (!Array.isArray(figure.connections)) return;
+                figure.connections.forEach(function (conn) {
+                    if (conn.direction !== 'outgoing' && conn.direction !== 'mutual') return;
+                    if (!activeIds[conn.target_id]) return;
+                    edgesData.push({
+                        source: figure.id,
+                        target: conn.target_id,
+                        type: conn.type,
+                        tier: conn.tier,
+                        direction: conn.direction,
+                        evidence: conn.evidence || ''
+                    });
+                });
+            });
+        }
+
+        // =====================================================================
+        // SVG setup
+        // =====================================================================
+
+        function setupSvg() {
+            var container = document.getElementById('network-container');
+            var width = container.clientWidth;
+            var height = container.clientHeight;
+
+            // Clear any loading placeholder
+            container.innerHTML = '';
+
+            svg = d3.select('#network-container')
+                .append('svg')
+                .attr('width', width)
+                .attr('height', height)
+                .attr('role', 'img')
+                .attr('aria-label', 'Force-directed network visualization of Detroit badman figure relationships');
+
+            svg.append('title').text('Network visualization of Detroit badman figure relationships');
+            svg.append('desc').text(
+                'Force-directed graph showing connections between badman figures. ' +
+                'Nodes represent figures sized by influence at the selected year. ' +
+                'Edges represent documented relationships typed as META, P2C, C2C, ORG, or CC.'
+            );
+
+            g = svg.append('g');
+
+            // Arrowhead markers per edge type
+            svg.append('defs').selectAll('marker')
+                .data(['META', 'P2C', 'C2C', 'ORG', 'CC'])
+                .enter()
+                .append('marker')
+                .attr('id', function (d) { return 'arrow-' + d; })
+                .attr('viewBox', '0 -5 10 10')
+                .attr('refX', 20)
+                .attr('refY', 0)
+                .attr('markerWidth', 8)
+                .attr('markerHeight', 8)
+                .attr('orient', 'auto')
+                .append('path')
+                .attr('d', 'M0,-5L10,0L0,5')
+                .attr('fill', function (d) { return edgeColors[d] || '#cccccc'; });
+
+            svg.call(d3.zoom()
+                .scaleExtent([0.3, 3])
+                .on('zoom', function (event) {
+                    g.attr('transform', event.transform);
+                })
+            );
+
+            svg.on('click', function () { unfocus(); });
+
+            // Establish radius scale
+            radiusScale = d3.scaleSqrt().domain([0, 10]).range([0, 45]);
+        }
+
+        // =====================================================================
+        // Render the graph (physics, edges, nodes, labels)
+        // =====================================================================
+
+        /**
+         * Render the D3 node path string for a given modality.
+         * - circle / diamond / hexagon / square / triangle
+         * The radius parameter sets outer size.
+         */
+        function nodeShapePath(shape, r) {
+            switch (shape) {
+                case 'circle':
+                    return 'M' + (-r) + ',0 A' + r + ',' + r + ' 0 1,0 ' + r + ',0 A' + r + ',' + r + ' 0 1,0 ' + (-r) + ',0';
+                case 'diamond':
+                    return 'M0,' + (-r) + ' L' + r + ',0 L0,' + r + ' L' + (-r) + ',0 Z';
+                case 'hexagon':
+                    // Flat-top hexagon
+                    var h = r * 0.866;
+                    return 'M' + (-r / 2) + ',' + (-h) +
+                           ' L' + (r / 2) + ',' + (-h) +
+                           ' L' + r + ',0' +
+                           ' L' + (r / 2) + ',' + h +
+                           ' L' + (-r / 2) + ',' + h +
+                           ' L' + (-r) + ',0 Z';
+                case 'square':
+                    return 'M' + (-r) + ',' + (-r) + ' L' + r + ',' + (-r) + ' L' + r + ',' + r + ' L' + (-r) + ',' + r + ' Z';
+                case 'triangle':
+                    return 'M0,' + (-r) + ' L' + r + ',' + r + ' L' + (-r) + ',' + r + ' Z';
+                default:
+                    return 'M' + (-r) + ',0 A' + r + ',' + r + ' 0 1,0 ' + r + ',0 A' + r + ',' + r + ' 0 1,0 ' + (-r) + ',0';
+            }
+        }
+
+        function renderGraph() {
+            var container = document.getElementById('network-container');
+            var width = container.clientWidth;
+            var height = container.clientHeight;
+
+            // Clear existing graph children from g (but not defs/title/desc on svg)
+            g.selectAll('*').remove();
+
+            // Simulation
+            simulation = d3.forceSimulation(nodesData)
+                .force('link', d3.forceLink(edgesData).id(function (d) { return d.id; }).distance(150))
+                .force('charge', d3.forceManyBody().strength(-400))
+                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('collision', d3.forceCollide().radius(function (d) {
+                    return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
+                }))
+                .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05));
+
+            if (reducedMotion) {
+                for (var i = 0; i < 300; i++) simulation.tick();
+                simulation.stop();
+            }
+
+            // Invisible hit areas for edge clicks
+            edgeHitArea = g.append('g')
+                .attr('class', 'edge-hit-areas')
+                .selectAll('line')
+                .data(edgesData)
+                .enter()
+                .append('line')
+                .attr('stroke', 'transparent')
+                .attr('stroke-width', 15)
+                .style('cursor', 'pointer');
+
+            edgeHitArea.on('click', function (event, d) {
+                event.stopPropagation();
+                showConnectionDetails(d);
+                edge.attr('stroke-opacity', function (e) { return e === d ? 1.0 : 0.1; });
+            });
+
+            // Visible edges
+            edge = g.append('g')
+                .attr('class', 'edges')
+                .selectAll('line')
+                .data(edgesData)
+                .enter()
+                .append('line')
+                .attr('stroke', function (d) { return edgeColors[d.type] || '#cccccc'; })
+                .attr('stroke-width', 2.5)
+                .attr('stroke-opacity', function (d) {
+                    return (evidenceTiers && evidenceTiers[d.tier] && evidenceTiers[d.tier].opacity) || 0.8;
+                })
+                .attr('stroke-dasharray', function (d) {
+                    var typeDash = edgeDashPatterns[d.type];
+                    if (typeDash) return typeDash;
+                    var tierStyle = evidenceTiers && evidenceTiers[d.tier] && evidenceTiers[d.tier].line_style;
+                    if (tierStyle === 'dashed') return '8,4';
+                    if (tierStyle === 'dotted') return '2,4';
+                    return null;
+                })
+                .attr('marker-end', function (d) {
+                    if (d.direction === 'outgoing') return 'url(#arrow-' + d.type + ')';
+                    return null;
+                });
+
+            // Nodes: shape-per-modality via path
+            node = g.append('g')
+                .attr('class', 'nodes')
+                .selectAll('path')
+                .data(nodesData)
+                .enter()
+                .append('path')
+                .attr('d', function (d) {
+                    var shape = getModalityConfig(d.modality).networkShape;
+                    return nodeShapePath(shape, radiusScale(getInfluenceAtYear(d, currentYear)));
+                })
+                .attr('fill', function (d) { return getModalityColor(d.modality); })
+                .attr('stroke', '#ffffff')
+                .attr('stroke-width', 2)
+                .attr('tabindex', '0')
+                .attr('role', 'button')
+                .attr('aria-label', function (d) {
+                    return d.name + ', ' + getModalityConfig(d.modality).displayLabel + ' modality';
+                })
+                .call(d3.drag()
+                    .on('start', dragStarted)
+                    .on('drag', dragged)
+                    .on('end', dragEnded));
+
+            node.on('click', function (event, d) {
+                event.stopPropagation();
+                onNodeActivate(d);
+            });
+
+            node.on('keydown', function (event, d) {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    onNodeActivate(d);
+                }
+            });
+
+            // Labels
+            label = g.append('g')
+                .attr('class', 'labels')
+                .selectAll('text')
+                .data(nodesData)
+                .enter()
+                .append('text')
+                .text(function (d) { return d.name; })
+                .attr('font-size', '12px')
+                .attr('fill', '#e8e8e8')
+                .attr('text-anchor', 'middle')
+                .attr('pointer-events', 'none')
+                .attr('dy', function (d) {
+                    return -(radiusScale(getInfluenceAtYear(d, currentYear)) + 10);
+                });
+
+            simulation.on('tick', function () {
+                edgeHitArea
+                    .attr('x1', function (d) { return d.source.x; })
+                    .attr('y1', function (d) { return d.source.y; })
+                    .attr('x2', function (d) { return d.target.x; })
+                    .attr('y2', function (d) { return d.target.y; });
+                edge
+                    .attr('x1', function (d) { return d.source.x; })
+                    .attr('y1', function (d) { return d.source.y; })
+                    .attr('x2', function (d) { return d.target.x; })
+                    .attr('y2', function (d) { return d.target.y; });
+                node.attr('transform', function (d) {
+                    return 'translate(' + d.x + ',' + d.y + ')';
+                });
+                label
+                    .attr('x', function (d) { return d.x; })
+                    .attr('y', function (d) { return d.y; });
+            });
+        }
+
+        function dragStarted(event, d) {
+            if (!event.active) simulation.alphaTarget(0.3).restart();
+            d.fx = d.x;
+            d.fy = d.y;
+        }
+        function dragged(event, d) {
+            d.fx = event.x;
+            d.fy = event.y;
+        }
+        function dragEnded(event, d) {
+            if (!event.active) simulation.alphaTarget(0);
+            d.fx = null;
+            d.fy = null;
+        }
+
+        // =====================================================================
+        // Node click → focus, detail panel, figure metrics
+        // =====================================================================
+
+        function onNodeActivate(d) {
+            if (focusedNode === d.id) {
+                unfocus();
+                return;
+            }
+            focusedNode = d.id;
+
+            var connectedIds = {};
+            connectedIds[d.id] = true;
+            edgesData.forEach(function (e) {
+                var sId = typeof e.source === 'object' ? e.source.id : e.source;
+                var tId = typeof e.target === 'object' ? e.target.id : e.target;
+                if (sId === d.id) connectedIds[tId] = true;
+                if (tId === d.id) connectedIds[sId] = true;
+            });
+
+            node.attr('opacity', function (n) { return connectedIds[n.id] ? 1 : 0.15; });
+            label.attr('opacity', function (n) { return connectedIds[n.id] ? 1 : 0.15; });
+            edge.attr('opacity', function (e) {
+                var sId = typeof e.source === 'object' ? e.source.id : e.source;
+                var tId = typeof e.target === 'object' ? e.target.id : e.target;
+                return (sId === d.id || tId === d.id) ? 1 : 0.05;
+            });
+
+            // Update the shared connection panel using scripts.js's showFigureDetails
+            // — this keeps the detail surface consistent across map/network/sr-table.
+            var fullFigure = figureById[d.id];
+            if (fullFigure) {
+                showFigureDetails(figureWithResolvedSources(fullFigure), 'connection-content', 'connection-panel');
+            }
+
+            // Populate the selected-figure metrics panel
+            showFigureMetrics(d, currentYear);
+        }
+
+        function unfocus() {
+            focusedNode = null;
+            if (node) node.attr('opacity', 1);
+            if (label) label.attr('opacity', 1);
+            if (edge) {
+                edge.attr('opacity', function (d) {
+                    return (evidenceTiers && evidenceTiers[d.tier] && evidenceTiers[d.tier].opacity) || 0.8;
+                });
+            }
+            var content = document.getElementById('connection-content');
+            if (content) {
+                content.innerHTML =
+                    '<p>Select a figure from the network or the figures list below to view relationship details.</p>';
+            }
+            var figMetrics = document.getElementById('figure-metrics-content');
+            if (figMetrics) {
+                figMetrics.innerHTML =
+                    '<p>Select a figure from the network or the figures list to view detailed metrics.</p>';
+            }
+        }
+
+        // =====================================================================
+        // Edge click → connection details into figure-metrics-panel
+        // =====================================================================
+
+        function showConnectionDetails(d) {
+            var sourceName = typeof d.source === 'object' ? d.source.name : d.source;
+            var targetName = typeof d.target === 'object' ? d.target.name : d.target;
+            var arrow = d.direction === 'mutual' ? '\u2194' : '\u2192';
+
+            var html = '';
+            html += '<h3 class="bda-network-connection-title">' +
+                        escapeHtml(sourceName) + ' ' + arrow + ' ' + escapeHtml(targetName) +
+                    '</h3>';
+            html += '<p><strong>Type:</strong> ' +
+                        '<span class="bda-network-edge-type bda-network-edge-' + escapeHtml(d.type.toLowerCase()) + '">' +
+                            escapeHtml(edgeTypeLabels[d.type] || d.type) +
+                        '</span>' +
+                    '</p>';
+            html += '<p><strong>Evidence Tier:</strong> ' + tierBadge(d.tier) + '</p>';
+            if (d.evidence) {
+                html += '<p><strong>Evidence:</strong></p>';
+                html += '<blockquote class="bda-network-evidence">' + escapeHtml(d.evidence) + '</blockquote>';
+            }
+
+            var container = document.getElementById('figure-metrics-content');
+            if (container) container.innerHTML = html;
+
+            // Rewrite the heading of the right-hand panel for clarity
+            var heading = document.getElementById('bda-network-figure-metrics-heading');
+            if (heading) heading.textContent = 'Connection Details';
+
+            var panel = document.getElementById('figure-metrics-panel');
+            if (panel && typeof panel.focus === 'function') panel.focus();
+        }
+
+        function tierBadge(tier) {
+            var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
+            var tierSuffix = String(tier);
+            return '<span class="bda-network-tier-badge bda-network-tier-' + escapeHtml(tierSuffix) + '">' +
+                       escapeHtml(labels[tier] || 'Unknown') +
+                   '</span>';
+        }
+
+        // =====================================================================
+        // Selected figure metrics
+        // =====================================================================
+
+        function showFigureMetrics(nodeDatum, year) {
+            var inDegree = 0;
+            var outDegree = 0;
+            var connections = [];
+
+            edgesData.forEach(function (e) {
+                var sId = typeof e.source === 'object' ? e.source.id : e.source;
+                var tId = typeof e.target === 'object' ? e.target.id : e.target;
+                if (sId === nodeDatum.id) {
+                    outDegree++;
+                    var tName = typeof e.target === 'object' ? e.target.name : tId;
+                    connections.push({ direction: 'out', otherName: tName, type: e.type, tier: e.tier });
+                }
+                if (tId === nodeDatum.id) {
+                    inDegree++;
+                    var sName = typeof e.source === 'object' ? e.source.name : sId;
+                    connections.push({ direction: 'in', otherName: sName, type: e.type, tier: e.tier });
+                }
+            });
+
+            var influence = getInfluenceAtYear(nodeDatum, year);
+            var justification = 'No data for this period';
+            if (nodeDatum.influence_phases && nodeDatum.influence_phases.length > 0) {
+                var matched = false;
+                for (var i = 0; i < nodeDatum.influence_phases.length; i++) {
+                    var phase = nodeDatum.influence_phases[i];
+                    if (year >= phase.start && year <= phase.end) {
+                        justification = phase.justification || phase.label || 'Active';
+                        matched = true;
+                        break;
+                    }
+                }
+                if (!matched && year >= nodeDatum.active_start) {
+                    var lastPhase = nodeDatum.influence_phases[nodeDatum.influence_phases.length - 1];
+                    justification = lastPhase.justification || lastPhase.label || 'Posthumous legacy';
+                }
+            }
+
+            var html = '';
+            html += '<h3 class="bda-network-figure-name">' + escapeHtml(nodeDatum.name) + '</h3>';
+
+            html += '<p class="bda-network-degree"><strong>Degree:</strong> ' + (inDegree + outDegree);
+            html += ' <small>(In: ' + inDegree + ' \u00b7 Out: ' + outDegree + ')</small></p>';
+
+            html += '<p><strong>Influence at ' + escapeHtml(String(year)) + ':</strong> ' + influence + ' / 10</p>';
+            html += '<div class="bda-network-influence-bar" role="progressbar" ' +
+                        'aria-valuenow="' + influence + '" aria-valuemin="0" aria-valuemax="10" ' +
+                        'aria-label="Influence score ' + influence + ' out of 10">' +
+                        '<div class="bda-network-influence-bar-fill" style="width:' + (influence * 10) + '%"></div>' +
+                    '</div>';
+            html += '<p class="bda-network-influence-justification"><small>' + escapeHtml(justification) + '</small></p>';
+
+            if (connections.length === 0) {
+                html += '<p><strong>Connections:</strong> <small>None at this period.</small></p>';
+            } else {
+                html += '<p><strong>Connections:</strong></p>';
+                html += '<ul class="bda-network-connections-list list-unstyled">';
+                connections.forEach(function (conn) {
+                    var arrow = conn.direction === 'out' ? '\u2192' : '\u2190';
+                    html +=
+                        '<li class="bda-network-connection-item">' +
+                            arrow + ' ' + escapeHtml(conn.otherName) + ' ' + tierBadge(conn.tier) +
+                        '</li>';
+                });
+                html += '</ul>';
+            }
+
+            // Reset heading to default
+            var heading = document.getElementById('bda-network-figure-metrics-heading');
+            if (heading) heading.textContent = 'Selected Figure Metrics';
+
+            var container = document.getElementById('figure-metrics-content');
+            if (container) container.innerHTML = html;
+
+            var panel = document.getElementById('figure-metrics-panel');
+            if (panel && typeof panel.focus === 'function') panel.focus();
+        }
+
+        // =====================================================================
+        // Network summary metrics
+        // =====================================================================
+
+        function updateNetworkMetrics(year) {
+            var activeNodes = nodesData.filter(function (d) {
+                return getInfluenceAtYear(d, year) > 0;
+            });
+            var activeNodeIds = {};
+            activeNodes.forEach(function (n) { activeNodeIds[n.id] = true; });
+
+            var activeEdges = edgesData.filter(function (e) {
+                var sId = typeof e.source === 'object' ? e.source.id : e.source;
+                var tId = typeof e.target === 'object' ? e.target.id : e.target;
+                return activeNodeIds[sId] && activeNodeIds[tId];
+            });
+
+            var n = activeNodes.length;
+            var e = activeEdges.length;
+
+            setText('metric-active-figures', n + ' of ' + nodesData.length);
+            setText('metric-active-connections', String(e));
+
+            var possible = n * (n - 1);
+            var density = possible > 0 ? (e / possible) : 0;
+            setText('metric-density', (density * 100).toFixed(1) + '%');
+
+            var directedCount = 0;
+            var mutualCount = 0;
+            activeEdges.forEach(function (ae) {
+                directedCount++;
+                var sId = typeof ae.source === 'object' ? ae.source.id : ae.source;
+                var tId = typeof ae.target === 'object' ? ae.target.id : ae.target;
+                var hasReverse = activeEdges.some(function (other) {
+                    var oSrc = typeof other.source === 'object' ? other.source.id : other.source;
+                    var oTgt = typeof other.target === 'object' ? other.target.id : other.target;
+                    return oSrc === tId && oTgt === sId;
+                });
+                if (hasReverse) mutualCount++;
+            });
+            setText('metric-reciprocity', mutualCount + ' / ' + directedCount);
+
+            var crossCount = 0;
+            activeEdges.forEach(function (ae) {
+                var sNode = typeof ae.source === 'object' ? ae.source :
+                    nodesData.find(function (nd) { return nd.id === ae.source; });
+                var tNode = typeof ae.target === 'object' ? ae.target :
+                    nodesData.find(function (nd) { return nd.id === ae.target; });
+                if (sNode && tNode && sNode.modality !== tNode.modality) crossCount++;
+            });
+            setText('metric-cross-modality', String(crossCount));
+        }
+
+        function setText(id, text) {
+            var el = document.getElementById(id);
+            if (el) el.textContent = text;
+        }
+
+        // =====================================================================
+        // SR-only data table
+        // =====================================================================
+
+        function renderSrTable() {
+            var tbody = document.getElementById('sr-network-table-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            nodesData.forEach(function (n) {
+                var connCount = edgesData.filter(function (e) {
+                    var sId = typeof e.source === 'object' ? e.source.id : e.source;
+                    var tId = typeof e.target === 'object' ? e.target.id : e.target;
+                    return sId === n.id || tId === n.id;
+                }).length;
+
+                var cfg = getModalityConfig(n.modality);
+                var row = document.createElement('tr');
+                row.setAttribute('tabindex', '0');
+                row.setAttribute('role', 'button');
+                row.setAttribute('aria-label', 'View details for ' + n.name);
+                row.innerHTML =
+                    '<th scope="row">' + escapeHtml(n.name) + '</th>' +
+                    '<td>' + escapeHtml(cfg.displayLabel) + '</td>' +
+                    '<td>' + escapeHtml(formatFigureType(n.type, n.meta_badman)) + '</td>' +
+                    '<td>' + escapeHtml(String(n.active_start) + ' \u2013 ' + (n.active_end || 'present')) + '</td>' +
+                    '<td>' + connCount + '</td>';
+
+                row.addEventListener('click', function () { onNodeActivate(n); });
+                row.addEventListener('keydown', function (ev) {
+                    if (ev.key === 'Enter' || ev.key === ' ') {
+                        ev.preventDefault();
+                        onNodeActivate(n);
+                    }
+                });
+                tbody.appendChild(row);
+            });
+        }
+
+        // =====================================================================
+        // Timeline + pause wiring
+        // =====================================================================
+
+        function wireControls() {
+            var slider = document.getElementById('timeline-slider');
+            if (slider) {
+                slider.addEventListener('input', function () {
+                    currentYear = parseInt(this.value, 10);
+                    this.setAttribute('aria-valuenow', currentYear);
+                    setText('timeline-year', String(currentYear));
+                    applyTimelineToGraph();
+                });
+            }
+
+            var pauseBtn = document.getElementById('pause-animation');
+            if (pauseBtn) {
+                pauseBtn.addEventListener('click', function () {
+                    if (!simulation) return;
+                    animationPaused = !animationPaused;
+                    if (animationPaused) {
+                        simulation.stop();
+                        this.textContent = 'Resume Animation';
+                        this.setAttribute('aria-label', 'Resume network animation');
+                    } else {
+                        simulation.alpha(0.3).restart();
+                        this.textContent = 'Pause Animation';
+                        this.setAttribute('aria-label', 'Pause network animation');
+                    }
+                });
+            }
+        }
+
+        function applyTimelineToGraph() {
+            if (!node || !edge || !label || !simulation) return;
+
+            var duration = reducedMotion ? 0 : 300;
+
+            node.transition().duration(duration)
+                .attr('d', function (d) {
+                    var shape = getModalityConfig(d.modality).networkShape;
+                    return nodeShapePath(shape, radiusScale(getInfluenceAtYear(d, currentYear)));
+                })
+                .attr('opacity', function (d) {
+                    return currentYear >= d.active_start ? 1 : 0;
+                });
+
+            label.transition().duration(duration)
+                .attr('opacity', function (d) {
+                    return currentYear >= d.active_start ? 1 : 0;
+                })
+                .attr('dy', function (d) {
+                    return -(radiusScale(getInfluenceAtYear(d, currentYear)) + 10);
+                });
+
+            edge.transition().duration(duration)
+                .attr('opacity', function (d) {
+                    var sActive = currentYear >= (typeof d.source === 'object' ? d.source.active_start : 0);
+                    var tActive = currentYear >= (typeof d.target === 'object' ? d.target.active_start : 0);
+                    if (sActive && tActive) {
+                        return (evidenceTiers && evidenceTiers[d.tier] && evidenceTiers[d.tier].opacity) || 0.8;
+                    }
+                    return 0;
+                });
+
+            simulation.force('collision').radius(function (d) {
+                return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
+            });
+            if (!animationPaused && !reducedMotion) {
+                simulation.alpha(0.3).restart();
+            }
+
+            updateNetworkMetrics(currentYear);
+        }
+
+        // =====================================================================
+        // Rebuild visualization after filter change
+        // =====================================================================
+
+        function rebuildVisualization() {
+            focusedNode = null;
+            buildGraphData();
+            renderGraph();
+            renderSrTable();
+            updateNetworkMetrics(currentYear);
+            unfocus();
+        }
+
+        // =====================================================================
+        // Load data and initialize
+        // =====================================================================
+
+        function renderLoadError() {
+            var container = document.getElementById('network-container');
+            if (container) {
+                container.innerHTML =
+                    '<p class="bda-network-loading" role="alert">Could not load archive data. Please try again.</p>';
+            }
+        }
+
+        function init() {
+            reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            currentYear = parseInt(document.getElementById('timeline-slider').value, 10);
+
+            loadArchiveData(DATA_URL).then(function (data) {
+                if (!data) {
+                    renderLoadError();
+                    return;
+                }
+
+                indexSources(data);
+
+                // Build edge color lookup from top-level edge_types
+                if (data.edge_types) {
+                    Object.keys(data.edge_types).forEach(function (t) {
+                        if (data.edge_types[t] && data.edge_types[t].color) {
+                            edgeColors[t] = data.edge_types[t].color;
+                        }
+                    });
+                }
+
+                evidenceTiers = data.evidence_tiers || null;
+
+                allFigures = (Array.isArray(data.figures) ? data.figures : []).filter(function (f) {
+                    return f && !f._placeholder && f.id && f.modality;
+                });
+                figureById = {};
+                allFigures.forEach(function (f) { figureById[f.id] = f; });
+
+                buildFilterUi();
+                buildNodeLegend();
+                buildEdgeLegend();
+
+                setupSvg();
+                buildGraphData();
+                renderGraph();
+                renderSrTable();
+                wireControls();
+                updateNetworkMetrics(currentYear);
+
+                setText('timeline-year', String(currentYear));
+            }).catch(function (err) {
+                console.error('network.html: failed to load data', err);
+                renderLoadError();
+            });
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>
