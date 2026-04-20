@@ -1,10 +1,28 @@
 # HTML Templates Documentation
 
+**Version:** 2.0
+**Last Updated:** April 2026
+
 ## Overview
 
-The Detroit Badman Archive consists of seven HTML pages sharing a common structure. This document explains the template architecture and how to modify each page.
+The Detroit Badman Archive consists of multiple HTML pages sharing a common architectural pattern. This document describes the page-level template vocabulary — what every page must contain, what page-specific templates look like, and how pages interact with the partials system and site-wide JavaScript.
 
-All pages conform to **WCAG 2.2 Level AA** and the **MSU Digital Accessibility Basic Checklist** (webaccess.msu.edu/basiclist). Accessibility is structural, not decorative — every template pattern in this document includes the required accessible markup. Do not strip ARIA attributes, skip heading levels, or remove sr-only elements when modifying pages.
+This document is the destination the code is being synced to match. Page HTML that diverges (inline `style="..."` attributes, hardcoded hex values, `<h1>` wrapped in `<header>` outside `<main>`, missing partial placeholders, flat-file routes) gets brought in line with this spec during the HTML cleanup pass.
+
+All pages conform to **WCAG 2.2 Level AA** and the **MSU Digital Accessibility Basic Checklist** (webaccess.msu.edu/basiclist). Accessibility is structural, not decorative — every template pattern in this document includes the required accessible markup. Do not strip ARIA attributes, skip heading levels, or remove `sr-only` elements when modifying pages.
+
+### Authority contracts
+
+This document is one of four interlocking specs. Each owns a surface of the system:
+
+| Document | Owns |
+|----------|------|
+| `HTML_TEMPLATES.md` (this document) | Page-level structure, heading hierarchy, landmark usage, page-specific templates |
+| `CSS_DOCUMENTATION.md` | The `styles.css` class vocabulary, color variables, visual identity systems |
+| `JAVASCRIPT_DOCUMENTATION.md` | Site-wide JS behavior (`scripts.js`, `bda-partials-loader.js`), partial placeholder contracts |
+| `DATAREADME.md` | The JSON schema (`detroit.json`), source/figure data model |
+
+When a class, ID, or data contract is referenced here, the authoritative definition lives in the file that owns it. Cross-references are called out inline.
 
 ---
 
@@ -20,35 +38,35 @@ All pages conform to **WCAG 2.2 Level AA** and the **MSU Digital Accessibility B
 
 Run these on every page before any deployment:
 
-- **WebAIM Contrast Checker** — webaim.org/resources/contrastchecker (contrast verification, same formulas as Deque)
-- **WAVE Browser Extension** — wave.webaim.org (automated WCAG scanning)
-- **axe DevTools** — Chrome extension (code-level WCAG testing)
-- **NVDA** — Free screen reader for manual verification on Windows
+- **WebAIM Contrast Checker** — webaim.org/resources/contrastchecker
+- **WAVE Browser Extension** — wave.webaim.org
+- **axe DevTools** — Chrome extension
+- **NVDA** — Free Windows screen reader for manual verification
+- **Keyboard-only navigation** — Tab through the entire page with no mouse
 
-### Color Contrast Reference
+### Color Contrast
 
-All text/background combinations must meet WCAG AA minimums: 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold) and UI components. Contrast verified via WebAIM Contrast Checker in April 2026.
+The authoritative contrast reference table lives in `CSS_DOCUMENTATION.md` under "Color Contrast Reference Table." When adding a new color combination to page HTML, (1) the color must resolve to a CSS variable defined in `:root`, (2) the combination must be verified at WCAG AA minimums via the WebAIM Contrast Checker, and (3) the result must be added to the table in the CSS doc.
 
-| Element | Foreground | Background | Ratio | AA | Status |
-|---------|-----------|------------|-------|----|----|
-| Primary text | `#e8e8e8` | `#1a472a` | 8.66:1 | Pass | ✅ |
-| Secondary text | `#c8c8c8` | `#1a472a` | 6.34:1 | Pass | ✅ |
-| Muted text | `#b0b0b0` | `#1a472a` | 4.89:1 | Pass | ✅ |
-| Link text (on content bg) | `#50c878` | `#0d2818` | 7.4:1 | Pass | ✅ |
-| Link vs. adjacent primary text | `#50c878` | `#e8e8e8` | 1.73:1 | Fail | ✅ via underline* |
-| Heading accent | `#50c878` | `#0d2818` | 7.4:1 | Pass | ✅ |
-| Nav hover / active | `#d4af37` | `#0a1f12` | 8.2:1 | Pass | ✅ |
-| Footer text | `#e8e8e8` | `#0a1f12` | 14.07:1 | Pass | ✅ |
-| Focus ring | `#d4af37` | `#1a472a` | 5.04:1 | Pass | ✅ |
-| Button text | `#ffffff` | `#552583` | 10.61:1 | Pass | ✅ |
+---
 
-*\* **Link vs. adjacent primary text:** The emerald link color fails the adjacent-text contrast test against `#e8e8e8` primary text in isolation. This is mitigated by applying `text-decoration: underline` to all in-prose links, satisfying WCAG 1.4.1 via non-color differentiation. Do not remove link underlines in body text contexts. Navigation links, buttons, and other structurally-signalled link elements do not require underlines because their structural context signals link-ness.*
+## Core Rules
 
-**Rule:** When adding any new color combination, run it through the WebAIM Contrast Checker before committing. Document the result in this table.
+These four rules apply to every page, partial, and dynamic HTML fragment emitted by JavaScript.
 
-### Modality Visual Identity System
+1. **No inline `style="..."` attributes.** All visual properties come from CSS classes defined in `styles.css`. The only exception is CSS custom property declarations used as runtime values (e.g., `style="--criterion-value: 5;"` for the figure-page score bars). Those are *values* passed to CSS, not style overrides.
 
-Color alone cannot differentiate modalities (WCAG 1.4.1). Every modality requires three distinguishable properties: color, marker shape, and icon/symbol.
+2. **No hardcoded hex values anywhere in HTML.** If a color appears in page source, it's in a CSS class.
+
+3. **Shape, not color, is the identity carrier.** Modality identity, edge type identity, evidence tier identity, and access level identity all use shape + color + text. Color is a reinforcing signal, never the sole signal (WCAG 1.4.1).
+
+4. **Partials own site chrome. Pages own placeholders.** The navbar, footer, and credentialing rail are not written into page HTML. Pages include placeholder elements; `bda-partials-loader.js` injects content. When navigation changes, edit `navbar.html` — not every page.
+
+---
+
+## Modality Visual Identity System
+
+Color alone cannot differentiate modalities (WCAG 1.4.1). Every modality requires three distinguishable properties: color, marker shape, and icon.
 
 | Modality | Color | Hex | Map Marker | Network Shape | Icon |
 |----------|-------|-----|------------|---------------|------|
@@ -58,9 +76,78 @@ Color alone cannot differentiate modalities (WCAG 1.4.1). Every modality require
 | Gangsta-Pimp | Purple | `#6f42c1` | Square | Square | Dollar sign |
 | Folk Hero-Outlaw | Gold | `#d4af37` | Triangle | Triangle | Star |
 
-This table is the single source of truth for modality visual identity. It must stay in sync with `getModalityConfig()` in `scripts.js`, the `.legend-[modality]` classes in `styles.css`, and the DATAREADME.md modality reference. When a new modality goes live, define all three properties here before writing any code. The `activeModalities` array in map.html and network.html controls which modalities render — add the modality string to that array when ready.
+This table is synchronized with:
 
-At launch, three modalities are active: Detective, Revolutionary, and Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw are defined in the visual identity system but not yet rendered pending post-launch activation.
+- `getModalityConfig()` in `scripts.js`
+- The `.legend-[modality]` and `.legend-node-[modality]` classes in `styles.css`
+- The Modality Visual Identity table in `CSS_DOCUMENTATION.md`
+- The Modality Reference in `DATAREADME.md`
+
+At launch, three modalities render: Detective, Revolutionary, Superhero-Villain. Gangsta-Pimp and Folk Hero-Outlaw are defined in the visual identity system but filtered out via the `activeModalities` array in `map.html` and `network.html` pending activation.
+
+### Legend label vocabulary
+
+`getModalityConfig()` returns two label strings per modality:
+
+- **`displayLabel`** — clean modality name for filter UI, card badges, and prose (`"Detective"`, `"Revolutionary"`)
+- **`legendLabel`** — descriptive shape-first label for map/network legends (`"Circle marker — Detective Modality"`)
+
+Page HTML that renders a legend uses `legendLabel`. Page HTML that renders filter UI uses `displayLabel`. These strings come from `getModalityConfig()` — do not hardcode them in page source.
+
+---
+
+## Edge Type and Evidence Tier Visual Identity
+
+The full edge type table (META, P2C, C2C, ORG, CC) and evidence tier table (1/Documented, 2/Evidenced, 3/Interpretive) are documented in `CSS_DOCUMENTATION.md`. When rendering an edge-type legend or an evidence tier badge in page HTML, reference the documented classes (`.legend-meta`, `.legend-p2c`, etc. for legend markers; `.bda-tier-1`, `.bda-tier-2`, `.bda-tier-3` for badges on connection items).
+
+---
+
+## Access Level Badges
+
+Source pages render an access level badge when the source's `access_level` is not `public`. The badge classes are defined in `styles.css`:
+
+| Access Level | Class | Display |
+|--------------|-------|---------|
+| `public` | *(no badge)* | No visual element |
+| `restricted` | `.bda-access-badge-restricted` | Gold badge — "Restricted" |
+| `embargoed` | `.bda-access-badge-embargoed` | Red badge — "Embargoed" |
+| `consent_required` | `.bda-access-badge-consent` | Purple badge — "Consent required" |
+
+At launch, every source is `public`. The other three are scaffolded for post-IRB interview integration.
+
+---
+
+## The Partials System
+
+Three partials are injected on every page where placeholders exist. `bda-partials-loader.js` handles injection, active-state marking, TOC building, and footer-year population. Page HTML's job is to (1) include the right placeholders, (2) include the loader script, and (3) wait for the `bda:partials-loaded` event if downstream JS depends on partial content.
+
+### Required placeholders
+
+Every page must include:
+
+```html
+<div id="bda-navbar"></div>
+<!-- page content -->
+<div id="bda-footer"></div>
+```
+
+Pages that warrant a credentialing rail (individual figure pages and individual source pages) also include:
+
+```html
+<aside id="bda-credentialing-rail" aria-label="About the author"></aside>
+```
+
+**Important:** The `aria-label` on the `<aside>` is applied in the page HTML, not injected by the loader. Screen readers announce the landmark with this label before the partial arrives. Do not add a second `<aside>` inside the partial — that creates nested landmarks.
+
+### FOUC mitigation
+
+Placeholder elements have `min-height` values defined in `styles.css` matching the expected partial heights. This prevents page reflow when partials arrive. Do not remove these CSS rules.
+
+### `bda:partials-loaded` event
+
+`bda-partials-loader.js` dispatches a `bda:partials-loaded` event on `document` once all partials have been injected and post-load wiring (active-state marking, TOC building, footer-year population) is complete. The most important consumer — Bootstrap dropdown re-initialization — lives in `scripts.js`. Page-specific scripts that interact with navbar, footer, or credentialing rail content must also wait for this event.
+
+See `JAVASCRIPT_DOCUMENTATION.md` for the full loader spec.
 
 ---
 
@@ -75,33 +162,54 @@ Every HTML file follows this structure:
         <!-- Meta tags, title, stylesheets -->
     </head>
     <body>
-        <!-- Skip navigation link (accessibility) -->
-        <a href="#main-content" class="sr-only sr-only-focusable">Skip to main content</a>
+        <!-- Skip-to-content link (WCAG 2.4.1) -->
+        <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
 
-        <header>
-            <!-- Site heading (desktop only) -->
-        </header>
-        <nav>
-            <!-- Navigation bar -->
-        </nav>
+        <!-- Navbar injected here by bda-partials-loader.js -->
+        <div id="bda-navbar"></div>
+
         <main id="main-content">
-            <section class="page-section">
-                <!-- Main content sections -->
-            </section>
+            <!-- Page content — h1 lives here, at the top -->
         </main>
-        <footer>
-            <!-- Copyright -->
-        </footer>
-        <!-- JavaScript includes -->
+
+        <!-- Footer injected here by bda-partials-loader.js -->
+        <div id="bda-footer"></div>
+
+        <!-- Bootstrap JS (must load before scripts.js) -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+        <!-- Site-wide JS -->
+        <script src="/js/scripts.js"></script>
+        <script src="/js/bda-partials-loader.js"></script>
+        <!-- Page-specific scripts -->
     </body>
 </html>
 ```
 
+### What changed from the prior template
+
+The prior template wrapped the page title in a `<header>` element above `<nav>`. That `<header>` is gone. The page's `<h1>` lives inside `<main>` (at the top of the primary content) — not above or beside the nav landmark. This keeps heading hierarchy flat under `<main>` and matches the landmark structure screen readers expect: navigation via the navbar partial, main content wrapped by `<main>`, contentinfo via the footer partial.
+
+Also removed: `.bda-skip-link` (use `.visually-hidden-focusable` instead), inline style attributes on content blocks, the inline navbar markup that used to be duplicated across every page.
+
 ### Accessibility scaffolding
 
-1. **Skip-to-content link** — First element inside `<body>`. Uses Bootstrap's `sr-only sr-only-focusable` classes: invisible until focused via keyboard, then appears on screen. Required by WCAG 2.4.1 (Bypass Blocks).
-2. **`<main>` landmark** — Wraps all content sections. The `id="main-content"` is the target of the skip link. Screen readers use the `<main>` landmark to jump directly to content.
-3. **Landmark structure** — Every page has: `<header>`, `<nav>`, `<main>`, `<footer>`. Screen readers expose these as navigable regions.
+1. **Skip-to-content link** — First element inside `<body>`. Uses `.visually-hidden-focusable` (or the Bootstrap-compatible alias `.sr-only-focusable`): invisible until focused via keyboard, then appears on screen. Required by WCAG 2.4.1 (Bypass Blocks).
+2. **`<main id="main-content">`** — Target of the skip link. Screen readers use the `<main>` landmark to jump directly to content.
+3. **Landmark structure** — Every page exposes: navigation (via the navbar partial's `<nav>`), main content (the `<main>` element), and contentinfo (via the footer partial's `<footer>`). Pages with a credentialing rail add a complementary landmark (the `<aside>`).
+
+### Script loading order
+
+Scripts must load in this order:
+
+```html
+<!-- Bootstrap JS bundle first -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- scripts.js next (contains bda:partials-loaded listener for Bootstrap dropdown re-init) -->
+<script src="/js/scripts.js"></script>
+<!-- Partial loader last — it fires bda:partials-loaded once partials inject -->
+<script src="/js/bda-partials-loader.js"></script>
+<!-- Page-specific scripts, if any, after the loader -->
+```
 
 ---
 
@@ -114,181 +222,50 @@ Every HTML file follows this structure:
     <meta name="description" content="Page-specific description" />
     <meta name="author" content="Harry Foster" />
     <title>Page Title | Detroit Badman Archive</title>
-    <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
-    <!-- Google fonts-->
-    <link href="https://fonts.googleapis.com/css?family=Raleway:..." rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css?family=Lora:..." rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
-    <link href="css/styles.css" rel="stylesheet" />
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico" />
+    <!-- Bootstrap CSS (must load before styles.css) -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Site stylesheet -->
+    <link href="/css/styles.css" rel="stylesheet" />
 </head>
 ```
 
 **To modify:**
+
 - Update `<meta name="description">` for each page (SEO + accessibility — screen readers can surface this)
-- Update `<title>` — Format: `Page Name | Detroit Badman Archive` (title is the first thing a screen reader announces)
-- **Add page-specific CSS** — Add `<style>` block after the stylesheet link
-- **Add page-specific libraries** — Add before `styles.css` (Leaflet for map.html, D3 for network.html)
+- Update `<title>` — Format: `Page Name | Detroit Badman Archive` (first thing a screen reader announces)
+- **Add page-specific libraries** — Leaflet for `map/`, D3 for `network/` — load before `styles.css`
 
----
-
-## Header Section
-
-```html
-<header>
-    <h1 class="site-heading text-center text-faded d-none d-lg-block">
-        <span class="site-heading-upper text-primary mb-3">Detroit Badman Archive</span>
-        <span class="site-heading-lower">Page Subtitle</span>
-    </h1>
-</header>
-```
-
-**Classes explained:**
-- `d-none d-lg-block` — Hidden on mobile, visible on large screens
-- `text-faded` — Cream/off-white color from CSS
-- `text-primary` — Gold color from CSS
-
-**To modify:**
-- Change the subtitle span for each page (e.g., "Geospatial Map", "Network Analysis")
-
-**Accessibility note:** This `<h1>` is the page's top-level heading. There must be exactly one `<h1>` per page. All subsequent headings must follow sequential order — `<h2>` for major sections, `<h3>` for subsections within those. Never skip from `<h1>` to `<h4>` or `<h5>`.
-
----
-
-## Navigation Section
-
-The navigation uses a dropdown structure with seven top-level items, five of which expand to sub-items. This matches the Phase 2.1 navigation restructure defined in the Pre-Launch Sprint Scoping document.
-
-```html
-<nav class="navbar navbar-expand-lg navbar-dark py-lg-4" id="mainNav" aria-label="Main navigation">
-    <div class="container">
-        <a class="navbar-brand text-uppercase fw-bold d-lg-none" href="index.html">Detroit Badman Archive</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mx-auto">
-
-                <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase" href="index.html">Home</a>
-                </li>
-
-                <li class="nav-item dropdown px-lg-4">
-                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="aboutDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">About</a>
-                    <ul class="dropdown-menu" aria-labelledby="aboutDropdown">
-                        <li><a class="dropdown-item" href="about/project.html">The Project</a></li>
-                        <li><a class="dropdown-item" href="about/tradition.html">The Badman Tradition</a></li>
-                        <li><a class="dropdown-item" href="about/methodology.html">Methodology</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown px-lg-4">
-                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="archiveDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Archive</a>
-                    <ul class="dropdown-menu" aria-labelledby="archiveDropdown">
-                        <li><a class="dropdown-item" href="figures.html">Figures</a></li>
-                        <li><a class="dropdown-item" href="sources.html">Primary Sources</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown px-lg-4">
-                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="visualizationsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Visualizations</a>
-                    <ul class="dropdown-menu" aria-labelledby="visualizationsDropdown">
-                        <li><a class="dropdown-item" href="map.html">Map</a></li>
-                        <li><a class="dropdown-item" href="network.html">Network</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item dropdown px-lg-4">
-                    <a class="nav-link dropdown-toggle text-uppercase" href="#" id="engagementDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Engagement</a>
-                    <ul class="dropdown-menu" aria-labelledby="engagementDropdown">
-                        <li><a class="dropdown-item" href="engagement/submit.html">Submit a Figure</a></li>
-                        <li><a class="dropdown-item" href="engagement/events.html">Events</a></li>
-                    </ul>
-                </li>
-
-                <li class="nav-item px-lg-4">
-                    <a class="nav-link text-uppercase" href="contact.html">Contact</a>
-                </li>
-
-            </ul>
-        </div>
-    </div>
-</nav>
-```
-
-**Navigation structure:**
-
-| Top-Level Item | Type | Sub-Items |
-|----------------|------|-----------|
-| Home | Direct link | — |
-| About | Dropdown | The Project, The Badman Tradition, Methodology |
-| Archive | Dropdown | Figures, Primary Sources |
-| Visualizations | Dropdown | Map, Network |
-| Engagement | Dropdown | Submit a Figure, Events |
-| Contact | Direct link | — |
-
-**Key elements:**
-- `navbar-brand` — Mobile-only site title (visible when nav is collapsed)
-- `navbar-toggler` — Hamburger menu button for mobile
-- `navbar-nav` — The navigation links list
-- `aria-label="Main navigation"` — Identifies this nav region for screen readers (required when a page has multiple `<nav>` elements, good practice always)
-- `dropdown-toggle` / `dropdown-menu` — Bootstrap 5 dropdown components, keyboard-accessible by default
-- `aria-labelledby` on each `<ul class="dropdown-menu">` — Associates the dropdown's items with the toggle button's `id`
-
-**To modify:**
-- **Adding a new top-level item** — Add new `<li class="nav-item px-lg-4">` following the direct-link pattern, or `<li class="nav-item dropdown px-lg-4">` for dropdowns
-- **Adding a sub-item under a dropdown** — Add new `<li><a class="dropdown-item" href="...">Label</a></li>` inside the appropriate `<ul class="dropdown-menu">`
-- **Renaming a page** — Update both the `href` and link text in every file where the nav appears
-- **IMPORTANT:** Navigation must be identical across all pages. Edit all files when making changes, or update the shared `/partials/navbar.html` partial when the partial architecture ships (see Phase 2.3 of the sprint scoping doc)
-
-**Accessibility notes:**
-- Bootstrap 5 handles all dropdown keyboard interaction natively — do not override it. The dropdown-toggle supports Tab (enter), Enter/Space (expand), Arrow keys (navigate items), Escape (close), and Home/End (jump to first/last item)
-- The `aria-controls`, `aria-expanded`, and `aria-label` attributes on the toggler button are required for the mobile menu to be accessible — do not remove them
-- The `role="button"` and `aria-expanded` on each dropdown toggle are required for screen reader users to understand that the element expands a submenu
-- When a dropdown item is the current page, mark it with `aria-current="page"` (set programmatically via scripts.js — see the DOM initialization function in JAVASCRIPT.md)
-- Focus indicators (gold ring, 5.04:1 contrast) apply to all dropdown toggles and items via the global `*:focus-visible` rule
-
-**Route reference:**
-
-Every dropdown item corresponds to a route defined in the Phase 2.2 URL structure:
-
-| Nav Item | Route |
-|----------|-------|
-| Home | `/` |
-| About → The Project | `/about/project` |
-| About → The Badman Tradition | `/about/tradition` |
-| About → Methodology | `/about/methodology` |
-| Archive → Figures | `/figures` |
-| Archive → Primary Sources | `/sources` |
-| Visualizations → Map | `/map` |
-| Visualizations → Network | `/network` |
-| Engagement → Submit a Figure | `/engagement/submit` |
-| Engagement → Events | `/engagement/events` |
-| Contact | `/contact` |
-
-Individual figure and source pages (`/figures/[slug]` and `/sources/[slug]`) are linked from the Figures and Primary Sources landing pages, not from the top navigation.
+**Known inconsistency:** Prior templates included `<link>` elements for Google Fonts (Raleway, Lora). The current `styles.css` does not reference those families — it inherits Bootstrap's default stack. This is a flagged inconsistency, not resolved in the current pass. Either the font links should be removed from page templates, or `styles.css` should declare `font-family` rules using the loaded families. Pick a direction before launch.
 
 ---
 
 ## Heading Hierarchy
 
-Every page must follow a sequential heading order. This is the defined hierarchy for the BDA:
+Every page must follow a sequential heading order.
 
 ```
-<h1> — Page title (one per page, in the <header>)
-  <h2> — Major sections (Map, Legend, Figure Details, Network, etc.)
-    <h3> — Subsections within panels (figure name in detail panel, metric categories)
+<h1> — Page title (one per page, inside <main>)
+  <h2> — Major sections
+    <h3> — Subsections within panels
       <h4> — Sub-subsections if needed (rare)
 ```
 
 **Rules:**
+
 - Never skip a level (no `<h1>` → `<h4>`)
 - Never use heading tags for styling — use CSS classes instead
-- The previous template used `<h5>` for panel headers like "Legend" and "Figure Details." These are now `<h2>` elements styled to match
+- One `<h1>` per page, at the top of `<main>`
 - Dynamically injected content (detail panels) must include proper heading structure — figure names are `<h3>`, not `<strong>`
+
+**Partial heading levels:** The footer and credentialing rail partials use `<h3>` for their internal section headings, so they don't compete with page `<h2>`s in screen-reader heading navigation.
 
 ---
 
 ## Content Sections
 
-### Standard Content Block (bg-faded)
+### Standard content block (`bg-faded`)
+
 ```html
 <section class="page-section">
     <div class="container">
@@ -308,13 +285,13 @@ Every page must follow a sequential heading order. This is the defined hierarchy
 ```
 
 **Classes explained:**
-- `page-section` — Adds vertical margin (5rem top and bottom)
-- `col-xl-9 mx-auto` — 75% width on extra-large screens, centered
-- `bg-faded` — Green background box (`#1a472a`)
-- `rounded` — Rounded corners
-- `p-5` — Padding (3rem)
 
-### Call-to-Action Block (cta)
+- `.page-section` — Vertical rhythm (padding top/bottom)
+- `.bg-faded` — Content-green background
+- `.section-heading` / `.section-heading-upper` / `.section-heading-lower` — Two-line heading pattern
+
+### Call-to-action block (`cta`)
+
 ```html
 <section class="page-section cta">
     <div class="container">
@@ -329,148 +306,59 @@ Every page must follow a sequential heading order. This is the defined hierarchy
 </section>
 ```
 
-The `cta` class adds a different background color to the section, creating visual alternation.
-
----
-
-## Footer Section
-
-```html
-<footer class="footer text-faded text-center py-5">
-    <div class="container">
-        <p class="m-0 small">Copyright &copy; Detroit Badman Archive 2026</p>
-    </div>
-</footer>
-```
-
-**To modify:**
-- Update copyright year
-- Add additional footer content (links, contact info)
-
----
-
-## JavaScript Includes (End of Body)
-
-```html
-<!-- Bootstrap core JS-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-<!-- Core theme JS-->
-<script src="js/scripts.js"></script>
-```
-
-**To add page-specific JavaScript:**
-Add a `<script>` block after `scripts.js`:
-```html
-<script>
-    // Page-specific code here
-</script>
-```
-
-See map.html and network.html for examples.
-
----
-
-## Links — Accessibility Requirements
-
-All links on the site must follow these rules (WCAG 2.4.4, 1.4.1).
-
-### Descriptive link text
-- Every link's text must describe its destination. Never use "click here" or "read more" alone.
-- If a generic label is unavoidable, add an `aria-label` with full context: `<a href="#" aria-label="Read more about Ron Scott">Read more</a>`
-
-### In-prose link underlines (required)
-- Any link appearing inside body text must have `text-decoration: underline` applied.
-- This is required because the emerald link color (`#50c878`) does not provide sufficient contrast against primary text color (`#e8e8e8`) in isolation (1.73:1). The underline serves as the non-color cue that satisfies WCAG 1.4.1.
-- Navigation links, buttons, and other structurally-signalled links do not need underlines.
-
-```css
-.essay a,
-p a,
-.bio-overview a,
-.data-section a {
-    text-decoration: underline;
-    text-underline-offset: 2px;
-}
-```
-
-### External links opening in new tabs
-- Any link with `target="_blank"` must warn the user.
-- Add sr-only text and `rel="noopener noreferrer"`:
-
-```html
-<a href="https://example.com" target="_blank" rel="noopener noreferrer">
-    Source Title
-    <span class="sr-only">(opens in new tab)</span>
-</a>
-```
-
-### Source links in detail panels
-- Source links are built dynamically via innerHTML. The template for each source link:
-
-```javascript
-sourceLinks += '<li><a href="' + source.url + '" target="_blank" rel="noopener noreferrer">' +
-    source.title +
-    '<span class="sr-only"> (opens in new tab)</span>' +
-    '</a></li>';
-```
-
-- Wrap the full set in `<ul class="list-unstyled">` ... `</ul>` — not `<br>` separators.
+The `.cta` modifier adds the alternate medium-green background for visual rhythm between sections. `.cta-inner::before` draws the purple accent border.
 
 ---
 
 ## Dynamic Content Panels — Accessibility Requirements
 
-Both the map detail panel and network metrics panel update their content when a user clicks a marker or node. These panels require specific ARIA handling.
+The map and network pages share a detail panel that updates when a user clicks a marker, node, or screen-reader data table row. The panel content is built by `showFigureDetails()` in `scripts.js`. Page HTML defines the panel container.
 
 ### Panel container setup
+
 ```html
-<div class="bg-faded rounded p-4" id="info-panel" tabindex="-1" aria-live="polite" aria-atomic="true">
-    <h2 class="text-uppercase mb-3" style="color: #50c878;">Figure Details</h2>
-    <p id="info-content" style="color: #c8c8c8;">
+<div id="info-panel" tabindex="-1" aria-live="polite" aria-atomic="true" class="bg-faded rounded p-4">
+    <h2>Figure Details</h2>
+    <p id="info-content">
         Select a figure from the map or the figures list below to view details.
     </p>
 </div>
 ```
 
 **Required attributes:**
+
 - `tabindex="-1"` — Allows the panel to receive programmatic focus (not tab-focusable, but focusable via JavaScript)
 - `aria-live="polite"` — Screen readers announce content changes when the panel updates
 - `aria-atomic="true"` — Screen reader re-reads the entire panel, not just the changed portion
 
-**Required behavior (JavaScript):**
-After updating innerHTML, move focus to the panel:
-```javascript
-var panel = document.getElementById('info-panel');
-panel.querySelector('#info-content').innerHTML = newContent;
-panel.focus();
-```
+### Behavior contract with `scripts.js`
 
-### Dynamic content heading structure
-When a figure is selected, the injected HTML must include proper heading structure:
+`showFigureDetails(figure, 'info-content', 'info-panel')`:
 
-```javascript
-document.getElementById('info-content').innerHTML =
-    '<h3 style="color: #e8e8e8;">' + figure.name + '</h3>' +
-    '<p><em>Modality:</em> ' + figure.modality + '</p>' +
-    // ... rest of content
-```
+1. Rebuilds the panel content HTML using the documented class vocabulary (`.figure-detail-name`, `.read-more-toggle`, `.panel-divider`, `.source-links`, `.source-link-item`, `.source-links-empty`)
+2. Injects the HTML into `#info-content` via `innerHTML`
+3. Moves programmatic focus to `#info-panel` via `.focus()`
+4. Wires up the Read more / Show less toggle
 
-The figure name is an `<h3>` (subsection of the `<h2>` panel heading), not `<strong>`.
+Page HTML must not hand-assemble detail panel content — use `showFigureDetails()` exclusively. See `JAVASCRIPT_DOCUMENTATION.md` for the function spec.
 
 ### Default panel text
+
 Default instructions must not assume visual interaction:
+
 - **Map panel:** "Select a figure from the map or the figures list below to view details."
 - **Network panel:** "Select a figure from the network graph or the figures list below to view metrics."
 
-The previous text ("Click a marker on the map to view details") assumed the user could see and click a visual element. The updated text provides a non-visual path (WCAG 1.3.3).
+Wording like "Click a marker on the map" assumes the user can see and click a visual element. The above wording provides a non-visual path (WCAG 1.3.3).
 
 ---
 
 ## Screen-Reader Data Tables
 
-Both map.html and network.html must include a visually hidden data table that provides the same information as the visualization in a screen-reader-accessible format (WCAG 1.1.1).
+Both `map/` and `network/` include a visually hidden data table that provides the same information as the visualization in a screen-reader-accessible format (WCAG 1.1.1).
 
 ### Placement
+
 Place the table after each visualization container, inside the same `<section>`:
 
 ```html
@@ -493,39 +381,41 @@ Place the table after each visualization container, inside the same `<section>`:
 ```
 
 ### Population
-Build the table rows inside the same `fetch('data/detroit.json')` callback that builds the map markers or network nodes:
+
+Build the table rows inside the same `fetch('/data/detroit.json')` callback that builds the map markers or network nodes. Use `calculateBadmanScore()` from `scripts.js` for the total rather than inlining the arithmetic:
 
 ```javascript
-var tableBody = document.getElementById('sr-figures-table-body');
-data.figures.forEach(function(figure) {
-    if (!activeModalities.includes(figure.modality)) return;
-    var row = document.createElement('tr');
-    row.innerHTML =
-        '<th scope="row">' + figure.name + '</th>' +
-        '<td>' + figure.modality + '</td>' +
-        '<td>' + figure.type + '</td>' +
-        '<td>' + figure.geographic.primary_location.name + '</td>' +
-        '<td>' + (figure.scores.outlaw_relationship.score +
-                   figure.scores.community_authorization.score +
-                   figure.scores.violence_as_language.score +
-                   figure.scores.cultural_preservation.score +
-                   figure.scores.hypermasculine_performance.score) + '/25</td>';
-    tableBody.appendChild(row);
-});
+const tableBody = document.getElementById('sr-figures-table-body');
+data.figures
+    .filter(figure => !figure._placeholder && activeModalities.includes(figure.modality))
+    .forEach(function (figure) {
+        const row = document.createElement('tr');
+        const totalScore = calculateBadmanScore(figure.scores);
+        row.innerHTML =
+            '<th scope="row">' + figure.name + '</th>' +
+            '<td>' + figure.modality + '</td>' +
+            '<td>' + figure.type + '</td>' +
+            '<td>' + figure.geographic.primary_location.name + '</td>' +
+            '<td>' + totalScore + '/25</td>';
+        tableBody.appendChild(row);
+    });
 ```
 
+Note the `_placeholder` filter — placeholder entries in `detroit.json` are workflow artifacts (see `DATAREADME.md` § "Special Entry Types") and must be excluded from rendering.
+
 ### Making table rows interactive
+
 Each row should be clickable/keyboard-selectable to trigger the same detail panel update as clicking a marker:
 
 ```javascript
 row.setAttribute('tabindex', '0');
 row.setAttribute('role', 'button');
 row.setAttribute('aria-label', 'View details for ' + figure.name);
-row.addEventListener('click', function() { showFigureDetails(figure); });
-row.addEventListener('keydown', function(e) {
+row.addEventListener('click', function () { showFigureDetails(figure, 'info-content', 'info-panel'); });
+row.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        showFigureDetails(figure);
+        showFigureDetails(figure, 'info-content', 'info-panel');
     }
 });
 ```
@@ -534,135 +424,501 @@ This provides the alternative interaction path required by WCAG 1.3.3 (Sensory C
 
 ---
 
-## Page-Specific Documentation
+## Links — Accessibility Requirements
 
-### index.html (Home Page)
+All links on the site must follow these rules (WCAG 2.4.4, 1.4.1).
 
-**Unique structure:** Uses the `intro` class for the hero section with overlapping image and text box.
+### Descriptive link text
+
+- Every link's text must describe its destination. Never use "click here" or "read more" alone.
+- If a generic label is unavoidable, add an `aria-label` with full context: `<a href="#" aria-label="Read more about Ron Scott">Read more</a>`
+
+### In-prose link underlines (required)
+
+- Any link appearing inside body text must have `text-decoration: underline`.
+- The in-prose underline rule in `styles.css` targets specific selectors (`.essay a`, `p a`, `.bda-figure-biography a`, `.bda-source-notes a`, `.bda-connection-evidence a`, `.source-link-item a`, and others).
+- Navigation links, buttons, card links, and Read more toggles do NOT get underlines — structure signals link-ness.
+- Do not apply underline styling inline. If a new in-prose context is introduced, add its selector to the in-prose rule in `CSS_DOCUMENTATION.md` and the stylesheet.
+
+### External links opening in new tabs
+
+- Any link with `target="_blank"` must warn the user.
+- Add sr-only text and `rel="noopener noreferrer"`:
 
 ```html
-<section class="page-section clearfix">
-    <div class="container">
-        <div class="intro">
-            <img class="intro-img img-fluid mb-3 mb-lg-0 rounded" src="..." alt="Descriptive alt text for the image" />
-            <div class="intro-text left-0 text-center bg-faded p-5 rounded">
-                <!-- Content overlapping the image -->
+<a href="https://example.com" target="_blank" rel="noopener noreferrer">
+    Source Title
+    <span class="sr-only">(opens in new tab)</span>
+</a>
+```
+
+### Source links in detail panels
+
+- Source links are built by `buildSourceLinks()` in `scripts.js`. Do not hand-assemble source link HTML in page source.
+- Pass the filtered source objects to `buildSourceLinks(sources)` and insert the returned HTML string into the panel.
+- See `JAVASCRIPT_DOCUMENTATION.md` for the function spec.
+
+---
+
+## Credentialing Rail
+
+The credentialing rail is a sticky right-side component that appears on individual figure pages and individual source pages. It contains an author identity block and an auto-generated "On this page" TOC.
+
+### Page contract
+
+Pages that include the rail must contain this placeholder:
+
+```html
+<aside id="bda-credentialing-rail" aria-label="About the author"></aside>
+```
+
+Placement: inside the page's two-column layout wrapper (`.bda-figure-layout` or `.bda-source-layout`), as the right-hand child. Mobile CSS collapses the grid to a single column; the rail's `order: -1` rule on figure pages moves it above main content on mobile.
+
+The `aria-label` is set in page HTML because the partial loader injects content into the aside — not the aside itself. Screen readers have the landmark labeled even before the partial arrives.
+
+### Partial content
+
+`credentialing-rail.html` is injected into the placeholder by `bda-partials-loader.js`. The partial uses this class vocabulary (all defined in `styles.css`):
+
+- `.bda-cred-rail-inner` — root wrapper inside the aside
+- `.bda-cred-author` — author block
+- `.bda-cred-author-photo`, `.bda-cred-author-meta` — author block sub-containers
+- `.bda-cred-author-name`, `.bda-cred-author-pronouns`, `.bda-cred-author-affiliation`, `.bda-cred-author-bio`, `.bda-cred-author-link` — author metadata
+- `.bda-cred-toc-details` (native `<details>`), `.bda-cred-toc-summary` (native `<summary>`) — mobile collapsible
+- `.bda-cred-toc` — TOC nav, must include `aria-label="On this page"`
+- `.bda-cred-toc-heading` — TOC section heading
+- `#bda-page-toc-list` — TOC `<ul>`, target of `buildPageTOC()`
+
+### TOC behavior contract with `bda-partials-loader.js`
+
+`buildPageTOC()`:
+
+1. Queries `<main>` for `<h2>` elements
+2. Auto-generates an `id` for any `<h2>` missing one (lowercased text, non-alphanumerics → hyphens, truncated to 50 chars)
+3. Appends a `<li><a href="#[id]">[heading text]</a></li>` to `#bda-page-toc-list` for each
+4. Hides `#bda-page-toc` entirely if no `<h2>`s exist in `<main>`
+
+Pages that want a populated TOC must ensure their `<main>` content uses `<h2>` for section headings. Figure pages and source pages both follow this pattern by default.
+
+**Known edge case:** Duplicate `<h2>` text produces duplicate auto-IDs. The second anchor will resolve to whichever heading the browser picks first. Give duplicate headings explicit unique IDs if this matters.
+
+---
+
+## Route Structure
+
+Pages use folder-based routes with trailing slashes. This matches the `data-route` values in `navbar.html` and the `topLevelRoute()` matcher in `bda-partials-loader.js`.
+
+| Nav Item | Route | Page section in this doc |
+|----------|-------|--------------------------|
+| Home | `/` | `index` |
+| About → The Project | `/about/project/` | `about/project/` |
+| About → The Badman Tradition | `/about/tradition/` | `about/tradition/` |
+| About → Methodology | `/about/methodology/` | `about/methodology/` |
+| Archive → Figures | `/archive/figures/` | `archive/figures/` (landing) |
+| Archive → Primary Sources | `/archive/sources/` | `archive/sources/` (landing) |
+| Visualizations → Map | `/visualizations/map/` | `visualizations/map/` |
+| Visualizations → Network | `/visualizations/network/` | `visualizations/network/` |
+| Engagement → Submit a Figure | `/engagement/submit/` | `engagement/submit/` |
+| Engagement → Events | `/engagement/events/` | `engagement/events/` |
+| Contact | `/contact/` | `contact/` |
+
+Individual figure and source pages follow the pattern `/archive/figures/[slug]/` and `/archive/sources/[slug]/` respectively. These are linked from the Figures and Primary Sources landing pages, not from the top navigation.
+
+Top-level navigation active-state is set by `markCurrentNavItem()` in `bda-partials-loader.js` based on the page's top-level route segment. `/archive/figures/baker_gordon/` → Archive nav item is active. Dropdown child items don't compete for active-state (they don't carry `data-route`).
+
+---
+
+## Page-Specific Templates
+
+### `/` (Home — `index.html`)
+
+**Purpose:** Entry point. Intro section with hero image and overlapping text box; subsequent sections linking into archive.
+
+**Unique structure:** Uses the `.intro` / `.intro-img` / `.intro-text` / `.intro-button` pattern for the hero:
+
+```html
+<main id="main-content">
+    <section class="page-section clearfix">
+        <div class="container">
+            <div class="intro">
+                <img class="intro-img img-fluid mb-3 mb-lg-0 rounded"
+                     src="/assets/img/hero.jpg"
+                     alt="Descriptive alt text for the hero image" />
+                <div class="intro-text bg-faded p-5 rounded">
+                    <h1 class="site-heading">
+                        <span class="site-heading-upper">Detroit</span>
+                        <span class="site-heading-lower">Badman Digital Archive</span>
+                    </h1>
+                    <!-- Lede and intro button -->
+                </div>
             </div>
         </div>
-    </div>
-</section>
+    </section>
+    <!-- Further page sections -->
+</main>
 ```
 
 **To modify:**
-- Update the image `src` path
-- **Always provide descriptive alt text** on the `<img>`. If the image is decorative, use `alt=""` (empty string, not omitted)
+
+- Update the hero `<img>` `src` and `alt`. Decorative images: `alt=""` (empty string, not omitted).
+- Home page `<h1>` uses `.site-heading` / `.site-heading-upper` / `.site-heading-lower` for the large two-line treatment. Other pages use plain `<h1>` styled by Bootstrap defaults.
 
 **Heading hierarchy:**
+
 ```
-<h1> Detroit Badman Archive / Home (in header)
+<h1> Detroit / Badman Digital Archive (inside <main>)
   <h2> Section headings within content blocks
 ```
 
 ---
 
-### map.html
+### `/about/project/`, `/about/tradition/`, `/about/methodology/`
 
-**Additional head elements:**
-```html
-<!-- Leaflet CSS -->
-<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" ... />
+Three pages under the About dropdown.
+
+- **Project:** what the BDA is, who runs it, what it's trying to do. Plain language.
+- **Tradition:** the five criteria explained in plain language. Community-facing.
+- **Methodology:** the scholarly apparatus. Research Questions, Theoretical Framework, Sources & Data, Analytical Approach, Critical Approach, Limitations, Transparency statement.
+
+**Heading hierarchy (all three):**
+
+```
+<h1> Page Title (inside <main>)
+  <h2> Major section headings specific to each page
+    <h3> Subsections as needed
 ```
 
-**Page-specific styles (in `<style>` block):**
-- `#map-container` — Map dimensions and border
-- `.map-legend` — Legend box styling
-- `.legend-marker` — Modality indicators in legend (shape + color, not color alone)
+**Template structure** (same for all three — differs only in content):
 
-**Map container — accessibility attributes:**
 ```html
-<div id="map-container" role="img" aria-label="Interactive map showing locations of Detroit badman figures across the city">
+<main id="main-content">
+    <section class="page-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-9 mx-auto">
+                    <h1>[Page Title]</h1>
+                    <!-- Content sections as h2/h3 -->
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+```
+
+**To modify:**
+
+- Each page is independently editable
+- Keep the three pages thematically distinct: Project (the what), Tradition (the why), Methodology (the how)
+- When methodology content references the modality framework, cross-check against `BDA_Modality_Sorting_Framework.pdf`
+
+---
+
+### `/archive/figures/` (Figures Landing)
+
+Filterable grid of all figures organized by modality, alphabetical within modality.
+
+**Structure:**
+
+- `<h1>` Figures
+- Filter rail (shared vocabulary with sources landing — see "Shared Filter Rail" below)
+- Grid of figure cards: name, dates/era, modality badge, one-line descriptor
+- Each card links to `/archive/figures/[slug]/`
+- Pending modalities (Gangsta-Pimp, Folk Hero-Outlaw) appear grayed out in the modality filter with `.is-pending` and a `.bda-filter-pending-tag`
+
+**Grid wrapper class:** `.bda-figures-grid` or `.bda-figures-grouped` (for modality-grouped display) with `.bda-figure-modality-group` children containing `.bda-figure-modality-heading`, `.bda-figure-modality-count`, and `.bda-figure-card-list`.
+
+**Card class vocabulary** (all defined in `styles.css`):
+
+- `.bda-figure-card` — card link wrapper
+- `.bda-figure-card-thumb` — top zone
+- `.bda-figure-card-type-badge` with `.bda-type-real` or `.bda-type-fictional` — top-left badge
+- `.bda-figure-card-meta-badge` — top-right gold meta-badman badge
+- `.bda-figure-card-info` — content zone
+- `.bda-figure-card-title`, `.bda-figure-card-era`, `.bda-figure-card-descriptor`, `.bda-figure-card-score`
+- `.bda-score-value`, `.bda-score-total` — score rendered as "18 / 25"
+
+**Heading hierarchy:**
+
+```
+<h1> Figures
+  <h2> Modality section headings (Detective, Revolutionary, Superhero-Villain)
+    <h3> Individual figure card headings (figure name)
+```
+
+**Accessibility:**
+
+- Modality filter uses accessible `<fieldset>` / `<legend>` / `<input type="checkbox">` pattern
+- Grid renders as semantic list (`<ul class="bda-figure-card-list">` with `<li>` per figure) for screen reader navigation
+- Pending modality controls have `aria-disabled="true"` with accompanying text
+
+**To modify:**
+
+- Adding a figure: appears automatically once the figure entry is added to `detroit.json` — no template changes required. See `DATAREADME.md` § "Data Entry Workflow."
+
+---
+
+### `/archive/figures/[slug]/` (Individual Figure Page)
+
+The heaviest template in the system. Renders a single figure with full biographical, scored, networked, and sourced detail, plus the credentialing rail.
+
+**Layout wrapper:** `.bda-figure-layout` — two-column grid (content + credentialing rail) on desktop; flex column on mobile with `order: -1` on the rail so it appears above main content.
+
+**Required placeholder for rail:** `<aside id="bda-credentialing-rail" aria-label="About the author"></aside>` is one child of `.bda-figure-layout`; `<main id="main-content">` is the other.
+
+**Page sections, in order:**
+
+1. Header (`.bda-figure-header`): modality badge, type badge, meta-badman badge, name, era, score, creator (for fictional)
+2. Justification (`.bda-figure-justification`): serif, ~640px max-width essay
+3. Biography (`.bda-figure-biography`): description + timeline in a two-column grid that stacks at mobile
+4. Five-criteria evaluation (`.bda-figure-criteria`) with justifications
+5. Connections (`.bda-figure-connections`) grouped by edge type
+6. Geography (`.bda-figure-geography`) with map preview
+7. Primary sources (`.bda-figure-primary-sources`) — grid of `.bda-source-card` elements
+8. Related figures (`.bda-figure-related-grid`)
+
+**Heading hierarchy:**
+
+```
+<h1> Figure Name (inside <main>, wrapped by .bda-figure-header)
+  <h2> Justification
+  <h2> Biography
+  <h2> Five-Criteria Evaluation
+  <h2> Connections
+  <h2> Geography
+  <h2> Primary Sources
+  <h2> Related Figures
+    <h3> Individual criteria names within the evaluation section
+    <h3> Edge type group headings within connections
+```
+
+**Criterion bars — the one allowed inline style pattern.** Each criterion's `.bda-criterion-bar-fill` element sets its fill width via the `--criterion-value` CSS custom property, passed inline:
+
+```html
+<div class="bda-criterion-bar">
+    <div class="bda-criterion-bar-fill" style="--criterion-value: 5;"></div>
+</div>
+```
+
+The CSS rule `width: calc(var(--criterion-value, 0) * 20%);` in `styles.css` handles rendering. This is a *value* passed to CSS, not a style override — it's the one exception in Core Rule 1.
+
+**Connection items — evidence tier badges.** Each connection in the `.bda-connection-list` renders with a `.bda-connection-tier` badge whose modifier class is `.bda-tier-1`, `.bda-tier-2`, or `.bda-tier-3` per the connection's `tier` value from `detroit.json`. See `DATAREADME.md` § "Evidence Tiers" for data contract.
+
+**Accessibility:**
+
+- Five-criteria scores use a definition list (`<dl>`) with `<dt>` per criterion name+score and `<dd>` per justification — semantic, not tabular
+- Map preview uses the same `role="img"` + `aria-label` pattern as the full map page
+- The `<aside>` landmark is labeled `"About the author"` via page HTML
+- TOC in the credentialing rail auto-generates from these `<h2>` headings via `buildPageTOC()`
+
+**Data contract:** `DATAREADME.md` § "Figure Object Structure" is the authoritative source for what data each section renders. Template structure is stable — modifications to content happen in `detroit.json`, not in the HTML template.
+
+---
+
+### `/archive/sources/` (Primary Sources Landing)
+
+Filterable grid of primary sources with three-zone layout.
+
+**Structure:**
+
+1. Intro strip: breadcrumb, title, lede
+2. Layout wrapper: `.bda-sources-layout` — two-column grid (filter rail + main) on desktop, stacks at mobile
+3. Filter rail (`.bda-sources-filter-rail`): figure, modality, type, repository filters, using the shared filter rail vocabulary
+4. Main zone (`.bda-sources-main`): results header, active filter chips, sources grid, empty state
+
+**Card class vocabulary** (all defined in `styles.css`, shared with figure-page primary sources and source-page related sources):
+
+- `.bda-source-card` — card link wrapper
+- `.bda-source-card-thumb` — top zone with glyph
+- `.bda-source-card-category` with `.bda-cat-primary` / `.bda-cat-secondary` / `.bda-cat-archival` — category badge
+- `.bda-source-card-external` — "opens externally" badge
+- `.bda-source-thumb-glyph` with `.bda-thumb-book` / `.bda-thumb-doc` / `.bda-thumb-news` / `.bda-thumb-photo` / `.bda-thumb-audio` / `.bda-thumb-film` — type glyph
+- `.bda-source-card-info` — content zone
+- `.bda-source-card-title`, `.bda-source-card-figure`, `.bda-source-card-meta`
+
+**Heading hierarchy:**
+
+```
+<h1> Primary Sources
+  <h2> Filter section heading (visually hidden with .sr-only if not shown)
+  <h2> Source grid heading (optional)
+    <h3> Individual source card headings (source title)
+```
+
+**Accessibility:**
+
+- Modality filter checkboxes use the shape markers (`.bda-mm-*`) alongside the modality name — WCAG 1.4.1 non-color signal
+- Pending modality options have `.is-pending` and `.bda-filter-pending-tag`
+- Active filter chips are removable via keyboard (`.bda-filter-chip-remove` is a `<button>`, not a div)
+- Search input has a visible `<label>` (or `<label class="sr-only">` with descriptive text if visually the placeholder is sufficient — but prefer visible labels)
+
+**Data contract:** Each rendered card corresponds to one entry in the top-level `sources` array of `detroit.json`. Filters operate on the `category`, `type`, and modality-derived-from-figure-ids fields. See `DATAREADME.md` § "Sources (Top-Level Array)."
+
+---
+
+### `/archive/sources/[slug]/` (Individual Source Page)
+
+Source viewer as dominant element with metadata rail.
+
+**Layout wrapper:** `.bda-source-layout` — two-column grid (viewer + metadata rail) on desktop; single column on mobile.
+
+**Required placeholder for rail** (same as figure page): `<aside id="bda-credentialing-rail" aria-label="About the author"></aside>`.
+
+**Page sections, in order:**
+
+1. Header (`.bda-source-header`): title, type, year, permalink button, category badge, access level badge if non-public
+2. Source viewer (`.bda-source-viewer`): variant depends on source `type` — see Viewer Variants below
+3. Metadata rail (`.bda-source-metadata-rail`): `<dl>` of type, date, author, publisher, repository, rights, extent, language, permalink
+4. Cited in (`.bda-source-cited-in`): modality-grouped list of figures that reference this source
+5. Related sources (`.bda-source-related-grid`): grid of `.bda-source-card` elements
+6. Citation block (`.bda-citation-block`): format toggle, citation text, copy-to-clipboard button
+
+**Viewer variants** (all defined in `styles.css`):
+
+- `.bda-source-viewer-text` — default; external link with `.btn-primary` to original
+- `.bda-source-viewer-image` — hosted image with `<img>` (max-width 100%, height auto)
+- `.bda-source-viewer-audio` — reserved for post-IRB interview integration
+- `.bda-source-viewer-multi` — reserved for multi-asset sources (audio + transcript)
+
+**Access notice:** When source `access_level` is not `public`, render `.bda-source-access-notice` at the top of the viewer zone with plain-language explanation of access requirements.
+
+**Heading hierarchy:**
+
+```
+<h1> Source Title (inside <main>, wrapped by .bda-source-header)
+  <h2> Source Viewer (visually hidden if the viewer is self-evident)
+  <h2> Metadata
+  <h2> Cited In
+    <h3> Modality group headings (e.g., "Detective", "Revolutionary")
+  <h2> Related Sources
+  <h2> Citation
+```
+
+**Cited in structure:**
+
+```html
+<section class="bda-source-cited-in">
+    <h2>Cited In</h2>
+    <div class="bda-cited-in-modality-group">
+        <h3 class="bda-cited-in-modality-heading">
+            <span class="bda-filter-modality-marker bda-mm-detective" aria-hidden="true"></span>
+            Detective
+        </h3>
+        <ul class="bda-cited-in-list">
+            <li><a href="/archive/figures/[slug]/">Figure Name</a></li>
+        </ul>
+    </div>
+    <!-- Additional modality groups -->
+    <!-- If no figures cite this source: -->
+    <p class="bda-cited-in-empty">No figures currently cite this source.</p>
+</section>
+```
+
+**Accessibility:**
+
+- Source viewer includes alt text for images and (when implemented) transcript for audio/video
+- Copy-to-clipboard button includes an `aria-live` region that announces "Citation copied" on success
+- Cited-in links use in-prose underline per the WCAG 1.4.1 mitigation
+- The `<aside>` landmark is labeled via page HTML
+
+**Reserved fields (post-IRB):** The schema's `media` and `interview` objects (see `DATAREADME.md` § "Reserved Fields") are not used at launch. When activated, they populate `.bda-source-viewer-multi` / `.bda-source-viewer-audio` and `.bda-source-interview-panel` respectively. Page template is scaffolded to accept these without breaking changes.
+
+**Data contract:** Each rendered source page corresponds to one entry in the top-level `sources` array. Cited-in groupings are derived from the source's `figure_ids` back-reference. See `DATAREADME.md` § "Sources (Top-Level Array)."
+
+---
+
+### `/visualizations/map/` (Map Tool)
+
+Interactive geospatial map of badman figures using Leaflet.js.
+
+**Additional head elements:**
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="[integrity hash]" crossorigin="" />
+```
+
+**Page-specific inline JS** handles Leaflet initialization, marker rendering, legend rendering, and screen-reader data table population. All shared utilities come from `scripts.js`.
+
+**Map container accessibility:**
+
+```html
+<div id="map-container" role="img"
+     aria-label="Interactive map showing locations of Detroit badman figures across the city">
     <!-- Leaflet map initialized here -->
 </div>
 ```
 
 - `role="img"` — Tells screen readers this is a graphical element
-- `aria-label` — Provides a text description of what the visualization shows
+- `aria-label` — Text description of what the visualization shows
 
-**Legend structure (three active modalities at launch):**
+**Legend structure** (three active modalities at launch — Gangsta-Pimp and Folk Hero-Outlaw are filtered out of the legend HTML by the page, not by CSS):
+
 ```html
-<div class="map-legend mb-4">
-    <h2 class="text-uppercase mb-3" style="color: #50c878; font-size: 1.1rem;">Legend</h2>
+<div class="map-legend">
+    <h2>Legend</h2>
     <ul class="list-unstyled">
         <li class="legend-item">
             <span class="legend-marker legend-detective" aria-hidden="true"></span>
-            <span style="color: #e8e8e8;">Circle marker — Detective Modality</span>
+            <span>Circle marker — Detective Modality</span>
         </li>
         <li class="legend-item">
             <span class="legend-marker legend-revolutionary" aria-hidden="true"></span>
-            <span style="color: #e8e8e8;">Star marker — Revolutionary Modality</span>
+            <span>Star marker — Revolutionary Modality</span>
         </li>
         <li class="legend-item">
             <span class="legend-marker legend-superhero-villain" aria-hidden="true"></span>
-            <span style="color: #e8e8e8;">Hexagon marker — Superhero-Villain Modality</span>
+            <span>Hexagon marker — Superhero-Villain Modality</span>
         </li>
     </ul>
 </div>
 ```
 
 **Accessibility patterns:**
-- Legend heading is `<h2>` (correct level, styled smaller with CSS)
-- Legend items use `<ul>`/`<li>` (semantic list structure)
-- Legend text describes marker **shape**, not color ("Circle marker" not "Blue marker")
-- `aria-hidden="true"` on the colored indicator spans (decorative — the text label carries the information)
 
-**Marker alt text:**
+- Legend heading is `<h2>`, styled smaller by CSS
+- Legend items use `<ul>` / `<li>` (semantic list)
+- Legend label text uses `legendLabel` strings from `getModalityConfig()` — shape-first descriptions, not color-first
+- `aria-hidden="true"` on the colored indicator spans (decorative — text label carries the information)
+
+**Marker alt text:** Leaflet's default marker alt text is "Marker." Override with the figure's name and modality in JS:
+
 ```javascript
-var marker = L.marker([lat, lng], {
+const marker = L.marker([lat, lng], {
     icon: icon,
     alt: figure.name + ' — ' + figure.modality + ' modality'
 });
 ```
 
-Leaflet's default alt text is just "Marker." Override it with the figure's name and modality.
+**Detail panel:** See § "Dynamic Content Panels" above.
+**SR data table:** See § "Screen-Reader Data Tables" above.
 
-**Detail panel:** See [Dynamic Content Panels](#dynamic-content-panels--accessibility-requirements) above.
+**Active modalities array:** Pages filter rendering to active modalities only:
 
-**SR data table:** See [Screen-Reader Data Tables](#screen-reader-data-tables) above.
-
-**JavaScript includes:**
-```html
-<!-- Leaflet JS -->
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" ...></script>
-```
-
-**Map initialization:**
 ```javascript
-var map = L.map('map-container').setView([42.3314, -83.0458], 12);
-L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {...}).addTo(map);
+const activeModalities = ['detective', 'revolutionary', 'superhero_villain'];
+// When a dormant modality goes live, add its string here AND in network.html's inline JS
 ```
 
-**To modify:**
-- `[42.3314, -83.0458]` — Default center coordinates (Detroit)
-- `12` — Default zoom level (higher = more zoomed in)
-- Tile layer URL — Change to use different map tiles
+This array is synchronized with the `Status` column in `DATAREADME.md` § "Modality Reference."
 
 ---
 
-### network.html
+### `/visualizations/network/` (Network Tool)
 
-**Page-specific styles:**
-- `#network-container` — Visualization container
-- `#timeline-container` — Timeline slider wrapper
-- `.legend-line` — Colored lines in relationship legend (must include dash pattern, not color alone)
+Force-directed network graph of figure connections using D3.js.
 
-**Network container — accessibility attributes:**
+**Page-specific inline JS** handles D3 setup, node/edge rendering, timeline slider, pause/resume controls, and screen-reader data table population.
+
+**Network container accessibility:**
+
 ```html
 <div id="network-container">
-    <!-- D3 SVG will be appended here -->
+    <!-- D3 SVG appended here -->
 </div>
 ```
 
-After the SVG is created in JavaScript, inject accessible elements:
+After SVG creation, inject accessibility elements:
+
 ```javascript
 const svg = d3.select('#network-container')
     .append('svg')
@@ -671,12 +927,12 @@ const svg = d3.select('#network-container')
     .attr('role', 'img')
     .attr('aria-label', 'Network visualization of Detroit badman figure relationships');
 
-// Add title and desc as first children
 svg.append('title').text('Network visualization of Detroit badman figure relationships');
 svg.append('desc').text('Force-directed graph showing connections between badman figures. Nodes represent figures sized by influence. Edges represent documented relationships typed as META, P2C, C2C, ORG, or CC.');
 ```
 
 **D3 node keyboard accessibility:**
+
 D3 nodes are only interactable via mouse by default. Add keyboard support:
 
 ```javascript
@@ -688,23 +944,23 @@ const node = g.append('g')
     .append('circle')
     .attr('tabindex', '0')
     .attr('role', 'button')
-    .attr('aria-label', function(d) { return d.name + ', ' + d.modality + ' modality'; })
-    // ... existing attributes ...
-    .on('keydown', function(event, d) {
+    .attr('aria-label', function (d) { return d.name + ', ' + d.modality + ' modality'; })
+    .on('keydown', function (event, d) {
         if (event.key === 'Enter' || event.key === ' ') {
             event.preventDefault();
-            // Trigger the same click handler
-            node.dispatch('click', { detail: d });
+            showFigureDetails(d, 'info-content', 'info-panel');
         }
     });
 ```
 
 **Reduced motion support:**
+
+CSS handles CSS-driven animation via the global `prefers-reduced-motion` rule. The D3 simulation is JS-driven and must check separately:
+
 ```javascript
-// Respect OS-level reduced motion preference
 if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     // Run one tick to establish positions, then stop
-    for (var i = 0; i < 300; i++) simulation.tick();
+    for (let i = 0; i < 300; i++) simulation.tick();
     simulation.stop();
 } else {
     // Normal animated simulation
@@ -712,15 +968,14 @@ if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 ```
 
 **Pause/Resume button:**
+
 ```html
-<button id="pause-animation" class="btn btn-sm" style="background-color: #2a623d; color: #e8e8e8; border: 1px solid #50c878;">
-    Pause Animation
-</button>
+<button id="pause-animation" class="btn btn-primary btn-sm">Pause Animation</button>
 ```
 
 ```javascript
-var paused = false;
-document.getElementById('pause-animation').addEventListener('click', function() {
+let paused = false;
+document.getElementById('pause-animation').addEventListener('click', function () {
     paused = !paused;
     if (paused) {
         simulation.stop();
@@ -733,202 +988,44 @@ document.getElementById('pause-animation').addEventListener('click', function() 
 ```
 
 **Network legend structure:**
-Same pattern as map legend — `<ul>`/`<li>`, `<h2>` heading level, descriptions reference shape/dash pattern not color alone. At launch: three active modality entries (Detective, Revolutionary, Superhero-Villain) plus edge type legend entries.
 
-**Edge type visual differentiation:**
-Edge types must be distinguishable without color. Define a dash pattern per type:
+Same pattern as map legend, using `.network-legend` container and `.legend-node-*` classes. The Revolutionary node uses a diamond in the network (vs. star on the map) — see `CSS_DOCUMENTATION.md` § "Shape reference (map vs. network)" for the full comparison.
 
-| Edge Type | Color | Dash Pattern |
-|-----------|-------|-------------|
-| META | Gold (`#d4af37`) | Solid (no dash) |
-| P2C | Red (`#dc3545`) | Long dash (12,6) |
-| C2C | Green (`#50c878`) | Short dash (6,4) |
-| ORG | Blue (`#3388ff`) | Dot-dash (2,4,8,4) |
-| CC | Pink (`#e83e8c`) | Dotted (2,2) |
-
-Note: Evidence tier dash patterns (documented/evidenced/interpretive) are a separate layer on top of edge type patterns. The two systems must be visually distinguishable from each other.
+**Edge type legend:** Uses `.legend-line` markers with `.legend-meta` / `.legend-p2c` / `.legend-c2c` / `.legend-org` / `.legend-cc` dash patterns. The pattern values must match the `edgeDashPatterns` object in this page's inline JS. See `CSS_DOCUMENTATION.md` § "Edge Type Visual Identity" for the full table.
 
 **Timeline slider:**
+
 ```html
 <label for="timeline-slider" class="sr-only">Timeline year selector</label>
-<input type="range" id="timeline-slider" min="1930" max="2020" value="2020" step="5" aria-valuemin="1930" aria-valuemax="2020" aria-valuenow="2020" aria-label="Select year to filter network by time period">
+<input type="range" id="timeline-slider"
+       min="1930" max="2020" value="2020" step="5"
+       aria-valuemin="1930" aria-valuemax="2020" aria-valuenow="2020"
+       aria-label="Select year to filter network by time period">
 <span id="timeline-year" aria-live="polite">2020</span>
 ```
 
-- The `<label>` with `sr-only` is invisible but gives the slider a name for screen readers
+- The `<label class="sr-only">` is invisible but gives the slider an accessible name
 - `aria-live="polite"` on the year display announces the current year as the slider moves
 
-**To modify:**
-- `min="1930"` — Earliest year in timeline
-- `max="2020"` — Latest year in timeline
-- `step="5"` — Year increments
-
-**Detail panel, SR data table:** See shared sections above.
+**Detail panel:** See § "Dynamic Content Panels" above.
+**SR data table:** See § "Screen-Reader Data Tables" above.
 
 ---
 
-### about/project.html, about/tradition.html, about/methodology.html
-
-Three pages under the About dropdown, each with a distinct load-bearing function.
-
-**about/project.html — The Project**
-- What the BDA is, who runs it, what it's trying to do
-- Plain language, homepage-adjacent in tone
-- Target audience: anyone arriving cold, community members evaluating whether to engage
-
-**about/tradition.html — The Badman Tradition**
-- The five criteria explained in plain language
-- Gateway to the framework without requiring scholarly vocabulary
-- Target audience: community-facing readers, educators, students
-
-**about/methodology.html — Methodology**
-- The scholarly apparatus
-- Structure: Research Questions, Theoretical Framework, Sources & Data, Analytical Approach, Critical Approach, Limitations, Transparency statement
-- Target audience: scholars, peer reviewers, grant funders
-
-**Heading hierarchy (all three):**
-```
-<h1> Detroit Badman Archive / [Page Title] (in header)
-  <h2> Major section headings specific to each page
-    <h3> Subsections as needed
-```
-
-**To modify:**
-- Each page is independently editable — changes to one do not require changes to others
-- Keep the three pages thematically distinct: Project (the what), Tradition (the why), Methodology (the how)
-- When updating methodology content, ensure cross-references to the BDA_Modality_Sorting_Framework.pdf remain accurate
-
----
-
-### figures.html (Figures Landing)
-
-Grid of all figures organized by modality, alphabetical within modality.
-
-**Structure:**
-- Modality filter at top (multi-select)
-- Grid of figure cards: name, dates/era, modality badge, one-line descriptor, thumbnail if available
-- Pending modalities (Gangsta-Pimp, Folk Hero-Outlaw) appear grayed-out in filters with "(pending)" annotation
-- Each card links to `figures/[slug].html`
-
-**Heading hierarchy:**
-```
-<h1> Detroit Badman Archive / Figures (in header)
-  <h2> Modality section headings (Detective, Revolutionary, Superhero-Villain)
-    <h3> Individual figure card headings (figure name)
-```
-
-**Accessibility:**
-- Modality filter uses accessible `<fieldset>` / `<legend>` / `<input type="checkbox">` pattern
-- Grid renders as semantic list (`<ul>` with `<li>` per figure) for screen reader navigation
-- Pending modality controls have `aria-disabled="true"` with accompanying text explaining the pending state
-
-**To modify:**
-- Adding a figure: the card appears automatically once the figure entry is added to `detroit.json` — no template changes required
-- Changing modality organization: update the template's modality iteration order
-
----
-
-### figures/[slug].html (Individual Figure Page)
-
-The heaviest single template in the system. This page renders a single figure with full biographical, scored, networked, and sourced detail.
-
-**Sections, in order:**
-1. Header with modality badge
-2. Justification essay (serif, ~640px max-width)
-3. Biography (overview + timeline)
-4. Five-criteria evaluation with justifications
-5. Connections grouped by edge type
-6. Geography with map preview
-7. Primary sources grid
-8. Related figures
-9. Citation block
-
-**Right-rail credentialing (sticky, visible throughout scroll):**
-- Author block: headshot, name, pronouns, institutional affiliation, short project bio, link to About
-- Below author block: "On this page" anchor navigation
-
-**Heading hierarchy:**
-```
-<h1> Figure Name (in header; replaces generic page title)
-  <h2> Section headings (Justification, Biography, Evaluation, Connections, Geography, Sources, Related Figures, Citation)
-    <h3> Subsection headings (individual criteria, edge type groupings, source items)
-```
-
-**Accessibility:**
-- Credentialing rail uses `<aside>` with `aria-label="About the author"`
-- Anchor navigation uses `<nav aria-label="On this page">` with internal page links
-- Map preview uses the same `role="img"` + `aria-label` pattern as map.html
-- Five-criteria scores use a definition list (`<dl>`) rather than a table for semantic accuracy
-
-**To modify:**
-- Template structure is stable — modifications to content happen in `detroit.json`, not in HTML
-- Adding a new section: add to the ordered list above, update heading hierarchy, update anchor navigation
-
----
-
-### sources.html (Primary Sources Landing)
-
-Filterable grid of primary sources with three-zone layout.
-
-**Structure:**
-1. **Breadcrumb / intro strip** — top of page
-2. **Left-side filter rail** — figure, modality, type, repository filters
-3. **Main grid of source cards** — thumbnail, title, figure association, date; click → individual source page
-
-**Pending modalities** appear grayed-out in the modality filter with `(pending)` annotation.
-
-**Heading hierarchy:**
-```
-<h1> Detroit Badman Archive / Primary Sources (in header)
-  <h2> Filter section heading
-  <h2> Source grid heading (optionally by type or repository)
-    <h3> Individual source card headings (source title)
-```
-
-**To modify:**
-- Adding a source: card appears automatically once the source entry is added to `detroit.json` — no template changes required
-- Adjusting filter options: update the filter rail's fieldset and the JavaScript filter logic
-
----
-
-### sources/[slug].html (Individual Source Page)
-
-Source viewer as dominant element with metadata rail.
-
-**Structure:**
-- Source viewer (dominant element): zoom, description toggle, download controls
-- Right-side metadata rail: type, date, author, repository, rights, extent, language, permalink
-- Below source:
-  - "Cited in" section with links back to figure essays showing how the source is used
-  - Related sources grid
-  - Citation block with copy-to-clipboard
-
-**Heading hierarchy:**
-```
-<h1> Source Title (in header)
-  <h2> Section headings (Metadata, Cited In, Related Sources, Citation)
-    <h3> Individual cited-in figure references
-```
-
-**Accessibility:**
-- Source viewer includes alt text for images and transcript for audio/video
-- Copy-to-clipboard button includes aria-live region that announces "Citation copied" on success
-- Cited-in links use in-prose underline per the WCAG 1.4.1 mitigation
-
----
-
-### engagement/submit.html (Submit a Figure)
+### `/engagement/submit/` (Submit a Figure)
 
 Community submission page with two-stage review process.
 
 **Structure:**
-1. **What We're Looking For** — five criteria in submission-guidance language
-2. **What to Include** — submission form fields overview
-3. **Cultural Sensitivity** — trust-building protections (access levels, anonymization options, community controls)
-4. **Review Process** — two-stage callout explaining the eight-stage curation pipeline in plain language
-5. **Embedded or linked Google Form** — the submission mechanism itself
 
-**Key element:** The submission button
+1. `<h1>` Submit a Figure
+2. `<h2>` What We're Looking For — five criteria in submission-guidance language
+3. `<h2>` What to Include — submission form fields overview
+4. `<h2>` Cultural Sensitivity — trust-building protections (access levels, anonymization options, community controls)
+5. `<h2>` Review Process — two-stage callout explaining the eight-stage curation pipeline in plain language
+6. `<h2>` Submit Your Figure — embedded or linked Google Form
+
+**Submission button:**
 
 ```html
 <a class="btn btn-primary btn-xl" href="[google-form-url]" target="_blank" rel="noopener noreferrer">
@@ -938,36 +1035,22 @@ Community submission page with two-stage review process.
 ```
 
 **To modify:**
-- Replace `href="[google-form-url]"` with actual Google Form URL when available
-- Update "What We're Looking For" language if the five criteria are revised (should be rare)
 
-**Future accessibility note:** When the custom submission form is built (replacing the Google Form placeholder), it must meet WCAG form accessibility requirements: visible labels for all inputs, error identification, required field indicators, and keyboard operability. MSU's full Technical Guidelines go deeper on forms than the Basic Checklist covers.
+- Replace `href="[google-form-url]"` with the actual Google Form URL when available
+- Update "What We're Looking For" language only if the five criteria are revised
 
-**Heading hierarchy:**
-```
-<h1> Detroit Badman Archive / Submit a Figure (in header)
-  <h2> What We're Looking For
-  <h2> What to Include
-  <h2> Cultural Sensitivity
-  <h2> Review Process
-  <h2> Submit Your Figure
-```
+**Future accessibility note:** When the custom submission form replaces the Google Form, it must meet WCAG form accessibility requirements: visible labels for all inputs, error identification, required field indicators, keyboard operability.
 
 ---
 
-### engagement/events.html (Events)
+### `/engagement/events/` (Events)
 
 Program description and upcoming events calendar.
 
-**Structure:**
-- Program description (what the events program is, what it's for)
-- Partner institution acknowledgment
-- What to expect at events (preparing community members)
-- Upcoming events section (can be empty at launch)
-
 **Heading hierarchy:**
+
 ```
-<h1> Detroit Badman Archive / Events (in header)
+<h1> Events
   <h2> About the Events Program
   <h2> Partner Institutions
   <h2> What to Expect
@@ -975,24 +1058,20 @@ Program description and upcoming events calendar.
 ```
 
 **To modify:**
-- Adding an event: add entry to upcoming events section; when events are past, move to a separate "Past Events" section (future enhancement)
+
+- Adding an event: add entry to upcoming events section
+- When events are past, move to a separate "Past Events" section (future enhancement)
 
 ---
 
-### contact.html
+### `/contact/` (Contact)
 
 Contact page with multiple pathways.
 
-**Structure:**
-- Project Director contact (Harry M. Foster, pronouns, role, institutional affiliation, email)
-- General inquiries (email address, what kinds of questions fit here)
-- Press and media inquiries (separate pathway)
-- Community partnership inquiries (separate pathway)
-- Submission-related inquiries (pointer to Submit a Figure page)
-
 **Heading hierarchy:**
+
 ```
-<h1> Detroit Badman Archive / Contact (in header)
+<h1> Contact
   <h2> Project Director
   <h2> General Inquiries
   <h2> Press and Media
@@ -1001,24 +1080,39 @@ Contact page with multiple pathways.
 ```
 
 **Accessibility:**
+
 - Email addresses use `mailto:` links with descriptive text, not bare email strings
 - Phone numbers (if added later) use `tel:` links
 
+---
+
+## Shared Filter Rail Vocabulary
+
+The Sources Landing and Figures Landing share a filter rail class vocabulary defined in `styles.css`. Use these classes when building filter UI on either page:
+
+- `.bda-filter-option` — row containing a checkbox and label
+- `.bda-filter-option.is-disabled` — dormant modality option (pending activation)
+- `.bda-filter-modality-marker` + modifier (`.bda-mm-detective`, `.bda-mm-revolutionary`, etc.) — shape marker inside filter options
+- `.bda-filter-modality-marker.is-pending` — opacity-reduced marker for dormant modalities
+- `.bda-filter-pending-tag` — "(pending)" annotation
+- `.bda-filter-collapse-btn` — expand/collapse toggle for filter groups
+- `.bda-filter-chip`, `.bda-filter-chip-label`, `.bda-filter-chip-remove` — active filter chips with removable `<button>` children
+
+All markers are defined for all five modalities so activating a dormant modality requires no CSS changes.
 
 ---
 
 ## Adding a New Page
 
-1. Copy an existing page (e.g., `about/project.html`)
+1. Copy an existing page of the same type (e.g., `about/project/index.html` when adding a new About page)
 2. Update `<title>` and `<meta description>`
-3. Update header subtitle
-4. Verify the skip-to-content link targets `#main-content`
-5. Verify the `<main id="main-content">` wrapper is present
-6. Establish correct heading hierarchy (`<h1>` for the page, `<h2>` for sections)
-7. Replace content sections
-8. Add navigation link to ALL existing pages
-9. Add navigation link to the new page
-10. Run WAVE and axe on the new page before deploying
+3. Verify the skip-to-content link targets `#main-content` and uses `.visually-hidden-focusable`
+4. Verify the `<main id="main-content">` wrapper is present
+5. Verify the partial placeholders (`<div id="bda-navbar">`, `<div id="bda-footer">`, and `<aside id="bda-credentialing-rail">` if applicable) are present
+6. Place the `<h1>` inside `<main>` at the top of the primary content
+7. Establish correct heading hierarchy (`<h1>` for the page, `<h2>` for sections, `<h3>` for subsections)
+8. If adding to navigation, edit `navbar.html` — not individual page files. Add a `data-route` attribute matching the new route's top-level segment to the top-level nav link if needed.
+9. Run WAVE and axe on the new page before deploying
 
 ---
 
@@ -1026,15 +1120,18 @@ Contact page with multiple pathways.
 
 Before committing changes to any page, verify:
 
-- [ ] One `<h1>` per page, headings in sequential order (no skipped levels)
-- [ ] Skip-to-content link present and targets `#main-content`
+- [ ] One `<h1>` per page, inside `<main>`, headings in sequential order (no skipped levels)
+- [ ] Skip-to-content link present, uses `.visually-hidden-focusable`, targets `#main-content`
 - [ ] `<main id="main-content">` wraps content sections
+- [ ] Partial placeholders present: `<div id="bda-navbar">`, `<div id="bda-footer">`, and `<aside id="bda-credentialing-rail" aria-label="About the author">` on figure/source pages
+- [ ] No inline `style="..."` attributes added to HTML (the `--criterion-value` custom property pattern is the one exception)
+- [ ] No hardcoded hex color values added to HTML
 - [ ] All images have descriptive `alt` text (or `alt=""` if decorative)
 - [ ] All links have descriptive text (no "click here" without context)
-- [ ] All in-prose links have `text-decoration: underline`
+- [ ] All in-prose links get underlines via the in-prose link rule in `styles.css` (no inline underline styling)
 - [ ] All `target="_blank"` links include sr-only "(opens in new tab)" text and `rel="noopener noreferrer"`
 - [ ] Color is not the sole differentiator for any information
-- [ ] Any new text/background color combinations have been tested for contrast (4.5:1 minimum)
+- [ ] Any new text/background color combinations verified at WCAG AA contrast minimums and added to the table in `CSS_DOCUMENTATION.md`
 - [ ] Dynamic content panels have `aria-live="polite"` and `aria-atomic="true"`
 - [ ] Interactive elements are keyboard-operable (Tab, Enter, Space)
 - [ ] No auto-playing animation without a pause mechanism and `prefers-reduced-motion` check
@@ -1058,6 +1155,29 @@ Before committing changes to any page, verify:
 | `d-none` | Hidden |
 | `d-lg-block` | Visible on large screens |
 | `img-fluid` | Responsive image |
-| `sr-only` | Visually hidden, screen-reader accessible |
-| `sr-only sr-only-focusable` | Hidden until focused (for skip links) |
+| `sr-only` / `visually-hidden` | Visually hidden, screen-reader accessible |
+| `sr-only-focusable` / `visually-hidden-focusable` | Hidden until focused (for skip links) |
 | `list-unstyled` | Removes default list styling |
+
+---
+
+## Known Inconsistencies (Not Resolved This Pass)
+
+These are flagged for a future pass. Document here so they don't get lost.
+
+1. **Google Fonts — Raleway and Lora.** Prior page templates loaded these fonts via `<link>` in the head. The current `styles.css` does not declare any `font-family` rules that reference them; the site inherits Bootstrap's default sans stack. Either remove the font links from page templates or add `font-family` rules to `styles.css` using the loaded families. Pick a direction before launch.
+
+2. **`#bda-footer-build` version string.** The footer partial contains `<span id="bda-footer-build">v1.0</span>`. There is no JS populator for this element. Either (a) manually update on each release, (b) add a JS populator reading from a build-info file, or (c) remove the element if build version isn't needed in the public footer.
+
+3. **`#bda-footer-partners` list.** Contains a placeholder `<li>` at launch. Populate with confirmed partner acknowledgments as outreach confirmations come in from Wright Museum, Reuther Library, and Hackley Collection.
+
+4. **Sources landing glyph rendering.** The live `styles.css` uses emoji glyphs (`content: "📖"` etc.) for source card thumbnails. Appended earlier CSS used elaborate CSS-drawn glyphs. Spec is currently the emoji version; the CSS-drawn version is a visual upgrade that would need to be added to `CSS_DOCUMENTATION.md` first.
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 2.0 | April 2026 | Full rewrite synced to CSS_DOCUMENTATION.md v3.1, JAVASCRIPT_DOCUMENTATION.md v1.0, DATAREADME.md v2.2. Restructured around partials-first architecture. Replaced inline navbar/footer markup with placeholder contracts. Renamed page sections to folder-based routes. Moved `<h1>` inside `<main>`. Added credentialing rail as top-level section. Removed inline styles and hardcoded hex values from all examples. Added individual source page template, access level badges, evidence tier badge references, criterion bar custom property pattern, cited-in structure, shared filter rail vocabulary. Flagged known inconsistencies (fonts, build version, partners list, glyph rendering) for future resolution. |
+| 1.x | Earlier 2026 | Pre-partials version: inline navbar/footer markup on every page, flat-file routes (`map.html`, `figures.html`), `<h1>` inside `<header>` above nav, inline styles in map legend and detail panel examples. |
