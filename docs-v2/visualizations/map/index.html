@@ -1,54 +1,593 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Map · Detroit Badman Digital Archive</title>
-  <meta name="description" content="Interactive geospatial visualization of badman figures and territories across Detroit.">
-  <link rel="canonical" href="https://detroit.badmandigitalarchive.com/visualizations/map/">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Interactive geospatial map of Detroit's badman figures and their territories.">
+    <meta name="author" content="Harry Foster">
+    <title>Map | Detroit Badman Digital Archive</title>
+    <link rel="canonical" href="https://detroit.badmandigitalarchive.com/visualizations/map/">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
-  <!-- Bootstrap 5 CSS -->
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
-
-  <!-- BDA styles -->
-  <link rel="stylesheet" href="/assets/css/styles.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+          integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+          crossorigin="">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- BDA styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
+    <!-- Skip to content (WCAG 2.4.1) -->
+    <a href="#bda-main-content" class="bda-skip-link">Skip to main content</a>
 
-  <!-- Skip to content (WCAG 2.4.1) -->
-  <a href="#bda-main-content" class="bda-skip-link">Skip to main content</a>
+    <!-- Navbar (loaded by partials.js) -->
+    <div id="bda-navbar"></div>
 
-  <!-- Navbar (loaded by partials.js) -->
-  <div id="bda-navbar"></div>
-
-  <!-- Page content -->
-  <div class="bda-page-main">
     <main id="bda-main-content" tabindex="-1">
-      <div class="bda-stub-banner" role="note">
-        <strong>Stub page.</strong> Content for this page is scheduled for Phase 3.5 of the pre-launch sprint.
-      </div>
-      <h1>Map</h1>
-      <p>
-        Interactive geospatial visualization of badman figures and territories across Detroit.
-      </p>
-      <p class="bda-stub-note">
-        <em>Full content lands in Phase 3.5.</em>
-      </p>
+
+        <section class="page-section">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-xl-11 mx-auto">
+
+                        <h1>Map</h1>
+                        <p class="lead">
+                            Interactive geospatial map of Detroit's badman figures. Click any
+                            marker to view figure details and toggle the figure's documented
+                            territory. Filter by modality to isolate spatial patterns.
+                        </p>
+
+                        <div class="row">
+
+                            <!-- ============================================================
+                                 MAP + SR TABLE (LEFT)
+                                 ============================================================ -->
+                            <div class="col-lg-9 mb-4">
+                                <div id="map-container"
+                                     class="bda-map-container"
+                                     role="img"
+                                     aria-label="Interactive map showing locations of Detroit badman figures across the city">
+                                    <!-- Leaflet initializes here -->
+                                </div>
+
+                                <!-- Screen-reader data table: non-visual alternative (WCAG 1.1.1, 1.3.3) -->
+                                <table class="sr-only" aria-label="Detroit badman figures data">
+                                    <caption>Figures in the Detroit Badman Archive with modality, type, location, and badman score. Each row is activatable with Enter or Space to open the figure details panel.</caption>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Modality</th>
+                                            <th scope="col">Type</th>
+                                            <th scope="col">Location</th>
+                                            <th scope="col">Badman Score</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="sr-figures-table-body">
+                                        <!-- Populated by inline JS -->
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- ============================================================
+                                 SIDEBAR (RIGHT): FILTER + LEGEND + DETAIL PANEL
+                                 ============================================================ -->
+                            <div class="col-lg-3">
+
+                                <!-- Modality filter -->
+                                <details class="bda-map-filter" open>
+                                    <summary class="bda-map-filter-summary">
+                                        Filter by modality
+                                    </summary>
+                                    <fieldset class="bda-map-filter-fieldset">
+                                        <legend class="sr-only">Toggle modalities on the map</legend>
+                                        <div id="bda-map-filter-options">
+                                            <!-- Populated by inline JS -->
+                                        </div>
+                                    </fieldset>
+                                </details>
+
+                                <!-- Legend -->
+                                <div class="bda-map-legend mb-4" aria-labelledby="bda-map-legend-heading">
+                                    <h2 id="bda-map-legend-heading" class="bda-map-legend-heading">Legend</h2>
+                                    <ul id="bda-map-legend-list" class="list-unstyled mb-0">
+                                        <!-- Populated by inline JS -->
+                                    </ul>
+                                </div>
+
+                                <!-- Figure detail panel -->
+                                <div id="info-panel"
+                                     class="bda-map-info-panel"
+                                     tabindex="-1"
+                                     aria-live="polite"
+                                     aria-atomic="true"
+                                     aria-labelledby="bda-map-info-heading">
+                                    <h2 id="bda-map-info-heading" class="bda-map-info-heading">Figure Details</h2>
+                                    <div id="info-content">
+                                        <p>Select a figure from the map or the figures list below to view details.</p>
+                                    </div>
+                                </div>
+
+                            </div><!-- /sidebar -->
+                        </div><!-- /row -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
-    
-  </div>
 
-  <!-- Footer (loaded by partials.js) -->
-  <div id="bda-footer"></div>
+    <!-- Footer (loaded by partials.js) -->
+    <div id="bda-footer"></div>
 
-  <!-- Bootstrap 5 JS (for dropdowns, collapse) -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+            integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+            crossorigin=""></script>
+    <!-- Site-wide scripts -->
+    <script src="/assets/js/scripts.js"></script>
+    <!-- Partial loader -->
+    <script src="/assets/js/partials.js"></script>
 
-  <!-- BDA partial loader -->
-  <script src="/assets/js/partials.js"></script>
+    <!-- ============================================================
+         MAP INITIALIZATION
+         ============================================================ -->
+    <script>
+    (function () {
+        'use strict';
 
+        // =====================================================================
+        // Configuration
+        // =====================================================================
 
+        var DATA_URL = '/data/detroit.json';
 
+        // Modalities rendered at launch. Move strings between arrays when a
+        // pending modality goes live.
+        var ACTIVE_MODALITIES = ['detective', 'revolutionary', 'superhero_villain'];
+        var PENDING_MODALITIES = ['gangsta_pimp', 'folk_hero_outlaw'];
+
+        // Default Detroit-centered view
+        var DEFAULT_CENTER = [42.3314, -83.0458];
+        var DEFAULT_ZOOM = 12;
+
+        // =====================================================================
+        // State
+        // =====================================================================
+
+        // Which modalities are currently checked in the filter UI. Controls
+        // what renders. Initialized to all active modalities.
+        var activeModalities = ACTIVE_MODALITIES.slice();
+
+        // Figures loaded from JSON (after placeholder filter).
+        var figures = [];
+
+        // Leaflet layer groups — one per logical layer so we can clear/redraw.
+        var markerLayer = null;
+        var additionalLayer = null;
+
+        // Territory polygons toggled on marker click.
+        // Keyed by figure id → L.polygon instance.
+        var activePolygons = {};
+
+        // =====================================================================
+        // SVG marker icons — one shape per modality (WCAG 1.4.1 non-color signal)
+        // =====================================================================
+
+        /**
+         * Build an inline SVG marker icon for a given modality.
+         *
+         * Each modality has a distinct outer shape and inner icon glyph.
+         * Color comes from getModalityConfig() (scripts.js) — no hardcoded
+         * hex values in this page.
+         */
+        function makeSvgDivIcon(modality) {
+            var cfg = getModalityConfig(modality);
+            var color = cfg.color;
+            var outer = '';
+            var glyph = '';
+
+            // Outer shape — one per modality
+            switch (cfg.markerShape) {
+                case 'circle':
+                    outer = '<circle cx="16" cy="16" r="13" fill="' + color + '" stroke="#ffffff" stroke-width="2"/>';
+                    break;
+                case 'star':
+                    outer = '<polygon points="16,2 20,12 31,12 22,19 25,30 16,23 7,30 10,19 1,12 12,12" ' +
+                            'fill="' + color + '" stroke="#ffffff" stroke-width="1.5"/>';
+                    break;
+                case 'hexagon':
+                    outer = '<polygon points="16,2 28,9 28,23 16,30 4,23 4,9" ' +
+                            'fill="' + color + '" stroke="#ffffff" stroke-width="2"/>';
+                    break;
+                case 'square':
+                    outer = '<rect x="3" y="3" width="26" height="26" ' +
+                            'fill="' + color + '" stroke="#ffffff" stroke-width="2"/>';
+                    break;
+                case 'triangle':
+                    outer = '<polygon points="16,3 29,28 3,28" ' +
+                            'fill="' + color + '" stroke="#ffffff" stroke-width="2"/>';
+                    break;
+                default:
+                    outer = '<circle cx="16" cy="16" r="13" fill="' + color + '" stroke="#ffffff" stroke-width="2"/>';
+            }
+
+            // Inner glyph — reinforces modality identity (icon, not color)
+            switch (cfg.icon) {
+                case 'magnifying-glass':
+                    glyph =
+                        '<circle cx="14" cy="14" r="4" fill="none" stroke="#ffffff" stroke-width="1.8"/>' +
+                        '<line x1="17" y1="17" x2="21" y2="21" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>';
+                    break;
+                case 'raised-fist':
+                    // Simplified fist block
+                    glyph =
+                        '<rect x="12" y="10" width="8" height="9" rx="1" fill="#ffffff"/>' +
+                        '<rect x="12" y="19" width="8" height="4" rx="1" fill="#ffffff"/>';
+                    break;
+                case 'lightning-bolt':
+                    glyph = '<polygon points="17,7 11,17 15,17 13,24 20,14 16,14 18,7" fill="#ffffff"/>';
+                    break;
+                case 'dollar-sign':
+                    glyph =
+                        '<text x="16" y="22" text-anchor="middle" ' +
+                              'font-family="Georgia, serif" font-size="16" font-weight="bold" ' +
+                              'fill="#ffffff">$</text>';
+                    break;
+                case 'triangle':
+                    glyph = '<polygon points="16,12 21,21 11,21" fill="#ffffff"/>';
+                    break;
+                default:
+                    glyph = '';
+            }
+
+            var svg =
+                '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true" focusable="false">' +
+                    outer + glyph +
+                '</svg>';
+
+            return L.divIcon({
+                html: svg,
+                className: 'bda-map-marker bda-map-marker-' + modality.replace(/_/g, '-'),
+                iconSize: [32, 32],
+                iconAnchor: [16, 16],
+                popupAnchor: [0, -14]
+            });
+        }
+
+        // Small circular marker for additional locations — same color, no glyph.
+        function makeAdditionalLocationIcon(modality) {
+            var color = getModalityColor(modality);
+            var svg =
+                '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" aria-hidden="true" focusable="false">' +
+                    '<circle cx="9" cy="9" r="6" fill="' + color + '" fill-opacity="0.8" stroke="#ffffff" stroke-width="1.5"/>' +
+                '</svg>';
+            return L.divIcon({
+                html: svg,
+                className: 'bda-map-marker-secondary bda-map-marker-secondary-' + modality.replace(/_/g, '-'),
+                iconSize: [18, 18],
+                iconAnchor: [9, 9],
+                popupAnchor: [0, -8]
+            });
+        }
+
+        // =====================================================================
+        // Leaflet map init
+        // =====================================================================
+
+        var map = L.map('map-container').setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        markerLayer = L.layerGroup().addTo(map);
+        additionalLayer = L.layerGroup().addTo(map);
+
+        // =====================================================================
+        // Filter UI construction
+        // =====================================================================
+
+        function buildFilterUi() {
+            var container = document.getElementById('bda-map-filter-options');
+            if (!container) return;
+
+            var html = '';
+
+            ACTIVE_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                var checked = activeModalities.indexOf(mod) !== -1 ? ' checked' : '';
+                html +=
+                    '<label class="bda-filter-option">' +
+                        '<input type="checkbox" data-modality="' + escapeHtml(mod) + '"' + checked + '> ' +
+                        '<span class="bda-filter-modality-marker bda-mm-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(cfg.displayLabel) + '</span>' +
+                    '</label>';
+            });
+
+            PENDING_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                html +=
+                    '<label class="bda-filter-option is-disabled">' +
+                        '<input type="checkbox" disabled aria-disabled="true"> ' +
+                        '<span class="bda-filter-modality-marker bda-mm-' + escapeHtml(suffix) + ' is-pending" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(cfg.displayLabel) +
+                            ' <span class="bda-filter-pending-tag">(pending)</span></span>' +
+                    '</label>';
+            });
+
+            container.innerHTML = html;
+
+            // Delegated listener — checkbox change re-renders everything.
+            container.addEventListener('change', function (e) {
+                var t = e.target;
+                if (!t || t.tagName !== 'INPUT' || t.type !== 'checkbox') return;
+                var mod = t.getAttribute('data-modality');
+                if (!mod) return;
+
+                if (t.checked) {
+                    if (activeModalities.indexOf(mod) === -1) activeModalities.push(mod);
+                } else {
+                    activeModalities = activeModalities.filter(function (m) { return m !== mod; });
+                }
+                render();
+            });
+        }
+
+        // =====================================================================
+        // Legend construction
+        // =====================================================================
+
+        function buildLegend() {
+            var list = document.getElementById('bda-map-legend-list');
+            if (!list) return;
+
+            var html = '';
+            ACTIVE_MODALITIES.forEach(function (mod) {
+                var cfg = getModalityConfig(mod);
+                var suffix = mod.replace(/_/g, '-');
+                html +=
+                    '<li class="bda-map-legend-item">' +
+                        '<span class="bda-legend-marker bda-legend-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span>' + escapeHtml(cfg.legendLabel) + '</span>' +
+                    '</li>';
+            });
+
+            list.innerHTML = html;
+        }
+
+        // =====================================================================
+        // Source resolution — figure.source_ids → full source objects
+        // =====================================================================
+
+        var sourceIndex = {};
+
+        function indexSources(data) {
+            sourceIndex = {};
+            if (!Array.isArray(data.sources)) return;
+            data.sources.forEach(function (s) {
+                if (s && s.id) sourceIndex[s.id] = s;
+            });
+        }
+
+        /**
+         * Build a figure object with a resolved .sources.primary array for
+         * showFigureDetails(). The source_ids on figure are IDs into
+         * data.sources; we look up each and filter to category === 'primary'.
+         */
+        function figureWithResolvedSources(figure) {
+            var ids = figure.source_ids || [];
+            var primary = [];
+            for (var i = 0; i < ids.length; i++) {
+                var src = sourceIndex[ids[i]];
+                if (src && src.category === 'primary') {
+                    primary.push(src);
+                }
+            }
+            return Object.assign({}, figure, {
+                sources: { primary: primary }
+            });
+        }
+
+        // =====================================================================
+        // Rendering
+        // =====================================================================
+
+        function clearAll() {
+            if (markerLayer) markerLayer.clearLayers();
+            if (additionalLayer) additionalLayer.clearLayers();
+            // Remove any active polygons (we don't want them lingering on filter change)
+            Object.keys(activePolygons).forEach(function (id) {
+                if (activePolygons[id]) map.removeLayer(activePolygons[id]);
+            });
+            activePolygons = {};
+        }
+
+        function render() {
+            clearAll();
+            renderMarkers();
+            renderSrTable();
+        }
+
+        function renderMarkers() {
+            figures.forEach(function (figure) {
+                if (activeModalities.indexOf(figure.modality) === -1) return;
+
+                var geo = figure.geographic;
+                if (!geo || !geo.primary_location || !geo.primary_location.coordinates) return;
+                var lat = geo.primary_location.coordinates.lat;
+                var lng = geo.primary_location.coordinates.lng;
+                if (typeof lat !== 'number' || typeof lng !== 'number') return;
+
+                var icon = makeSvgDivIcon(figure.modality);
+
+                var marker = L.marker([lat, lng], {
+                    icon: icon,
+                    alt: figure.name + ' \u2014 ' + getModalityConfig(figure.modality).displayLabel + ' modality',
+                    keyboard: true
+                });
+
+                marker.on('click', function () {
+                    handleMarkerClick(figure);
+                });
+
+                markerLayer.addLayer(marker);
+
+                // Additional location markers (smaller, same modality color, no glyph)
+                if (Array.isArray(geo.additional_locations)) {
+                    geo.additional_locations.forEach(function (loc) {
+                        if (!loc || !loc.coordinates) return;
+                        var aLat = loc.coordinates.lat;
+                        var aLng = loc.coordinates.lng;
+                        if (typeof aLat !== 'number' || typeof aLng !== 'number') return;
+
+                        var altText = (loc.name || 'Additional location') +
+                            ' \u2014 ' + figure.name +
+                            ' (' + getModalityConfig(figure.modality).displayLabel + ')';
+
+                        var aMarker = L.marker([aLat, aLng], {
+                            icon: makeAdditionalLocationIcon(figure.modality),
+                            alt: altText,
+                            keyboard: true
+                        });
+
+                        var popupHtml =
+                            '<div class="bda-map-popup">' +
+                                '<strong>' + escapeHtml(loc.name || '') + '</strong>' +
+                                '<br><em>' + escapeHtml(figure.name) + '</em>' +
+                                (loc.significance
+                                    ? '<p class="bda-map-popup-significance">' + escapeHtml(loc.significance) + '</p>'
+                                    : '') +
+                            '</div>';
+
+                        aMarker.bindPopup(popupHtml);
+                        additionalLayer.addLayer(aMarker);
+                    });
+                }
+            });
+        }
+
+        function handleMarkerClick(figure) {
+            // Update detail panel via shared function
+            showFigureDetails(figureWithResolvedSources(figure), 'info-content', 'info-panel');
+
+            // Toggle the figure's territory polygon
+            var geo = figure.geographic;
+            if (!geo || !geo.territory || !Array.isArray(geo.territory.polygon) || geo.territory.polygon.length < 3) {
+                return;
+            }
+
+            if (activePolygons[figure.id]) {
+                map.removeLayer(activePolygons[figure.id]);
+                delete activePolygons[figure.id];
+                return;
+            }
+
+            var color = getModalityColor(figure.modality);
+            var polygon = L.polygon(geo.territory.polygon, {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.2,
+                weight: 2,
+                className: 'bda-map-territory bda-map-territory-' + figure.modality.replace(/_/g, '-')
+            }).addTo(map);
+
+            // Double-click polygon to dismiss
+            polygon.on('dblclick', function () {
+                if (activePolygons[figure.id]) {
+                    map.removeLayer(activePolygons[figure.id]);
+                    delete activePolygons[figure.id];
+                }
+            });
+
+            activePolygons[figure.id] = polygon;
+        }
+
+        // =====================================================================
+        // Screen-reader data table
+        // =====================================================================
+
+        function renderSrTable() {
+            var tbody = document.getElementById('sr-figures-table-body');
+            if (!tbody) return;
+
+            tbody.innerHTML = '';
+
+            figures.forEach(function (figure) {
+                if (activeModalities.indexOf(figure.modality) === -1) return;
+
+                var cfg = getModalityConfig(figure.modality);
+                var locName = (figure.geographic && figure.geographic.primary_location && figure.geographic.primary_location.name)
+                    ? figure.geographic.primary_location.name
+                    : '\u2014';
+                var totalScore = calculateBadmanScore(figure.scores);
+
+                var row = document.createElement('tr');
+                row.setAttribute('tabindex', '0');
+                row.setAttribute('role', 'button');
+                row.setAttribute('aria-label', 'View details for ' + figure.name);
+                row.innerHTML =
+                    '<th scope="row">' + escapeHtml(figure.name) + '</th>' +
+                    '<td>' + escapeHtml(cfg.displayLabel) + '</td>' +
+                    '<td>' + escapeHtml(formatFigureType(figure.type, figure.meta_badman)) + '</td>' +
+                    '<td>' + escapeHtml(locName) + '</td>' +
+                    '<td>' + totalScore + '/25</td>';
+
+                row.addEventListener('click', function () {
+                    handleMarkerClick(figure);
+                });
+                row.addEventListener('keydown', function (e) {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleMarkerClick(figure);
+                    }
+                });
+
+                tbody.appendChild(row);
+            });
+        }
+
+        // =====================================================================
+        // Load data and initialize
+        // =====================================================================
+
+        function renderLoadError() {
+            var panel = document.getElementById('info-content');
+            if (panel) {
+                panel.innerHTML =
+                    '<p role="alert">Could not load archive data. Please try again.</p>';
+            }
+        }
+
+        loadArchiveData(DATA_URL).then(function (data) {
+            if (!data) {
+                renderLoadError();
+                return;
+            }
+
+            indexSources(data);
+
+            var all = Array.isArray(data.figures) ? data.figures : [];
+            figures = all.filter(function (f) {
+                return f && !f._placeholder && f.id && f.modality;
+            });
+
+            buildFilterUi();
+            buildLegend();
+            render();
+        }).catch(function (err) {
+            console.error('map.html: failed to load data', err);
+            renderLoadError();
+        });
+
+    })();
+    </script>
 </body>
 </html>
