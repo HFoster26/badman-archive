@@ -1,10 +1,8 @@
 # Detroit Badman Archive — Data Schema Documentation
 
 **Last Updated:** April 2026
-**Version:** 2.2
-**Change Log:**
-- **v2.2 (April 2026):** Sources migrated from nested per-figure arrays to a flat top-level `sources` array. Each source now carries an ID (`src_[city]_NNNN`), a `category` field (primary / secondary / archival), and a `figure_ids` back-reference. Figures reference sources via `source_ids` array and `emergence.source_id` string. Added reserved optional fields (`media`, `interview`) to the source schema to accommodate post-IRB interview integration without future migration. Documented `access_level` enum. Added `_related_sources` as an internal flag.
-- **v2.1 (earlier 2026):** Removed GEO edge type. Added CC (Creation Continuity) edge type. Flipped SVM modality from "Staged" to "Active." Added Special Entry Types section documenting `_placeholder` / `_instructions` pattern. Updated modality status to reflect three-modality launch (Detective, Revolutionary, Superhero-Villain). Hex codes normalized to uppercase. Figure-by-figure modality tables removed; live site is source of truth for roster.
+**Version:** 2.1
+**Change Log:** Removed GEO edge type. Added CC (Creation Continuity) edge type. Flipped SVM modality from "Staged" to "Active." Added Special Entry Types section documenting `_placeholder` / `_instructions` pattern. Updated modality status to reflect three-modality launch (Detective, Revolutionary, Superhero-Villain). Hex codes normalized to uppercase. Figure-by-figure modality tables removed; live site is source of truth for roster.
 
 ---
 
@@ -14,7 +12,7 @@ This document explains the JSON schema used in `detroit.json` and any future cit
 
 ## Launch State
 
-At launch (May 2026), the Detroit module includes **15 rendering figures across 3 active modalities**, plus one dormant figure:
+At launch (May 2026), the Detroit module includes **15 figures across 3 active modalities**:
 
 | Modality | Status | Figures at Launch | Notes |
 |----------|--------|-------------------|-------|
@@ -30,14 +28,13 @@ The complete figure roster is available on the [live site](https://detroit.badma
 
 ## Overview
 
-Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.json`). The file contains five top-level fields:
+Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.json`). The file contains two top-level fields plus two visualization configuration objects:
 
 ```json
 {
   "city": "detroit",
   "edge_types": { ... },
   "evidence_tiers": { ... },
-  "sources": [ ... ],
   "figures": [ ... ]
 }
 ```
@@ -47,10 +44,7 @@ Each city's data lives in a single JSON file (e.g., `detroit.json`, `atlanta.jso
 | `city` | string | City identifier (lowercase, no spaces) |
 | `edge_types` | object | Network edge type definitions (color, label) — used by NVT |
 | `evidence_tiers` | object | Evidence tier definitions (line style, opacity) — used by NVT |
-| `sources` | array | All primary, secondary, and archival sources for the city (flat array, ID-referenced by figures) |
 | `figures` | array | Array of badman figure objects |
-
-**Design Principle:** Sources are stored once at the top level and referenced by figures via ID. A single source can be cited by multiple figures without duplication (e.g., Goines and Kenyatta both cite *Crime Partners*). This normalization enables the Primary Sources landing page, filterable source views, and per-source "Cited in" listings without re-scanning every figure entry.
 
 ### Top-Level: Edge Types
 
@@ -78,9 +72,7 @@ Defines the visual styling for connection evidence quality in the NVT:
 }
 ```
 
-### Top-Level: Sources
-
-See the "Sources" section later in this document for the full schema. Sources live at the top level as a flat array; each figure references sources via a `source_ids` array.
+**Design Principle:** This single JSON file feeds both the Map visualization tool and the Network Visualization Tool (NVT). Fields are organized into buckets that each tool reads from. Empty or null values are valid — tools render what's available and gracefully skip what's missing.
 
 ---
 
@@ -178,7 +170,7 @@ Each figure in the `figures` array contains seven data buckets:
 4. **Biography** — Description and key events
 5. **Geographic** — Location and territory data (Map tool)
 6. **Network** — Connections and influence phases (NVT)
-7. **Source References** — IDs pointing into the top-level `sources` array
+7. **Sources** — Primary, secondary, and archival references
 
 ---
 
@@ -241,7 +233,6 @@ These fields are used for project management and are ignored by visualization co
 | `_divider` | string | Visual separator for human readability in raw JSON |
 | `_modality_note` | string | Notes about modality assignment decisions or pending changes |
 | `_REVIEW_NEEDED` | string | Flags fields requiring revision (can appear on any object within the figure) |
-| `_related_sources` | array | Traceability hint linking a sub-object (typically an `influence` block) back to source IDs used in its justifications. Ignored by visualization code. |
 | `_placeholder` | boolean | Set to `true` on special insertion-point entries (see Special Entry Types) |
 | `_instructions` | string | Plain-language guidance accompanying `_placeholder` entries |
 
@@ -257,7 +248,10 @@ Emergence captures when and why this figure's contentious relationship with the 
 "emergence": {
   "year": 1955,
   "context": "First arrest for robbery at age 15; began cycling through Michigan correctional system",
-  "source_id": "src_dt_0004"
+  "source": {
+    "title": "Eddie Allen, Low Road: The Life and Legacy of Donald Goines",
+    "url": "https://..."
+  }
 }
 ```
 
@@ -267,7 +261,7 @@ Emergence captures when and why this figure's contentious relationship with the 
 |-------|------|----------|-------------|
 | `year` | integer | Yes | Year contentious relationship with law began |
 | `context` | string | Yes | 1–2 sentence explanation of what triggered emergence |
-| `source_id` | string \| null | No | ID of the source in the top-level `sources` array that supports the emergence claim |
+| `source` | object \| null | No | Attribution for emergence claim |
 
 ### Emergence Guidelines by Figure Type
 
@@ -454,7 +448,7 @@ Contains two sub-sections: connections (edges between figures) and influence (ma
 | `start_year` | integer | Yes | Year the connection began |
 | `end_year` | integer | Yes | Year the connection ended (can equal `start_year` for single events) |
 | `evidence` | string | Yes | Documented proof of connection |
-| `source` | string | Yes | Citation for the evidence claim (free-text; for structured source references use the `source_ids` array on the figure) |
+| `source` | string | Yes | Citation for the evidence claim |
 
 ### Connection Types
 
@@ -484,7 +478,6 @@ The archive uses a curated scholarly estimate model where the Project Director a
 "influence": {
   "scale": "1-10",
   "metric_type": "curated_scholarly_estimate",
-  "_related_sources": ["src_dt_0004", "src_dt_0005"],
   "phases": [
     {
       "start": 1971,
@@ -510,7 +503,6 @@ The archive uses a curated scholarly estimate model where the Project Director a
 |-------|------|----------|-------------|
 | `influence.scale` | string | Yes | Always `"1-10"` |
 | `influence.metric_type` | string | Yes | Always `"curated_scholarly_estimate"` |
-| `influence._related_sources` | array | No | Optional array of source IDs that back the phase justifications. Traceability hint only; ignored by visualizations. |
 | `influence.phases` | array | Yes | Array of time-phase objects |
 
 ### Phase Fields
@@ -521,7 +513,7 @@ The archive uses a curated scholarly estimate model where the Project Director a
 | `end` | integer | Yes | End year of this phase |
 | `value` | integer | Yes | Influence score (1–10) assigned by Project Director |
 | `justification` | string | Yes | Explanation of score — cite specific evidence where possible |
-| `source` | string | Yes | Citation (free-text; use `"TBD"` or `"TBD — [description of needed research]"` for placeholders) |
+| `source` | string | Yes | Citation (use `"TBD"` or `"TBD — [description of needed research]"` for placeholders) |
 
 ### Placeholder Pattern
 
@@ -550,202 +542,62 @@ A `_REVIEW_NEEDED` string can be added to the `influence` object to flag the ent
 
 ---
 
-## Bucket 7: Source References
+## Bucket 7: Sources
 
-Figures reference sources via a `source_ids` array. Sources themselves live at the top level (see the "Sources" section below).
-
-```json
-"source_ids": [
-  "src_dt_0001",
-  "src_dt_0002",
-  "src_dt_0004"
-]
-```
-
-### Fields
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `source_ids` | array of strings | Yes | IDs of sources in the top-level `sources` array that document this figure. Order is not significant. |
-
-### Rules
-
-- Every ID in `source_ids` must match an `id` in the top-level `sources` array
-- A single source can be referenced by multiple figures (e.g., *Crime Partners* is referenced by both Goines and Kenyatta)
-- Do not store source metadata (title, URL, etc.) on the figure — only the ID reference
-- If a source has not yet been added to the top-level `sources` array, add it there first, then reference it here
-
-### Why This Structure
-
-The previous schema (v2.0 and earlier) nested sources inside each figure under `sources.primary`, `sources.secondary`, and `sources.archival`. The current schema stores sources once at the top level and references them by ID from figures. This normalization:
-
-- Eliminates duplication when one source documents multiple figures
-- Enables the Primary Sources landing page to render every source in the archive in a single filterable grid
-- Allows per-source "Cited in" listings (which figures reference this source?)
-- Makes it possible to edit source metadata in one place and have all references update
-
----
-
-## Sources (Top-Level Array)
-
-The `sources` array contains every primary, secondary, and archival source referenced by any figure in the city. Sources are stored as a flat array; the `category` field on each source determines its classification.
-
-### Source Object
+References for the figure entry.
 
 ```json
-{
-  "id": "src_dt_0002",
-  "title": "Crime Partners",
-  "category": "primary",
-  "type": "novel",
-  "year": 1974,
-  "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/",
-  "author": "Donald Goines (as Al C. Clark)",
-  "publisher": "Holloway House",
-  "repository": null,
-  "extent": null,
-  "language": "en",
-  "rights": null,
-  "access_level": "public",
-  "date_accessed": null,
-  "notes": null,
-  "figure_ids": [
-    "goines_donald",
-    "kenyatta"
+"sources": {
+  "primary": [
+    {
+      "title": "Crime Partners",
+      "type": "novel",
+      "year": 1974,
+      "url": "https://www.kensingtonbooks.com/9781496733283/crime-partners/"
+    }
+  ],
+  "secondary": [
+    {
+      "title": "Born in a Mighty Bad Land: The Violent Man in African American Folklore and Fiction",
+      "type": "academic",
+      "year": 2003,
+      "url": "https://iupress.org/9780253215789/born-in-a-mighty-bad-land/"
+    }
+  ],
+  "archival": [
+    {
+      "title": "COINTELPRO Files - Detroit Field Office",
+      "type": "government",
+      "repository": "National Archives",
+      "url": null,
+      "notes": "Requires in-person visit; relevant to Scott entry"
+    }
   ]
 }
 ```
 
-### Required Fields
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `id` | string | Unique source identifier in `src_[city]_NNNN` format (see ID Convention below) |
-| `title` | string | Source title |
-| `category` | string | Source classification: `"primary"`, `"secondary"`, or `"archival"` (see Categories below) |
-| `type` | string | Source format (see Common Source Types below) |
-| `figure_ids` | array of strings | IDs of figures in the `figures` array that reference this source. Back-reference for filtering and "Cited in" views. |
-
-### Optional Fields (Nullable)
-
-All other fields accept `null` when data is unavailable. Do not omit — set to `null` explicitly so the schema shape is consistent across all sources.
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `year` | integer \| null | Publication/release/creation year |
-| `url` | string \| null | Link to source. Null for sources requiring physical or institutional access. For multi-asset sources (audio + transcript), see the reserved `media` field below. |
-| `author` | string \| null | Source author, creator, or originating person. For interviews, the interviewer. |
-| `publisher` | string \| null | Publishing entity (press, studio, label, network) |
-| `repository` | string \| null | Physical or institutional location for archival sources |
-| `extent` | string \| null | Physical or temporal extent (e.g., `"45 min"`, `"320 pages"`, `"3 boxes"`) |
-| `language` | string \| null | ISO 639-1 code (e.g., `"en"`, `"fr"`) |
-| `rights` | string \| null | Rights statement. Accommodates both copyright terms (for published works) and consent-based terms (for interviews and participant-generated content). |
-| `access_level` | string \| null | Who can access this source — see Access Level Enum below |
-| `date_accessed` | string \| null | ISO 8601 date (`"2026-04-15"`) when the source was last accessed or verified |
-| `notes` | string \| null | Free-text notes: access warnings, methodological caveats, transcription status, institutional holdings context |
-
 ### Source Categories
 
 | Category | Description | Examples |
-|----------|-------------|----------|
-| `primary` | Direct sources documenting or produced by the figure | Novels, films, speeches, news articles, founding documents, audio recordings, original interviews |
-| `secondary` | Scholarly or journalistic analysis about the figure | Academic books, journal articles, dissertations, biographies, obituaries, criticism |
-| `archival` | Materials requiring institutional access | COINTELPRO files, Reuther Library collections, museum holdings, personal papers, publisher records |
+|----------|-------------|---------|
+| `primary` | Direct sources documenting the figure | Novels, films, speeches, news articles, founding documents, audio recordings |
+| `secondary` | Scholarly analysis about the figure | Academic books, journal articles, dissertations, biographies, obituaries |
+| `archival` | Materials requiring institutional access | COINTELPRO files, Reuther Library collections, museum holdings, personal papers |
 
-### Access Level Enum
+### Source Fields
 
-The `access_level` field takes one of four values:
-
-| Value | Description |
-|-------|-------------|
-| `"public"` | Source is freely accessible (published work, public website, open digital archive) |
-| `"restricted"` | Source requires institutional affiliation, subscription, or on-site visit (paywalled journals, closed archives) |
-| `"embargoed"` | Source is time-restricted; access opens on a specific date (use `notes` to document the embargo period) |
-| `"consent_required"` | Source requires explicit consent from the subject or rights-holder to display or share (reserved for post-IRB interview material) |
-
-Current archive state: every source at launch is `"public"`. The other three values are reserved for post-launch expansion — particularly `"consent_required"` for IRB-approved interview material.
-
-### Source ID Convention
-
-Source IDs follow the format: **`src_[city_code]_[4-digit number]`**
-
-- `src_` — fixed prefix
-- `[city_code]` — two-letter city abbreviation (Detroit = `dt`, Atlanta = `atl`, New Orleans = `no`, etc.)
-- `[4-digit number]` — zero-padded sequential number starting at `0001`
-
-**Detroit examples:** `src_dt_0001`, `src_dt_0042`, `src_dt_0091`
-
-**Rules:**
-- IDs are assigned sequentially as sources are added. Do not reuse an ID if a source is deleted — skip the number.
-- IDs do not carry semantic meaning (they are not grouped by category or figure). Do not reorder the `sources` array to make IDs contiguous by category.
-- Four digits accommodate up to 9,999 sources per city. If a city approaches that ceiling, expand to five digits and document the transition in the change log.
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | Yes | Source title |
+| `type` | string | Yes | Source format (see common types below) |
+| `year` | integer \| null | No | Publication/release year |
+| `url` | string \| null | Yes | Link to source (null if no web access) |
+| `repository` | string | No | Physical location for archival sources |
+| `notes` | string | No | Access notes, relevance explanation |
 
 ### Common Source Types
 
-The `type` field is free-text but should be drawn from the following list when possible. Display formatting (converting snake_case to Title Case) is handled by the Primary Sources landing page.
-
-`novel`, `film`, `television`, `documentary`, `academic`, `biography`, `news`, `obituary`, `government`, `institutional`, `organizational`, `organizational_document`, `organizational_statement`, `personal`, `letter`, `audio_recording`, `founding_document`, `newspaper`, `book`, `video`, `website`, `digital_archive`, `publisher`, `comics`, `artwork`, `manuscript`, `newsletter`, `interview`, `reference`, `legal`, `podcast`, `criticism`
-
-If a new type is needed, use snake_case and add it to this list in a future change log entry.
-
-### Reserved Fields (Post-IRB Interview Integration)
-
-The following fields are reserved in the schema and are NOT YET IN USE at launch. They are documented here so that interview sources can be added after IRB approval without a breaking schema change. Current visualization code and the Primary Sources landing page ignore these fields if present.
-
-#### `media` (reserved)
-
-Optional array of media assets associated with a single source. When present, `media` supersedes the bare `url` field for multi-asset sources (e.g., an interview with both audio and transcript).
-
-```json
-"media": [
-  {
-    "format": "audio",
-    "url": "/sources/interviews/src_dt_0200/audio.mp3",
-    "duration": 2715,
-    "mime_type": "audio/mpeg"
-  },
-  {
-    "format": "transcript",
-    "url": "/sources/interviews/src_dt_0200/transcript.pdf",
-    "mime_type": "application/pdf"
-  }
-]
-```
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `format` | string | Yes | One of: `"audio"`, `"video"`, `"transcript"`, `"image"`, `"document"` |
-| `url` | string | Yes | Path or URL to the asset |
-| `duration` | integer | No | Duration in seconds (audio/video only) |
-| `mime_type` | string | No | MIME type (e.g., `"audio/mpeg"`, `"video/mp4"`, `"application/pdf"`) |
-
-**Rule:** When `media` is present, the top-level `url` field should be `null`. When `media` is absent, `url` behaves as documented above.
-
-#### `interview` (reserved)
-
-Optional object containing interview-specific metadata. Present only when `type: "interview"`.
-
-```json
-"interview": {
-  "interviewee": "Anonymized — see rights",
-  "interviewer": "Harry M. Foster",
-  "date_conducted": "2027-03-15",
-  "location": "Detroit, MI",
-  "consent_scope": "Audio and transcript public release; name anonymized at interviewee request.",
-  "irb_protocol": "MSU-IRB-2027-0142"
-}
-```
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `interviewee` | string | Yes | Name of interviewee, or anonymization marker (see `consent_scope`) |
-| `interviewer` | string | Yes | Name of interviewer |
-| `date_conducted` | string | Yes | ISO 8601 date of the interview |
-| `location` | string | No | City, state, or specific venue |
-| `consent_scope` | string | Yes | Plain-language summary of what the interviewee consented to (full public release, anonymization terms, redaction requirements, embargo period) |
-| `irb_protocol` | string | No | IRB protocol number under which the interview was conducted |
-
-**Rule:** When an interview source uses `access_level: "consent_required"` or `access_level: "embargoed"`, the `consent_scope` field must document the terms.
+`novel`, `film`, `television`, `documentary`, `academic`, `biography`, `news`, `obituary`, `government`, `institutional`, `organizational`, `personal`, `letter`, `audio_recording`, `founding_document`, `newspaper`, `book`, `video`, `website`, `digital_archive`, `publisher`, `comics`, `artwork`, `manuscript`, `newsletter`, `interview`, `reference`, `legal`, `podcast`
 
 ---
 
@@ -759,13 +611,11 @@ These fields accept `null` when data is unavailable:
 
 - `years.death` (for living figures)
 - `creator_id` (if creator not in database)
-- `emergence.source_id` (if emergence claim is not yet source-backed)
+- `source.url` (for archival/physical sources)
 - `influence.phases` (can be empty array `[]`)
 - `additional_locations` (can be empty array `[]`)
 - `adaptations` (can be empty array `[]`)
 - `connections` (can be empty array `[]`)
-- `source_ids` (can be empty array `[]` — figure exists but sources not yet cataloged)
-- All optional source fields (see Sources section above)
 
 ---
 
@@ -777,34 +627,28 @@ These fields accept `null` when data is unavailable:
 2. For locations, provide street names and neighborhood descriptions
 3. For connections, describe relationships in sentences
 4. For influence, note what you found and where
-5. List sources in a separate sheet: title, category, type, year, URL, author, publisher, repository, notes — and which figures they relate to
-6. Flag uncertain information with `"NEEDS VERIFICATION"`
-7. Note sources for every claim
+5. Flag uncertain information with `"NEEDS VERIFICATION"`
+6. Note sources for every claim
 
 ### For Graduate Students (JSON Translation)
 
-1. **Add new sources first.** Assign each new source the next sequential `src_[city]_NNNN` ID. Fill in all required fields and any optional fields with known data. Set unknown optional fields to `null` (do not omit). Populate the `figure_ids` array with the IDs of figures that reference this source.
-2. Convert spreadsheet figure data to JSON format
-3. Look up coordinates for locations using Google Maps or OpenStreetMap
-4. Draw territory polygons based on key events and location descriptions
-5. Create proper `target_id` references for connections
-6. Assign appropriate `tier` levels (1–3) to connections based on evidence quality
-7. Add the new figure's ID to the `figure_ids` array of each source it references
-8. Populate the figure's `source_ids` array with the IDs of sources that document it
-9. Populate `emergence.source_id` with the single source that best supports the emergence claim (or `null` if none)
-10. Add `_divider` field for visual separation between entries
-11. Insert new figure objects **above** the `_placeholder` entry for the appropriate modality
-12. Do NOT remove the placeholder — it stays as the insertion point for the next entry
-13. Validate JSON syntax before committing
-14. Run through validation checklist
+1. Convert spreadsheet data to JSON format
+2. Look up coordinates for locations using Google Maps or OpenStreetMap
+3. Draw territory polygons based on key events and location descriptions
+4. Create proper `target_id` references for connections
+5. Assign appropriate `tier` levels (1–3) to connections based on evidence quality
+6. Add `_divider` field for visual separation between entries
+7. Insert new figure objects **above** the `_placeholder` entry for the appropriate modality
+8. Do NOT remove the placeholder — it stays as the insertion point for the next entry
+9. Validate JSON syntax before committing
+10. Run through validation checklist
 
 ### For Project Director (Quality Control)
 
 1. Review all new entries against five-criteria framework
 2. Assign influence phase values (1–10 scale)
 3. Verify connection evidence is documented and tier is appropriate
-4. Verify source `figure_ids` back-references match figure `source_ids`
-5. Approve entries for public dataset
+4. Approve entries for public dataset
 
 ---
 
@@ -812,7 +656,7 @@ These fields accept `null` when data is unavailable:
 
 Before committing new entries:
 
-### Required Fields (Figure)
+### Required Fields
 - [ ] `id` is unique and follows naming convention (lowercase, underscores)
 - [ ] `name` is present
 - [ ] `type` is either `"real"` or `"fictional"`
@@ -842,19 +686,6 @@ Before committing new entries:
 - [ ] Influence object has `scale`, `metric_type`, and at least one phase
 - [ ] Influence phases have `start`, `end`, `value`, `justification`, and `source`
 
-### Source References
-- [ ] `source_ids` array is present (can be empty `[]` if no sources yet cataloged)
-- [ ] Every ID in `source_ids` matches an `id` in the top-level `sources` array
-- [ ] `emergence.source_id` (if present) matches an `id` in the top-level `sources` array
-
-### Sources (Top-Level Array)
-- [ ] `id` follows `src_[city_code]_NNNN` format and is unique
-- [ ] `title`, `category`, `type`, and `figure_ids` are present
-- [ ] `category` is one of: `"primary"`, `"secondary"`, `"archival"`
-- [ ] `access_level` (if present) is one of: `"public"`, `"restricted"`, `"embargoed"`, `"consent_required"`
-- [ ] Every ID in `figure_ids` matches an `id` of a figure in the `figures` array
-- [ ] Unused optional fields are set to `null`, not omitted
-
 ### Placement
 - [ ] New figure inserted **above** the `_placeholder` entry for its modality
 - [ ] `_placeholder` entry preserved (not removed)
@@ -869,19 +700,17 @@ Before committing new entries:
 
 ## Tool Data Requirements
 
-Quick reference for which buckets and top-level fields each visualization or page requires:
+Quick reference for which buckets each visualization tool requires:
 
-| Bucket / Field | Map Tool | NVT | Figures Landing | Figure Page | Sources Landing | Source Page |
-|----------------|----------|-----|----------------|-------------|-----------------|-------------|
-| Identity (figure) | Required | Required | Required | Required | — | — |
-| Emergence | Not used | Required | Not used | Required | — | — |
-| Scores | Not used | Optional | Optional | Required | — | — |
-| Biography | Optional | Optional | Optional | Required | — | — |
-| Geographic | Required | Not used | Optional | Required | — | — |
-| Network | Not used | Required | Not used | Required | — | — |
-| Figure `source_ids` | Optional | Optional | Not used | Required | — | — |
-| Top-level `sources` array | Optional | Optional | — | Required (for figure's cited sources) | Required | Required |
-| `sources[].figure_ids` | — | — | — | — | Required (for modality/figure filtering) | Required (for "Cited in") |
+| Bucket | Map Tool | NVT | Notes |
+|--------|----------|-----|-------|
+| Identity | Required | Required | Both tools need basic identification |
+| Emergence | Not used | Required | NVT timeline axis |
+| Scores | Not used | Optional | Can size nodes by total score |
+| Biography | Optional | Optional | Detail panels in both tools |
+| Geographic | Required | Not used | Map markers and polygons |
+| Network | Not used | Required | Connections and influence trajectory |
+| Sources | Optional | Optional | Attribution in detail panels |
 
 ---
 
@@ -927,11 +756,10 @@ When a modality goes live:
 When expanding beyond Detroit:
 
 1. Create new JSON file: `[city].json`
-2. Follow identical schema structure, including top-level `edge_types`, `evidence_tiers`, and `sources`
-3. Assign the city a two-letter code for source IDs (e.g., Atlanta = `atl`, New Orleans = `no`)
-4. Update any cross-city connections with full `city:id` references
-5. Add city to main site navigation
-6. Create city subdomain: `[city].badmandigitalarchive.com`
+2. Follow identical schema structure, including top-level `edge_types` and `evidence_tiers`
+3. Update any cross-city connections with full `city:id` references
+4. Add city to main site navigation
+5. Create city subdomain: `[city].badmandigitalarchive.com`
 
 ---
 
@@ -947,17 +775,13 @@ When expanding beyond Detroit:
 
 ### Data Consistency
 
-- **ID format (figures):** Always lowercase with underscores: `baker_gordon` not `Baker_Gordon`
-- **ID format (sources):** Always `src_[city_code]_NNNN` with four-digit zero-padded number
+- **ID format:** Always lowercase with underscores: `baker_gordon` not `Baker_Gordon`
 - **Coordinate order:** Always `lat, lng` in objects; `[lat, lng]` in polygon arrays
 - **Year format:** Use integers `1968` not strings `"1968"`
 - **Target IDs:** Must exactly match the `id` field of another figure in the dataset
-- **Source IDs:** Must exactly match an `id` in the top-level `sources` array
-- **Bidirectional references:** When a figure's `source_ids` includes a source ID, that source's `figure_ids` must include the figure's ID. Both sides must stay in sync.
 - **Connection direction:** Store on originating figure with `"outgoing"`
 - **Evidence tier:** Integer `1`, `2`, or `3` — not strings
 - **Placeholder preservation:** Never remove `_placeholder: true` entries when adding new figures — insert new entries above them
-- **Omitting vs. nulling optional fields:** For source objects, set unused fields to `null` explicitly. Do not omit. This keeps the schema shape consistent across all sources and simplifies the sources landing page logic.
 
 ---
 
