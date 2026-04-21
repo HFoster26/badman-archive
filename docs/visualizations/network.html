@@ -320,6 +320,11 @@
 
         var radiusScale = null;
 
+        // Cached container dimensions — re-read each setup/render so we always
+        // have the current layout size, not a stale init-time value.
+        var containerWidth = 0;
+        var containerHeight = 0;
+
         // =====================================================================
         // Source resolution (same pattern as map)
         // =====================================================================
@@ -494,21 +499,50 @@
         }
 
         // =====================================================================
+        // Measure container — single source of truth for width/height
+        // =====================================================================
+
+        function measureContainer() {
+            var container = document.getElementById('network-container');
+            if (!container) {
+                containerWidth = 800;
+                containerHeight = 600;
+                return;
+            }
+            // Prefer getBoundingClientRect for fractional pixel accuracy,
+            // fall back to clientWidth/clientHeight, then to sensible defaults
+            // if CSS hasn't applied at all (zero-size container).
+            var rect = container.getBoundingClientRect();
+            containerWidth = Math.round(rect.width) || container.clientWidth || 800;
+            containerHeight = Math.round(rect.height) || container.clientHeight || 600;
+
+            // Diagnostic: if this logs 0 or a tiny number for height, we know
+            // the CSS height rule isn't applying — that's a stylesheet issue,
+            // not a JS timing issue, and we need to fix .bda-network-container.
+            console.log('[Network] Container measured:', {
+                width: containerWidth,
+                height: containerHeight,
+                rectWidth: rect.width,
+                rectHeight: rect.height,
+                clientWidth: container.clientWidth,
+                clientHeight: container.clientHeight
+            });
+        }
+
+        // =====================================================================
         // SVG setup
         // =====================================================================
 
         function setupSvg() {
             var container = document.getElementById('network-container');
-            var width = container.clientWidth;
-            var height = container.clientHeight;
 
             // Clear any loading placeholder
             container.innerHTML = '';
 
             svg = d3.select('#network-container')
                 .append('svg')
-                .attr('width', width)
-                .attr('height', height)
+                .attr('width', containerWidth)
+                .attr('height', containerHeight)
                 .attr('role', 'img')
                 .attr('aria-label', 'Force-directed network visualization of Detroit badman figure relationships');
 
@@ -584,22 +618,19 @@
         }
 
         function renderGraph() {
-            var container = document.getElementById('network-container');
-            var width = container.clientWidth;
-            var height = container.clientHeight;
-
             // Clear existing graph children from g (but not defs/title/desc on svg)
             g.selectAll('*').remove();
 
-            // Simulation
+            // Simulation — use cached dimensions (measured at setup time and
+            // re-measured at render time by the init flow).
             simulation = d3.forceSimulation(nodesData)
                 .force('link', d3.forceLink(edgesData).id(function (d) { return d.id; }).distance(150))
                 .force('charge', d3.forceManyBody().strength(-400))
-                .force('center', d3.forceCenter(width / 2, height / 2))
+                .force('center', d3.forceCenter(containerWidth / 2, containerHeight / 2))
                 .force('collision', d3.forceCollide().radius(function (d) {
                     return radiusScale(getInfluenceAtYear(d, currentYear)) + 5;
                 }))
-                .force('gravity', d3.forceRadial(0, width / 2, height / 2).strength(0.05));
+                .force('gravity', d3.forceRadial(0, containerWidth / 2, containerHeight / 2).strength(0.05));
 
             if (reducedMotion) {
                 for (var i = 0; i < 300; i++) simulation.tick();
@@ -1098,11 +1129,39 @@
 
         function rebuildVisualization() {
             focusedNode = null;
+            measureContainer();
             buildGraphData();
+            // Rebuild the SVG entirely so width/height attrs get updated if
+            // the container changed size (e.g., sidebar collapsed, viewport resized)
+            setupSvg();
             renderGraph();
             renderSrTable();
             updateNetworkMetrics(currentYear);
             unfocus();
+        }
+
+        // =====================================================================
+        // Window resize — re-measure and rebuild if container size changed
+        // =====================================================================
+
+        function onResize() {
+            var container = document.getElementById('network-container');
+            if (!container) return;
+            var rect = container.getBoundingClientRect();
+            var newWidth = Math.round(rect.width);
+            var newHeight = Math.round(rect.height);
+            if (newWidth !== containerWidth || newHeight !== containerHeight) {
+                containerWidth = newWidth || containerWidth;
+                containerHeight = newHeight || containerHeight;
+                if (svg) {
+                    svg.attr('width', containerWidth).attr('height', containerHeight);
+                    if (simulation) {
+                        simulation.force('center', d3.forceCenter(containerWidth / 2, containerHeight / 2));
+                        simulation.force('gravity', d3.forceRadial(0, containerWidth / 2, containerHeight / 2).strength(0.05));
+                        simulation.alpha(0.3).restart();
+                    }
+                }
+            }
         }
 
         // =====================================================================
@@ -1151,19 +1210,41 @@
                 buildNodeLegend();
                 buildEdgeLegend();
 
-                setupSvg();
-                buildGraphData();
-                renderGraph();
-                renderSrTable();
-                wireControls();
-                updateNetworkMetrics(currentYear);
+                // Defer SVG creation and rendering one frame so the browser
+                // completes its layout pass with the CSS applied before D3
+                // measures the container. Previously setupSvg() read
+                // clientWidth/clientHeight immediately after the fetch resolved,
+                // which could catch the container mid-layout at zero size —
+                // D3 then baked those wrong dimensions into the <svg> element's
+                // width/height attributes with no way to recover, leaving
+                // the network rendering in a cramped top-corner region.
+                requestAnimationFrame(function () {
+                    measureContainer();
+                    setupSvg();
+                    buildGraphData();
+                    renderGraph();
+                    renderSrTable();
+                    wireControls();
+                    updateNetworkMetrics(currentYear);
 
-                setText('timeline-year', String(currentYear));
+                    setText('timeline-year', String(currentYear));
+                });
             }).catch(function (err) {
                 console.error('network.html: failed to load data', err);
                 renderLoadError();
             });
         }
+
+        // Attach resize listener (debounced via rAF to avoid thrash during drag)
+        var resizePending = false;
+        window.addEventListener('resize', function () {
+            if (resizePending) return;
+            resizePending = true;
+            requestAnimationFrame(function () {
+                resizePending = false;
+                onResize();
+            });
+        });
 
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', init);
