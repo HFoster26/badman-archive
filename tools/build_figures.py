@@ -1,60 +1,64 @@
 #!/usr/bin/env python3
 """
-build_figures.py — Detroit Badman Archive figure page generator (v3)
+build_figures.py — Detroit Badman Archive figure page generator (v4)
 
-Reads /data/detroit.json and writes each live figure's page into
-/archive/figures/[figure_id]/index.html, preserving the existing
-Phase 2 scaffold architecture and aligning with the project's CSS conventions.
+Reads docs/data/detroit.json and writes each non-stub figure's page into
+docs/archive/figures/entries/[figure_id]/index.html, creating missing
+folders as needed. Pairs with the live site's map.html and network.html
+so clicking a marker/node routes to the full figure page.
 
-CONVENTION COMPLIANCE (v3 changes vs. v2)
------------------------------------------
-  - Modality colors come from CSS classes, NOT hardcoded hex in inline styles.
-    The badge emits `class="modality-badge modality-{slug}"` and the CSS rule
-    sets background + text color per modality.
+v4 CHANGES (vs v3)
+------------------
+  - gangsta_pimp added to ACTIVE_MODALITIES (Goines is live)
+  - Folders are created on demand (mkdir parents=True) instead of being
+    required beforehand — add a figure to detroit.json, run the script
+    once, no manual folder setup
+  - Status gating flipped: generate for status="live" OR status unset.
+    Only skip when status is explicitly "stub"
+  - Default paths now repo-root relative — run from repo root with no
+    flags
+  - Figure entries nested under /archive/figures/entries/ to keep the
+    figures landing page clean and leave room for browse-by pages at
+    /archive/figures/by-modality/, /archive/figures/by-decade/ etc.
+    URLs: /archive/figures/entries/goines_donald/
 
-  - SVM class is `modality-shv` to align with `--dba-shv` (CSS variable).
-    The old generator used hex `#7b2cbf` (purple) for SVM; CSS doc authoritative
-    value is `--dba-shv: #fd7e14` (orange). Fixed.
+v3 RULES (still in force)
+-------------------------
+  - Modality colors via CSS classes (.modality-badge.modality-{slug}),
+    never hardcoded hex
+  - SVM slug is `shv` to align with --dba-shv
+  - Bare descriptive class names for content (.essay, .bio-overview,
+    .data-section, .source-grid)
+  - `bda-*` prefix reserved for structural scaffold wrappers
+  - `dba-*` prefix reserved for CSS variables
+  - CC (Creation Continuity) edge type included
+  - No inline `style="..."` attributes anywhere
 
-  - Content-level classes use the project's bare-descriptive naming convention
-    (`.figure-detail-name`, `.section-heading`, `.bio-overview`, `.data-section`,
-    `.essay`, `.panel-divider`, `.source-links`, `.source-link-item`).
-    The `bda-*` prefix is reserved for structural scaffold wrappers that
-    partials.js targets. The `dba-*` prefix is reserved for CSS variables.
-
-  - Content containers reuse `.essay`, `.bio-overview`, and `.data-section`
-    so the in-prose link underline rule (WCAG 1.4.1 mitigation for the
-    emerald link color) applies without needing CSS extension.
-
-  - CC (Creation Continuity) edge type added — DATAREADME v2.1 lists CC as
-    the fifth edge type. Previously a figure with a CC connection would have
-    it silently dropped.
-
-  - No `style="..."` attributes emitted anywhere. All styling via class names.
-
-ARCHITECTURE NOTES (unchanged from v2)
---------------------------------------
-  - Folder-slug URLs: /archive/figures/scott_ron/ -> scott_ron/index.html
-  - Underscore IDs (no slug conversion)
-  - bda-* class namespace for structural scaffold wrappers ONLY
-  - Partials auto-loaded by /assets/js/partials.js into:
+ARCHITECTURE
+------------
+  - URL pattern: /archive/figures/entries/[figure_id]/
+  - Partials auto-loaded by /partials/partials.js into:
       #bda-navbar, #bda-footer, #bda-credentialing-rail
-  - partials.js builds the "On this page" TOC from <h2> in <main>,
-    so every major section uses <h2> and sub-sections use <h3>.
   - CSS: /assets/css/styles.css
   - Canonical URL base: https://detroit.badmandigitalarchive.com
+  - "On this page" TOC auto-built from <h2> in <main> by partials.js,
+    so every major section uses <h2> and sub-sections use <h3>
 
 BEHAVIOR
 --------
-  status == "live"   -> full page generated, overwrites existing index.html
-  status == "stub"   -> left untouched
-  dormant modality   -> left untouched
-  missing folder     -> skipped (no directory created)
+  status == "stub"   -> skipped (left untouched if folder exists)
+  status == "live"   -> full page generated (folder created if missing)
+  status unset       -> full page generated (folder created if missing)
+  dormant modality   -> skipped (not in ACTIVE_MODALITIES)
+  _placeholder: true -> skipped
 
 USAGE
 -----
-From project root:
-    python3 tools/build_figures.py --data docs-v2/data/detroit.json --out docs-v2/archive/figures
+From repo root:
+    python3 tools/build_figures.py
+
+With explicit paths:
+    python3 tools/build_figures.py --data docs/data/detroit.json --out docs/archive/figures
 
 Options:
     --dry-run   Show what would be written without modifying files
@@ -74,12 +78,9 @@ from pathlib import Path
 
 # Modality config — class slug is what gets emitted in HTML.
 # The slug aligns with the CSS variable name (--dba-{slug}), which is the
-# single source of truth for modality color per CSS_DOCUMENTATION.md.
-#
-# SVM uses `shv` (matches --dba-shv, also matches .legend-node-shv in the
-# network legend). This is a deliberate choice — see session notes.
+# single source of truth for modality color.
 MODALITY_CONFIG = {
-    "detective":         {"label": "Detective",               "slug": "detective",    "abbr": "DET"},
+    "detective":         {"label": "Detective",               "slug": "detective",     "abbr": "DET"},
     "revolutionary":     {"label": "Political Revolutionary", "slug": "revolutionary", "abbr": "PRM"},
     "gangsta_pimp":      {"label": "Gangsta-Pimp",            "slug": "gangsta-pimp",  "abbr": "GPM"},
     "superhero_villain": {"label": "Superhero-Villain",       "slug": "shv",           "abbr": "SVM"},
@@ -94,8 +95,7 @@ CRITERIA_LABELS = {
     "hypermasculine_performance": "Hypermasculine Performance",
 }
 
-# Edge type labels. CC (Creation Continuity) added per DATAREADME v2.1.
-# Ordering here is the render order on the figure page.
+# Edge type labels. CC (Creation Continuity) per DATAREADME v2.1.
 EDGE_TYPE_LABELS = {
     "META": "Meta-Badman Connections",
     "P2C":  "Person-to-Character",
@@ -104,20 +104,32 @@ EDGE_TYPE_LABELS = {
     "CC":   "Creation Continuity",
 }
 
-ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain"}
+# Active modalities — pages are only generated for figures in these modalities.
+# GPM included because Goines is live.
+ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain", "gangsta_pimp"}
+
+# Subdirectory that holds per-figure folders, relative to out_dir.
+# /archive/figures/entries/[figure_id]/index.html
+ENTRIES_SUBDIR = "entries"
 
 CANONICAL_BASE = "https://detroit.badmandigitalarchive.com"
 
 SITE_PATHS = {
     "css":           "/assets/css/styles.css",
-    "partials_js":   "/assets/js/partials.js",
+    "partials_js":   "/partials/partials.js",
     "bootstrap_css": "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css",
     "bootstrap_js":  "https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js",
     "leaflet_css":   "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css",
     "leaflet_js":    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
-    "figures_list":  "/archive/figures.html",
+    "figures_list":  "/archive/figures/figures.html",
     "full_map":      "/visualizations/map.html",
 }
+
+
+def figure_url_path(figure_id):
+    """Canonical absolute path for a figure page,
+    e.g. /archive/figures/entries/scott_ron/"""
+    return f"/archive/figures/{ENTRIES_SUBDIR}/{figure_id}/"
 
 
 # =============================================================================
@@ -141,14 +153,14 @@ def para_list(value):
 
 
 def get_coords(figure):
-    # Prefer the canonical nested structure per DATAREADME: geographic.primary_location.coordinates
+    # Prefer canonical: geographic.primary_location.coordinates
     geo = figure.get("geographic") or {}
     primary = geo.get("primary_location") or {}
     gcoords = primary.get("coordinates")
     if isinstance(gcoords, dict) and "lat" in gcoords and "lng" in gcoords:
         return gcoords
 
-    # Fallback: older-style geography.coordinates or top-level coordinates
+    # Fallbacks
     coords = figure.get("coordinates")
     if isinstance(coords, dict) and "lat" in coords and "lng" in coords:
         return coords
@@ -157,21 +169,19 @@ def get_coords(figure):
     if isinstance(gcoords_old, dict) and "lat" in gcoords_old and "lng" in gcoords_old:
         return gcoords_old
 
-    # Last-ditch: flat lat/lng on the figure itself
     if "lat" in figure and "lng" in figure:
         return {"lat": figure["lat"], "lng": figure["lng"]}
     return None
 
 
 def get_polygon(figure):
-    """Return polygon from geographic.territory.polygon (canonical), with fallbacks."""
+    """Return polygon from geographic.territory.polygon with fallbacks."""
     geo = figure.get("geographic") or {}
     territory = geo.get("territory") or {}
     poly = territory.get("polygon")
     if isinstance(poly, list) and len(poly) >= 3:
         return poly
 
-    # Fallbacks for older-style data
     geo_old = figure.get("geography") or {}
     poly_old = geo_old.get("polygon") or figure.get("polygon")
     if isinstance(poly_old, list) and len(poly_old) >= 3:
@@ -202,12 +212,7 @@ def get_biography(figure):
 # =============================================================================
 
 def render_modality_badge(figure):
-    """
-    Emit a modality badge as <p class="modality-badge modality-{slug}">.
-
-    CSS (in styles.css, new rules this session) handles all color assignment.
-    No hex, no inline styles, no --bda-modality-color variable needed.
-    """
+    """Emit a modality badge as <p class="modality-badge modality-{slug}">."""
     mod = MODALITY_CONFIG.get(figure.get("modality"))
     if not mod:
         return ""
@@ -221,10 +226,7 @@ def render_modality_badge(figure):
 
 
 def render_justification(figure):
-    """
-    Justification essay wrapper uses class `essay` — matches the in-prose link
-    rule selector list in styles.css, so any links in the essay auto-underline.
-    """
+    """Justification essay wrapper uses class `essay`."""
     paras = para_list(figure.get("justification"))
     if not paras:
         body = "<p><em>Justification essay in development.</em></p>"
@@ -237,13 +239,7 @@ def render_justification(figure):
 
 
 def render_biography(figure):
-    """
-    Biography overview wrapper uses class `bio-overview` — matches the in-prose
-    link rule selector list so any links in the bio auto-underline.
-
-    Timeline uses semantic <ol class="figure-timeline"> with bare descriptive
-    class names.
-    """
+    """Biography overview wrapper uses class `bio-overview`."""
     bio = get_biography(figure)
     description = bio["description"]
     events = bio["key_events"]
@@ -285,10 +281,7 @@ def render_biography(figure):
 
 
 def render_evaluation(figure):
-    """
-    Five-criteria evaluation. Uses <dl class="criteria-evaluation"> with
-    paired <dt>/<dd> per the DATAREADME.
-    """
+    """Five-criteria evaluation using <dl class="criteria-evaluation">."""
     scores = figure.get("scores") or {}
     if not scores:
         return '      <h2>Five-Criteria Evaluation</h2>\n      <p><em>Evaluation in development.</em></p>'
@@ -333,12 +326,8 @@ def render_evaluation(figure):
 
 
 def render_connections(figure, figures_by_id):
-    """
-    Connections grouped by edge type. CC edge type now included.
-
-    Container uses `data-section` class so links to other figures auto-underline
-    per the in-prose link rule.
-    """
+    """Connections grouped by edge type. CC included. Cross-figure links
+    point to /archive/figures/entries/[target_id]/."""
     connections = figure.get("connections") or []
     if not connections:
         return '      <h2>Connections</h2>\n      <p><em>No documented connections yet.</em></p>'
@@ -359,7 +348,7 @@ def render_connections(figure, figures_by_id):
             target_name = target.get("name") if target else target_id
 
             if target and target.get("modality") in ACTIVE_MODALITIES:
-                link_html = f'<a href="/archive/figures/{esc(target_id)}/">{esc(target_name)}</a>'
+                link_html = f'<a href="{figure_url_path(target_id)}">{esc(target_name)}</a>'
             else:
                 link_html = f'<span class="inactive-link">{esc(target_name)}</span>'
 
@@ -402,15 +391,9 @@ def render_connections(figure, figures_by_id):
 
 
 def render_geography(figure):
-    """
-    Geography section with map preview.
-
-    Note: the geography-preview DOM id remains `bda-geography-preview` because
-    it is hooked by the page-specific script at the bottom of the page
-    template — that id is a script contract, not a style class. The structural
-    wrapper uses `bda-*` prefix; content classes (map-preview, map-link) use
-    bare descriptive names.
-    """
+    """Geography section with Leaflet mini-map preview. The script at the
+    bottom of the page hooks #bda-geography-preview and renders the map
+    inline."""
     coords = get_coords(figure)
     if not coords:
         return '      <h2>Geography</h2>\n      <p><em>No geographic coordinates recorded.</em></p>'
@@ -456,10 +439,9 @@ def render_geography(figure):
 
 
 def render_sources(figure, sources_by_id):
-    """
-    Primary Sources grid. Card and list classes use bare descriptive names
-    per project convention.
-    """
+    """Primary Sources grid. Source links point to
+    /archive/sources/entries/[source_id]/ for consistency with the
+    figures/entries/ pattern."""
     source_ids = figure.get("source_ids") or figure.get("sources") or []
 
     if isinstance(source_ids, dict):
@@ -485,7 +467,7 @@ def render_sources(figure, sources_by_id):
             title = esc(src.get("title", "Untitled source"))
             stype = esc(src.get("type", ""))
             year = esc(src.get("year", "") or "")
-            link_href = f'/archive/sources/{esc(sid)}/'
+            link_href = f'/archive/sources/{ENTRIES_SUBDIR}/{esc(sid)}/'
 
         meta_parts = []
         if stype:
@@ -521,15 +503,11 @@ def render_sources(figure, sources_by_id):
 
 
 def render_citation(figure):
-    """
-    Citation block in Chicago/MLA/APA. Each entry has a copy-to-clipboard
-    button. The copy button's DOM id (`bda-citation-copy`) is retained because
-    it is a JS contract; the presentational wrapper uses `citation-block`.
-    """
+    """Citation block in Chicago/MLA/APA with copy-to-clipboard buttons."""
     year = datetime.now().year
     name = figure.get("name", "Figure")
     figure_id = figure.get("id", "")
-    url = f"{CANONICAL_BASE}/archive/figures/{figure_id}/"
+    url = f"{CANONICAL_BASE}{figure_url_path(figure_id)}"
 
     chicago = (
         f'Foster, Harry M. &ldquo;{esc(name)}.&rdquo; '
@@ -572,11 +550,14 @@ def render_live_page(figure, figures_by_id, sources_by_id):
     name = figure.get("name", "Unnamed figure")
     descriptor = figure.get("descriptor") or f"Entry for {name} in the Detroit Badman Archive."
     dates = figure.get("dates", "")
-    canonical = f"{CANONICAL_BASE}/archive/figures/{figure_id}/"
+    canonical = f"{CANONICAL_BASE}{figure_url_path(figure_id)}"
     build_date = datetime.now().isoformat(timespec="seconds")
 
     dates_block = f'\n      <p class="figure-dates">{esc(dates)}</p>' if dates else ""
-    descriptor_block = f'\n      <p class="figure-descriptor lead">{esc(descriptor)}</p>' if figure.get("descriptor") else ""
+    descriptor_block = (
+        f'\n      <p class="figure-descriptor lead">{esc(descriptor)}</p>'
+        if figure.get("descriptor") else ""
+    )
 
     return f'''<!DOCTYPE html>
 <!--
@@ -594,8 +575,7 @@ def render_live_page(figure, figures_by_id, sources_by_id):
   <link rel="canonical" href="{canonical}">
 
   <!-- Bootstrap 5 CSS -->
-  <link rel="stylesheet"
-        href="{SITE_PATHS["bootstrap_css"]}">
+  <link rel="stylesheet" href="{SITE_PATHS["bootstrap_css"]}">
 
   <!-- Leaflet CSS (for geography preview) -->
   <link rel="stylesheet" href="{SITE_PATHS["leaflet_css"]}">
@@ -706,29 +686,37 @@ def build(data_path, out_dir, dry_run=False, quiet=False):
         print(f"ERROR: Malformed JSON in {data_path}: {e}", file=sys.stderr)
         return 1
 
-    figures = [f for f in (data.get("figures") or []) if isinstance(f, dict) and f.get("id") and not f.get("_placeholder")]
-    if not figures:
-        print("ERROR: No figures found in data file.", file=sys.stderr)
-        return 2
-
-    figures_by_id = {f["id"]: f for f in figures}
+    all_figures = data.get("figures") or []
+    figures_by_id = {f["id"]: f for f in all_figures if isinstance(f, dict) and f.get("id")}
     sources = data.get("sources") or []
     sources_by_id = {s["id"]: s for s in sources if isinstance(s, dict) and s.get("id")}
 
+    entries_dir = out_dir / ENTRIES_SUBDIR
+
     if not quiet:
-        print(f"Loaded {len(figures)} figures and {len(sources_by_id)} sources from {data_path.name}")
-        print(f"Output directory: {out_dir}")
+        print(f"Loaded {len(figures_by_id)} figures and {len(sources_by_id)} sources from {data_path.name}")
+        print(f"Output directory: {entries_dir}")
         print(f"Active modalities: {', '.join(sorted(ACTIVE_MODALITIES))}")
         print()
 
     rendered = 0
     untouched_stubs = 0
     untouched_dormant = 0
-    skipped_no_dir = 0
+    untouched_placeholders = 0
+    folders_created = 0
 
-    for figure in figures:
-        fid = figure["id"]
-        figure_dir = out_dir / fid
+    for figure in all_figures:
+        if not isinstance(figure, dict):
+            continue
+        fid = figure.get("id")
+        if not fid:
+            continue
+
+        if figure.get("_placeholder"):
+            untouched_placeholders += 1
+            if not quiet:
+                print(f"  SKIP (placeholder)      : {fid}")
+            continue
 
         if figure.get("modality") not in ACTIVE_MODALITIES:
             untouched_dormant += 1
@@ -739,35 +727,40 @@ def build(data_path, out_dir, dry_run=False, quiet=False):
         if figure.get("status") == "stub":
             untouched_stubs += 1
             if not quiet:
-                print(f"  SKIP (stub, untouched)  : {fid}")
+                print(f"  SKIP (stub)             : {fid}")
             continue
 
-        if not figure_dir.exists():
-            skipped_no_dir += 1
-            if not quiet:
-                print(f"  SKIP (no folder)        : {fid}  (expected: {figure_dir})")
-            continue
+        figure_dir = entries_dir / fid
+        folder_was_new = not figure_dir.exists()
+
+        if not dry_run:
+            figure_dir.mkdir(parents=True, exist_ok=True)
+
+        if folder_was_new:
+            folders_created += 1
 
         out_path = figure_dir / "index.html"
         html_doc = render_live_page(figure, figures_by_id, sources_by_id)
 
         if dry_run:
+            marker = "WOULD CREATE FOLDER +  " if folder_was_new else "WOULD WRITE            "
             if not quiet:
-                print(f"  WOULD WRITE             : {out_path}  ({len(html_doc):,} bytes)")
+                print(f"  {marker}: {out_path}  ({len(html_doc):,} bytes)")
         else:
             out_path.write_text(html_doc, encoding="utf-8")
+            marker = "WROTE (folder created) " if folder_was_new else "WROTE                  "
             if not quiet:
-                print(f"  WROTE                   : {out_path}  ({len(html_doc):,} bytes)")
+                print(f"  {marker}: {out_path}  ({len(html_doc):,} bytes)")
 
         rendered += 1
 
     print()
     print("Build summary:")
     print(f"  Live pages generated : {rendered}")
+    print(f"  Folders created      : {folders_created}")
     print(f"  Stubs untouched      : {untouched_stubs}")
     print(f"  Dormant untouched    : {untouched_dormant}")
-    if skipped_no_dir:
-        print(f"  Missing folders      : {skipped_no_dir}")
+    print(f"  Placeholders skipped : {untouched_placeholders}")
     if dry_run:
         print("  (DRY RUN \u2014 no files were written)")
 
@@ -778,10 +771,10 @@ def main():
     parser = argparse.ArgumentParser(
         description="Generate Detroit Badman Archive figure pages from detroit.json."
     )
-    parser.add_argument("--data", default="./data/detroit.json",
-                        help="Path to detroit.json (default: ./data/detroit.json)")
-    parser.add_argument("--out", default="./archive/figures",
-                        help="Output dir containing per-figure folders (default: ./archive/figures)")
+    parser.add_argument("--data", default="./docs/data/detroit.json",
+                        help="Path to detroit.json (default: ./docs/data/detroit.json, relative to repo root)")
+    parser.add_argument("--out", default="./docs/archive/figures",
+                        help="Output base dir; entries/ is created within (default: ./docs/archive/figures)")
     parser.add_argument("--dry-run", action="store_true",
                         help="Show what would be written without modifying files.")
     parser.add_argument("--quiet", action="store_true",
