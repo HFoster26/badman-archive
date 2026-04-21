@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Browse the primary and secondary sources documenting Detroit's badman figures — novels, films, court records, archival collections, and scholarly writing.">
+    <meta name="author" content="Harry Foster">
+    <title>Primary Sources | Detroit Badman Digital Archive</title>
+    <link rel="canonical" href="https://detroit.badmandigitalarchive.com/archive/sources.html">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- BDA styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+    <!-- Skip to content (WCAG 2.4.1) -->
+    <a href="#bda-main-content" class="bda-skip-link">Skip to main content</a>
+
+    <!-- Navbar (loaded by partials.js) -->
+    <div id="bda-navbar"></div>
+
+    <main id="bda-main-content" tabindex="-1">
+
+        <!-- ============================================================
+             INTRO STRIP
+             ============================================================ -->
+        <section class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-10 mx-auto">
+                        <nav aria-label="Breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href="/">Home</a></li>
+                                <li class="breadcrumb-item"><a href="/archive/figures/">Archive</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">Primary Sources</li>
+                            </ol>
+                        </nav>
+
+                        <h1>Primary Sources</h1>
+
+                        <p class="lead">
+                            <!-- TODO: lede. Explains what the sources page is and what users can do here. -->
+                            Every claim in the archive is traceable to a source. This page lets you
+                            browse the full set &mdash; novels, films, court records, archival
+                            collections, and scholarly writing &mdash; filter by figure, modality,
+                            category, type, or repository, and sort the results six ways. Filter
+                            state is in the URL, so you can share a filtered view.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             SOURCES LAYOUT: FILTER RAIL + GRID
+             ============================================================ -->
+        <section class="page-section bda-sources-layout-section">
+            <div class="container-fluid">
+                <div class="bda-sources-layout">
+
+                    <!-- ============================================================
+                         MOBILE FILTER TOGGLE
+                         ============================================================ -->
+                    <button type="button"
+                            id="bda-sources-filter-toggle"
+                            class="bda-sources-filter-toggle"
+                            aria-controls="bda-sources-filter-rail"
+                            aria-expanded="false">
+                        Filters
+                        <span id="bda-sources-active-count" class="bda-filter-pending-tag"></span>
+                    </button>
+
+                    <!-- ============================================================
+                         FILTER RAIL
+                         ============================================================ -->
+                    <aside id="bda-sources-filter-rail"
+                           class="bda-sources-filter-rail"
+                           aria-labelledby="bda-sources-filter-heading">
+                        <h2 id="bda-sources-filter-heading" class="sr-only">Filter sources</h2>
+
+                        <!-- Modality filter -->
+                        <fieldset class="bda-filter-fieldset">
+                            <legend>
+                                <button type="button"
+                                        class="bda-filter-collapse-btn"
+                                        aria-expanded="true"
+                                        aria-controls="bda-filter-modality">
+                                    Modality
+                                    <span id="bda-filter-modality-count" class="bda-filter-pending-tag"></span>
+                                </button>
+                            </legend>
+                            <div id="bda-filter-modality" class="bda-filter-options">
+                                <!-- Populated by bda-sources-lp.js -->
+                            </div>
+                        </fieldset>
+
+                        <!-- Category filter -->
+                        <fieldset class="bda-filter-fieldset">
+                            <legend>
+                                <button type="button"
+                                        class="bda-filter-collapse-btn"
+                                        aria-expanded="true"
+                                        aria-controls="bda-filter-category">
+                                    Category
+                                    <span id="bda-filter-category-count" class="bda-filter-pending-tag"></span>
+                                </button>
+                            </legend>
+                            <div id="bda-filter-category" class="bda-filter-options">
+                                <!-- Populated by bda-sources-lp.js -->
+                            </div>
+                        </fieldset>
+
+                        <!-- Figure filter -->
+                        <fieldset class="bda-filter-fieldset">
+                            <legend>
+                                <button type="button"
+                                        class="bda-filter-collapse-btn"
+                                        aria-expanded="true"
+                                        aria-controls="bda-filter-figure-options">
+                                    Figure
+                                    <span id="bda-filter-figure-count" class="bda-filter-pending-tag"></span>
+                                </button>
+                            </legend>
+                            <div id="bda-filter-figure-options" class="bda-filter-options">
+                                <!-- Populated by bda-sources-lp.js -->
+                            </div>
+                        </fieldset>
+
+                        <!-- Type filter -->
+                        <fieldset class="bda-filter-fieldset">
+                            <legend>
+                                <button type="button"
+                                        class="bda-filter-collapse-btn"
+                                        aria-expanded="true"
+                                        aria-controls="bda-filter-type-options">
+                                    Type
+                                    <span id="bda-filter-type-count" class="bda-filter-pending-tag"></span>
+                                </button>
+                            </legend>
+                            <div id="bda-filter-type-options" class="bda-filter-options">
+                                <label for="bda-filter-type-search" class="sr-only">Search source types</label>
+                                <input type="text"
+                                       id="bda-filter-type-search"
+                                       class="bda-filter-search-input"
+                                       placeholder="Search types&hellip;"
+                                       autocomplete="off">
+                                <div id="bda-filter-type-list" class="bda-filter-options-list">
+                                    <!-- Populated by bda-sources-lp.js -->
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <!-- Repository filter -->
+                        <fieldset class="bda-filter-fieldset">
+                            <legend>
+                                <button type="button"
+                                        class="bda-filter-collapse-btn"
+                                        aria-expanded="true"
+                                        aria-controls="bda-filter-repository-options">
+                                    Repository
+                                    <span id="bda-filter-repository-count" class="bda-filter-pending-tag"></span>
+                                </button>
+                            </legend>
+                            <div id="bda-filter-repository-options" class="bda-filter-options">
+                                <!-- Populated by bda-sources-lp.js -->
+                            </div>
+                        </fieldset>
+
+                        <!-- Reset all -->
+                        <button type="button" id="bda-filter-reset" class="bda-filter-reset-btn">
+                            Reset all filters
+                        </button>
+                    </aside>
+
+                    <!-- ============================================================
+                         MAIN ZONE
+                         ============================================================ -->
+                    <div class="bda-sources-main">
+
+                        <!-- Results header: sort + count -->
+                        <div class="bda-sources-results-header">
+                            <p id="bda-sources-count"
+                               class="bda-sources-count"
+                               aria-live="polite"
+                               aria-atomic="true">
+                                Loading sources&hellip;
+                            </p>
+
+                            <div class="bda-sources-sort-wrapper">
+                                <label for="bda-sources-sort">Sort by</label>
+                                <select id="bda-sources-sort" class="bda-sources-sort">
+                                    <option value="figure-az">Figure A&ndash;Z</option>
+                                    <option value="figure-za">Figure Z&ndash;A</option>
+                                    <option value="title-az">Title A&ndash;Z</option>
+                                    <option value="title-za">Title Z&ndash;A</option>
+                                    <option value="year-asc">Year (oldest first)</option>
+                                    <option value="year-desc">Year (newest first)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Active filter chips -->
+                        <div id="bda-sources-active-filters" class="bda-sources-active-filters">
+                            <!-- Populated by bda-sources-lp.js as chips -->
+                        </div>
+
+                        <!-- Source grid -->
+                        <div id="bda-sources-grid" class="bda-sources-grid">
+                            <!-- Populated by bda-sources-lp.js -->
+                        </div>
+
+                        <!-- Empty state (hidden until applyFilters returns 0) -->
+                        <div id="bda-sources-empty" class="bda-sources-empty" hidden>
+                            <h2>No sources match the current filters</h2>
+                            <p>
+                                Try removing one of your filters, or reset them all to see every
+                                source in the archive.
+                            </p>
+                            <button type="button" id="bda-sources-empty-reset" class="btn btn-primary">
+                                Reset filters
+                            </button>
+                        </div>
+
+                        <!-- Screen-reader data table (visually hidden, populated by bda-sources-lp.js) -->
+                        <table class="sr-only" aria-label="Detroit badman archive primary sources">
+                            <caption>Primary sources in the Detroit Badman Archive with figure, type, year, and repository</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Title</th>
+                                    <th scope="col">Associated figure(s)</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Year</th>
+                                    <th scope="col">Repository</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bda-sources-sr-tbody">
+                                <!-- Populated by bda-sources-lp.js -->
+                            </tbody>
+                        </table>
+
+                    </div><!-- /.bda-sources-main -->
+                </div><!-- /.bda-sources-layout -->
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (loaded by partials.js) -->
+    <div id="bda-footer"></div>
+
+    <!-- Bootstrap 5 JS (must load before scripts.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BDA partial loader -->
+    <script src="/partials/partials.js"></script>
+    <!-- Site-wide scripts (defines getModalityConfig, etc.) -->
+    <script src="/assets/js/scripts.js"></script>
+    <!-- Sources landing page script -->
+    <script src="/figures/Figures README FIRST/bda-sources-lp.js"></script>
+</body>
+</html>
