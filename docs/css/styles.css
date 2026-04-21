@@ -1,0 +1,641 @@
+/*
+ * Detroit Badman Archive - Custom Stylesheet
+ * 
+ * This file contains ONLY custom styles for the archive.
+ * Bootstrap 5 is loaded via CDN in the HTML files.
+ * 
+ * Color palette includes purple and gold as an homage to Kobe Bryant.
+ * 
+ * All color combinations must meet WCAG 2.2 AA contrast minimums:
+ * 4.5:1 for normal text, 3:1 for large text (18pt+ or 14pt bold+).
+ * See CSS.md for the full contrast reference table.
+ */
+
+/* ============================================
+   CSS VARIABLES - EDIT THESE TO CHANGE COLORS
+   ============================================ */
+
+:root {
+    /* Primary Greens */
+    --dba-darkest-green: #0a1f12;
+    --dba-dark-green: #0d2818;
+    --dba-medium-green: #143d26;
+    --dba-content-green: #1a472a;
+    --dba-border-green: #2a623d;
+    --dba-emerald: #50c878;
+    --dba-network-bg: #0a1a0f;
+    
+    /* Kobe Tribute - Purple & Gold */
+    --dba-purple: #552583;
+    --dba-gold: #d4af37;
+    
+    /* Text Colors */
+    --dba-text-primary: #e8e8e8;
+    --dba-text-secondary: #c8c8c8;
+    --dba-text-muted: #b0b0b0;
+    --dba-white: #ffffff;
+    
+    /* Modality Colors */
+    --dba-detective: #3388ff;
+    --dba-revolutionary: #dc3545;
+    --dba-folk-hero: #d4af37;
+    --dba-gangsta-pimp: #6f42c1;
+    --dba-shv: #fd7e14;
+
+    /* Focus */
+    --dba-focus-ring: #d4af37;
+}
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+
+body {
+    background-color: var(--dba-dark-green) !important;
+    color: var(--dba-text-primary) !important;
+    background-image: none !important;
+}
+
+/* ============================================
+   ACCESSIBILITY UTILITIES
+   ============================================ */
+
+/*
+ * Screen-reader-only content.
+ * Bootstrap 5 renamed sr-only to visually-hidden.
+ * Both names defined here for compatibility.
+ */
+.sr-only,
+.visually-hidden {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+}
+
+.sr-only-focusable:focus,
+.visually-hidden-focusable:focus {
+    position: static !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0.5rem 1rem !important;
+    margin: 0 !important;
+    overflow: visible !important;
+    clip: auto !important;
+    white-space: normal !important;
+    background-color: var(--dba-gold) !important;
+    color: var(--dba-darkest-green) !important;
+    z-index: 9999;
+    font-weight: bold;
+}
+
+/*
+ * Focus styles — WCAG 2.4.7 (Focus Visible).
+ * Default browser focus outline is invisible on dark green backgrounds.
+ * Gold ring on dark green provides high contrast.
+ * :focus-visible fires for keyboard navigation only, not mouse clicks.
+ */
+*:focus-visible {
+    outline: 3px solid var(--dba-focus-ring) !important;
+    outline-offset: 2px !important;
+}
+
+a:focus-visible {
+    outline: 3px solid var(--dba-focus-ring) !important;
+    outline-offset: 2px !important;
+    text-decoration: underline !important;
+}
+
+/*
+ * Reduced motion — WCAG 2.3.3 (Animation from Interactions).
+ * Users with "Reduce motion" enabled see no CSS animations or transitions.
+ * D3 network simulation handled separately in JavaScript.
+ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+/* ============================================
+   DETAIL PANEL CLASSES
+   
+   Used by showFigureDetails() and buildSourceLinks() 
+   in scripts.js. These classes replace hardcoded 
+   inline hex values that were previously written 
+   directly into JavaScript template strings.
+   ============================================ */
+/*
+ * Figure name heading in detail panels.
+ * Used on <h3> element inside #info-content and #figure-metrics-content.
+ * Contrast: 8.66:1 against --dba-content-green (WCAG AAA).
+ */
+.figure-detail-name {
+    color: var(--dba-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 0;
+    margin-bottom: 1rem;
+}
+
+/*
+ * "Read more" / "Show less" toggle link in detail panels.
+ * In-prose context — inherits underline from in-prose link rule above.
+ * Contrast: 7.4:1 emerald on --dba-content-green (WCAG AAA).
+ * Hover/focus: transitions to gold at 5.04:1 (WCAG AA).
+ */
+.read-more-toggle {
+    color: var(--dba-emerald);
+    display: block;
+    margin-top: 0.5rem;
+    cursor: pointer;
+}
+
+.read-more-toggle:hover,
+.read-more-toggle:focus {
+    color: var(--dba-gold);
+}
+
+/*
+ * Horizontal divider separating biography from sources in detail panels.
+ * Decorative — screen readers ignore <hr> with role="presentation" default.
+ */
+.panel-divider {
+    border: 0;
+    border-top: 1px solid var(--dba-border-green);
+    margin: 1rem 0;
+}
+
+/*
+ * Source link list container (<ul>) inside detail panels.
+ * Pair with Bootstrap's .list-unstyled for structure:
+ *   <ul class="list-unstyled source-links">
+ */
+.source-links {
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+/*
+ * Individual source link item (<li>) inside detail panels.
+ * Anchors within inherit underline from the in-prose link rule above
+ * (source-links selector needs to be added to that rule, OR add
+ * `.source-link-item a` to the selector list — see note below).
+ */
+.source-link-item {
+    margin-bottom: 0.3rem;
+}
+
+.source-link-item a {
+    color: var(--dba-emerald);
+}
+
+.source-link-item a:hover,
+.source-link-item a:focus {
+    color: var(--dba-gold);
+}
+
+/* ============================================
+   REQUIRED UPDATE TO IN-PROSE LINK UNDERLINE RULE
+   
+   When adding the above block, also update the 
+   existing in-prose link underline rule (if present)
+   or add it if not yet in styles.css.
+   
+   The updated selector list should include detail 
+   panel contexts so source links and read-more 
+   toggles get the required WCAG 1.4.1 underline.
+   ============================================ */
+
+/*
+ * In-prose link underlines.
+ * Required by WCAG 1.4.1 — emerald links fail adjacent-text
+ * contrast against primary text (1.73:1). Underline is the
+ * non-color cue that satisfies accessibility.
+ */
+.essay a,
+p a,
+.bio-overview a,
+.data-section a,
+.cited-in-desc a,
+.source-link-item a,
+.read-more-toggle {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+/* ============================================
+   HEADER
+   ============================================ */
+
+header {
+    background-color: var(--dba-dark-green) !important;
+}
+
+.site-heading {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    text-transform: uppercase;
+    line-height: 1;
+    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+.site-heading-upper {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--dba-gold) !important;
+}
+
+.site-heading-lower {
+    font-size: 5rem;
+    font-weight: 100;
+    line-height: 4rem;
+    color: var(--dba-text-primary) !important;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+#mainNav {
+    background-color: var(--dba-darkest-green) !important;
+    font-family: "Raleway", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+#mainNav .navbar-brand {
+    color: var(--dba-gold) !important;
+}
+
+#mainNav .navbar-nav .nav-link {
+    color: var(--dba-text-primary) !important;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+#mainNav .navbar-nav .nav-link:hover {
+    color: var(--dba-gold) !important;
+}
+
+#mainNav .navbar-nav .nav-link.active {
+    color: var(--dba-gold) !important;
+}
+
+/* ============================================
+   PAGE SECTIONS
+   ============================================ */
+
+.page-section {
+    margin-top: 5rem;
+    margin-bottom: 5rem;
+    background-color: var(--dba-dark-green) !important;
+    background-image: none !important;
+}
+
+section.cta {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+    background-color: var(--dba-medium-green) !important;
+    background-image: none !important;
+}
+
+/* ============================================
+   CONTENT BOXES
+   ============================================ */
+
+.bg-faded {
+    background-color: var(--dba-content-green) !important;
+    border: 2px solid var(--dba-border-green) !important;
+    color: var(--dba-text-primary) !important;
+}
+
+.cta-inner {
+    background-color: var(--dba-content-green) !important;
+    position: relative;
+    padding: 3rem;
+    margin: 0.5rem;
+}
+
+.cta-inner:before {
+    border-radius: 0.5rem;
+    content: "";
+    position: absolute;
+    top: -0.5rem;
+    bottom: -0.5rem;
+    left: -0.5rem;
+    right: -0.5rem;
+    border: 0.25rem solid var(--dba-purple);
+    z-index: -1;
+}
+
+/* ============================================
+   SECTION HEADINGS
+   ============================================ */
+
+.section-heading {
+    text-transform: uppercase;
+}
+
+.section-heading-upper {
+    display: block;
+    font-size: 1rem;
+    font-weight: 800;
+    color: var(--dba-emerald) !important;
+}
+
+.section-heading-lower {
+    display: block;
+    font-size: 3rem;
+    font-weight: 100;
+    color: var(--dba-text-primary) !important;
+}
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary {
+    background-color: transparent !important;
+    border: 2px solid var(--dba-purple) !important;
+    color: var(--dba-text-primary) !important;
+    border-radius: 0 !important;
+    box-shadow: 0px 3px 3px 0px rgba(0, 0, 0, 0.2);
+}
+
+.btn-primary:hover {
+    background-color: var(--dba-purple) !important;
+    border-color: var(--dba-gold) !important;
+    color: var(--dba-white) !important;
+}
+
+.btn-xl {
+    font-weight: 700;
+    font-size: 0.8rem;
+    padding: 1.5rem 2rem;
+}
+
+/* ============================================
+   INTRO SECTION (HOME PAGE)
+   ============================================ */
+
+.intro {
+    position: relative;
+    background-color: transparent !important;
+}
+
+.intro .intro-img {
+    width: 75%;
+    float: right;
+}
+
+.intro .intro-text {
+    left: 0;
+    width: 60%;
+    margin-top: 3rem;
+    position: absolute;
+}
+
+.intro .intro-text .intro-button {
+    width: 100%;
+    left: 0;
+    position: absolute;
+    bottom: -2rem;
+}
+
+@media (max-width: 991.98px) {
+    .intro .intro-img {
+        width: 100%;
+        float: none;
+    }
+    
+    .intro .intro-text {
+        position: relative;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .intro .intro-text .intro-button {
+        position: relative;
+        bottom: 0;
+    }
+}
+
+@media (min-width: 1200px) {
+    .intro .intro-text {
+        width: 45%;
+    }
+}
+
+/* ============================================
+   TEXT COLORS
+   ============================================ */
+
+p {
+    color: var(--dba-text-secondary) !important;
+    line-height: 1.75;
+}
+
+.text-faded {
+    color: var(--dba-text-primary) !important;
+}
+
+/* ============================================
+   FOOTER
+   ============================================ */
+
+.footer {
+    background-color: var(--dba-darkest-green) !important;
+    color: var(--dba-text-primary) !important;
+}
+
+/* ============================================
+   ABOUT PAGE - OVERLAPPING IMAGE STYLE
+   ============================================ */
+
+@media (min-width: 992px) {
+    .about-heading .about-heading-img {
+        position: relative;
+        z-index: 0;
+    }
+    
+    .about-heading .about-heading-content {
+        margin-top: -5rem;
+        position: relative;
+        z-index: 1;
+    }
+}
+
+/* ============================================
+   LEGEND STYLES (MAP + NETWORK)
+   ============================================ */
+
+.map-legend,
+.network-legend {
+    background-color: var(--dba-content-green);
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 2px solid var(--dba-border-green);
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+/*
+ * Modality markers — distinct shapes per modality (WCAG 1.4.1).
+ * Each modality has a unique CSS shape so color is never the sole differentiator.
+ * These match the Modality Visual Identity System in HTML_TEMPLATES.md
+ * and getModalityConfig() in scripts.js.
+ */
+.legend-marker {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+    display: inline-block;
+}
+
+/* Detective: Circle */ 
+.legend-detective {
+    background-color: var(--dba-detective);
+    border-radius: 50%;
+}
+/* Revolutionary: Star */
+.legend-revolutionary {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* Folk Hero-Outlaw: Triangle */
+.legend-folk-hero {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Gangsta-Pimp: Square */
+.legend-gangsta-pimp {
+    background-color: var(--dba-gangsta-pimp);
+    border-radius: 2px;
+}
+
+/* Superhero-Villain: Hexagon */
+.legend-superhero-villain {
+    background-color: var(--dba-shv);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Network node shapes (circle vs diamond in legend) */
+.legend-node-detective {
+    background-color: var(--dba-detective);
+    border-radius: 50%;
+}
+
+.legend-node-revolutionary {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+}
+
+.legend-node-shv {
+    background-color: #fd7e14;
+    clip-path: polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%);
+}
+
+/*
+ * Edge type legend lines — distinct dash patterns (WCAG 1.4.1).
+ * Matches edgeDashPatterns object in network.html.
+ */
+.legend-line {
+    width: 30px;
+    height: 3px;
+    margin-right: 10px;
+}
+
+/* META: Solid */
+.legend-meta {
+    background-color: var(--dba-gold);
+}
+
+/* P2C: Long dash */
+.legend-p2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-revolutionary) 0px,
+        var(--dba-revolutionary) 12px,
+        transparent 12px,
+        transparent 18px
+    );
+}
+
+/* C2C: Short dash */
+.legend-c2c {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-emerald) 0px,
+        var(--dba-emerald) 6px,
+        transparent 6px,
+        transparent 10px
+    );
+}
+
+/* ORG: Dot-dash */
+.legend-org {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        var(--dba-detective) 0px,
+        var(--dba-detective) 2px,
+        transparent 2px,
+        transparent 6px,
+        var(--dba-detective) 6px,
+        var(--dba-detective) 14px,
+        transparent 14px,
+        transparent 18px
+    );
+}
+
+/* CC: Dotted */
+.legend-cc {
+    background-color: transparent;
+    background-image: repeating-linear-gradient(
+        90deg,
+        #e83e8c 0px,
+        #e83e8c 2px,
+        transparent 2px,
+        transparent 4px
+    );
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+/* Purple accent border - use on any element */
+.border-purple {
+    border-color: var(--dba-purple) !important;
+}
+
+/* Gold accent text - use on any element */
+.text-gold {
+    color: var(--dba-gold) !important;
+}
+
+/* Purple accent text - use on any element */
+.text-purple {
+    color: var(--dba-purple) !important;
+}
+
+/* Emerald accent text - use on any element */
+.text-emerald {
+    color: var(--dba-emerald) !important;
+}
