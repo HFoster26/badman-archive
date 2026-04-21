@@ -164,6 +164,9 @@
         // Figures loaded from JSON (after placeholder filter).
         var figures = [];
 
+        // Leaflet map instance. Created inside init() after DOM + CSS are ready.
+        var map = null;
+
         // Leaflet layer groups — one per logical layer so we can clear/redraw.
         var markerLayer = null;
         var additionalLayer = null;
@@ -274,18 +277,30 @@
         }
 
         // =====================================================================
-        // Leaflet map init
+        // Leaflet map init (deferred — called from init() after CSS is applied)
         // =====================================================================
 
-        var map = L.map('map-container').setView(DEFAULT_CENTER, DEFAULT_ZOOM);
+        function setupMap() {
+            map = L.map('map-container').setView(DEFAULT_CENTER, DEFAULT_ZOOM);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
 
-        markerLayer = L.layerGroup().addTo(map);
-        additionalLayer = L.layerGroup().addTo(map);
+            markerLayer = L.layerGroup().addTo(map);
+            additionalLayer = L.layerGroup().addTo(map);
+
+            // Leaflet caches container size at init. If the container wasn't
+            // fully sized when the map was created (e.g., CSS hadn't painted,
+            // or layout was still settling), tiles render at wrong dimensions.
+            // invalidateSize() forces Leaflet to re-measure the container.
+            // Deferred one frame so we run after the browser has finished
+            // the current layout pass.
+            requestAnimationFrame(function () {
+                map.invalidateSize();
+            });
+        }
 
         // =====================================================================
         // Filter UI construction
@@ -564,26 +579,40 @@
             }
         }
 
-        loadArchiveData(DATA_URL).then(function (data) {
-            if (!data) {
+        function init() {
+            // Initialize Leaflet AFTER the DOM is fully parsed and the CSS
+            // has been applied. Previously this ran at script-parse time,
+            // which meant Leaflet cached a zero-height container and every
+            // tile/marker rendered invisibly thereafter.
+            setupMap();
+
+            loadArchiveData(DATA_URL).then(function (data) {
+                if (!data) {
+                    renderLoadError();
+                    return;
+                }
+
+                indexSources(data);
+
+                var all = Array.isArray(data.figures) ? data.figures : [];
+                figures = all.filter(function (f) {
+                    return f && !f._placeholder && f.id && f.modality;
+                });
+
+                buildFilterUi();
+                buildLegend();
+                render();
+            }).catch(function (err) {
+                console.error('map.html: failed to load data', err);
                 renderLoadError();
-                return;
-            }
-
-            indexSources(data);
-
-            var all = Array.isArray(data.figures) ? data.figures : [];
-            figures = all.filter(function (f) {
-                return f && !f._placeholder && f.id && f.modality;
             });
+        }
 
-            buildFilterUi();
-            buildLegend();
-            render();
-        }).catch(function (err) {
-            console.error('map.html: failed to load data', err);
-            renderLoadError();
-        });
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
 
     })();
     </script>
