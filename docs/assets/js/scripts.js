@@ -81,6 +81,38 @@ async function loadArchiveData(url) {
 }
 
 // ============================================
+// HTML escaping utility
+// ============================================
+
+/**
+ * Escape a string for safe insertion into HTML.
+ *
+ * Used by map.html and network.html inline scripts when building
+ * filter UI, legends, popups, and detail panels from figure/source
+ * data. Any string that will be concatenated into an innerHTML
+ * assignment should pass through this function first.
+ *
+ * Security: prevents cross-site scripting (XSS) when rendering
+ * arbitrary string values (figure names, location names, evidence
+ * text, etc.) into the DOM.
+ *
+ * Robustness: safely handles null, undefined, numbers, and other
+ * non-string inputs by coercing to string first.
+ *
+ * @param {*} str - Input value (string, number, null, undefined, etc.)
+ * @returns {string} - HTML-safe string with &, <, >, ", ' escaped
+ */
+function escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+// ============================================
 // Score and type utilities
 // ============================================
 
