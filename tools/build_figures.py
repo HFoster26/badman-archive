@@ -106,7 +106,7 @@ EDGE_TYPE_LABELS = {
 
 # Active modalities — pages are only generated for figures in these modalities.
 # GPM included because Goines is live.
-ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain", "gangsta_pimp"}
+ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain"}
 
 # Subdirectory that holds per-figure folders, relative to out_dir.
 # /archive/figures/entries/[figure_id]/index.html
