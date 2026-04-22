@@ -2790,3 +2790,274 @@ main .page-section h1 {
         top: auto;
     }
 }
+/* ==========================================================================
+   PHASE 5 POLISH — CREDENTIALING RAIL (TWO-CARD RESTRUCTURE)
+   --------------------------------------------------------------------------
+   Append to styles.css after Phase 5. This restructures the rail into
+   two distinct cards (author card + TOC card) with visible separation
+   between them, matching the design mockup.
+
+   IMPORTANT: This partially supersedes the earlier .bda-cred-rail-inner
+   / .bda-cred-author / .bda-cred-toc-details treatment from Phase 4.
+   The old rules are still present and some still apply (e.g. photo
+   dimensions, TOC list styling) — but the container pattern changes
+   from "one inner div with components inside" to "two separate card
+   wrappers."
+
+   Must be paired with the updated credentialing-rail.html partial that
+   wraps both components in .bda-cred-card and drops the mobile
+   <details>/<summary> pattern.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Rail inner container — reset
+   --------------------------------------------------------------------------
+   Phase 4's .bda-cred-rail-inner was a single card container. Now it's
+   just a flex/gap wrapper between two independent cards. Remove the
+   background/border/padding that came from Phase 4.
+   ========================================================================== */
+
+.bda-cred-rail-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+
+/* ==========================================================================
+   Shared card container (.bda-cred-card)
+   --------------------------------------------------------------------------
+   Applied to both the author section and the TOC nav. Each gets its own
+   dark panel with border and rounded corners.
+   ========================================================================== */
+
+.bda-cred-card {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+
+/* ==========================================================================
+   Author Card — Override Phase 4 Layout
+   --------------------------------------------------------------------------
+   Phase 4 set .bda-cred-author to display:flex (horizontal: photo left,
+   meta right) with border-bottom. Reset both — the new structure puts
+   photo + identity in a header row, then affiliation/bio/link as block
+   paragraphs below.
+   ========================================================================== */
+
+.bda-cred-author {
+    display: block;
+    gap: 0;
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: none;
+}
+
+/* Header row: photo left, name/pronouns right */
+.bda-cred-author-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.bda-cred-author-photo {
+    flex-shrink: 0;
+}
+
+.bda-cred-author-photo img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--dba-emerald);
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    background-color: var(--dba-medium-green);
+}
+
+.bda-cred-author-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.bda-cred-author-name {
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.15rem;
+}
+
+.bda-cred-author-pronouns {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.3;
+}
+
+
+/* ==========================================================================
+   Author Card — Body Paragraphs
+   --------------------------------------------------------------------------
+   Affiliation + bio flow as prose blocks below the header. Mockup's voice
+   is dense and institutional — tight leading, moderate color contrast,
+   short paragraphs.
+   ========================================================================== */
+
+.bda-cred-author-affiliation {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+}
+
+.bda-cred-author-bio {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+}
+
+.bda-cred-author-link {
+    margin: 0;
+}
+
+.bda-cred-author-link a {
+    color: var(--dba-emerald);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-cred-author-link a:hover,
+.bda-cred-author-link a:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   TOC Card
+   --------------------------------------------------------------------------
+   The old <details>/<summary> collapse pattern is gone from the partial,
+   so we can clean up the rules that handled it. The TOC is now a plain
+   nav with a heading + ul. Still accessible, still keyboard-navigable,
+   just no collapse affordance.
+   ========================================================================== */
+
+.bda-cred-toc {
+    /* Inherits .bda-cred-card padding and background */
+}
+
+.bda-cred-toc-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+}
+
+/* Hide the old mobile-summary heading override — no longer needed since
+   the partial no longer emits a <summary>. Belt-and-suspenders rule in
+   case the old partial is still cached somewhere. */
+.bda-cred-toc-summary,
+.bda-cred-toc-details > summary {
+    display: none !important;
+}
+
+/* Ensure the heading is always visible (the Phase 4 mobile rule hid it
+   with .sr-only-style clip; that rule is now harmful since we want the
+   heading visible everywhere) */
+@media (max-width: 991px) {
+    .bda-cred-toc-heading {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0 0 1rem;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+    }
+}
+
+
+/* ==========================================================================
+   TOC List — Refinements
+   --------------------------------------------------------------------------
+   Phase 4 gave list items a left-border-bar active state and medium-green
+   hover background. The mockup uses a flatter treatment — plain emerald
+   links, generous vertical rhythm, no background shifts. Override Phase 4.
+   ========================================================================== */
+
+#bda-page-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#bda-page-toc-list li {
+    margin: 0;
+}
+
+#bda-page-toc-list a {
+    display: block;
+    padding: 0.4rem 0;
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-decoration: none;
+    border-left: none;
+    background-color: transparent;
+    transition: color 0.15s ease;
+}
+
+#bda-page-toc-list a:hover,
+#bda-page-toc-list a:focus {
+    color: var(--dba-gold);
+    background-color: transparent;
+    border-left: none;
+}
+
+#bda-page-toc-list a.is-active,
+#bda-page-toc-list a[aria-current="true"] {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    border-left: none;
+}
+
+
+/* ==========================================================================
+   Mobile Layout Reinforcement
+   --------------------------------------------------------------------------
+   At ≤991px the rail sits above content (order: -1 set in Phase 5). Cards
+   keep their visual treatment; just tighten padding slightly for mobile.
+   ========================================================================== */
+
+@media (max-width: 575px) {
+    .bda-cred-card {
+        padding: 1.25rem;
+    }
+    .bda-cred-author-header {
+        gap: 0.75rem;
+    }
+    .bda-cred-author-photo img {
+        width: 48px;
+        height: 48px;
+    }
+}
