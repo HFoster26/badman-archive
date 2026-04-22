@@ -3,11 +3,16 @@
   Loaded via fetch() by bda-partials-loader.js into #bda-navbar placeholder
   on every page. The loader sets aria-current="page" on whichever top-level
   item's data-route matches the current route.
+
+  Brand wordmark uses .bda-brand-wordmark / .bda-brand-wordmark-upper /
+  .bda-brand-wordmark-lower defined in styles.css for the uppercase gold
+  caps treatment shown in the design mockup.
 -->
 <nav id="mainNav" class="navbar navbar-expand-lg" aria-label="Main navigation">
   <div class="container-fluid">
-    <a class="navbar-brand" href=".html">
-      Detroit &middot; Badman Digital Archive
+    <a class="navbar-brand bda-brand-wordmark" href="/">
+      <span class="bda-brand-wordmark-upper">Detroit</span>
+      <span class="bda-brand-wordmark-lower">Badman Archive</span>
     </a>
     <button class="navbar-toggler" type="button"
             data-bs-toggle="collapse" data-bs-target="#bda-navbar-menu"
