@@ -4,51 +4,56 @@
   The #bda-footer-year span is populated at runtime by setFooterYear().
   Partner acknowledgments populate from a data-driven block once outreach
   confirmations are in hand; left as structural stubs at launch.
+
+  Headings use .bda-footer-heading for the gold eyebrow treatment.
+  Footer links get .bda-footer-link so they don't fall back to browser
+  default blue. Footer copy rows use .bda-footer-meta for the muted
+  small-text copyright/build block at the bottom.
 -->
 <footer class="footer" role="contentinfo">
   <div class="container">
-    <div class="row">
+    <div class="row bda-footer-main">
       <div class="col-md-4">
-        <h3>Detroit Badman Digital Archive</h3>
-        <p>
+        <h2 class="bda-footer-heading">Detroit Badman Digital Archive</h2>
+        <p class="bda-footer-text">
           A digital humanities archive documenting Black masculine heroism in Detroit.
           Developed as part of Michigan State University's Cultural Heritage Informatics
           Fellowship. Detroit is the proof-of-concept for a national multi-city archive.
         </p>
       </div>
       <div class="col-md-4">
-        <h3>Institutional</h3>
-        <ul>
+        <h2 class="bda-footer-heading">Institutional</h2>
+        <ul class="bda-footer-list">
           <li>Michigan State University</li>
           <li>Cultural Heritage Informatics Fellowship</li>
           <li>Department of English</li>
         </ul>
-        <h3>Partners</h3>
-        <ul id="bda-footer-partners">
+        <h2 class="bda-footer-heading bda-footer-heading-secondary">Partners</h2>
+        <ul class="bda-footer-list" id="bda-footer-partners">
           <!-- Partner acknowledgments populate here once outreach confirmations are in hand -->
           <li><em>Partner acknowledgments will appear here as confirmations are received.</em></li>
         </ul>
       </div>
       <div class="col-md-4">
-        <h3>Resources</h3>
-        <ul>
-          <li><a href="/cite.html">How to cite the archive</a></li>
-          <li><a href="/accessibility.html">Accessibility statement</a></li>
-          <li><a href="/contact/contact.html">Contact</a></li>
-          <li><a href="/engagement/submit/">Submit a figure</a></li>
+        <h2 class="bda-footer-heading">Resources</h2>
+        <ul class="bda-footer-list">
+          <li><a class="bda-footer-link" href="/cite.html">How to cite the archive</a></li>
+          <li><a class="bda-footer-link" href="/accessibility.html">Accessibility statement</a></li>
+          <li><a class="bda-footer-link" href="/contact/contact.html">Contact</a></li>
+          <li><a class="bda-footer-link" href="/engagement/submit/">Submit a figure</a></li>
         </ul>
       </div>
     </div>
-    <div class="row">
+    <div class="row bda-footer-meta">
       <div class="col-md-8">
-        <p>
+        <p class="bda-footer-copyright">
           Archive compilation &copy; <span id="bda-footer-year"></span> Harry M. Foster.
           Individual sources retain their original rights.
-          See <a href="/cite.html">How to cite</a> for citation formats and licensing.
+          See <a class="bda-footer-link" href="/cite.html">How to cite</a> for citation formats and licensing.
         </p>
       </div>
       <div class="col-md-4">
-        <p>
+        <p class="bda-footer-build">
           Archive build:
           <span id="bda-footer-build">v1.0</span>
         </p>

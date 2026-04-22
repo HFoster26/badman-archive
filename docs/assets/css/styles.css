@@ -818,4 +818,2246 @@ p a,
 
 .bda-cat-archival {
     background-color: var(--dba-purple);
-    color: var(
+    color: var(--dba-gold);
+}
+   /* ==========================================================================
+   PHASE 1 POLISH — HOMEPAGE + SITE CHROME
+   --------------------------------------------------------------------------
+   Append this block to styles.css. All variables already defined in :root.
+   No hardcoded hex values. All new classes documented here.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Skip Link (.bda-skip-link)
+   --------------------------------------------------------------------------
+   Visually hidden until focused. When a keyboard user Tabs to the link it
+   becomes visible at the top of the viewport. WCAG 2.4.1 (Bypass Blocks).
+   Same pattern as .visually-hidden-focusable but scoped to skip-link
+   semantics and positioned explicitly at the top-left of the viewport.
+   ========================================================================== */
+
+.bda-skip-link {
+    position: absolute !important;
+    top: -40px;
+    left: 0;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+    font-weight: bold;
+    text-decoration: none;
+    z-index: 10000;
+}
+
+.bda-skip-link:focus {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: auto;
+    height: auto;
+    padding: 0.75rem 1.25rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    outline: 3px solid var(--dba-focus-ring);
+    outline-offset: -3px;
+}
+
+
+/* ==========================================================================
+   Navbar Brand Wordmark
+   --------------------------------------------------------------------------
+   Overrides Bootstrap's .navbar-brand defaults to match the design mockup:
+   gold uppercase "DETROIT" paired with a smaller primary-text "Badman
+   Archive" on a single line. Letterspacing gives the type weight to
+   serve as a visual anchor in the nav.
+   ========================================================================== */
+
+#mainNav {
+    padding: 1rem 0;
+}
+
+.bda-brand-wordmark {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.6rem;
+    text-decoration: none;
+    padding: 0.25rem 0;
+}
+
+.bda-brand-wordmark:hover,
+.bda-brand-wordmark:focus {
+    text-decoration: none;
+}
+
+.bda-brand-wordmark-upper {
+    color: var(--dba-gold);
+    font-size: 1.35rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.bda-brand-wordmark-lower {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    line-height: 1;
+}
+
+.bda-brand-wordmark:hover .bda-brand-wordmark-lower,
+.bda-brand-wordmark:focus .bda-brand-wordmark-lower {
+    color: var(--dba-gold);
+}
+
+@media (max-width: 575px) {
+    .bda-brand-wordmark {
+        gap: 0.4rem;
+    }
+    .bda-brand-wordmark-upper {
+        font-size: 1.1rem;
+        letter-spacing: 0.15em;
+    }
+    .bda-brand-wordmark-lower {
+        font-size: 0.8rem;
+    }
+}
+
+
+/* ==========================================================================
+   Hero Section (home page)
+   --------------------------------------------------------------------------
+   Full-bleed dark background, centered content. Eyebrow is gold small-caps,
+   headline is the primary typographic anchor of the page. No imagery — the
+   archive's identity is carried by type and color.
+   ========================================================================== */
+
+.bda-hero {
+    background-color: var(--dba-darkest-green);
+    padding: 6rem 0 5rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-hero-inner {
+    max-width: 960px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.bda-hero-eyebrow {
+    color: var(--dba-gold);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 1.5rem;
+    line-height: 1.4;
+}
+
+.bda-hero-headline {
+    color: var(--dba-text-primary);
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 2.5rem;
+    max-width: 22ch;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bda-hero-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+.bda-hero-actions .btn {
+    min-width: 180px;
+}
+
+/* Secondary button variant used alongside .btn-primary in the hero */
+.btn-secondary {
+    background-color: transparent;
+    color: var(--dba-text-primary);
+    border: 2px solid var(--dba-border-green);
+    padding: 0.5rem 1.5rem;
+    font-weight: 600;
+}
+
+.btn-secondary:hover,
+.btn-secondary:focus {
+    background-color: var(--dba-medium-green);
+    color: var(--dba-white);
+    border-color: var(--dba-emerald);
+}
+
+
+/* ==========================================================================
+   Stats Bar
+   --------------------------------------------------------------------------
+   Four-up numerical summary. Uses <dl>/<dt>/<dd> for semantic pairing —
+   the number is the value, the label is the term. Emerald for the values
+   carries the "vital signs" feel without competing with the hero's gold.
+   ========================================================================== */
+
+.bda-stats {
+    background-color: var(--dba-dark-green);
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin: 0;
+    max-width: 960px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bda-stat {
+    display: flex;
+    flex-direction: column-reverse; /* Label reads below the number */
+    align-items: center;
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.bda-stat-value {
+    color: var(--dba-emerald);
+    font-size: 2.75rem;
+    font-weight: 700;
+    line-height: 1;
+    margin: 0 0 0.5rem;
+}
+
+.bda-stat-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+@media (max-width: 767px) {
+    .bda-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem 1rem;
+    }
+    .bda-stat-value {
+        font-size: 2.25rem;
+    }
+}
+
+
+/* ==========================================================================
+   Actions Grid ("What you can do here")
+   --------------------------------------------------------------------------
+   5-card grid. Cards are <a> elements for full-card click targets. Icon
+   boxes use the modality-card visual language (content-green box with
+   border). Hover lift is subtle — this is a scholarly site, not a SaaS
+   landing page.
+   ========================================================================== */
+
+.bda-actions {
+    background-color: var(--dba-dark-green);
+    padding: 4.5rem 0;
+}
+
+.bda-actions-heading {
+    color: var(--dba-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0 0 2rem;
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
+
+.bda-actions-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    max-width: 1140px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bda-actions-grid > li {
+    display: flex;
+}
+
+.bda-action-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    color: var(--dba-text-primary);
+    text-decoration: none;
+    transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.bda-action-card:hover,
+.bda-action-card:focus {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+    color: var(--dba-text-primary);
+    text-decoration: none;
+    background-color: var(--dba-medium-green);
+}
+
+.bda-action-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 1rem;
+    background-color: var(--dba-medium-green);
+    color: var(--dba-emerald);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+}
+
+.bda-action-card:hover .bda-action-card-icon,
+.bda-action-card:focus .bda-action-card-icon {
+    color: var(--dba-gold);
+    border-color: var(--dba-emerald);
+}
+
+.bda-action-card-title {
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    line-height: 1.3;
+}
+
+.bda-action-card-desc {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+@media (max-width: 991px) {
+    .bda-actions-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 575px) {
+    .bda-actions-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* ==========================================================================
+   Homepage Path Cards (Figures / Primary Sources / Visualizations row)
+   --------------------------------------------------------------------------
+   Lives inside the "Explore the archive" faded panel. Links get the
+   emerald-to-gold treatment used on other in-prose navigation cues, and
+   an underline because they are in-prose links per the doc's WCAG 1.4.1
+   rule.
+   ========================================================================== */
+
+.bda-home-path-title {
+    color: var(--dba-text-primary);
+    margin-bottom: 0.75rem;
+}
+
+.bda-home-path-link {
+    display: inline-block;
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    margin-top: 0.5rem;
+}
+
+.bda-home-path-link:hover,
+.bda-home-path-link:focus {
+    color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   Footer Typography & Links
+   --------------------------------------------------------------------------
+   Headings use the emerald eyebrow treatment — smaller, uppercase, spaced.
+   Link color stays emerald with underline; matches in-prose link rule but
+   scoped here so footer links don't fall back to browser default blue.
+   ========================================================================== */
+
+.footer {
+    padding: 4rem 0 2rem;
+}
+
+.bda-footer-main {
+    margin-bottom: 3rem;
+}
+
+.bda-footer-heading {
+    color: var(--dba-emerald);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+}
+
+.bda-footer-heading-secondary {
+    margin-top: 2rem;
+}
+
+.bda-footer-text {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.65;
+    margin: 0;
+}
+
+.bda-footer-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.85;
+}
+
+.bda-footer-list li {
+    margin-bottom: 0.15rem;
+}
+
+.bda-footer-link {
+    color: var(--dba-text-primary);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-footer-link:hover,
+.bda-footer-link:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+    text-decoration: none;
+}
+
+.bda-footer-meta {
+    border-top: 1px solid var(--dba-border-green);
+    padding-top: 1.5rem;
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+}
+
+.bda-footer-copyright,
+.bda-footer-build {
+    color: var(--dba-text-muted);
+    margin: 0;
+}
+
+.bda-footer-copyright .bda-footer-link {
+    color: var(--dba-text-muted);
+}
+
+.bda-footer-copyright .bda-footer-link:hover,
+.bda-footer-copyright .bda-footer-link:focus {
+    color: var(--dba-gold);
+}
+
+.bda-footer-build {
+    text-align: right;
+}
+
+@media (max-width: 767px) {
+    .bda-footer-build {
+        text-align: left;
+        margin-top: 0.5rem;
+    }
+}
+   /* ==========================================================================
+   PHASE 2 POLISH — FIGURES LANDING PAGE
+   --------------------------------------------------------------------------
+   Append this block to styles.css after the Phase 1 additions.
+   Adds the two-column layout (sticky rail + main), results header, sort
+   control, breadcrumb, and lead paragraph treatment.
+   All classes documented here must be added to CSS_DOCUMENTATION.md when
+   the polish pass is complete.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Breadcrumb (site-wide, used on any page)
+   --------------------------------------------------------------------------
+   Bootstrap's default .breadcrumb has a light background and dark text —
+   unreadable on our dark theme. This overrides all of it: transparent
+   background, muted secondary text, emerald link color inheriting the
+   in-prose underline rule, custom separator (middot).
+   ========================================================================== */
+
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--dba-text-muted);
+}
+
+.breadcrumb-item {
+    color: var(--dba-text-muted);
+}
+
+.breadcrumb-item a {
+    color: var(--dba-emerald);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.breadcrumb-item a:hover,
+.breadcrumb-item a:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+.breadcrumb-item.active,
+.breadcrumb-item[aria-current="page"] {
+    color: var(--dba-text-secondary);
+}
+
+/* Override Bootstrap's default "/" breadcrumb separator with a middot */
+.breadcrumb-item + .breadcrumb-item::before {
+    content: "·";
+    color: var(--dba-border-green);
+    padding: 0 0.5rem;
+}
+
+
+/* ==========================================================================
+   Lead Paragraph (site-wide)
+   --------------------------------------------------------------------------
+   Bootstrap's .lead has its own size but inherits default color. Give it
+   the proper dark-theme treatment and slightly tighter line-height for
+   a scholarly-intro feel.
+   ========================================================================== */
+
+.lead {
+    color: var(--dba-text-secondary);
+    font-size: 1.15rem;
+    font-weight: 400;
+    line-height: 1.65;
+    max-width: 68ch;
+}
+
+
+/* ==========================================================================
+   Page Title (H1) — for landing/index pages
+   --------------------------------------------------------------------------
+   Scoped inside .page-section so it doesn't fight the hero's custom
+   headline treatment on the homepage.
+   ========================================================================== */
+
+main .page-section h1 {
+    color: var(--dba-text-primary);
+    font-size: 2.5rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+    line-height: 1.15;
+}
+
+
+/* ==========================================================================
+   Figures Layout Section
+   --------------------------------------------------------------------------
+   Section wrapper gets a different background tone so the filter rail has
+   visual separation from the intro strip above. Keeps the two-column grid
+   contained in a max-width but uses container-fluid for breathing room.
+   ========================================================================== */
+
+.bda-figures-layout-section {
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+}
+
+.bda-figures-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    align-items: start;
+}
+
+@media (max-width: 991px) {
+    .bda-figures-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Mobile Filter Toggle
+   --------------------------------------------------------------------------
+   Hidden on desktop. On mobile, taps to show/hide the filter rail. The
+   rail's .is-open state is applied by the JS filterToggle handler.
+   ========================================================================== */
+
+.bda-figures-filter-toggle {
+    display: none;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bda-figures-filter-toggle::after {
+    content: "▾";
+    float: right;
+    color: var(--dba-emerald);
+}
+
+.bda-figures-filter-toggle[aria-expanded="true"]::after {
+    content: "▴";
+}
+
+@media (max-width: 991px) {
+    .bda-figures-filter-toggle {
+        display: block;
+        margin-bottom: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail
+   --------------------------------------------------------------------------
+   Sticky side rail on desktop. Card-style container with the content-green
+   background and border pattern used across the archive's card components.
+   ========================================================================== */
+
+.bda-figures-filter-rail {
+    position: sticky;
+    top: 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    align-self: start;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+}
+
+/* Custom scrollbar for dark theme */
+.bda-figures-filter-rail::-webkit-scrollbar {
+    width: 8px;
+}
+.bda-figures-filter-rail::-webkit-scrollbar-track {
+    background: var(--dba-dark-green);
+    border-radius: 4px;
+}
+.bda-figures-filter-rail::-webkit-scrollbar-thumb {
+    background: var(--dba-border-green);
+    border-radius: 4px;
+}
+.bda-figures-filter-rail::-webkit-scrollbar-thumb:hover {
+    background: var(--dba-emerald);
+}
+
+@media (max-width: 991px) {
+    .bda-figures-filter-rail {
+        position: static;
+        max-height: none;
+        display: none;
+    }
+    .bda-figures-filter-rail.is-open {
+        display: block;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail — Fieldset / Collapse Heading
+   --------------------------------------------------------------------------
+   fieldset defaults have an inset border and padding that fight the card
+   design — reset those. The collapse button inside the <legend> carries
+   the actual heading treatment.
+   ========================================================================== */
+
+.bda-filter-fieldset {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.25rem;
+}
+
+.bda-filter-fieldset legend {
+    width: 100%;
+    padding: 0;
+    margin: 0 0 0.5rem;
+    font-size: inherit;
+    float: none;
+}
+
+.bda-filter-fieldset .bda-filter-collapse-btn {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 0.25rem 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.bda-filter-fieldset .bda-filter-collapse-btn[aria-expanded="true"]::after,
+.bda-filter-fieldset .bda-filter-collapse-btn[aria-expanded="false"]::after {
+    color: var(--dba-emerald);
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
+}
+
+.bda-filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin-top: 0.5rem;
+}
+
+
+/* ==========================================================================
+   Filter Reset Button
+   --------------------------------------------------------------------------
+   Secondary action at the bottom of the rail. Subtle styling — this should
+   not compete with the primary checkbox filter list for attention.
+   ========================================================================== */
+
+.bda-filter-reset-btn {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bda-filter-reset-btn:hover,
+.bda-filter-reset-btn:focus {
+    color: var(--dba-text-primary);
+    border-color: var(--dba-emerald);
+    background-color: var(--dba-medium-green);
+}
+
+
+/* ==========================================================================
+   Filter Option Row — Checkbox Refinements
+   --------------------------------------------------------------------------
+   .bda-filter-option is already defined upstream in styles.css per spec.
+   These additions tune the spacing and pending-tag treatment for the
+   figures-page context specifically.
+   ========================================================================== */
+
+.bda-filter-option > span:last-child {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    flex: 1;
+}
+
+.bda-filter-option.is-disabled > span:last-child {
+    color: var(--dba-text-muted);
+}
+
+.bda-filter-option .bda-filter-pending-tag {
+    color: var(--dba-text-muted);
+    font-size: 0.825em;
+}
+
+
+/* ==========================================================================
+   Figures Main (right column)
+   ========================================================================== */
+
+.bda-figures-main {
+    min-width: 0; /* Prevents grid blowout from long titles */
+}
+
+
+/* ==========================================================================
+   Results Header — count + sort
+   ========================================================================== */
+
+.bda-figures-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--dba-border-green);
+    flex-wrap: wrap;
+}
+
+.bda-figures-count {
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Sort Dropdown
+   --------------------------------------------------------------------------
+   Custom-styled native <select>. Appearance reset + background-image
+   chevron gives us the native accessibility with a dark-theme look.
+   The SVG chevron is inlined (no external asset) and uses the emerald
+   color via url-encoded fill.
+   ========================================================================== */
+
+.bda-figures-sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bda-figures-sort-wrapper label {
+    color: var(--dba-text-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.bda-figures-sort {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2350c878' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 12px;
+    transition: border-color 0.15s ease;
+}
+
+.bda-figures-sort:hover,
+.bda-figures-sort:focus {
+    border-color: var(--dba-emerald);
+}
+
+.bda-figures-sort option {
+    background-color: var(--dba-darkest-green);
+    color: var(--dba-text-primary);
+}
+
+@media (max-width: 575px) {
+    .bda-figures-results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .bda-figures-sort-wrapper {
+        width: 100%;
+    }
+    .bda-figures-sort {
+        flex: 1;
+    }
+}
+
+
+/* ==========================================================================
+   Active Filter Chips Container
+   ========================================================================== */
+
+.bda-figures-active-filters {
+    margin-bottom: 1.25rem;
+}
+
+.bda-figures-active-filters:empty {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================================
+   Figure Modality Grouping — Heading Refinements
+   --------------------------------------------------------------------------
+   The .bda-figure-modality-heading base class is defined in spec. These
+   additions refine the spacing, the shape-marker sizing, and the count
+   positioning to match the mockup's "Political Revolutionary [n figures]"
+   pattern where the count sits right-aligned in the heading row.
+   ========================================================================== */
+
+.bda-figure-modality-group {
+    margin-bottom: 3rem;
+}
+
+.bda-figure-modality-group:last-child {
+    margin-bottom: 0;
+}
+
+.bda-figure-modality-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--dba-text-primary);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    border-bottom: 1px solid var(--dba-border-green);
+    padding-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.bda-figure-modality-heading .bda-filter-modality-marker {
+    width: 16px;
+    height: 16px;
+    margin-right: 0;
+    flex-shrink: 0;
+}
+
+.bda-figure-modality-count {
+    color: var(--dba-text-muted);
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-left: auto;
+}
+
+
+/* ==========================================================================
+   Figure Card Grid (responsive)
+   --------------------------------------------------------------------------
+   .bda-figure-card-list in spec is auto-fill 280px min. Override that to
+   use a tighter min-width so three cards fit comfortably in the main
+   column after the 260px rail takes its share on desktop.
+   ========================================================================== */
+
+.bda-figure-card-list {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+
+/* ==========================================================================
+   Figure Card — Fallback / Reinforcement Styles
+   --------------------------------------------------------------------------
+   These classes are defined in CSS_DOCUMENTATION.md but may not be in the
+   deployed styles.css yet. Duplicating the essential rules here ensures
+   the figures page renders correctly whether or not the spec has been
+   fully synced. Safe to remove once styles.css is confirmed in sync.
+   ========================================================================== */
+
+.bda-figure-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s ease, transform 0.2s ease, background-color 0.2s ease;
+}
+
+.bda-figure-card:hover,
+.bda-figure-card:focus {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+    color: var(--dba-text-primary);
+    text-decoration: none;
+}
+
+.bda-figure-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    min-height: 2.75rem;
+    padding: 0.5rem 0.75rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-card-type-badge {
+    display: inline-block;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-type-real {
+    background-color: var(--dba-detective);
+    color: var(--dba-white);
+}
+
+.bda-type-fictional {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+
+.bda-figure-card-meta-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.bda-figure-card-info {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bda-figure-card-title {
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.25rem;
+}
+
+.bda-figure-card:hover .bda-figure-card-title,
+.bda-figure-card:focus .bda-figure-card-title {
+    color: var(--dba-gold);
+}
+
+.bda-figure-card-era {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0 0 0.6rem;
+}
+
+.bda-figure-card-descriptor {
+    color: var(--dba-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+    flex: 1;
+}
+
+.bda-figure-card-score {
+    margin: 0;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--dba-border-green);
+    color: var(--dba-emerald);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.bda-score-value {
+    font-size: 1.15em;
+}
+
+.bda-score-total {
+    color: var(--dba-text-muted);
+    font-weight: 400;
+}
+
+
+/* ==========================================================================
+   Figures Loading & Empty States
+   ========================================================================== */
+
+.bda-figures-loading {
+    color: var(--dba-text-muted);
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1rem;
+}
+
+.bda-figures-loading[role="alert"] {
+    color: var(--dba-revolutionary);
+}
+
+.bda-figures-empty {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-figures-empty h2 {
+    color: var(--dba-text-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.bda-figures-empty p {
+    color: var(--dba-text-secondary);
+    max-width: 52ch;
+    margin: 0 auto 1.5rem;
+}
+/* ==========================================================================
+   PHASE 3 POLISH — FIX-UPS & REFINEMENTS
+   --------------------------------------------------------------------------
+   Append this block to styles.css after Phase 1 and Phase 2 additions.
+   Targeted fixes based on the live rendering review.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   FIX: Figure Card List — Grid
+   --------------------------------------------------------------------------
+   The base .bda-figure-card-list rule in the CSS spec isn't present in
+   the deployed stylesheet, so the previous override (which only set
+   grid-template-columns) wasn't enough to make the grid work. This rule
+   sets display: grid explicitly so the multi-column layout kicks in.
+   ========================================================================== */
+
+.bda-figure-card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+
+/* ==========================================================================
+   FIX: Hero Top Padding (tighter)
+   --------------------------------------------------------------------------
+   Reduce the gap between nav and eyebrow. Prior padding was 6rem top,
+   which left a large empty field at the top of the page. 3.5rem lands
+   the eyebrow at a comfortable reading position without crowding.
+   ========================================================================== */
+
+.bda-hero {
+    padding: 3.5rem 1rem 4.5rem;
+}
+
+@media (max-width: 767px) {
+    .bda-hero {
+        padding: 2.5rem 1rem 3.5rem;
+    }
+}
+
+
+/* ==========================================================================
+   REFINE: Figure Card Compactness
+   --------------------------------------------------------------------------
+   The thumb strip is taking up a lot of vertical weight for a single
+   badge. Tighten its padding and use a smaller min-height so each card
+   reads as more information-dense.
+   ========================================================================== */
+
+.bda-figure-card-thumb {
+    min-height: 0;
+    padding: 0.65rem 0.75rem;
+}
+
+.bda-figure-card-info {
+    padding: 0.9rem 1rem 1rem;
+}
+
+.bda-figure-card-title {
+    font-size: 1rem;
+}
+
+.bda-figure-card-era {
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.bda-figure-card-descriptor {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin-bottom: 0.65rem;
+}
+
+.bda-figure-card-score {
+    padding-top: 0.4rem;
+    font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   REFINE: Filter Rail Compactness
+   --------------------------------------------------------------------------
+   Tighten internal spacing. The original padding made the rail feel
+   over-engineered for its information density.
+   ========================================================================== */
+
+.bda-figures-filter-rail {
+    padding: 1rem;
+}
+
+.bda-filter-fieldset {
+    margin-bottom: 0.75rem;
+}
+
+.bda-filter-options {
+    gap: 0.1rem;
+    margin-top: 0.35rem;
+}
+
+.bda-filter-option {
+    padding: 0.3rem 0.4rem;
+}
+
+.bda-filter-reset-btn {
+    margin-top: 0.25rem;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.825rem;
+}
+
+
+/* ==========================================================================
+   REFINE: Modality Group Heading Size
+   --------------------------------------------------------------------------
+   Slightly smaller — 1.35rem felt heavy when sitting above a grid of
+   cards. 1.15rem reads as a section divider rather than a page-title
+   peer.
+   ========================================================================== */
+
+.bda-figure-modality-heading {
+    font-size: 1.15rem;
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.bda-figure-modality-group {
+    margin-bottom: 2.25rem;
+}
+/* ==========================================================================
+   PHASE 4 POLISH — INDIVIDUAL FIGURE PAGE + CREDENTIALING RAIL
+   --------------------------------------------------------------------------
+   Append this block to styles.css after Phases 1, 2, and 3.
+   Styles the full scholarly figure entry: two-column layout with sticky
+   credentialing rail, header badges, justification essay, biography with
+   timeline, five-criteria evaluation with score bars, edge-type-grouped
+   connections, geography section, primary source grid, related figures,
+   plus the credentialing-rail partial contents.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Layout: .bda-page-with-rail
+   --------------------------------------------------------------------------
+   Two-column grid: main content (1fr) + credentialing rail (320px).
+   Wraps the site container max-width via internal padding.
+   Mobile: single column, rail above content (order: -1).
+   ========================================================================== */
+
+.bda-page-with-rail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 3rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+    align-items: start;
+}
+
+@media (max-width: 991px) {
+    .bda-page-with-rail {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.5rem 1rem 3rem;
+    }
+    .bda-page-with-rail #bda-credentialing-rail {
+        order: -1;
+    }
+}
+
+.bda-page-with-rail > main {
+    min-width: 0; /* Prevents long prose from blowing out grid */
+}
+
+
+/* ==========================================================================
+   Figure Page — Header
+   ========================================================================== */
+
+.figure-page-name {
+    color: var(--dba-text-primary);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.75rem;
+}
+
+.figure-dates {
+    color: var(--dba-text-muted);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0 0 0.5rem;
+}
+
+.figure-descriptor {
+    color: var(--dba-text-secondary);
+    font-size: 1.15rem;
+    line-height: 1.6;
+    max-width: 68ch;
+    margin: 0 0 2rem;
+}
+
+
+/* ==========================================================================
+   Modality Badge (pill with colored shape marker)
+   --------------------------------------------------------------------------
+   .modality-badge.modality-{slug} — slugs: detective, revolutionary,
+   gangsta-pimp, shv, folk-hero
+   ========================================================================== */
+
+.modality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.85rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 1rem;
+    margin: 0 0 1.5rem;
+    color: var(--dba-text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+/* Add a leading shape-color dot via ::before so we don't need to touch
+   the Python build script. Matches the modality shape vocabulary. */
+.modality-badge::before {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+}
+
+.modality-badge.modality-detective::before {
+    background-color: var(--dba-detective);
+    border-radius: 50%;
+}
+
+.modality-badge.modality-revolutionary::before {
+    background-color: var(--dba-revolutionary);
+    clip-path: polygon(
+        50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%,
+        50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%
+    );
+}
+
+.modality-badge.modality-shv::before {
+    background-color: var(--dba-shv);
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.modality-badge.modality-gangsta-pimp::before {
+    background-color: var(--dba-gangsta-pimp);
+    border-radius: 2px;
+}
+
+.modality-badge.modality-folk-hero::before {
+    background-color: var(--dba-folk-hero);
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* The text span inside the badge just inherits the badge styling */
+.modality-badge-label {
+    line-height: 1;
+}
+
+
+/* ==========================================================================
+   Figure Page — Section Headings (h2, h3)
+   --------------------------------------------------------------------------
+   The build script emits bare <h2> elements. Style them as primary
+   section dividers with an emerald accent bar.
+   ========================================================================== */
+
+.bda-page-with-rail main > h2 {
+    color: var(--dba-text-primary);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+    margin: 3rem 0 1.25rem;
+    padding: 0 0 0.6rem 0;
+    border-bottom: 2px solid var(--dba-border-green);
+    position: relative;
+}
+
+/* Emerald accent bar on the left of each H2 */
+.bda-page-with-rail main > h2::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 3rem;
+    height: 2px;
+    background-color: var(--dba-emerald);
+}
+
+/* First h2 doesn't need the big top margin */
+.bda-page-with-rail main > h2:first-of-type {
+    margin-top: 2rem;
+}
+
+/* H3 subsection headings (Timeline, Additional Locations, edge-type groups) */
+.bda-page-with-rail main > h3,
+.bda-page-with-rail main article h3,
+.bda-page-with-rail main .data-section h3 {
+    color: var(--dba-emerald);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 2rem 0 0.75rem;
+}
+
+/* Intro paragraph under an H2 */
+.section-intro {
+    color: var(--dba-text-secondary);
+    font-size: 0.975rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    max-width: 68ch;
+}
+
+/* Generic body paragraph in main */
+.bda-page-with-rail main p {
+    color: var(--dba-text-primary);
+    line-height: 1.7;
+}
+
+.bda-page-with-rail main em {
+    color: var(--dba-text-muted);
+}
+
+
+/* ==========================================================================
+   Justification Essay (article.essay)
+   ========================================================================== */
+
+.essay {
+    max-width: 68ch;
+    padding: 1.5rem 0 0;
+}
+
+.essay p {
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
+}
+
+.essay p:last-child {
+    margin-bottom: 0;
+}
+
+.essay sup {
+    color: var(--dba-emerald);
+    font-size: 0.7em;
+    font-weight: 600;
+}
+
+.essay sup a {
+    color: var(--dba-emerald);
+    text-decoration: none;
+}
+
+.essay sup a:hover,
+.essay sup a:focus {
+    color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   Biography — .bio-overview + .figure-timeline
+   ========================================================================== */
+
+.bio-overview {
+    max-width: 68ch;
+    margin: 1rem 0 1.5rem;
+}
+
+.bio-overview p {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1rem;
+}
+
+.figure-timeline {
+    list-style: none;
+    padding: 1rem 0 0;
+    margin: 0.5rem 0 0;
+    border-top: 1px solid var(--dba-border-green);
+    counter-reset: none;
+}
+
+.timeline-item {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    align-items: baseline;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.timeline-item:last-child {
+    border-bottom: none;
+}
+
+.timeline-year {
+    color: var(--dba-gold);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.timeline-event {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.timeline-location {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-style: italic;
+}
+.timeline-body {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* The event + location now flow inline inside .timeline-body */
+.timeline-body .timeline-event {
+    display: inline;
+}
+
+.timeline-body .timeline-location {
+    display: inline;
+    margin-left: 0.15rem;
+}
+
+/* ==========================================================================
+   Five-Criteria Evaluation — dl.criteria-evaluation
+   --------------------------------------------------------------------------
+   The build script emits a <dl> with <dt class="criterion"> / <dd
+   class="criterion-justification"> pairs, plus a <p class="criteria-
+   total"> summary line below. Score-bar visual treatment is added via
+   ::after on the dt (since the HTML doesn't have a bar element).
+   ========================================================================== */
+
+.criteria-evaluation {
+    margin: 1.5rem 0 1.5rem;
+    padding: 0;
+}
+
+.criteria-evaluation .criterion {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 1.25rem 0 0.5rem;
+    padding: 0;
+}
+
+.criteria-evaluation .criterion:first-child {
+    margin-top: 0;
+}
+
+.criterion-label {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.criterion-score {
+    color: var(--dba-emerald);
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.criterion-justification {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0 0 0.25rem 0;
+    padding: 0 0 1rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.criteria-evaluation .criterion:last-of-type + .criterion-justification {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+/* Total score line */
+.criteria-total {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0 0;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+}
+
+.criteria-total strong {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.text-faded {
+    color: var(--dba-text-muted);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+
+/* ==========================================================================
+   Connections — .data-section + .connection-*
+   ========================================================================== */
+
+.data-section {
+    margin: 1rem 0 0;
+}
+
+.connection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.5rem;
+}
+
+.connection-item {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.connection-item:last-child {
+    border-bottom: none;
+}
+
+.connection-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 1rem;
+}
+
+.connection-header a {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.connection-header a:hover,
+.connection-header a:focus {
+    color: var(--dba-gold);
+}
+
+.inactive-link {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+.connection-years {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.tier-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.45rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+}
+
+.tier-1 {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+}
+
+.tier-2 {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.tier-3 {
+    background-color: var(--dba-text-muted);
+    color: var(--dba-darkest-green);
+}
+
+.connection-evidence {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0.4rem 0 0;
+    padding: 0.25rem 0 0 0;
+}
+
+
+/* ==========================================================================
+   Geography — .map-preview, .map-link, .additional-locations
+   ========================================================================== */
+
+.map-preview,
+#bda-geography-preview {
+    width: 100%;
+    height: 360px;
+    border-radius: 0.5rem;
+    border: 1px solid var(--dba-border-green);
+    margin: 1rem 0 1rem;
+    background-color: var(--dba-darkest-green);
+    overflow: hidden;
+}
+
+.map-link {
+    margin: 0.5rem 0 1.5rem;
+}
+
+.map-link a {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.map-link a:hover,
+.map-link a:focus {
+    color: var(--dba-gold);
+}
+
+.additional-locations {
+    list-style: none;
+    padding: 0;
+    margin: 0.5rem 0 1.5rem;
+}
+
+.additional-locations li {
+    padding: 0.6rem 0;
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.additional-locations li:last-child {
+    border-bottom: none;
+}
+
+.additional-locations li strong {
+    color: var(--dba-text-primary);
+    font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Primary Sources — .source-grid + .source-card
+   ========================================================================== */
+
+.source-grid {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.source-card {
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.source-card:hover,
+.source-card:focus-within {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+}
+
+.source-card-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 1rem 1.1rem;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+}
+
+.source-card-link:hover,
+.source-card-link:focus {
+    text-decoration: none;
+    color: var(--dba-text-primary);
+}
+
+.source-card-unlinked {
+    padding: 1rem 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+.source-title {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.35;
+}
+
+.source-card-link:hover .source-title,
+.source-card-link:focus .source-title {
+    color: var(--dba-gold);
+}
+
+.source-meta {
+    color: var(--dba-text-muted);
+    font-size: 0.8rem;
+    line-height: 1.4;
+}
+
+.source-type {
+    text-transform: capitalize;
+}
+
+.source-year {
+    font-variant-numeric: tabular-nums;
+}
+
+
+/* ==========================================================================
+   Citation — .citation-block + .citation-item
+   ========================================================================== */
+
+.citation-block {
+    margin: 1rem 0 1.5rem;
+    padding: 1.5rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.citation-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.citation-item:first-child {
+    padding-top: 0;
+}
+
+.citation-item:last-child {
+    padding-bottom: 0;
+    border-bottom: none;
+}
+
+.citation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.citation-style {
+    color: var(--dba-emerald);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.bda-citation-copy {
+    padding: 0.3rem 0.75rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bda-citation-copy:hover,
+.bda-citation-copy:focus {
+    color: var(--dba-darkest-green);
+    background-color: var(--dba-emerald);
+    border-color: var(--dba-emerald);
+}
+
+.citation-text {
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.citation-text em {
+    color: var(--dba-text-primary); /* Override the generic em-muting */
+}
+
+
+/* ==========================================================================
+   Credentialing Rail (#bda-credentialing-rail)
+   --------------------------------------------------------------------------
+   On the figure page, the rail sits as a direct child of
+   .bda-page-with-rail (not .bda-figure-layout). Make it sticky on
+   desktop and reuse the author-card + TOC styles already defined.
+   Phase 4 already styled .bda-cred-* children — those still apply.
+   ========================================================================== */
+
+.bda-page-with-rail #bda-credentialing-rail {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+}
+
+@media (max-width: 991px) {
+    .bda-page-with-rail #bda-credentialing-rail {
+        position: static;
+        top: auto;
+    }
+}
+/* ==========================================================================
+   PHASE 5 POLISH — CREDENTIALING RAIL (TWO-CARD RESTRUCTURE)
+   --------------------------------------------------------------------------
+   Append to styles.css after Phase 5. This restructures the rail into
+   two distinct cards (author card + TOC card) with visible separation
+   between them, matching the design mockup.
+
+   IMPORTANT: This partially supersedes the earlier .bda-cred-rail-inner
+   / .bda-cred-author / .bda-cred-toc-details treatment from Phase 4.
+   The old rules are still present and some still apply (e.g. photo
+   dimensions, TOC list styling) — but the container pattern changes
+   from "one inner div with components inside" to "two separate card
+   wrappers."
+
+   Must be paired with the updated credentialing-rail.html partial that
+   wraps both components in .bda-cred-card and drops the mobile
+   <details>/<summary> pattern.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Rail inner container — reset
+   --------------------------------------------------------------------------
+   Phase 4's .bda-cred-rail-inner was a single card container. Now it's
+   just a flex/gap wrapper between two independent cards. Remove the
+   background/border/padding that came from Phase 4.
+   ========================================================================== */
+
+.bda-cred-rail-inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    border-radius: 0;
+}
+
+
+/* ==========================================================================
+   Shared card container (.bda-cred-card)
+   --------------------------------------------------------------------------
+   Applied to both the author section and the TOC nav. Each gets its own
+   dark panel with border and rounded corners.
+   ========================================================================== */
+
+.bda-cred-card {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+
+/* ==========================================================================
+   Author Card — Override Phase 4 Layout
+   --------------------------------------------------------------------------
+   Phase 4 set .bda-cred-author to display:flex (horizontal: photo left,
+   meta right) with border-bottom. Reset both — the new structure puts
+   photo + identity in a header row, then affiliation/bio/link as block
+   paragraphs below.
+   ========================================================================== */
+
+.bda-cred-author {
+    display: block;
+    gap: 0;
+    margin-bottom: 0;
+    padding-bottom: 1.5rem;
+    border-bottom: none;
+}
+
+/* Header row: photo left, name/pronouns right */
+.bda-cred-author-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.25rem;
+}
+
+.bda-cred-author-photo {
+    flex-shrink: 0;
+}
+
+.bda-cred-author-photo img {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 2px solid var(--dba-emerald);
+    object-fit: cover;
+    object-position: center top;
+    display: block;
+    background-color: var(--dba-medium-green);
+}
+
+.bda-cred-author-identity {
+    flex: 1;
+    min-width: 0;
+}
+
+.bda-cred-author-name {
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.15rem;
+}
+
+.bda-cred-author-pronouns {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.3;
+}
+
+
+/* ==========================================================================
+   Author Card — Body Paragraphs
+   --------------------------------------------------------------------------
+   Affiliation + bio flow as prose blocks below the header. Mockup's voice
+   is dense and institutional — tight leading, moderate color contrast,
+   short paragraphs.
+   ========================================================================== */
+
+.bda-cred-author-affiliation {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0 0 1rem;
+}
+
+.bda-cred-author-bio {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+}
+
+.bda-cred-author-link {
+    margin: 0;
+}
+
+.bda-cred-author-link a {
+    color: var(--dba-emerald);
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-cred-author-link a:hover,
+.bda-cred-author-link a:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   TOC Card
+   --------------------------------------------------------------------------
+   The old <details>/<summary> collapse pattern is gone from the partial,
+   so we can clean up the rules that handled it. The TOC is now a plain
+   nav with a heading + ul. Still accessible, still keyboard-navigable,
+   just no collapse affordance.
+   ========================================================================== */
+
+.bda-cred-toc {
+    /* Inherits .bda-cred-card padding and background */
+}
+
+.bda-cred-toc-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+}
+
+/* Hide the old mobile-summary heading override — no longer needed since
+   the partial no longer emits a <summary>. Belt-and-suspenders rule in
+   case the old partial is still cached somewhere. */
+.bda-cred-toc-summary,
+.bda-cred-toc-details > summary {
+    display: none !important;
+}
+
+/* Ensure the heading is always visible (the Phase 4 mobile rule hid it
+   with .sr-only-style clip; that rule is now harmful since we want the
+   heading visible everywhere) */
+@media (max-width: 991px) {
+    .bda-cred-toc-heading {
+        position: static;
+        width: auto;
+        height: auto;
+        padding: 0;
+        margin: 0 0 1rem;
+        overflow: visible;
+        clip: auto;
+        white-space: normal;
+        border: 0;
+    }
+}
+
+
+/* ==========================================================================
+   TOC List — Refinements
+   --------------------------------------------------------------------------
+   Phase 4 gave list items a left-border-bar active state and medium-green
+   hover background. The mockup uses a flatter treatment — plain emerald
+   links, generous vertical rhythm, no background shifts. Override Phase 4.
+   ========================================================================== */
+
+#bda-page-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#bda-page-toc-list li {
+    margin: 0;
+}
+
+#bda-page-toc-list a {
+    display: block;
+    padding: 0.4rem 0;
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.4;
+    text-decoration: none;
+    border-left: none;
+    background-color: transparent;
+    transition: color 0.15s ease;
+}
+
+#bda-page-toc-list a:hover,
+#bda-page-toc-list a:focus {
+    color: var(--dba-gold);
+    background-color: transparent;
+    border-left: none;
+}
+
+#bda-page-toc-list a.is-active,
+#bda-page-toc-list a[aria-current="true"] {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    border-left: none;
+}
+
+
+/* ==========================================================================
+   Mobile Layout Reinforcement
+   --------------------------------------------------------------------------
+   At ≤991px the rail sits above content (order: -1 set in Phase 5). Cards
+   keep their visual treatment; just tighten padding slightly for mobile.
+   ========================================================================== */
+
+@media (max-width: 575px) {
+    .bda-cred-card {
+        padding: 1.25rem;
+    }
+    .bda-cred-author-header {
+        gap: 0.75rem;
+    }
+    .bda-cred-author-photo img {
+        width: 48px;
+        height: 48px;
+    }
+}
