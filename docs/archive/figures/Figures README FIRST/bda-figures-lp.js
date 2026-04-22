@@ -29,6 +29,7 @@
     var PENDING_MODALITIES = ['gangsta_pimp', 'folk_hero_outlaw'];
 
     var FIGURE_ROUTE_PREFIX = '/archive/figures/entries/';
+    var SOURCE_ROUTE_PREFIX = '/archive/sources/entries/';
 
     var MODALITY_LABELS_FALLBACK = {
         detective: 'Detective',
