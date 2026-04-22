@@ -1,5 +1,5 @@
 /**
- * bda-sources.js
+ * bda-sources-lp.js
  *
  * Page-specific script for the Primary Sources landing page at /archive/sources/.
  * Renders a filterable, sortable grid of every source in the archive with five
