@@ -623,7 +623,7 @@
         if (year !== '') ariaParts.push('(' + year + ')');
         var ariaLabel = ariaParts.join(' ');
 
-        var href = SOURCE_ROUTE_PREFIX + slugifyId(src.id) + '/';
+        var href = SOURCE_ROUTE_PREFIX + src.id + '/';
 
         var externalBadge = isExternal
             ? '<span class="bda-source-card-external">External</span>'
