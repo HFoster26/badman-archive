@@ -3,14 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Browse the figures of the Detroit Badman Archive — detectives, revolutionaries, superhero-villains, and more — organized by modality.">
+    <!-- description updated at runtime by bda-figures-viewer.js from figure data -->
+    <meta name="description" content="Individual figure entry in the Detroit Badman Archive. Biography, scoring, connections, geography, and primary sources for a documented Detroit badman.">
     <meta name="author" content="Harry Foster">
-    <title>Figures | Detroit Badman Digital Archive</title>
-    <link rel="canonical" href="https://detroit.badmandigitalarchive.com/archive/figures/">
+    <title>Figure | Detroit Badman Digital Archive</title>
     <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
 
     <!-- Bootstrap 5 CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- Leaflet CSS (for map preview) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
     <!-- BDA styles -->
     <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
@@ -23,140 +25,106 @@
 
     <main id="bda-main-content" tabindex="-1">
 
-        <!-- ============================================================
-             INTRO STRIP
-             ============================================================ -->
-        <section class="page-section">
+        <section class="page-section bda-figure-page-section">
             <div class="container">
-                <div class="row">
-                    <div class="col-xl-10 mx-auto">
-                        <nav aria-label="Breadcrumb">
-                            <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="/">Home</a></li>
-                                <li class="breadcrumb-item active" aria-current="page">Figures</li>
-                            </ol>
-                        </nav>
 
-                        <h1>Figures</h1>
+                <!-- Breadcrumb -->
+                <nav aria-label="Breadcrumb" class="bda-figure-breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/archive/figures/figures.html">Archive</a></li>
+                        <li class="breadcrumb-item"><a href="/archive/figures/figures.html">Figures</a></li>
+                        <li class="breadcrumb-item active" aria-current="page" id="bda-figure-breadcrumb-name">&nbsp;</li>
+                    </ol>
+                </nav>
 
-                        <p class="lead">
-                            Every figure in the archive, organized by modality. Detectives,
-                            revolutionaries, and superhero-villains are active at launch;
-                            gangsta-pimp and folk hero-outlaw modalities come online in future
-                            phases. Click any figure to view the full entry &mdash; biography,
-                            five-criteria evaluation, connections, geography, and primary sources.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <!-- Two-column layout: main content + credentialing rail -->
+                <div class="bda-figure-layout">
 
-        <!-- ============================================================
-             FIGURES LAYOUT: FILTER RAIL + GRID
-             ============================================================ -->
-        <section class="page-section bda-figures-layout-section">
-            <div class="container-fluid">
-                <div class="bda-figures-layout">
+                    <article class="bda-figure-content">
 
-                    <!-- Mobile filter toggle -->
-                    <button type="button"
-                            id="bda-figures-filter-toggle"
-                            class="bda-figures-filter-toggle"
-                            aria-controls="bda-figures-filter-rail"
-                            aria-expanded="false">
-                        Filters
-                        <span id="bda-figures-active-count" class="bda-filter-pending-tag"></span>
-                    </button>
+                        <!-- Header: badges, name, era, score, creator (fictional only) -->
+                        <header class="bda-figure-header" id="figure-header">
+                            <!-- Populated by bda-figures-viewer.js renderHeader() -->
+                        </header>
 
-                    <!-- Filter rail -->
-                    <aside id="bda-figures-filter-rail"
-                           class="bda-figures-filter-rail"
-                           aria-labelledby="bda-figures-filter-heading">
-                        <h2 id="bda-figures-filter-heading" class="sr-only">Filter figures</h2>
-
-                        <fieldset class="bda-filter-fieldset">
-                            <legend>
-                                <button type="button"
-                                        class="bda-filter-collapse-btn"
-                                        aria-expanded="true"
-                                        aria-controls="bda-filter-modality">
-                                    Modality
-                                    <span id="bda-filter-modality-count" class="bda-filter-pending-tag"></span>
-                                </button>
-                            </legend>
-                            <div id="bda-filter-modality" class="bda-filter-options">
-                                <!-- Populated by bda-figures-lp.js -->
+                        <!-- Justification essay -->
+                        <section id="justification"
+                                 class="bda-figure-section bda-figure-section-justification"
+                                 aria-labelledby="bda-h-justification">
+                            <h2 id="bda-h-justification">Justification Essay</h2>
+                            <div id="bda-figure-justification" class="bda-figure-justification">
+                                <!-- Populated by renderJustification() -->
                             </div>
-                        </fieldset>
+                        </section>
 
-                        <button type="button" id="bda-filter-reset" class="bda-filter-reset-btn">
-                            Reset all filters
-                        </button>
+                        <!-- Biography: description + timeline -->
+                        <section id="biography"
+                                 class="bda-figure-section bda-figure-section-biography"
+                                 aria-labelledby="bda-h-biography">
+                            <h2 id="bda-h-biography" class="sr-only">Biography</h2>
+                            <div id="bda-figure-biography">
+                                <!-- Populated by renderBiography() -->
+                            </div>
+                        </section>
+
+                        <!-- Five-criteria evaluation -->
+                        <section id="evaluation"
+                                 class="bda-figure-section bda-figure-section-criteria"
+                                 aria-labelledby="bda-h-evaluation">
+                            <h2 id="bda-h-evaluation" class="sr-only">Five-Criteria Evaluation</h2>
+                            <div id="bda-figure-criteria">
+                                <!-- Populated by renderCriteria() -->
+                            </div>
+                        </section>
+
+                        <!-- Connections grouped by edge type -->
+                        <section id="connections"
+                                 class="bda-figure-section bda-figure-section-connections"
+                                 aria-labelledby="bda-h-connections">
+                            <h2 id="bda-h-connections" class="sr-only">Connections</h2>
+                            <div id="bda-figure-connections">
+                                <!-- Populated by renderConnections() -->
+                            </div>
+                        </section>
+
+                        <!-- Geography: primary location + territory + additional -->
+                        <section id="geography"
+                                 class="bda-figure-section bda-figure-section-geography"
+                                 aria-labelledby="bda-h-geography">
+                            <h2 id="bda-h-geography" class="sr-only">Geography</h2>
+                            <div id="bda-figure-geography">
+                                <!-- Populated by renderGeography() -->
+                            </div>
+                        </section>
+
+                        <!-- Primary sources grid -->
+                        <section id="primary-sources"
+                                 class="bda-figure-section bda-figure-section-primary-sources"
+                                 aria-labelledby="bda-h-primary-sources">
+                            <h2 id="bda-h-primary-sources" class="sr-only">Primary Sources</h2>
+                            <div id="bda-figure-primary-sources">
+                                <!-- Populated by renderPrimarySources() -->
+                            </div>
+                        </section>
+
+                        <!-- Related figures -->
+                        <section id="related-figures"
+                                 class="bda-figure-section bda-figure-section-related"
+                                 aria-labelledby="bda-h-related-figures">
+                            <h2 id="bda-h-related-figures" class="sr-only">Related Figures</h2>
+                            <div id="bda-figure-related">
+                                <!-- Populated by renderRelated() -->
+                            </div>
+                        </section>
+
+                    </article>
+
+                    <!-- Credentialing rail (loaded by partials.js) -->
+                    <aside id="bda-credentialing-rail" aria-label="About the author">
+                        <!-- Populated by bda-partials-loader.js with credentialing-rail.html -->
                     </aside>
 
-                    <!-- Main zone -->
-                    <div class="bda-figures-main">
-
-                        <!-- Results header -->
-                        <div class="bda-figures-results-header">
-                            <p id="bda-figures-count"
-                               class="bda-figures-count"
-                               aria-live="polite"
-                               aria-atomic="true">
-                                Loading figures&hellip;
-                            </p>
-
-                            <div class="bda-figures-sort-wrapper">
-                                <label for="bda-figures-sort">Sort within modality</label>
-                                <select id="bda-figures-sort" class="bda-figures-sort">
-                                    <option value="name-az">Name A&ndash;Z</option>
-                                    <option value="name-za">Name Z&ndash;A</option>
-                                    <option value="score-desc">Badman Score (high to low)</option>
-                                    <option value="emergence-asc">Emergence (oldest first)</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <!-- Active filter chips -->
-                        <div id="bda-figures-active-filters" class="bda-figures-active-filters">
-                            <!-- Populated by bda-figures-lp.js -->
-                        </div>
-
-                        <!-- Figures grid (modality-grouped) -->
-                        <div id="bda-figures-grid" class="bda-figures-grouped">
-                            <!-- Populated by bda-figures-lp.js -->
-                        </div>
-
-                        <!-- Empty state -->
-                        <div id="bda-figures-empty" class="bda-figures-empty" hidden>
-                            <h2>No figures match the current filters</h2>
-                            <p>
-                                Try removing one of your filters, or reset them all to see every
-                                active figure in the archive.
-                            </p>
-                            <button type="button" id="bda-figures-empty-reset" class="btn btn-primary">
-                                Reset filters
-                            </button>
-                        </div>
-
-                        <!-- Screen-reader data table -->
-                        <table class="sr-only" aria-label="Detroit badman archive figures">
-                            <caption>Figures in the Detroit Badman Archive with modality, type, era, and badman score</caption>
-                            <thead>
-                                <tr>
-                                    <th scope="col">Name</th>
-                                    <th scope="col">Modality</th>
-                                    <th scope="col">Type</th>
-                                    <th scope="col">Era</th>
-                                    <th scope="col">Badman Score</th>
-                                </tr>
-                            </thead>
-                            <tbody id="bda-figures-sr-tbody">
-                                <!-- Populated by bda-figures-lp.js -->
-                            </tbody>
-                        </table>
-
-                    </div>
                 </div>
             </div>
         </section>
@@ -166,13 +134,15 @@
     <!-- Footer (loaded by partials.js) -->
     <div id="bda-footer"></div>
 
+    <!-- Leaflet JS (for map preview, even if viewer JS doesn't initialize it yet) -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Partial loader -->
     <script src="/partials/partials.js"></script>
     <!-- Site-wide scripts -->
     <script src="/assets/js/scripts.js"></script>
-    <!-- Figures landing script -->
-    <script src="/archive/figures/Figures README FIRST/bda-figures-lp.js"></script>
+    <!-- Figure page viewer script -->
+    <script src="/archive/figures/entries/bda-figures-viewer.js"></script>
 </body>
 </html>
