@@ -2071,3 +2071,1211 @@ main .page-section h1 {
 .bda-figure-modality-group {
     margin-bottom: 2.25rem;
 }
+/* ==========================================================================
+   PHASE 4 POLISH — INDIVIDUAL FIGURE PAGE + CREDENTIALING RAIL
+   --------------------------------------------------------------------------
+   Append this block to styles.css after Phases 1, 2, and 3.
+   Styles the full scholarly figure entry: two-column layout with sticky
+   credentialing rail, header badges, justification essay, biography with
+   timeline, five-criteria evaluation with score bars, edge-type-grouped
+   connections, geography section, primary source grid, related figures,
+   plus the credentialing-rail partial contents.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Figure Page — Overall Layout
+   --------------------------------------------------------------------------
+   Two-column grid: main article (flex 1fr) + sticky aside (320px).
+   Mobile: single column with rail above content.
+   ========================================================================== */
+
+.bda-figure-page-section {
+    padding: 1.5rem 0 4rem;
+}
+
+.bda-figure-breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.bda-figure-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 320px;
+    gap: 3rem;
+    align-items: start;
+}
+
+@media (max-width: 991px) {
+    .bda-figure-layout {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    /* Mobile: rail above content (per figure page JS doc) */
+    #bda-credentialing-rail {
+        order: -1;
+    }
+}
+
+.bda-figure-content {
+    min-width: 0; /* Prevents long prose from blowing out grid */
+}
+
+
+/* ==========================================================================
+   Figure Header
+   --------------------------------------------------------------------------
+   Badges row + H1 + era + score + (fictional) creator line.
+   ========================================================================== */
+
+.bda-figure-header {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-header-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.bda-figure-modality-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0.75rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 1rem;
+    color: var(--dba-text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-figure-modality-badge .bda-filter-modality-marker {
+    width: 12px;
+    height: 12px;
+    margin-right: 0;
+}
+
+.bda-figure-type-badge {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-figure-meta-badge {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+    border-radius: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-figure-name {
+    color: var(--dba-text-primary);
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+    margin: 0 0 0.5rem;
+}
+
+.bda-figure-era {
+    color: var(--dba-text-muted);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin: 0 0 1rem;
+}
+
+.bda-figure-score {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin: 0;
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+}
+
+.bda-figure-score-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.bda-figure-score .bda-score-value {
+    color: var(--dba-emerald);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.bda-figure-score .bda-score-total {
+    color: var(--dba-text-muted);
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.bda-figure-creator {
+    color: var(--dba-text-secondary);
+    font-style: italic;
+    margin: 1rem 0 0;
+}
+
+.bda-figure-creator strong {
+    color: var(--dba-text-primary);
+    font-style: normal;
+}
+
+
+/* ==========================================================================
+   Figure Sections — Shared Card Container
+   --------------------------------------------------------------------------
+   Each section gets a dark card look with the content-green background,
+   border, and generous padding. Section headings use the H2 treatment.
+   ========================================================================== */
+
+.bda-figure-section {
+    margin-bottom: 2rem;
+    padding: 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-figure-section > h2,
+.bda-figure-section :not(.sr-only) + h2,
+.bda-figure-section div > h2:first-child {
+    color: var(--dba-text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin: 0 0 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+/* Subsection headings (H3) inside figure sections */
+.bda-figure-section h3 {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.bda-figure-section p {
+    color: var(--dba-text-secondary);
+    line-height: 1.65;
+}
+
+
+/* ==========================================================================
+   Justification Essay
+   --------------------------------------------------------------------------
+   Serif body for the scholarly essay prose. Constrained measure for
+   readability. Footnote markers rendered as small superscript emerald.
+   ========================================================================== */
+
+.bda-figure-section-justification {
+    background-color: var(--dba-content-green);
+}
+
+.bda-figure-justification {
+    max-width: 68ch;
+}
+
+.bda-figure-justification p {
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
+}
+
+.bda-figure-justification p:last-child {
+    margin-bottom: 0;
+}
+
+.bda-figure-justification sup {
+    color: var(--dba-emerald);
+    font-size: 0.7em;
+    font-weight: 600;
+    margin-left: 0.05em;
+}
+
+.bda-figure-justification sup a {
+    color: var(--dba-emerald);
+    text-decoration: none;
+}
+
+.bda-figure-justification sup a:hover,
+.bda-figure-justification sup a:focus {
+    color: var(--dba-gold);
+}
+
+.bda-figure-justification-text {
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+}
+
+.bda-figure-justification-placeholder {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+
+/* ==========================================================================
+   Biography Section
+   --------------------------------------------------------------------------
+   Description paragraph + Timeline subsection with year markers.
+   ========================================================================== */
+
+.bda-figure-biography-description {
+    margin-bottom: 1.5rem;
+}
+
+.bda-figure-biography-description p {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    line-height: 1.7;
+    margin: 0 0 1rem;
+}
+
+.bda-figure-biography-timeline {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-timeline-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: timeline;
+}
+
+.bda-figure-timeline-item,
+.bda-figure-timeline-event {
+    display: grid;
+    grid-template-columns: 4.5rem 1fr;
+    gap: 1rem;
+    padding: 0.5rem 0;
+    align-items: baseline;
+}
+
+.bda-figure-timeline-year {
+    color: var(--dba-gold);
+    font-weight: 700;
+    font-size: 0.95rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-figure-timeline-body p,
+.bda-figure-timeline-event p {
+    color: var(--dba-text-primary);
+    margin: 0;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.bda-figure-timeline-body .bda-figure-timeline-location,
+.bda-figure-timeline-location {
+    color: var(--dba-text-muted);
+    font-size: 0.825rem;
+    font-style: italic;
+    margin-top: 0.15rem;
+}
+
+
+/* ==========================================================================
+   Five-Criteria Evaluation
+   --------------------------------------------------------------------------
+   Total score badge at top. Each criterion: name + score badge row,
+   then filled score bar, then justification prose.
+   ========================================================================== */
+
+.bda-figure-criteria-list {
+    margin: 0;
+    padding: 0;
+}
+
+/* Optional total-score display the viewer JS might emit */
+.bda-figure-criteria-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    margin: 0 0 1.5rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+}
+
+.bda-figure-criteria-total-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+}
+
+.bda-figure-criteria-total-value {
+    color: var(--dba-emerald);
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.bda-figure-criterion {
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-criterion:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.bda-figure-criterion:first-child {
+    padding-top: 0;
+}
+
+.bda-figure-criterion-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    margin: 0 0 0.6rem;
+}
+
+/* The viewer JS emits <h3> inside the dt — override the generic
+   .bda-figure-section h3 uppercase emerald treatment for this context */
+.bda-figure-criterion-header .bda-figure-criterion-name,
+.bda-figure-section .bda-figure-criterion-header h3 {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
+}
+
+.bda-figure-criterion-score {
+    color: var(--dba-emerald);
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.bda-figure-criterion-body {
+    margin: 0;
+}
+
+.bda-criterion-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--dba-darkest-green);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0 0 0.75rem;
+}
+
+.bda-criterion-bar-fill {
+    height: 100%;
+    background-color: var(--dba-emerald);
+    width: calc(var(--criterion-value, 0) * 20%);
+    transition: width 0.4s ease;
+}
+
+.bda-figure-criterion-justification {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+/* Collapsible justification variant (spec calls for <details>/<summary>) */
+.bda-criterion-details {
+    margin-top: 0.5rem;
+}
+
+.bda-criterion-details summary {
+    cursor: pointer;
+    color: var(--dba-emerald);
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.bda-criterion-details[open] summary {
+    margin-bottom: 0.5rem;
+}
+
+.bda-figure-criteria-review-notice {
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+    background-color: var(--dba-medium-green);
+    border-left: 3px solid var(--dba-gold);
+    border-radius: 0.25rem;
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   Connections Section
+   --------------------------------------------------------------------------
+   Edge-type-grouped list. Each group has an edge-type pill heading and
+   a list of connection items showing: direction arrow, target figure link,
+   tier badge, year range, and evidence prose below.
+   ========================================================================== */
+
+.bda-figure-connection-group,
+.bda-connection-group {
+    margin-bottom: 1.5rem;
+}
+
+.bda-figure-connection-group:last-child,
+.bda-connection-group:last-child {
+    margin-bottom: 0;
+}
+
+.bda-figure-connection-type-heading,
+.bda-connection-group-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.75rem;
+}
+
+/* Override the generic .bda-figure-section h3 for connection headings */
+.bda-figure-section .bda-figure-connection-type-heading,
+.bda-figure-section .bda-connection-group-heading {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.75rem;
+}
+
+.bda-edge-type-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--dba-darkest-green);
+}
+
+/* Edge-type badge backgrounds — using the same color variables as the
+   legend markers in the map/network legends */
+.bda-edge-meta  { background-color: var(--dba-edge-meta); }
+.bda-edge-p2c   { background-color: var(--dba-edge-p2c); color: var(--dba-white); }
+.bda-edge-c2c   { background-color: var(--dba-edge-c2c); }
+.bda-edge-org   { background-color: var(--dba-edge-org); color: var(--dba-white); }
+.bda-edge-cc    { background-color: var(--dba-edge-cc); color: var(--dba-white); }
+
+/* Edge legend marker variant (line swatch, for inline use) */
+.bda-edge-legend-marker {
+    display: inline-block;
+    width: 20px;
+    height: 4px;
+    margin-right: 0.25rem;
+    vertical-align: middle;
+    border-radius: 1px;
+}
+
+.bda-connection-group-count {
+    color: var(--dba-text-muted);
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-left: auto;
+}
+
+.bda-figure-connection-list,
+.bda-connection-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bda-figure-connection-item,
+.bda-connection-item {
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-connection-item:last-child,
+.bda-connection-item:last-child {
+    border-bottom: none;
+}
+
+.bda-figure-connection-header {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+}
+
+.bda-figure-connection-arrow,
+.bda-connection-direction {
+    color: var(--dba-text-muted);
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.bda-figure-connection-link,
+.bda-connection-name {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-size: 1rem;
+}
+
+.bda-figure-connection-link:hover,
+.bda-figure-connection-link:focus,
+.bda-connection-name:hover,
+.bda-connection-name:focus {
+    color: var(--dba-gold);
+}
+
+.bda-connection-name-missing {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    font-weight: 400;
+}
+
+.bda-connection-dangling {
+    opacity: 0.7;
+}
+
+.bda-figure-connection-years {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-connection-tier {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.15rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.bda-tier-1 {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+}
+
+.bda-tier-2 {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.bda-tier-3 {
+    background-color: var(--dba-text-muted);
+    color: var(--dba-darkest-green);
+}
+
+.bda-connection-evidence,
+.bda-figure-section .bda-connection-evidence {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.55;
+    margin: 0.25rem 0 0;
+    padding-left: 1.5rem;
+}
+
+.bda-figure-connections-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+
+/* ==========================================================================
+   Geography Section
+   --------------------------------------------------------------------------
+   Map preview + primary location + territory description + additional
+   locations list + "view on full map" link.
+   ========================================================================== */
+
+#bda-figure-map-preview {
+    width: 100%;
+    height: 360px;
+    border-radius: 0.5rem;
+    border: 1px solid var(--dba-border-green);
+    margin-bottom: 1.25rem;
+}
+
+.bda-figure-primary-location,
+.bda-figure-territory,
+.bda-figure-additional-locations {
+    margin-top: 1.25rem;
+}
+
+.bda-figure-primary-location:first-child,
+.bda-figure-territory:first-child {
+    margin-top: 0;
+}
+
+.bda-figure-location-name {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.bda-figure-additional-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.bda-figure-additional-item {
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-additional-item:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.bda-figure-additional-name {
+    color: var(--dba-text-primary);
+    font-weight: 600;
+    font-size: 0.95rem;
+    margin: 0 0 0.2rem;
+}
+
+.bda-figure-additional-significance {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+}
+
+.bda-figure-map-link,
+.bda-figure-geography-view-full {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dba-border-green);
+}
+
+.bda-figure-map-link a,
+.bda-figure-geography-view-full a {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.bda-figure-map-link a:hover,
+.bda-figure-map-link a:focus,
+.bda-figure-geography-view-full a:hover,
+.bda-figure-geography-view-full a:focus {
+    color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   Primary Sources (figure page variant)
+   --------------------------------------------------------------------------
+   Grid of source cards. Reuses .bda-source-card from the sources landing
+   styles (which need to exist in styles.css separately — if missing, the
+   reinforcement block below provides them).
+   ========================================================================== */
+
+.bda-figure-primary-sources-grid,
+.bda-figure-all-sources-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.bda-figure-sources-empty,
+.bda-figure-primary-sources-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    text-align: center;
+    padding: 1.5rem;
+}
+
+.bda-figure-all-sources-link {
+    margin-top: 1.25rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--dba-border-green);
+    text-align: center;
+}
+
+.bda-figure-all-sources-link a {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.bda-figure-all-sources-link a:hover,
+.bda-figure-all-sources-link a:focus {
+    color: var(--dba-gold);
+}
+
+/* Source card — reinforcement (matches the spec; redundant if already in
+   styles.css). Safe to leave in place even if duplicates exist. */
+.bda-source-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.bda-source-card:hover,
+.bda-source-card:focus {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+    color: var(--dba-text-primary);
+    text-decoration: none;
+}
+
+.bda-source-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    padding: 1.25rem 1rem;
+    text-align: center;
+    min-height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.bda-source-card-category {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.2rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.bda-cat-primary {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+}
+
+.bda-cat-secondary {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.bda-cat-archival {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+
+.bda-source-thumb-glyph {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    position: relative;
+}
+
+/* Minimal glyph indicators — small differentiator strokes on each type */
+.bda-thumb-book::after,
+.bda-thumb-doc::after,
+.bda-thumb-news::after,
+.bda-thumb-photo::after,
+.bda-thumb-audio::after,
+.bda-thumb-film::after {
+    content: "";
+    position: absolute;
+    inset: 0.35rem;
+    background-color: var(--dba-emerald);
+    opacity: 0.55;
+}
+
+.bda-thumb-book::after  { clip-path: polygon(10% 0, 90% 0, 90% 100%, 10% 100%, 10% 85%, 80% 85%, 80% 15%, 10% 15%); }
+.bda-thumb-doc::after   { clip-path: polygon(0 0, 75% 0, 100% 25%, 100% 100%, 0 100%); }
+.bda-thumb-news::after  { clip-path: polygon(0 10%, 100% 10%, 100% 90%, 0 90%); }
+.bda-thumb-photo::after { border-radius: 50%; clip-path: none; }
+.bda-thumb-audio::after { clip-path: polygon(30% 20%, 70% 20%, 70% 80%, 30% 80%); border-radius: 2px; }
+.bda-thumb-film::after  { clip-path: polygon(0 20%, 100% 20%, 100% 80%, 0 80%); }
+
+.bda-source-card-info {
+    padding: 0.75rem 0.85rem 0.85rem;
+}
+
+.bda-source-card-title {
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    line-height: 1.35;
+    margin: 0 0 0.3rem;
+}
+
+.bda-source-card:hover .bda-source-card-title,
+.bda-source-card:focus .bda-source-card-title {
+    color: var(--dba-gold);
+}
+
+.bda-source-card-meta {
+    color: var(--dba-text-muted);
+    font-size: 0.75rem;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Related Figures (figure page variant — compact cards)
+   --------------------------------------------------------------------------
+   Tighter grid than the figures landing. Related cards are secondary
+   navigation, not the primary information density of the page.
+   ========================================================================== */
+
+.bda-figure-related-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+/* Compact variant of .bda-figure-card for the related-figures grid */
+.bda-figure-related-grid .bda-figure-card {
+    background-color: var(--dba-medium-green);
+}
+
+.bda-figure-related-grid .bda-figure-card-thumb {
+    min-height: 0;
+    padding: 0.5rem 0.6rem;
+}
+
+.bda-figure-related-grid .bda-figure-card-info {
+    padding: 0.6rem 0.75rem 0.75rem;
+}
+
+.bda-figure-related-grid .bda-figure-card-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.bda-figure-related-grid .bda-figure-card-era {
+    font-size: 0.75rem;
+    margin-bottom: 0.3rem;
+}
+
+.bda-figure-related-grid .bda-figure-card-score {
+    font-size: 0.8rem;
+    padding-top: 0.3rem;
+}
+
+.bda-figure-related-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+
+/* ==========================================================================
+   Credentialing Rail — Desktop Sticky, Mobile Collapsed
+   --------------------------------------------------------------------------
+   The rail is an <aside> containing an author card + page TOC.
+   On desktop: sticky position, hugs top of viewport while user scrolls.
+   On mobile: static, above content, TOC collapsible via <details>.
+   ========================================================================== */
+
+#bda-credentialing-rail {
+    position: sticky;
+    top: 1.5rem;
+    align-self: start;
+}
+
+@media (max-width: 991px) {
+    #bda-credentialing-rail {
+        position: static;
+        top: auto;
+    }
+}
+
+.bda-cred-rail-inner {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+}
+
+
+/* ==========================================================================
+   Credentialing Rail — Author Card
+   ========================================================================== */
+
+.bda-cred-author {
+    display: flex;
+    gap: 0.85rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-cred-author-photo img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    object-fit: cover;
+    display: block;
+    flex-shrink: 0;
+}
+
+.bda-cred-author-meta {
+    flex: 1;
+    min-width: 0;
+}
+
+.bda-cred-author-name {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.1rem;
+}
+
+.bda-cred-author-pronouns {
+    color: var(--dba-text-muted);
+    font-size: 0.8rem;
+    margin: 0 0 0.6rem;
+}
+
+.bda-cred-author-affiliation {
+    color: var(--dba-text-secondary);
+    font-size: 0.825rem;
+    line-height: 1.45;
+    margin: 0 0 0.75rem;
+}
+
+.bda-cred-author-bio {
+    color: var(--dba-text-secondary);
+    font-size: 0.825rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem;
+}
+
+.bda-cred-author-link {
+    margin: 0;
+}
+
+.bda-cred-author-link a {
+    color: var(--dba-emerald);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-cred-author-link a:hover,
+.bda-cred-author-link a:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+
+/* ==========================================================================
+   Credentialing Rail — On This Page TOC
+   ========================================================================== */
+
+.bda-cred-toc-details {
+    /* No visual treatment on desktop — native <details> stays open */
+}
+
+.bda-cred-toc-summary {
+    display: none;
+    cursor: pointer;
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    padding: 0.5rem 0;
+    list-style: none; /* Hide default marker in Firefox */
+}
+
+.bda-cred-toc-summary::-webkit-details-marker {
+    display: none;
+}
+
+.bda-cred-toc-summary::marker {
+    display: none;
+}
+
+.bda-cred-toc-summary::after {
+    content: "▾";
+    float: right;
+    font-size: 0.9em;
+}
+
+.bda-cred-toc-details:not([open]) .bda-cred-toc-summary::after {
+    content: "▸";
+}
+
+/* Desktop: hide the mobile summary, the TOC is always shown */
+@media (min-width: 992px) {
+    .bda-cred-toc-summary {
+        display: none !important;
+    }
+}
+
+/* Mobile: summary visible as toggle, details collapses */
+@media (max-width: 991px) {
+    .bda-cred-toc-summary {
+        display: block;
+    }
+}
+
+/* The nested <nav class="bda-cred-toc"> carries the heading + list */
+.bda-cred-toc {
+    /* No top-level treatment; children handle it */
+}
+
+.bda-cred-toc-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem;
+}
+
+/* On mobile, when the summary is visible, the heading inside the nav is
+   redundant — hide it visually but leave it for screen readers that don't
+   expose <summary> content as a heading */
+@media (max-width: 991px) {
+    .bda-cred-toc-heading {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+}
+
+#bda-page-toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#bda-page-toc-list li {
+    margin: 0;
+}
+
+#bda-page-toc-list a {
+    display: block;
+    padding: 0.3rem 0.5rem 0.3rem 0.75rem;
+    color: var(--dba-text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: color 0.15s ease, border-left-color 0.15s ease, background-color 0.15s ease;
+}
+
+#bda-page-toc-list a:hover,
+#bda-page-toc-list a:focus {
+    color: var(--dba-text-primary);
+    background-color: var(--dba-medium-green);
+    border-left-color: var(--dba-border-green);
+}
+
+#bda-page-toc-list a.is-active,
+#bda-page-toc-list a[aria-current="true"] {
+    color: var(--dba-emerald);
+    border-left-color: var(--dba-emerald);
+    font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Figure Not Found State
+   ========================================================================== */
+
+.bda-figure-not-found {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.bda-figure-not-found h1 {
+    color: var(--dba-text-primary);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.bda-figure-not-found p {
+    color: var(--dba-text-secondary);
+    font-size: 1rem;
+}
+
+.bda-figure-not-found a {
+    color: var(--dba-emerald);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.bda-figure-not-found a:hover,
+.bda-figure-not-found a:focus {
+    color: var(--dba-gold);
+}
