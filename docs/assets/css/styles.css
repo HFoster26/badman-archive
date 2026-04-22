@@ -4722,3 +4722,44 @@ main .page-section h1 {
         height: 44px;
     }
 }
+/* ==========================================================================
+   PHASE 7c PATCH — HEADER CATEGORY BADGE POSITIONING
+   --------------------------------------------------------------------------
+   Append to styles.css after Phase 7b.
+
+   BUG: On source entry pages, the .bda-source-card-category badge in the
+   .bda-source-header-meta row was inheriting position:absolute from the
+   base .bda-source-card-category rule (defined in the original spec /
+   Phase 1 for the sources landing grid cards). Without a positioned
+   ancestor, the badge escaped to the nearest positioned element (body or
+   viewport), rendering in the top-left corner of the page and overlapping
+   the DETROIT wordmark.
+
+   FIX: Explicitly set position:static on category badges inside the
+   source-entry header, overriding the inherited absolute positioning.
+   Also remove the positioning-specific properties (top/left) since they
+   only make sense in the absolute context.
+   ========================================================================== */
+
+.bda-source-header .bda-source-card-category,
+.bda-source-header-meta .bda-source-card-category {
+    position: static;
+    top: auto;
+    left: auto;
+    z-index: auto;
+}
+
+/* Same fix for the metadata rail — the Category row renders the badge
+   inline, not as a corner pill */
+.bda-source-metadata-list .bda-source-card-category {
+    position: static;
+    top: auto;
+    left: auto;
+    z-index: auto;
+}
+
+/* Same fix for the Related Sources grid cards' category badge — those
+   DO live inside a thumb, so they SHOULD still be absolute there. Don't
+   override them here; Phase 7a's .bda-sources-grid-specific selector and
+   the .bda-source-card-thumb ancestor positioning should keep that path
+   working. This comment is a reminder not to be overzealous. */
