@@ -2373,7 +2373,21 @@ main .page-section h1 {
     font-size: 0.85rem;
     font-style: italic;
 }
+.timeline-body {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
 
+/* The event + location now flow inline inside .timeline-body */
+.timeline-body .timeline-event {
+    display: inline;
+}
+
+.timeline-body .timeline-location {
+    display: inline;
+    margin-left: 0.15rem;
+}
 
 /* ==========================================================================
    Five-Criteria Evaluation — dl.criteria-evaluation
