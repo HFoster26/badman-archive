@@ -1,5 +1,5 @@
 /**
- * bda-source-page.js
+ * bda-sources-viewer.js
  *
  * Page-level interactivity for individual source pages at
  * /archive/sources/entries/[source_id]/.
