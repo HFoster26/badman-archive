@@ -3061,3 +3061,1002 @@ main .page-section h1 {
         height: 48px;
     }
 }
+/* ==========================================================================
+   PHASE 7a POLISH — SOURCE ENTRY PAGES
+   --------------------------------------------------------------------------
+   Append to styles.css after Phase 6. Styles everything that build_sources.py
+   emits: header, viewer variants (text/audio-transcript/image/video/multi-
+   asset), metadata rail, justification, cited-in, related sources, citation
+   block, transcript rendering.
+
+   Reuses existing classes where possible:
+     - .bda-page-with-rail (Phase 5) — two-column layout wrapper
+     - #bda-credentialing-rail (Phase 6) — author card + TOC
+     - .bda-skip-link, #bda-navbar, #bda-footer — site chrome
+     - .breadcrumb, .lead (Phase 2)
+     - .modality-badge, .tier-badge (Phase 5)
+     - .bda-filter-modality-marker, .bda-mm-* shape markers (figures page)
+
+   New classes are all prefixed .bda-source-* to avoid collisions with
+   figures-page classes.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Breadcrumb refinements for source pages
+   --------------------------------------------------------------------------
+   Source pages have a 4-level breadcrumb (Home / Archive / Sources / Title)
+   which can wrap on narrow viewports. Tighter line-height and a wrap break
+   keep it readable.
+   ========================================================================== */
+
+.bda-source-breadcrumb {
+    margin-bottom: 1.5rem;
+}
+
+.bda-source-breadcrumb .breadcrumb {
+    flex-wrap: wrap;
+    gap: 0 0.25rem;
+}
+
+
+/* ==========================================================================
+   Header — title, category badge, type, year, permalink button
+   ========================================================================== */
+
+.bda-source-header {
+    margin-bottom: 1rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-source-title {
+    color: var(--dba-text-primary);
+    font-size: clamp(1.85rem, 3.5vw, 2.75rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    margin: 0 0 1rem;
+}
+
+.bda-source-header-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0;
+}
+
+.bda-source-type {
+    display: inline-block;
+    padding: 0.25rem 0.65rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    color: var(--dba-text-primary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-source-year {
+    color: var(--dba-text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-source-permalink-btn {
+    margin-left: auto;
+    padding: 0.35rem 0.85rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bda-source-permalink-btn:hover,
+.bda-source-permalink-btn:focus {
+    color: var(--dba-darkest-green);
+    background-color: var(--dba-emerald);
+    border-color: var(--dba-emerald);
+}
+
+.bda-source-descriptor {
+    color: var(--dba-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 68ch;
+    margin: 0 0 2.5rem;
+}
+
+
+/* ==========================================================================
+   Viewer — Shared container treatment
+   --------------------------------------------------------------------------
+   All viewer variants (text/audio-transcript/image/video/multi-asset/access
+   notice) use a common outer section. Inner treatment varies by variant.
+   ========================================================================== */
+
+.bda-source-viewer {
+    margin-bottom: 2.5rem;
+}
+
+
+/* ==========================================================================
+   Viewer — Text (external link)
+   --------------------------------------------------------------------------
+   For book/news/article/etc. sources with a URL — renders a single primary
+   action button. Centered in a generous card.
+   ========================================================================== */
+
+.bda-source-viewer-text {
+    /* Nothing special at the section level — inner block handles it */
+}
+
+.bda-source-external-link-block {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-view-external {
+    min-width: 220px;
+    padding: 0.85rem 1.75rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+
+/* ==========================================================================
+   Viewer — Image (external URL or asset)
+   ========================================================================== */
+
+.bda-source-viewer-image {
+    /* Container-level rules live on the figure */
+}
+
+.bda-source-image-figure {
+    margin: 0;
+    padding: 1rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-image-figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 0.25rem;
+    background-color: var(--dba-darkest-green);
+}
+
+.bda-source-image-figure figcaption {
+    color: var(--dba-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    font-style: italic;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--dba-border-green);
+    text-align: center;
+}
+
+
+/* ==========================================================================
+   Viewer — Video (asset)
+   ========================================================================== */
+
+.bda-source-video-block {
+    padding: 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-video-title {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.bda-source-video-player {
+    width: 100%;
+    border-radius: 0.25rem;
+    background-color: var(--dba-darkest-green);
+}
+
+
+/* ==========================================================================
+   Viewer — Document (PDF, scan)
+   ========================================================================== */
+
+.bda-source-document-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+    padding: 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-document-title {
+    color: var(--dba-text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.bda-source-doc-pages {
+    color: var(--dba-text-muted);
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+
+/* ==========================================================================
+   Viewer — Interview (audio + transcript)
+   --------------------------------------------------------------------------
+   The signature original-collections layout. Audio player sits on top in
+   its own sub-card; transcript spans the full content width below.
+   ========================================================================== */
+
+.bda-source-viewer-interview {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.bda-source-audio-block {
+    padding: 1.25rem 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-audio-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.85rem;
+}
+
+.bda-source-audio-title {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
+}
+
+.bda-audio-duration {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-source-audio-player {
+    width: 100%;
+    display: block;
+}
+
+/* Force the native audio element to pick up our dark theme on browsers that
+   respect custom property inheritance (Chrome / Edge). Firefox and Safari
+   use their own chrome and will remain native-styled — that's fine for
+   accessibility. */
+.bda-source-audio-player::-webkit-media-controls-panel {
+    background-color: var(--dba-medium-green);
+}
+
+
+/* ==========================================================================
+   Viewer — Transcript (embedded, rendered at build time)
+   ========================================================================== */
+
+.bda-source-transcript-block {
+    padding: 1.5rem 2rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-transcript-header {
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-source-transcript-title {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0;
+}
+
+.bda-transcript-wordcount {
+    color: var(--dba-text-muted);
+    font-size: 0.85rem;
+    font-weight: 400;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-source-transcript-body {
+    max-width: 68ch;
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+
+.bda-source-transcript-body p {
+    margin: 0 0 1.1rem;
+}
+
+.bda-source-transcript-body p:last-child {
+    margin-bottom: 0;
+}
+
+/* Transcript section heading (rendered from ## in Markdown) */
+.bda-transcript-heading {
+    color: var(--dba-emerald);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 2.25rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-transcript-heading:first-child {
+    margin-top: 0;
+}
+
+/* Speaker turn — line starting with **Label:** in transcript Markdown */
+.bda-transcript-turn {
+    display: block;
+}
+
+.bda-transcript-speaker {
+    color: var(--dba-gold);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-right: 0.4rem;
+}
+
+.bda-transcript-error {
+    color: var(--dba-revolutionary);
+    font-style: italic;
+    padding: 1rem;
+    background-color: var(--dba-medium-green);
+    border-left: 3px solid var(--dba-revolutionary);
+    border-radius: 0.25rem;
+}
+
+
+/* ==========================================================================
+   Viewer — Multi-asset tabs (fallback for 2+ heterogeneous assets)
+   ========================================================================== */
+
+.bda-source-asset-tabs {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+.bda-source-asset-tablist {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    background-color: var(--dba-darkest-green);
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-source-asset-tab {
+    padding: 0.85rem 1.25rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: none;
+    border-right: 1px solid var(--dba-border-green);
+    border-bottom: 2px solid transparent;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.bda-source-asset-tab:hover,
+.bda-source-asset-tab:focus {
+    color: var(--dba-text-primary);
+    background-color: var(--dba-medium-green);
+}
+
+.bda-source-asset-tab[aria-selected="true"] {
+    color: var(--dba-emerald);
+    background-color: var(--dba-content-green);
+    border-bottom-color: var(--dba-emerald);
+}
+
+.bda-source-asset-panel {
+    padding: 1.5rem 2rem;
+}
+
+.bda-source-asset-panel[hidden] {
+    display: none;
+}
+
+
+/* ==========================================================================
+   Viewer — Access-gated notice
+   --------------------------------------------------------------------------
+   Shown instead of a viewer when access_level is embargoed, restricted, or
+   consent_required.
+   ========================================================================== */
+
+.bda-source-access-notice {
+    padding: 2rem 2rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-left: 4px solid var(--dba-gold);
+    border-radius: 0.375rem;
+}
+
+.bda-source-access-notice h3 {
+    color: var(--dba-gold);
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin: 0 0 0.75rem;
+}
+
+.bda-source-access-notice p {
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+}
+
+.bda-source-access-notice p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================================
+   Metadata Rail (rendered inline in main content, not in credentialing rail)
+   --------------------------------------------------------------------------
+   An <aside> containing a <dl> of every non-null field for the source.
+   Sits between the viewer and the scholarly sections. Tighter than the
+   justification/cited-in cards below it.
+   ========================================================================== */
+
+.bda-source-metadata-rail {
+    margin: 0 0 2.5rem;
+    padding: 1.5rem 1.75rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-source-metadata-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    padding: 0 0 0.6rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-source-metadata-list {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.6rem 1.5rem;
+    margin: 0;
+}
+
+.bda-source-metadata-list dt {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding-top: 0.05rem;
+}
+
+.bda-source-metadata-list dd {
+    margin: 0;
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+/* Permalink row specifically — long URL, smaller font, with inline copy btn */
+.bda-source-permalink-text {
+    display: inline-block;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    color: var(--dba-text-secondary);
+    background-color: var(--dba-darkest-green);
+    padding: 0.15rem 0.4rem;
+    border-radius: 0.2rem;
+    word-break: break-all;
+}
+
+.bda-source-permalink-copy {
+    margin-left: 0.5rem;
+    padding: 0.2rem 0.6rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+    vertical-align: baseline;
+}
+
+.bda-source-permalink-copy:hover,
+.bda-source-permalink-copy:focus {
+    color: var(--dba-darkest-green);
+    background-color: var(--dba-emerald);
+    border-color: var(--dba-emerald);
+}
+
+/* Access-level badges embedded in the rail */
+.bda-access-badge-restricted,
+.bda-access-badge-embargoed,
+.bda-access-badge-consent {
+    display: inline-block;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.2rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.bda-access-badge-restricted {
+    background-color: var(--dba-revolutionary);
+    color: var(--dba-white);
+}
+
+.bda-access-badge-embargoed {
+    background-color: var(--dba-gold);
+    color: var(--dba-darkest-green);
+}
+
+.bda-access-badge-consent {
+    background-color: var(--dba-purple);
+    color: var(--dba-white);
+}
+
+/* Notes block (renders after the dl, still inside .bda-source-metadata-rail) */
+.bda-source-notes {
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--dba-border-green);
+}
+
+.bda-source-notes h3 {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
+}
+
+.bda-source-notes p {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Shared section treatment (justification, cited-in, related, citation)
+   ========================================================================== */
+
+.bda-source-section {
+    margin-bottom: 2.5rem;
+}
+
+.bda-source-section h2 {
+    color: var(--dba-text-primary);
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    line-height: 1.25;
+    margin: 0 0 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 2px solid var(--dba-border-green);
+    position: relative;
+}
+
+.bda-source-section h2::before {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 3rem;
+    height: 2px;
+    background-color: var(--dba-emerald);
+}
+
+
+/* ==========================================================================
+   Justification section
+   ========================================================================== */
+
+.bda-source-justification {
+    max-width: 68ch;
+    padding-top: 0.5rem;
+}
+
+.bda-source-justification p {
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", "Palatino Linotype", Palatino, serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    margin: 0 0 1.25rem;
+}
+
+.bda-source-justification p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================================
+   Cited In section — figures grouped by modality
+   ========================================================================== */
+
+.bda-cited-in-modality-group {
+    margin-bottom: 1.5rem;
+}
+
+.bda-cited-in-modality-group:last-child {
+    margin-bottom: 0;
+}
+
+.bda-cited-in-modality-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+    margin: 0 0 0.6rem;
+}
+
+.bda-cited-in-modality-heading .bda-filter-modality-marker {
+    width: 14px;
+    height: 14px;
+    margin-right: 0;
+    flex-shrink: 0;
+}
+
+.bda-cited-in-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 0 1.9rem;  /* Align under the modality label, past the shape marker */
+}
+
+.bda-cited-in-list li {
+    padding: 0.3rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.bda-cited-in-list li:last-child {
+    border-bottom: none;
+}
+
+.bda-cited-in-list a {
+    color: var(--dba-emerald);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.bda-cited-in-list a:hover,
+.bda-cited-in-list a:focus {
+    color: var(--dba-gold);
+}
+
+.bda-cited-in-list .inactive-link {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    font-size: 0.95rem;
+}
+
+.bda-cited-in-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Related Sources section — grid of compact source cards
+   ========================================================================== */
+
+.bda-source-related-grid {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.bda-source-related-grid .bda-source-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.bda-source-related-grid .bda-source-card:hover,
+.bda-source-related-grid .bda-source-card:focus {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+    color: var(--dba-text-primary);
+    text-decoration: none;
+}
+
+.bda-source-related-grid .bda-source-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    min-height: 2.75rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-source-related-grid .bda-source-card-info {
+    padding: 0.75rem 0.85rem 0.9rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bda-source-related-grid .bda-source-card-title {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.3rem;
+}
+
+.bda-source-related-grid .bda-source-card:hover .bda-source-card-title,
+.bda-source-related-grid .bda-source-card:focus .bda-source-card-title {
+    color: var(--dba-gold);
+}
+
+.bda-source-related-grid .bda-source-card-figure {
+    color: var(--dba-text-secondary);
+    font-size: 0.825rem;
+    font-style: italic;
+    margin: 0 0 0.35rem;
+}
+
+.bda-source-related-grid .bda-source-card-meta {
+    color: var(--dba-text-muted);
+    font-size: 0.8rem;
+    margin: 0;
+    margin-top: auto;
+    padding-top: 0.4rem;
+}
+
+.bda-source-related-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Citation block — Chicago / MLA / APA toggle + copy button
+   ========================================================================== */
+
+.bda-citation-block {
+    padding: 1.5rem 1.75rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-citation-format-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin: 0 0 1.25rem;
+    padding: 0;
+    border: none;
+}
+
+.bda-citation-format-group legend {
+    width: auto;
+    padding: 0;
+    margin: 0 0.75rem 0 0;
+    color: var(--dba-emerald);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    float: none;
+}
+
+.bda-citation-format-group label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.bda-citation-format-group input[type="radio"] {
+    accent-color: var(--dba-emerald);
+    cursor: pointer;
+}
+
+.bda-citation-text {
+    padding: 1.1rem 1.25rem;
+    margin-bottom: 1rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    color: var(--dba-text-primary);
+    font-family: Georgia, "Iowan Old Style", serif;
+    font-size: 0.975rem;
+    line-height: 1.65;
+}
+
+.bda-citation-text[hidden] {
+    display: none;
+}
+
+.bda-citation-text em {
+    color: var(--dba-text-primary);
+    font-style: italic;
+}
+
+.bda-citation-copy-btn {
+    padding: 0.5rem 1.1rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.bda-citation-copy-btn:hover,
+.bda-citation-copy-btn:focus {
+    color: var(--dba-darkest-green);
+    background-color: var(--dba-emerald);
+    border-color: var(--dba-emerald);
+}
+
+
+/* ==========================================================================
+   Source-not-found state (for JS runtime, should not hit via Python build)
+   ========================================================================== */
+
+.bda-source-not-found {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.bda-source-not-found h1 {
+    color: var(--dba-text-primary);
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.bda-source-not-found p {
+    color: var(--dba-text-secondary);
+}
+
+.bda-source-not-found a {
+    color: var(--dba-emerald);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+
+/* ==========================================================================
+   Mobile refinements
+   ========================================================================== */
+
+@media (max-width: 767px) {
+    .bda-source-header-meta {
+        gap: 0.4rem;
+    }
+
+    .bda-source-permalink-btn {
+        margin-left: 0;
+        margin-top: 0.5rem;
+        width: 100%;
+    }
+
+    .bda-source-external-link-block,
+    .bda-source-audio-block,
+    .bda-source-transcript-block,
+    .bda-source-video-block,
+    .bda-source-document-block {
+        padding: 1.25rem 1rem;
+    }
+
+    .bda-source-transcript-block {
+        padding: 1.25rem 1rem;
+    }
+
+    .bda-source-metadata-list {
+        grid-template-columns: 1fr;
+        gap: 0.35rem 0;
+    }
+
+    .bda-source-metadata-list dt {
+        margin-top: 0.75rem;
+    }
+
+    .bda-source-metadata-list dt:first-of-type {
+        margin-top: 0;
+    }
+
+    .bda-cited-in-list {
+        margin-left: 0;
+    }
+
+    .bda-source-asset-tab {
+        padding: 0.7rem 0.9rem;
+        font-size: 0.825rem;
+    }
+
+    .bda-source-asset-panel {
+        padding: 1.25rem 1rem;
+    }
+}
