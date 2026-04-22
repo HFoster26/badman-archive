@@ -8,7 +8,7 @@
  * Filter: modality (single dimension — active checkboxes + pending disabled)
  * Sort:   name-az (default), name-za, score-desc, emergence-asc
  * Display: modality-grouped (.bda-figures-grouped)
- * Cards:   link to /archive/figures/?id=[figure_id]  (query-based routing)
+ * Cards:   link to /archive/figures/entries/[figure_id]/  (folder-based routing)
  *
  * Runs only on the figures landing page. Loads after scripts.js and
  * bda-partials-loader.js. Consumes window.getModalityConfig() from
@@ -28,7 +28,7 @@
     var ACTIVE_MODALITIES = ['detective', 'revolutionary', 'superhero_villain'];
     var PENDING_MODALITIES = ['gangsta_pimp', 'folk_hero_outlaw'];
 
-    var FIGURE_ROUTE_PREFIX = '/archive/figures/';
+    var FIGURE_ROUTE_PREFIX = '/archive/figures/entries/';
 
     var MODALITY_LABELS_FALLBACK = {
         detective: 'Detective',
@@ -347,7 +347,7 @@
             ? '<span class="bda-figure-card-meta-badge">Meta-Badman</span>'
             : '';
 
-        var href = FIGURE_ROUTE_PREFIX + '?id=' + encodeURIComponent(figure.id);
+        var href = FIGURE_ROUTE_PREFIX + encodeURIComponent(figure.id) + '/';
 
         // Composed aria-label: "Name — Type (Era), Badman score X of 25"
         var ariaParts = [figure.name];
