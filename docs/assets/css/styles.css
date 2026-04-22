@@ -1939,3 +1939,135 @@ main .page-section h1 {
     max-width: 52ch;
     margin: 0 auto 1.5rem;
 }
+/* ==========================================================================
+   PHASE 3 POLISH — FIX-UPS & REFINEMENTS
+   --------------------------------------------------------------------------
+   Append this block to styles.css after Phase 1 and Phase 2 additions.
+   Targeted fixes based on the live rendering review.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   FIX: Figure Card List — Grid
+   --------------------------------------------------------------------------
+   The base .bda-figure-card-list rule in the CSS spec isn't present in
+   the deployed stylesheet, so the previous override (which only set
+   grid-template-columns) wasn't enough to make the grid work. This rule
+   sets display: grid explicitly so the multi-column layout kicks in.
+   ========================================================================== */
+
+.bda-figure-card-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+}
+
+
+/* ==========================================================================
+   FIX: Hero Top Padding (tighter)
+   --------------------------------------------------------------------------
+   Reduce the gap between nav and eyebrow. Prior padding was 6rem top,
+   which left a large empty field at the top of the page. 3.5rem lands
+   the eyebrow at a comfortable reading position without crowding.
+   ========================================================================== */
+
+.bda-hero {
+    padding: 3.5rem 1rem 4.5rem;
+}
+
+@media (max-width: 767px) {
+    .bda-hero {
+        padding: 2.5rem 1rem 3.5rem;
+    }
+}
+
+
+/* ==========================================================================
+   REFINE: Figure Card Compactness
+   --------------------------------------------------------------------------
+   The thumb strip is taking up a lot of vertical weight for a single
+   badge. Tighten its padding and use a smaller min-height so each card
+   reads as more information-dense.
+   ========================================================================== */
+
+.bda-figure-card-thumb {
+    min-height: 0;
+    padding: 0.65rem 0.75rem;
+}
+
+.bda-figure-card-info {
+    padding: 0.9rem 1rem 1rem;
+}
+
+.bda-figure-card-title {
+    font-size: 1rem;
+}
+
+.bda-figure-card-era {
+    margin-bottom: 0.5rem;
+    font-size: 0.8rem;
+}
+
+.bda-figure-card-descriptor {
+    font-size: 0.85rem;
+    line-height: 1.45;
+    margin-bottom: 0.65rem;
+}
+
+.bda-figure-card-score {
+    padding-top: 0.4rem;
+    font-size: 0.9rem;
+}
+
+
+/* ==========================================================================
+   REFINE: Filter Rail Compactness
+   --------------------------------------------------------------------------
+   Tighten internal spacing. The original padding made the rail feel
+   over-engineered for its information density.
+   ========================================================================== */
+
+.bda-figures-filter-rail {
+    padding: 1rem;
+}
+
+.bda-filter-fieldset {
+    margin-bottom: 0.75rem;
+}
+
+.bda-filter-options {
+    gap: 0.1rem;
+    margin-top: 0.35rem;
+}
+
+.bda-filter-option {
+    padding: 0.3rem 0.4rem;
+}
+
+.bda-filter-reset-btn {
+    margin-top: 0.25rem;
+    padding: 0.4rem 0.5rem;
+    font-size: 0.825rem;
+}
+
+
+/* ==========================================================================
+   REFINE: Modality Group Heading Size
+   --------------------------------------------------------------------------
+   Slightly smaller — 1.35rem felt heavy when sitting above a grid of
+   cards. 1.15rem reads as a section divider rather than a page-title
+   peer.
+   ========================================================================== */
+
+.bda-figure-modality-heading {
+    font-size: 1.15rem;
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+}
+
+.bda-figure-modality-group {
+    margin-bottom: 2.25rem;
+}
