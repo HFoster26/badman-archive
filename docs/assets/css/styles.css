@@ -4060,3 +4060,665 @@ main .page-section h1 {
         padding: 1.25rem 1rem;
     }
 }
+/* ==========================================================================
+   PHASE 7b POLISH — SOURCES LANDING PAGE
+   --------------------------------------------------------------------------
+   Append to styles.css after Phase 7a. Styles the full filterable
+   sortable grid page at /archive/sources/sources.html.
+
+   Most of the filter-rail vocabulary (.bda-filter-option, .bda-filter-
+   fieldset, .bda-filter-collapse-btn, .bda-filter-chip) was already
+   defined in Phase 2 (figures landing) and the original spec. This phase
+   adds:
+     - Two-column layout specific to sources (.bda-sources-layout)
+     - Sources-specific filter widgets (search input, scrollable type list)
+     - Sources-specific results header (.bda-sources-results-header)
+     - Source card grid (.bda-sources-grid) — overlaps with .bda-source-card
+       styles from Phase 7a (Related Sources grid), scoped here to the
+       landing grid
+     - External link badge (.bda-source-card-external)
+     - Thumbnail glyphs (.bda-source-thumb-glyph + type-specific variants)
+     - Empty state, loading state, mobile toggle
+
+   Intentional parallels to Phase 2 figures-landing: same grid pattern,
+   same sticky rail treatment, same chip pattern.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Layout Section
+   --------------------------------------------------------------------------
+   Wrapping section tightens the vertical rhythm below the intro strip.
+   Matches the figures-landing approach.
+   ========================================================================== */
+
+.bda-sources-layout-section {
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+}
+
+.bda-sources-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    align-items: start;
+}
+
+@media (max-width: 991px) {
+    .bda-sources-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Mobile Filter Toggle
+   --------------------------------------------------------------------------
+   Hidden on desktop. On mobile, taps to show/hide the filter rail.
+   .bda-sources-filter-rail.is-open is applied by bda-sources.js.
+   ========================================================================== */
+
+.bda-sources-filter-toggle {
+    display: none;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bda-sources-filter-toggle::after {
+    content: "▾";
+    float: right;
+    color: var(--dba-emerald);
+}
+
+.bda-sources-filter-toggle[aria-expanded="true"]::after {
+    content: "▴";
+}
+
+.bda-sources-filter-toggle .bda-filter-pending-tag {
+    color: var(--dba-emerald);
+    margin-left: 0.5rem;
+    font-weight: 700;
+}
+
+@media (max-width: 991px) {
+    .bda-sources-filter-toggle {
+        display: block;
+        margin-bottom: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail
+   --------------------------------------------------------------------------
+   Sticky on desktop, collapsible on mobile. Structurally identical to
+   .bda-figures-filter-rail from Phase 2 — duplicate rule set here so
+   sources-landing doesn't inherit any figures-specific tuning.
+   ========================================================================== */
+
+.bda-sources-filter-rail {
+    position: sticky;
+    top: 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    align-self: start;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+}
+
+/* Custom scrollbar (dark theme) */
+.bda-sources-filter-rail::-webkit-scrollbar { width: 8px; }
+.bda-sources-filter-rail::-webkit-scrollbar-track {
+    background: var(--dba-dark-green);
+    border-radius: 4px;
+}
+.bda-sources-filter-rail::-webkit-scrollbar-thumb {
+    background: var(--dba-border-green);
+    border-radius: 4px;
+}
+.bda-sources-filter-rail::-webkit-scrollbar-thumb:hover {
+    background: var(--dba-emerald);
+}
+
+@media (max-width: 991px) {
+    .bda-sources-filter-rail {
+        position: static;
+        max-height: none;
+        display: none;
+    }
+    .bda-sources-filter-rail.is-open {
+        display: block;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail — Search Input (type-search, scoped to Type fieldset)
+   --------------------------------------------------------------------------
+   The Type filter has 32 possible values across the archive, too many for
+   flat checkboxes, so bda-sources.js renders a search input at the top of
+   the fieldset that narrows the visible options.
+   ========================================================================== */
+
+.bda-filter-search-input {
+    width: 100%;
+    padding: 0.45rem 0.7rem;
+    margin-bottom: 0.5rem;
+    background-color: var(--dba-darkest-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+    transition: border-color 0.15s ease;
+}
+
+.bda-filter-search-input::placeholder {
+    color: var(--dba-text-muted);
+    font-style: italic;
+}
+
+.bda-filter-search-input:focus {
+    outline: none;
+    border-color: var(--dba-emerald);
+}
+
+
+/* ==========================================================================
+   Filter Rail — Type Options List (scrollable container)
+   --------------------------------------------------------------------------
+   Even with search narrowing, the type list can still be long. Cap its
+   height and let it scroll internally so the rail's overall height stays
+   reasonable.
+   ========================================================================== */
+
+.bda-filter-options-list {
+    max-height: 240px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding-right: 0.25rem;
+}
+
+.bda-filter-options-list::-webkit-scrollbar { width: 6px; }
+.bda-filter-options-list::-webkit-scrollbar-track {
+    background: var(--dba-darkest-green);
+    border-radius: 3px;
+}
+.bda-filter-options-list::-webkit-scrollbar-thumb {
+    background: var(--dba-border-green);
+    border-radius: 3px;
+}
+
+
+/* ==========================================================================
+   Sources Main (right column)
+   ========================================================================== */
+
+.bda-sources-main {
+    min-width: 0;
+}
+
+
+/* ==========================================================================
+   Results Header — count + sort
+   ========================================================================== */
+
+.bda-sources-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--dba-border-green);
+    flex-wrap: wrap;
+}
+
+.bda-sources-count {
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Sort Dropdown
+   --------------------------------------------------------------------------
+   Custom-styled native <select>. Duplicate of .bda-figures-sort from
+   Phase 2 — scoped here for isolation.
+   ========================================================================== */
+
+.bda-sources-sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.bda-sources-sort-wrapper label {
+    color: var(--dba-text-secondary);
+    font-size: 0.875rem;
+    margin: 0;
+    white-space: nowrap;
+}
+
+.bda-sources-sort {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    padding: 0.4rem 2rem 0.4rem 0.75rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2350c878' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'><polyline points='6 9 12 15 18 9'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 0.6rem center;
+    background-size: 12px;
+    transition: border-color 0.15s ease;
+}
+
+.bda-sources-sort:hover,
+.bda-sources-sort:focus {
+    border-color: var(--dba-emerald);
+}
+
+.bda-sources-sort option {
+    background-color: var(--dba-darkest-green);
+    color: var(--dba-text-primary);
+}
+
+@media (max-width: 575px) {
+    .bda-sources-results-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .bda-sources-sort-wrapper {
+        width: 100%;
+    }
+    .bda-sources-sort {
+        flex: 1;
+    }
+}
+
+
+/* ==========================================================================
+   Active Filter Chips Container
+   --------------------------------------------------------------------------
+   The .bda-filter-chip styles themselves are defined globally. This just
+   provides the container rhythm for the sources landing.
+   ========================================================================== */
+
+.bda-sources-active-filters {
+    margin-bottom: 1.25rem;
+}
+
+.bda-sources-active-filters:empty {
+    margin-bottom: 0;
+}
+
+
+/* ==========================================================================
+   Source Grid (landing)
+   --------------------------------------------------------------------------
+   5 columns on wide desktops, auto-collapsing on narrower viewports via
+   auto-fill minmax. Different from Phase 7a's related-sources grid which
+   used 220px minimum — landing grid uses 240px for slightly bigger cards
+   that match the mockup screenshot.
+   ========================================================================== */
+
+.bda-sources-grid {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+
+/* ==========================================================================
+   Source Card (landing variant)
+   --------------------------------------------------------------------------
+   Phase 7a defined compact .bda-source-card styles for the Related Sources
+   grid on figure-entry pages. The landing grid needs slightly taller cards
+   with a more prominent thumbnail area (per the mockup screenshot — the
+   cards have a ~140px dark thumb showing a glyph). Override the Phase 7a
+   compact treatment with the larger landing card.
+
+   Because this phase loads AFTER Phase 7a, these rules win.
+   ========================================================================== */
+
+.bda-sources-grid .bda-source-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dba-text-primary);
+    transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.bda-sources-grid .bda-source-card:hover,
+.bda-sources-grid .bda-source-card:focus {
+    border-color: var(--dba-emerald);
+    transform: translateY(-2px);
+    color: var(--dba-text-primary);
+    text-decoration: none;
+}
+
+.bda-sources-grid .bda-source-card-thumb {
+    position: relative;
+    background-color: var(--dba-darkest-green);
+    min-height: 140px;
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+.bda-sources-grid .bda-source-card-info {
+    padding: 1rem 1.1rem 1.1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.bda-sources-grid .bda-source-card-title {
+    color: var(--dba-text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin: 0 0 0.35rem;
+}
+
+.bda-sources-grid .bda-source-card:hover .bda-source-card-title,
+.bda-sources-grid .bda-source-card:focus .bda-source-card-title {
+    color: var(--dba-gold);
+}
+
+.bda-sources-grid .bda-source-card-figure {
+    color: var(--dba-text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.35;
+    margin: 0 0 0.4rem;
+    font-style: italic;
+}
+
+.bda-sources-grid .bda-source-card-meta {
+    color: var(--dba-text-muted);
+    font-size: 0.825rem;
+    margin: 0;
+    margin-top: auto;
+    padding-top: 0.4rem;
+}
+
+
+/* ==========================================================================
+   Category Badge (corner pill in card thumb)
+   --------------------------------------------------------------------------
+   Positioned absolute in the top-left corner of the thumb. Already have
+   .bda-cat-primary/secondary/archival color rules from Phase 1 spec;
+   positioning/sizing lives here.
+   ========================================================================== */
+
+.bda-sources-grid .bda-source-card-category,
+.bda-source-card-thumb .bda-source-card-category {
+    position: absolute;
+    top: 0.55rem;
+    left: 0.55rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 1;
+}
+
+
+/* ==========================================================================
+   External-Link Badge
+   --------------------------------------------------------------------------
+   Positioned in the top-right corner of the thumb when the source has a
+   URL but no repository (i.e., it lives outside the archive).
+   ========================================================================== */
+
+.bda-source-card-external {
+    position: absolute;
+    top: 0.55rem;
+    right: 0.55rem;
+    padding: 0.2rem 0.5rem;
+    background-color: var(--dba-medium-green);
+    color: var(--dba-emerald);
+    border: 1px solid var(--dba-emerald);
+    border-radius: 0.25rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    z-index: 1;
+}
+
+.bda-source-card-external::after {
+    content: " \2197";  /* ↗ arrow, hair-space before */
+    font-weight: 700;
+}
+
+
+/* ==========================================================================
+   Thumbnail Glyphs
+   --------------------------------------------------------------------------
+   Per-type stylized glyph in the center of the thumb. The bda-sources.js
+   TYPE_TO_GLYPH map determines which glyph shows for each source type.
+
+   Glyph is drawn in CSS using a ::after clip-path shape on a 48px square
+   base. Color is emerald at reduced opacity so it reads as a "ghost"
+   decoration rather than loud artwork.
+   ========================================================================== */
+
+.bda-source-thumb-glyph {
+    width: 56px;
+    height: 56px;
+    position: relative;
+}
+
+.bda-source-thumb-glyph::after {
+    content: "";
+    position: absolute;
+    inset: 6px;
+    background-color: var(--dba-emerald);
+    opacity: 0.65;
+    transition: opacity 0.2s ease;
+}
+
+.bda-sources-grid .bda-source-card:hover .bda-source-thumb-glyph::after,
+.bda-sources-grid .bda-source-card:focus .bda-source-thumb-glyph::after {
+    opacity: 0.9;
+}
+
+/* Book — stacked horizontal lines with side-binding gap */
+.bda-thumb-book::after {
+    clip-path: polygon(
+        0 0,
+        100% 0,
+        100% 100%,
+        0 100%,
+        0 85%,
+        90% 85%,
+        90% 70%,
+        0 70%,
+        0 55%,
+        90% 55%,
+        90% 40%,
+        0 40%,
+        0 25%,
+        90% 25%,
+        90% 10%,
+        0 10%
+    );
+}
+
+/* Document — page with folded corner */
+.bda-thumb-doc::after {
+    clip-path: polygon(
+        0 0,
+        75% 0,
+        100% 25%,
+        100% 100%,
+        0 100%
+    );
+}
+
+/* News — horizontal bars (newsprint) */
+.bda-thumb-news::after {
+    clip-path: polygon(
+        0 10%,
+        100% 10%,
+        100% 25%,
+        0 25%,
+        0 40%,
+        100% 40%,
+        100% 55%,
+        0 55%,
+        0 70%,
+        100% 70%,
+        100% 85%,
+        0 85%
+    );
+}
+
+/* Photo — circle (camera lens) */
+.bda-thumb-photo::after {
+    inset: 10px;
+    border-radius: 50%;
+    clip-path: none;
+}
+
+/* Audio — tall vertical bars (spectrum / barcode) */
+.bda-thumb-audio::after {
+    clip-path: polygon(
+        0 30%, 10% 30%, 10% 70%, 0 70%,
+        0 30%,
+        20% 15%, 30% 15%, 30% 85%, 20% 85%,
+        20% 15%,
+        40% 0, 50% 0, 50% 100%, 40% 100%,
+        40% 0,
+        60% 20%, 70% 20%, 70% 80%, 60% 80%,
+        60% 20%,
+        80% 10%, 90% 10%, 90% 90%, 80% 90%
+    );
+}
+
+/* Film — horizontal frame with sprocket holes approximated */
+.bda-thumb-film::after {
+    clip-path: polygon(
+        0 20%,
+        100% 20%,
+        100% 35%,
+        0 35%,
+        0 45%,
+        100% 45%,
+        100% 55%,
+        0 55%,
+        0 65%,
+        100% 65%,
+        100% 80%,
+        0 80%
+    );
+}
+
+
+/* ==========================================================================
+   Loading & Empty States
+   ========================================================================== */
+
+.bda-sources-loading {
+    color: var(--dba-text-muted);
+    text-align: center;
+    padding: 3rem 1rem;
+    font-size: 1rem;
+}
+
+.bda-sources-loading[role="alert"] {
+    color: var(--dba-revolutionary);
+}
+
+.bda-sources-empty {
+    text-align: center;
+    padding: 4rem 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-sources-empty h2 {
+    color: var(--dba-text-primary);
+    font-size: 1.3rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+}
+
+.bda-sources-empty p {
+    color: var(--dba-text-secondary);
+    max-width: 52ch;
+    margin: 0 auto 1.5rem;
+}
+
+.bda-sources-empty .btn-primary {
+    min-width: 180px;
+}
+
+
+/* ==========================================================================
+   Page H1 + Breadcrumb + Lead (intro strip)
+   --------------------------------------------------------------------------
+   The sources.html intro strip uses the same page-section + container
+   pattern as the figures landing. The H1 / breadcrumb / lead rules
+   already exist from Phase 2; no new rules needed here.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Mobile refinements
+   ========================================================================== */
+
+@media (max-width: 575px) {
+    .bda-sources-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .bda-sources-grid .bda-source-card-thumb {
+        min-height: 100px;
+    }
+
+    .bda-sources-grid .bda-source-card-info {
+        padding: 0.85rem 1rem 1rem;
+    }
+
+    .bda-source-thumb-glyph {
+        width: 44px;
+        height: 44px;
+    }
+}
