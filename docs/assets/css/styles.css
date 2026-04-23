@@ -5625,3 +5625,500 @@ main .page-section h1 {
      2. [code:   .bda-network-legend-code — "META"]
      3. [label:  .bda-network-legend-label — "Creator → Creation"]
    ========================================================================== */
+/* ==========================================================================
+   PHASE 8b POLISH — MAP VISUALIZATION PAGE
+   --------------------------------------------------------------------------
+   Append this block to styles.css after the Phase 8 network CSS.
+
+   Architecture:
+     - Map canvas is full-width (no side rail)
+     - Filter sits as a horizontal strip BELOW the map (per mockup inversion)
+     - Selection panel is a single full-width card below the filter strip
+     - Leaflet default popup chrome is overridden to match the dark theme
+
+   Reuses:
+     - --dba-network-bg token for the canvas frame (shared visual vocabulary
+       across both visualization tools)
+     - .bda-filter-option, .bda-filter-modality-marker, .bda-mm-* (Phase 2)
+     - .modality-badge, .modality-badge.modality-* (Phase 4)
+     - .tier-badge, .tier-1/2/3 (Phase 4)
+     - .breadcrumb, .lead (Phase 2)
+     - .bda-network-selection-empty (Phase 8) for the empty-state paragraph
+
+   All new classes prefixed .bda-map-*. No hardcoded hex values.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Layout — full-width main (no sidebar)
+   ========================================================================== */
+
+.bda-map-layout-section {
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+}
+
+.bda-map-main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.bda-map-lead {
+    color: var(--dba-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 68ch;
+    margin: 0 0 1.5rem;
+}
+
+
+/* ==========================================================================
+   Canvas Wrapper — framed Leaflet container
+   --------------------------------------------------------------------------
+   Mirrors .bda-network-canvas-wrapper (Phase 8). The map's visual weight
+   is carried by the OpenStreetMap tiles themselves, so the frame's job is
+   purely anchoring — 1px border, emerald on focus-within for keyboard
+   users, modest inset shadow to match the network canvas.
+   ========================================================================== */
+
+.bda-map-canvas-wrapper {
+    background-color: var(--dba-network-bg);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: border-color 0.2s ease;
+}
+
+.bda-map-canvas-wrapper:focus-within {
+    border-color: var(--dba-emerald);
+}
+
+.bda-map-container {
+    width: 100%;
+    height: 620px;
+    min-height: 620px;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+@media (max-width: 575px) {
+    .bda-map-container {
+        height: 440px;
+        min-height: 440px;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Strip — horizontal card below the map
+   --------------------------------------------------------------------------
+   Unlike the sidebar rail on figures/network pages, here the filter is a
+   single horizontal card where options flow left-to-right. The fieldset
+   has no visible heading (legend is sr-only) because the strip sits right
+   below the map and its purpose is self-evident from context. On narrow
+   viewports the options wrap naturally.
+   ========================================================================== */
+
+.bda-map-filter-strip {
+    margin-top: 1.25rem;
+    padding: 0.9rem 1.25rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+}
+
+.bda-map-filter-strip-label {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.bda-map-filter-options {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+/* Overrides to .bda-filter-option for horizontal-strip context — the base
+   rule (Phase 2) styles it as a full-width flex row with hover background.
+   In a horizontal strip we want the hover to feel chippier. */
+.bda-map-filter-strip .bda-filter-option {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3rem 0.65rem;
+    border-radius: 0.25rem;
+    gap: 0.3rem;
+}
+
+.bda-map-filter-strip .bda-filter-option:hover {
+    background-color: var(--dba-medium-green);
+}
+
+.bda-map-filter-strip .bda-filter-option.is-disabled:hover {
+    background-color: transparent;
+}
+
+.bda-map-filter-strip .bda-filter-option > span:last-child {
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+}
+
+.bda-map-filter-strip .bda-filter-option.is-disabled > span:last-child {
+    color: var(--dba-text-muted);
+}
+
+.bda-map-filter-strip .bda-filter-pending-tag {
+    color: var(--dba-text-muted);
+    font-size: 0.82em;
+}
+
+
+/* ==========================================================================
+   Selection Panel — single full-width card below filter strip
+   ========================================================================== */
+
+.bda-map-selection-panel {
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-map-selection-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+
+/* ==========================================================================
+   Teaser — figure detail content inside the selection card
+   --------------------------------------------------------------------------
+   Mirrors the network teaser (.bda-network-teaser-*) but scoped to the
+   map page. Two-column content layout on wide viewports (teaser left,
+   map-specific facts right), stacks on narrow.
+   ========================================================================== */
+
+.bda-map-teaser {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    gap: 1.75rem;
+    align-items: start;
+}
+
+@media (max-width: 767px) {
+    .bda-map-teaser {
+        grid-template-columns: 1fr;
+        gap: 1.25rem;
+    }
+}
+
+.bda-map-teaser-main {
+    min-width: 0;
+}
+
+.bda-map-teaser-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.bda-map-teaser-name {
+    color: var(--dba-text-primary);
+    font-size: 1.2rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    flex: 1;
+    min-width: 12ch;
+}
+
+.bda-map-teaser-header .modality-badge {
+    margin: 0;
+}
+
+.bda-map-teaser-bio {
+    color: var(--dba-text-secondary);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 0.85rem;
+}
+
+.bda-map-teaser-link {
+    display: inline-block;
+    color: var(--dba-emerald);
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.1rem;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-map-teaser-link:hover,
+.bda-map-teaser-link:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+
+/* --- Right-column map-specific facts ----------------------------------- */
+
+.bda-map-teaser-facts {
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    padding: 0.85rem 1rem;
+}
+
+.bda-map-teaser-facts-heading {
+    color: var(--dba-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin: 0 0 0.55rem;
+}
+
+.bda-map-teaser-fact {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.35);
+}
+
+.bda-map-teaser-fact:first-of-type {
+    padding-top: 0;
+}
+
+.bda-map-teaser-fact:last-of-type {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.bda-map-teaser-fact-label {
+    color: var(--dba-text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.bda-map-teaser-fact-value {
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    line-height: 1.45;
+}
+
+/* Territory status line — green dot + "Territory shown on map" */
+.bda-map-teaser-territory {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.5rem 0.65rem;
+    margin-top: 0.75rem;
+    background-color: var(--dba-darkest-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    color: var(--dba-text-primary);
+    font-size: 0.82rem;
+}
+
+.bda-map-teaser-territory::before {
+    content: "";
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--dba-emerald);
+    flex-shrink: 0;
+    box-shadow: 0 0 0 2px rgba(80, 200, 120, 0.25);
+}
+
+.bda-map-teaser-territory.is-inactive {
+    color: var(--dba-text-muted);
+}
+
+.bda-map-teaser-territory.is-inactive::before {
+    background-color: var(--dba-text-muted);
+    box-shadow: none;
+}
+
+
+/* ==========================================================================
+   Leaflet popup overrides — archive-themed dark popups
+   --------------------------------------------------------------------------
+   Leaflet renders popups with its own default white-bubble chrome. We use
+   the className option on bindPopup() to attach .bda-map-popup-wrapper to
+   each popup, then override the Leaflet-internal class names (.leaflet-
+   popup-content-wrapper, .leaflet-popup-tip, .leaflet-popup-close-button)
+   ONLY when they're descendants of our wrapper. Global Leaflet popups
+   elsewhere on the site (unlikely, but if a plugin adds any) are unaffected.
+   ========================================================================== */
+
+.bda-map-popup-wrapper .leaflet-popup-content-wrapper {
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.375rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    padding: 0;
+}
+
+.bda-map-popup-wrapper .leaflet-popup-content {
+    margin: 0.85rem 1rem;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.bda-map-popup-wrapper .leaflet-popup-tip {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    box-shadow: none;
+}
+
+.bda-map-popup-wrapper .leaflet-popup-close-button {
+    color: var(--dba-text-muted) !important;
+    font-size: 1.1rem;
+    padding: 0.3rem 0.45rem 0 0;
+    transition: color 0.15s ease;
+}
+
+.bda-map-popup-wrapper .leaflet-popup-close-button:hover,
+.bda-map-popup-wrapper .leaflet-popup-close-button:focus {
+    color: var(--dba-gold) !important;
+}
+
+
+/* Inner popup structure */
+.bda-map-popup-location-name {
+    display: block;
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 0.2rem;
+}
+
+.bda-map-popup-figure-name {
+    display: block;
+    color: var(--dba-emerald);
+    font-size: 0.82rem;
+    font-style: italic;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.bda-map-popup-significance {
+    color: var(--dba-text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.55;
+    margin: 0;
+}
+
+
+/* ==========================================================================
+   Leaflet control overrides — zoom buttons + attribution
+   --------------------------------------------------------------------------
+   Leaflet's default zoom control is a white button with black text, which
+   reads loud against the OSM tiles but even louder against our dark canvas
+   border. Dial them into the archive's palette.
+   ========================================================================== */
+
+.bda-map-container .leaflet-control-zoom a {
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.bda-map-container .leaflet-control-zoom a:hover,
+.bda-map-container .leaflet-control-zoom a:focus {
+    background-color: var(--dba-emerald);
+    color: var(--dba-darkest-green);
+    border-color: var(--dba-emerald);
+}
+
+.bda-map-container .leaflet-control-attribution {
+    background-color: rgba(10, 31, 18, 0.85);
+    color: var(--dba-text-secondary);
+    font-size: 0.72rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 0.2rem 0 0 0;
+}
+
+.bda-map-container .leaflet-control-attribution a {
+    color: var(--dba-emerald);
+    text-decoration: none;
+}
+
+.bda-map-container .leaflet-control-attribution a:hover,
+.bda-map-container .leaflet-control-attribution a:focus {
+    color: var(--dba-gold);
+    text-decoration: underline;
+}
+
+
+/* ==========================================================================
+   Main marker glyph rendering — ensure SVG markers stay crisp
+   --------------------------------------------------------------------------
+   L.divIcon wraps our SVG in a <div class="leaflet-div-icon">. By default
+   Leaflet adds a white background and border to that div. Our markers are
+   already self-contained SVGs, so we strip the default chrome.
+   ========================================================================== */
+
+.bda-map-container .leaflet-div-icon {
+    background: transparent;
+    border: none;
+}
+
+.bda-map-container .bda-map-marker svg,
+.bda-map-container .bda-map-marker-secondary svg {
+    display: block;
+    filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.4));
+}
+
+/* Hover scale for primary markers (not secondary to reduce visual noise) */
+.bda-map-container .bda-map-marker {
+    transition: transform 0.15s ease;
+    transform-origin: center;
+}
+
+.bda-map-container .bda-map-marker:hover {
+    transform: scale(1.15);
+    z-index: 1000;
+}
+
+.bda-map-container .bda-map-marker:focus {
+    outline: none;
+    transform: scale(1.15);
+}
+
+.bda-map-container .bda-map-marker:focus svg {
+    filter: drop-shadow(0 0 0 3px var(--dba-gold));
+}
