@@ -106,7 +106,7 @@ EDGE_TYPE_LABELS = {
 
 # Active modalities — pages are only generated for figures in these modalities.
 # GPM included because Goines is live.
-ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain", "gangsta_pimp"}
+ACTIVE_MODALITIES = {"detective", "revolutionary", "superhero_villain"}
 
 # Subdirectory that holds per-figure folders, relative to out_dir.
 # /archive/figures/entries/[figure_id]/index.html
@@ -123,6 +123,7 @@ SITE_PATHS = {
     "leaflet_js":    "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js",
     "figures_list":  "/archive/figures/figures.html",
     "full_map":      "/visualizations/map.html",
+    "full_network":  "/visualizations/network.html",
 }
 
 
@@ -327,10 +328,28 @@ def render_evaluation(figure):
 
 def render_connections(figure, figures_by_id):
     """Connections grouped by edge type. CC included. Cross-figure links
-    point to /archive/figures/entries/[target_id]/."""
+    point to /archive/figures/entries/[target_id]/.
+
+    Parallels render_geography's treatment: always emit a link to the full
+    Network visualization, whether or not documented connections exist.
+    The link carries a ?focus={figure_id} query parameter so the network
+    page can deep-link to this figure when that feature ships.
+    """
+    figure_id = figure.get("id", "")
+    network_link_html = (
+        f'      <p class="map-link">\n'
+        f'        <a href="{SITE_PATHS["full_network"]}?focus={esc(figure_id)}">'
+        f'View this figure in the network &rarr;</a>\n'
+        f'      </p>'
+    )
+
     connections = figure.get("connections") or []
     if not connections:
-        return '      <h2>Connections</h2>\n      <p><em>No documented connections yet.</em></p>'
+        return (
+            '      <h2>Connections</h2>\n'
+            '      <p><em>No documented connections yet.</em></p>\n'
+            + network_link_html
+        )
 
     groups = {}
     for c in connections:
@@ -387,7 +406,8 @@ def render_connections(figure, figures_by_id):
       <div class="data-section">
       <p class="section-intro">Relationships to other figures in the archive, grouped by edge type.</p>
 {chr(10).join(group_blocks)}
-      </div>'''
+      </div>
+{network_link_html}'''
 
 
 def render_geography(figure):
