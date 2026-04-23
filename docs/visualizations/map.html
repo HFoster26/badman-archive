@@ -502,7 +502,11 @@
         }
 
         function figurePageUrl(figureId) {
-            return '/archive/figures/' + encodeURIComponent(figureId) + '.html';
+            // Figure pages are deployed at /archive/figures/entries/{figure_id}/
+            // (directory-style with implicit index.html). Verified against the
+            // live site on 2026-04-23 — matches what the figure pages emit in
+            // their own citation blocks.
+            return '/archive/figures/entries/' + encodeURIComponent(figureId) + '/';
         }
 
         function modalityBadgeSlug(modality) {
