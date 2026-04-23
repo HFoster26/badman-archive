@@ -4763,3 +4763,865 @@ main .page-section h1 {
    override them here; Phase 7a's .bda-sources-grid-specific selector and
    the .bda-source-card-thumb ancestor positioning should keep that path
    working. This comment is a reminder not to be overzealous. */
+/* ==========================================================================
+   PHASE 8 POLISH — NETWORK VISUALIZATION PAGE
+   --------------------------------------------------------------------------
+   Append this block to styles.css after Phase 7c.
+
+   Brings the Network tool in line with the editorial system established by
+   Phases 1–7: two-column layout (filter rail + main), sticky rail, framed
+   canvas using the previously-unused --dba-network-bg token, tightened
+   metrics panels, and a unified Selection panel that swaps between three
+   states (empty / figure teaser / connection details).
+
+   Reuses existing classes rather than redefining:
+     - .bda-filter-fieldset, .bda-filter-collapse-btn, .bda-filter-option
+       (Phase 2 figures-landing filter rail pattern)
+     - .bda-filter-modality-marker, .bda-mm-* (shape markers)
+     - .modality-badge, .modality-badge.modality-* (Phase 4 figure header)
+     - .tier-badge, .tier-1/2/3 (Phase 4 connections section)
+     - .legend-line, .legend-meta/p2c/c2c/org/cc (base spec)
+     - .legend-node-* (base spec, network-specific shapes)
+     - .breadcrumb, .lead (Phase 2)
+
+   All new classes are prefixed .bda-network-* to avoid collisions.
+   No hardcoded hex values outside :root.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   Layout — two-column grid (parallels .bda-figures-layout)
+   ========================================================================== */
+
+.bda-network-layout-section {
+    padding-top: 1rem;
+    padding-bottom: 5rem;
+}
+
+.bda-network-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr;
+    gap: 2.5rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    align-items: start;
+}
+
+@media (max-width: 991px) {
+    .bda-network-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Mobile Filter Toggle (parallels .bda-figures-filter-toggle)
+   ========================================================================== */
+
+.bda-network-filter-toggle {
+    display: none;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: var(--dba-content-green);
+    color: var(--dba-text-primary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-align: left;
+}
+
+.bda-network-filter-toggle::after {
+    content: "▾";
+    float: right;
+    color: var(--dba-emerald);
+}
+
+.bda-network-filter-toggle[aria-expanded="true"]::after {
+    content: "▴";
+}
+
+@media (max-width: 991px) {
+    .bda-network-filter-toggle {
+        display: block;
+        margin-bottom: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail — sticky sidebar container
+   --------------------------------------------------------------------------
+   Identical pattern to .bda-figures-filter-rail and .bda-sources-filter-rail.
+   Scoped to network for clarity and so future tuning doesn't cross-contaminate.
+   ========================================================================== */
+
+.bda-network-filter-rail {
+    position: sticky;
+    top: 1.5rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1rem;
+    align-self: start;
+    max-height: calc(100vh - 3rem);
+    overflow-y: auto;
+}
+
+.bda-network-filter-rail::-webkit-scrollbar { width: 8px; }
+.bda-network-filter-rail::-webkit-scrollbar-track {
+    background: var(--dba-dark-green);
+    border-radius: 4px;
+}
+.bda-network-filter-rail::-webkit-scrollbar-thumb {
+    background: var(--dba-border-green);
+    border-radius: 4px;
+}
+.bda-network-filter-rail::-webkit-scrollbar-thumb:hover {
+    background: var(--dba-emerald);
+}
+
+@media (max-width: 991px) {
+    .bda-network-filter-rail {
+        position: static;
+        max-height: none;
+        display: none;
+    }
+    .bda-network-filter-rail.is-open {
+        display: block;
+    }
+}
+
+
+/* ==========================================================================
+   Filter Rail — Legend rows inside .bda-filter-fieldset
+   --------------------------------------------------------------------------
+   The Figure Modalities and Relationship Types cards are semantically
+   "legends," not interactive filters, but we render them inside the same
+   .bda-filter-fieldset container as the Modality filter for visual parity.
+   These rows use the .bda-network-legend-row pattern below.
+   ========================================================================== */
+
+.bda-network-legend-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.35rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.bda-network-legend-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.2rem 0.4rem;
+    color: var(--dba-text-primary);
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+
+.bda-network-legend-row .legend-line {
+    flex-shrink: 0;
+    width: 28px;
+    height: 3px;
+    margin: 0;
+}
+
+/* Node legend shape markers — reuse .legend-node-* color/shape rules from
+   base spec, just resize to match the filter-marker dimensions */
+.bda-network-legend-row .bda-legend-node-marker {
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.bda-network-legend-code {
+    color: var(--dba-emerald);
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin-right: 0.2rem;
+}
+
+.bda-network-legend-label {
+    color: var(--dba-text-primary);
+    flex: 1;
+    min-width: 0;
+}
+
+
+/* ==========================================================================
+   Main column — lead paragraph sizing
+   ========================================================================== */
+
+.bda-network-main {
+    min-width: 0;
+}
+
+.bda-network-lead {
+    color: var(--dba-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 68ch;
+    margin: 0 0 1.5rem;
+}
+
+
+/* ==========================================================================
+   Toolbar — pause button strip above canvas
+   ========================================================================== */
+
+.bda-network-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+.bda-network-pause-btn {
+    padding: 0.4rem 0.95rem;
+    background-color: transparent;
+    color: var(--dba-text-secondary);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: color 0.15s ease, border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bda-network-pause-btn:hover,
+.bda-network-pause-btn:focus {
+    color: var(--dba-darkest-green);
+    background-color: var(--dba-emerald);
+    border-color: var(--dba-emerald);
+}
+
+.bda-network-toolbar-hint {
+    color: var(--dba-text-muted);
+    font-size: 0.825rem;
+    margin-left: auto;
+}
+
+@media (max-width: 575px) {
+    .bda-network-toolbar-hint {
+        margin-left: 0;
+        flex-basis: 100%;
+    }
+}
+
+
+/* ==========================================================================
+   Canvas Wrapper — framed dark region for the SVG
+   --------------------------------------------------------------------------
+   The core visual move for this page: set the graph apart from the page
+   background with a darker inset surface and a subtle border. The border
+   steps up to emerald on :focus-within so keyboard users can see when the
+   graph region has focus (WCAG 2.4.7 Focus Visible).
+
+   Uses --dba-network-bg (defined in :root, previously unused).
+   ========================================================================== */
+
+.bda-network-canvas-wrapper {
+    background-color: var(--dba-network-bg);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.25);
+    transition: border-color 0.2s ease;
+}
+
+.bda-network-canvas-wrapper:focus-within {
+    border-color: var(--dba-emerald);
+}
+
+.bda-network-container {
+    width: 100%;
+    height: 600px;
+    min-height: 600px;
+    position: relative;
+    border-radius: 0.25rem;
+    overflow: hidden;
+}
+
+.bda-network-container svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.bda-network-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0;
+}
+
+.bda-network-loading[role="alert"] {
+    color: var(--dba-revolutionary);
+    font-style: normal;
+    font-weight: 600;
+}
+
+/* Tighter canvas on mobile */
+@media (max-width: 575px) {
+    .bda-network-container {
+        height: 440px;
+        min-height: 440px;
+    }
+}
+
+
+/* ==========================================================================
+   Timeline — slider row below canvas
+   --------------------------------------------------------------------------
+   Bootstrap doesn't ship dark-theme range styling. Native <input type="range">
+   rules below theme the track and thumb to match the archive's emerald/green
+   palette. Includes WebKit, Firefox, and MS paths.
+   ========================================================================== */
+
+.bda-network-timeline {
+    margin: 1.25rem 0 0;
+    padding: 1rem 1.25rem;
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+}
+
+.bda-network-timeline-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.bda-network-timeline-label {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.bda-network-timeline-current {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin: 0;
+}
+
+.bda-network-timeline-current span {
+    color: var(--dba-gold);
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-network-timeline-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--dba-darkest-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 3px;
+    outline: none;
+    margin: 0.35rem 0 0.4rem;
+}
+
+.bda-network-timeline-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--dba-emerald);
+    border: 2px solid var(--dba-darkest-green);
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--dba-emerald);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bda-network-timeline-slider::-webkit-slider-thumb:hover,
+.bda-network-timeline-slider:focus::-webkit-slider-thumb {
+    background: var(--dba-gold);
+    box-shadow: 0 0 0 1px var(--dba-gold);
+}
+
+.bda-network-timeline-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--dba-emerald);
+    border: 2px solid var(--dba-darkest-green);
+    cursor: pointer;
+    box-shadow: 0 0 0 1px var(--dba-emerald);
+    transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.bda-network-timeline-slider::-moz-range-thumb:hover,
+.bda-network-timeline-slider:focus::-moz-range-thumb {
+    background: var(--dba-gold);
+    box-shadow: 0 0 0 1px var(--dba-gold);
+}
+
+.bda-network-timeline-slider::-moz-range-track {
+    background: var(--dba-darkest-green);
+    border-radius: 3px;
+    height: 6px;
+}
+
+.bda-network-timeline-marks {
+    display: flex;
+    justify-content: space-between;
+    color: var(--dba-text-muted);
+    font-size: 0.75rem;
+    font-variant-numeric: tabular-nums;
+    margin-top: 0.25rem;
+}
+
+
+/* ==========================================================================
+   Metrics Zone — two-column grid below canvas
+   --------------------------------------------------------------------------
+   Network Summary (left) + Selection Panel (right). Stacks at ≤767px.
+   ========================================================================== */
+
+.bda-network-metrics-zone {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+@media (max-width: 767px) {
+    .bda-network-metrics-zone {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+}
+
+
+/* ==========================================================================
+   Metrics Panel — shared card treatment for Network Summary + Selection
+   ========================================================================== */
+
+.bda-network-metrics-panel {
+    background-color: var(--dba-content-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.5rem;
+    padding: 1.25rem 1.4rem;
+}
+
+.bda-network-metrics-heading {
+    color: var(--dba-emerald);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin: 0 0 1rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--dba-border-green);
+}
+
+
+/* ==========================================================================
+   Network Summary — metric rows
+   --------------------------------------------------------------------------
+   Replaces the verbose parenthetical-labels-stacked layout. Each row is a
+   flex line: label on the left (terse), value on the right (emerald, bold,
+   tabular numerics). The full explanatory text lives in a tooltip via
+   title= and as sr-only expansion for screen readers.
+   ========================================================================== */
+
+.bda-network-metrics-list {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.bda-network-metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.4);
+}
+
+.bda-network-metric-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0.25rem;
+}
+
+.bda-network-metric-row:first-child {
+    padding-top: 0.25rem;
+}
+
+.bda-network-metric-row dt {
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+    min-width: 0;
+}
+
+.bda-network-metric-row dd {
+    color: var(--dba-emerald);
+    font-size: 1rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+    flex-shrink: 0;
+    text-align: right;
+}
+
+
+/* ==========================================================================
+   Selection Panel — three states (empty / figure / connection)
+   --------------------------------------------------------------------------
+   The right-hand panel below the canvas is the single detail surface for
+   everything the user can click on the graph. It has three content modes:
+
+     1. Empty       — no selection yet, shows a prompt
+     2. Figure      — node clicked: teaser + network metrics
+     3. Connection  — edge clicked: edge type, tier, evidence
+
+   Each mode is styled below. The JS swaps between them by rewriting the
+   heading text and inner HTML.
+   ========================================================================== */
+
+/* Empty state — muted prompt centered in panel */
+.bda-network-selection-empty {
+    color: var(--dba-text-muted);
+    font-style: italic;
+    margin: 0.5rem 0 0;
+    line-height: 1.55;
+}
+
+
+/* --- Figure teaser (mode 2) --------------------------------------------- */
+
+.bda-network-teaser-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.65rem;
+    flex-wrap: wrap;
+}
+
+.bda-network-teaser-name {
+    color: var(--dba-text-primary);
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0;
+    flex: 1;
+    min-width: 12ch;
+}
+
+/* Ensure the .modality-badge from Phase 4 sits properly inline here */
+.bda-network-teaser-header .modality-badge {
+    margin: 0;
+}
+
+.bda-network-teaser-bio {
+    color: var(--dba-text-secondary);
+    font-size: 0.925rem;
+    line-height: 1.55;
+    margin: 0 0 0.75rem;
+}
+
+.bda-network-teaser-link {
+    display: inline-block;
+    color: var(--dba-emerald);
+    font-size: 0.925rem;
+    font-weight: 600;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 0.1rem;
+    margin: 0 0 1rem;
+    transition: color 0.15s ease, border-bottom-color 0.15s ease;
+}
+
+.bda-network-teaser-link:hover,
+.bda-network-teaser-link:focus {
+    color: var(--dba-gold);
+    border-bottom-color: var(--dba-gold);
+}
+
+.bda-network-teaser-divider {
+    border: 0;
+    border-top: 1px solid var(--dba-border-green);
+    margin: 0.75rem 0 1rem;
+}
+
+
+/* --- Figure network metrics (shown below the teaser) -------------------- */
+
+.bda-network-figure-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+}
+
+.bda-network-figure-metric-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+}
+
+.bda-network-figure-metric-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.bda-network-figure-metric-value {
+    color: var(--dba-text-primary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-network-figure-metric-value-faded {
+    color: var(--dba-text-muted);
+    font-size: 0.82rem;
+    font-weight: 400;
+    margin-left: 0.25rem;
+}
+
+/* Influence progress bar */
+.bda-network-influence-bar {
+    width: 100%;
+    height: 6px;
+    background-color: var(--dba-darkest-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 3px;
+    overflow: hidden;
+    margin: 0.15rem 0 0;
+}
+
+.bda-network-influence-bar-fill {
+    height: 100%;
+    background-color: var(--dba-emerald);
+    transition: width 0.3s ease;
+}
+
+.bda-network-figure-metric-justification {
+    color: var(--dba-text-muted);
+    font-size: 0.825rem;
+    line-height: 1.5;
+    margin: 0.25rem 0 0;
+    font-style: italic;
+}
+
+/* Connections sub-list inside figure metrics */
+.bda-network-connections-heading {
+    color: var(--dba-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 1rem 0 0.4rem;
+}
+
+.bda-network-connections-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.bda-network-connection-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.3rem 0;
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    border-bottom: 1px solid rgba(42, 98, 61, 0.3);
+}
+
+.bda-network-connection-item:last-child {
+    border-bottom: none;
+}
+
+.bda-network-connection-arrow {
+    color: var(--dba-emerald);
+    font-weight: 700;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+}
+
+.bda-network-connection-name {
+    flex: 1;
+    min-width: 0;
+}
+
+.bda-network-connections-empty {
+    color: var(--dba-text-muted);
+    font-size: 0.875rem;
+    font-style: italic;
+    margin: 0.25rem 0 0;
+}
+
+
+/* --- Connection details (mode 3) ---------------------------------------- */
+
+.bda-network-connection-title {
+    color: var(--dba-text-primary);
+    font-size: 1.05rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 0.85rem;
+}
+
+.bda-network-connection-title .bda-network-connection-arrow {
+    color: var(--dba-emerald);
+    margin: 0 0.35rem;
+    font-weight: 700;
+}
+
+.bda-network-connection-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+    margin-bottom: 0.85rem;
+}
+
+.bda-network-connection-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.bda-network-connection-meta-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+}
+
+/* Edge-type chip — uses --dba-edge-* tokens; same vocabulary as legend */
+.bda-network-edge-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2rem 0.55rem;
+    background-color: var(--dba-medium-green);
+    border: 1px solid var(--dba-border-green);
+    border-radius: 0.25rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--dba-text-primary);
+}
+
+.bda-network-edge-chip::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 3px;
+    flex-shrink: 0;
+}
+
+.bda-network-edge-chip.edge-META::before { background-color: var(--dba-edge-meta); }
+.bda-network-edge-chip.edge-P2C::before {
+    background: repeating-linear-gradient(90deg,
+        var(--dba-edge-p2c) 0 5px, transparent 5px 8px);
+}
+.bda-network-edge-chip.edge-C2C::before {
+    background: repeating-linear-gradient(90deg,
+        var(--dba-edge-c2c) 0 3px, transparent 3px 5px);
+}
+.bda-network-edge-chip.edge-ORG::before {
+    background: repeating-linear-gradient(90deg,
+        var(--dba-edge-org) 0 1px, transparent 1px 3px,
+        var(--dba-edge-org) 3px 7px, transparent 7px 9px);
+}
+.bda-network-edge-chip.edge-CC::before {
+    background: repeating-linear-gradient(90deg,
+        var(--dba-edge-cc) 0 1px, transparent 1px 2px);
+}
+
+.bda-network-connection-evidence-label {
+    color: var(--dba-text-secondary);
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin: 0.25rem 0 0.35rem;
+}
+
+.bda-network-connection-evidence {
+    color: var(--dba-text-primary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0.75rem 0.85rem;
+    background-color: var(--dba-medium-green);
+    border-left: 3px solid var(--dba-emerald);
+    border-radius: 0 0.25rem 0.25rem 0;
+    font-style: italic;
+}
+
+
+/* ==========================================================================
+   SVG node / label / edge default treatments
+   --------------------------------------------------------------------------
+   Minor defaults for the force-directed graph. The JS sets attrs on each
+   element directly, but these CSS rules ensure the rendering is consistent
+   with the archive's tone — labels in text-primary, subtle default stroke
+   on nodes, pointer cursor on interactive elements.
+   ========================================================================== */
+
+.bda-network-container .nodes path {
+    cursor: pointer;
+}
+
+.bda-network-container .nodes path:focus {
+    outline: none; /* Custom focus treatment via stroke below */
+    stroke: var(--dba-gold);
+    stroke-width: 3;
+}
+
+.bda-network-container .labels text {
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    user-select: none;
+}
+
+.bda-network-container .edges line {
+    pointer-events: none; /* Hit areas handle clicks */
+}
+
+
+/* ==========================================================================
+   Legend edge-code label (the "META", "P2C", etc. monospace tag)
+   --------------------------------------------------------------------------
+   Sits between the dash swatch and the descriptive text in Relationship
+   Types. Already covered by .bda-network-legend-code above, but this is a
+   reminder that the three elements inside .bda-network-legend-row are:
+     1. [swatch: .legend-line .legend-meta etc.]
+     2. [code:   .bda-network-legend-code — "META"]
+     3. [label:  .bda-network-legend-label — "Creator → Creation"]
+   ========================================================================== */
