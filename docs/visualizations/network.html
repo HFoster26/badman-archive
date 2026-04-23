@@ -23,222 +23,243 @@
 
     <main id="bda-main-content" tabindex="-1">
 
-        <section class="page-section">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-xl-11 mx-auto">
-
-                        <h1>Network</h1>
-                        <p class="lead">
-                            Force-directed graph of the relationships between Detroit's badman
-                            figures. Nodes scale with influence at the selected year; edges are
-                            colored by connection type and styled by evidence tier. Click a node
-                            to focus it and its connections; click an edge to see the connection's
-                            evidence.
-                        </p>
-
-                        <div class="row">
-
-                            <!-- ============================================================
-                                 NETWORK + TIMELINE + SR TABLE (LEFT)
-                                 ============================================================ -->
-                            <div class="col-lg-9 mb-4">
-
-                                <!-- Animation controls -->
-                                <div class="bda-network-controls mb-2">
-                                    <button type="button"
-                                            id="pause-animation"
-                                            class="bda-network-pause-btn"
-                                            aria-label="Pause network animation">
-                                        Pause Animation
-                                    </button>
-                                </div>
-
-                                <!-- Network container -->
-                                <div id="network-container"
-                                     class="bda-network-container"
-                                     style="width: 100%; height: 600px; min-height: 600px;"
-                                     role="img"
-                                     aria-label="Force-directed network visualization of Detroit badman figure relationships">
-                                    <p class="bda-network-loading">Network visualization loading&hellip;</p>
-                                </div>
-
-                                <!-- Screen-reader data table (WCAG 1.1.1, 1.3.3) -->
-                                <table class="sr-only" aria-label="Detroit badman figures network data">
-                                    <caption>Figures in the Detroit Badman Archive with modality, type, active years, and connection count. Each row is activatable with Enter or Space to open the figure details panel.</caption>
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Name</th>
-                                            <th scope="col">Modality</th>
-                                            <th scope="col">Type</th>
-                                            <th scope="col">Active Years</th>
-                                            <th scope="col">Connections</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody id="sr-network-table-body">
-                                        <!-- Populated by inline JS -->
-                                    </tbody>
-                                </table>
-
-                                <!-- Timeline slider -->
-                                <div class="bda-network-timeline">
-                                    <label for="timeline-slider" class="bda-network-timeline-label">
-                                        Timeline Filter
-                                    </label>
-                                    <input type="range"
-                                           id="timeline-slider"
-                                           class="bda-network-timeline-slider"
-                                           min="1930" max="2020" value="2020" step="5"
-                                           aria-valuemin="1930"
-                                           aria-valuemax="2020"
-                                           aria-valuenow="2020"
-                                           aria-label="Select year to filter network by time period">
-                                    <div class="bda-network-timeline-marks" aria-hidden="true">
-                                        <span>1930</span>
-                                        <span>1950</span>
-                                        <span>1970</span>
-                                        <span>1990</span>
-                                        <span>2020</span>
-                                    </div>
-                                    <p class="bda-network-timeline-current">
-                                        Current year: <span id="timeline-year" aria-live="polite">2020</span>
-                                    </p>
-                                </div>
-                            </div>
-
-                            <!-- ============================================================
-                                 SIDEBAR (RIGHT): FILTER + LEGENDS + CONNECTION PANEL
-                                 ============================================================ -->
-                            <div class="col-lg-3">
-
-                                <!-- Modality filter -->
-                                <details class="bda-network-filter" open>
-                                    <summary class="bda-network-filter-summary">
-                                        Filter by modality
-                                    </summary>
-                                    <fieldset class="bda-network-filter-fieldset">
-                                        <legend class="sr-only">Toggle modalities in the network</legend>
-                                        <div id="bda-network-filter-options">
-                                            <!-- Populated by inline JS -->
-                                        </div>
-                                    </fieldset>
-                                </details>
-
-                                <!-- Node modality legend -->
-                                <div class="bda-network-legend mb-3" aria-labelledby="bda-network-node-legend-heading">
-                                    <h2 id="bda-network-node-legend-heading" class="bda-network-legend-heading">
-                                        Figure Modalities
-                                    </h2>
-                                    <ul id="bda-network-node-legend-list" class="list-unstyled mb-0">
-                                        <!-- Populated by inline JS -->
-                                    </ul>
-                                </div>
-
-                                <!-- Edge type legend -->
-                                <div class="bda-network-legend mb-3" aria-labelledby="bda-network-edge-legend-heading">
-                                    <h2 id="bda-network-edge-legend-heading" class="bda-network-legend-heading">
-                                        Relationship Types
-                                    </h2>
-                                    <ul id="bda-network-edge-legend-list" class="list-unstyled mb-0">
-                                        <!-- Populated by inline JS -->
-                                    </ul>
-                                </div>
-
-                                <!-- Connection details panel -->
-                                <div id="connection-panel"
-                                     class="bda-network-connection-panel"
-                                     tabindex="-1"
-                                     aria-live="polite"
-                                     aria-atomic="true"
-                                     aria-labelledby="bda-network-connection-heading">
-                                    <h2 id="bda-network-connection-heading" class="bda-network-connection-heading">
-                                        Connection Details
-                                    </h2>
-                                    <div id="connection-content">
-                                        <p>Select a figure from the network or the figures list below to view relationship details.</p>
-                                    </div>
-                                </div>
-
-                            </div><!-- /sidebar -->
-                        </div><!-- /row -->
-
-                        <!-- ============================================================
-                             METRICS PANELS (FULL WIDTH, BELOW)
-                             ============================================================ -->
-                        <div class="row mt-4">
-
-                            <!-- Network summary -->
-                            <div class="col-lg-6 mb-4">
-                                <div class="bda-network-metrics-panel"
-                                     aria-labelledby="bda-network-summary-heading">
-                                    <h2 id="bda-network-summary-heading" class="bda-network-metrics-heading">
-                                        Network Summary
-                                    </h2>
-
-                                    <dl class="bda-network-metrics-list">
-                                        <div class="bda-network-metric-row">
-                                            <dt>
-                                                <strong>Active Figures</strong>
-                                                <small>(visible nodes at current year)</small>
-                                            </dt>
-                                            <dd id="metric-active-figures">0 of 0</dd>
-                                        </div>
-                                        <div class="bda-network-metric-row">
-                                            <dt>
-                                                <strong>Active Connections</strong>
-                                                <small>(edges at current year)</small>
-                                            </dt>
-                                            <dd id="metric-active-connections">0</dd>
-                                        </div>
-                                        <div class="bda-network-metric-row">
-                                            <dt>
-                                                <strong>Network Density</strong>
-                                                <small>(existing \u00f7 possible connections)</small>
-                                            </dt>
-                                            <dd id="metric-density">0%</dd>
-                                        </div>
-                                        <div class="bda-network-metric-row">
-                                            <dt>
-                                                <strong>Reciprocity</strong>
-                                                <small>(mutual \u00f7 directed connections)</small>
-                                            </dt>
-                                            <dd id="metric-reciprocity">0 / 0</dd>
-                                        </div>
-                                        <div class="bda-network-metric-row">
-                                            <dt>
-                                                <strong>Cross-Modality</strong>
-                                                <small>(edges spanning different modalities)</small>
-                                            </dt>
-                                            <dd id="metric-cross-modality">0</dd>
-                                        </div>
-                                    </dl>
-                                </div>
-                            </div>
-
-                            <!-- Selected figure metrics -->
-                            <div class="col-lg-6 mb-4">
-                                <div id="figure-metrics-panel"
-                                     class="bda-network-metrics-panel"
-                                     tabindex="-1"
-                                     aria-live="polite"
-                                     aria-atomic="true"
-                                     aria-labelledby="bda-network-figure-metrics-heading">
-                                    <h2 id="bda-network-figure-metrics-heading" class="bda-network-metrics-heading">
-                                        Selected Figure Metrics
-                                    </h2>
-                                    <div id="figure-metrics-content">
-                                        <p>Select a figure from the network or the figures list to view detailed metrics.</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </div>
-                </div>
+        <!-- ============================================================
+             Intro strip: breadcrumb + H1 + lead
+             ============================================================ -->
+        <section class="page-section" style="padding-bottom: 1.5rem;">
+            <div class="container-fluid" style="max-width: 1400px;">
+                <nav aria-label="Breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+                        <li class="breadcrumb-item"><a href="/visualizations/">Visualizations</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">Network</li>
+                    </ol>
+                </nav>
+                <h1>Network</h1>
+                <p class="bda-network-lead">
+                    Force-directed graph of the relationships between Detroit's badman
+                    figures. Nodes scale with influence at the selected year; edges are
+                    colored by connection type and styled by evidence tier. Click a node
+                    to focus it and its connections; click an edge to see the connection's
+                    evidence.
+                </p>
             </div>
         </section>
 
+        <!-- ============================================================
+             Two-column layout: filter rail + main
+             ============================================================ -->
+        <section class="bda-network-layout-section">
+
+            <!-- Mobile filter toggle (hidden ≥992px via CSS) -->
+            <div class="container-fluid" style="max-width: 1400px; padding: 0 1rem;">
+                <button type="button"
+                        class="bda-network-filter-toggle"
+                        id="bda-network-filter-toggle"
+                        aria-expanded="false"
+                        aria-controls="bda-network-filter-rail">
+                    Filters &amp; Legends
+                </button>
+            </div>
+
+            <div class="bda-network-layout">
+
+                <!-- ============================================================
+                     SIDEBAR — sticky filter rail (static reference only)
+                     ============================================================ -->
+                <aside id="bda-network-filter-rail"
+                       class="bda-network-filter-rail"
+                       aria-label="Filters and legends">
+
+                    <!-- Modality filter (interactive) -->
+                    <fieldset class="bda-filter-fieldset">
+                        <legend>
+                            <button type="button"
+                                    class="bda-filter-collapse-btn"
+                                    aria-expanded="true"
+                                    aria-controls="bda-network-filter-options">
+                                Modality
+                            </button>
+                        </legend>
+                        <div id="bda-network-filter-options" class="bda-filter-options">
+                            <!-- Populated by inline JS -->
+                        </div>
+                    </fieldset>
+
+                    <!-- Figure Modalities legend (static reference) -->
+                    <fieldset class="bda-filter-fieldset">
+                        <legend>
+                            <button type="button"
+                                    class="bda-filter-collapse-btn"
+                                    aria-expanded="true"
+                                    aria-controls="bda-network-node-legend-list">
+                                Figure Modalities
+                            </button>
+                        </legend>
+                        <ul id="bda-network-node-legend-list"
+                            class="bda-network-legend-list">
+                            <!-- Populated by inline JS -->
+                        </ul>
+                    </fieldset>
+
+                    <!-- Relationship Types legend (static reference) -->
+                    <fieldset class="bda-filter-fieldset">
+                        <legend>
+                            <button type="button"
+                                    class="bda-filter-collapse-btn"
+                                    aria-expanded="true"
+                                    aria-controls="bda-network-edge-legend-list">
+                                Relationship Types
+                            </button>
+                        </legend>
+                        <ul id="bda-network-edge-legend-list"
+                            class="bda-network-legend-list">
+                            <!-- Populated by inline JS -->
+                        </ul>
+                    </fieldset>
+                </aside>
+
+                <!-- ============================================================
+                     MAIN — canvas + timeline + metrics zone
+                     ============================================================ -->
+                <div class="bda-network-main">
+
+                    <!-- Toolbar: pause + hint -->
+                    <div class="bda-network-toolbar">
+                        <button type="button"
+                                id="pause-animation"
+                                class="bda-network-pause-btn"
+                                aria-label="Pause network animation">
+                            Pause Animation
+                        </button>
+                        <span class="bda-network-toolbar-hint">
+                            Drag to reposition · Scroll to zoom · Click to select
+                        </span>
+                    </div>
+
+                    <!-- Framed canvas -->
+                    <div class="bda-network-canvas-wrapper">
+                        <div id="network-container"
+                             class="bda-network-container"
+                             role="img"
+                             aria-label="Force-directed network visualization of Detroit badman figure relationships">
+                            <p class="bda-network-loading">Network visualization loading&hellip;</p>
+                        </div>
+                    </div>
+
+                    <!-- Screen-reader data table (WCAG 1.1.1, 1.3.3) -->
+                    <table class="sr-only" aria-label="Detroit badman figures network data">
+                        <caption>Figures in the Detroit Badman Archive with modality, type, active years, and connection count. Each row is activatable with Enter or Space to open the figure details panel.</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Modality</th>
+                                <th scope="col">Type</th>
+                                <th scope="col">Active Years</th>
+                                <th scope="col">Connections</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sr-network-table-body">
+                            <!-- Populated by inline JS -->
+                        </tbody>
+                    </table>
+
+                    <!-- Timeline slider -->
+                    <div class="bda-network-timeline">
+                        <div class="bda-network-timeline-header">
+                            <label for="timeline-slider" class="bda-network-timeline-label">
+                                Timeline Filter
+                            </label>
+                            <p class="bda-network-timeline-current">
+                                Current year: <span id="timeline-year" aria-live="polite">2020</span>
+                            </p>
+                        </div>
+                        <input type="range"
+                               id="timeline-slider"
+                               class="bda-network-timeline-slider"
+                               min="1930" max="2020" value="2020" step="5"
+                               aria-valuemin="1930"
+                               aria-valuemax="2020"
+                               aria-valuenow="2020"
+                               aria-label="Select year to filter network by time period">
+                        <div class="bda-network-timeline-marks" aria-hidden="true">
+                            <span>1930</span>
+                            <span>1950</span>
+                            <span>1970</span>
+                            <span>1990</span>
+                            <span>2020</span>
+                        </div>
+                    </div>
+
+                    <!-- Metrics zone: two columns -->
+                    <div class="bda-network-metrics-zone">
+
+                        <!-- LEFT: Network Summary (global, timeline-driven) -->
+                        <div class="bda-network-metrics-panel"
+                             aria-labelledby="bda-network-summary-heading">
+                            <h2 id="bda-network-summary-heading" class="bda-network-metrics-heading">
+                                Network Summary
+                            </h2>
+                            <dl class="bda-network-metrics-list">
+                                <div class="bda-network-metric-row"
+                                     title="Visible nodes at current year">
+                                    <dt>Active Figures
+                                        <span class="sr-only">(visible nodes at current year)</span>
+                                    </dt>
+                                    <dd id="metric-active-figures">0 of 0</dd>
+                                </div>
+                                <div class="bda-network-metric-row"
+                                     title="Edges at current year">
+                                    <dt>Active Connections
+                                        <span class="sr-only">(edges at current year)</span>
+                                    </dt>
+                                    <dd id="metric-active-connections">0</dd>
+                                </div>
+                                <div class="bda-network-metric-row"
+                                     title="Existing connections divided by possible connections">
+                                    <dt>Network Density
+                                        <span class="sr-only">(existing divided by possible connections)</span>
+                                    </dt>
+                                    <dd id="metric-density">0%</dd>
+                                </div>
+                                <div class="bda-network-metric-row"
+                                     title="Mutual connections divided by total directed connections">
+                                    <dt>Reciprocity
+                                        <span class="sr-only">(mutual divided by directed connections)</span>
+                                    </dt>
+                                    <dd id="metric-reciprocity">0 / 0</dd>
+                                </div>
+                                <div class="bda-network-metric-row"
+                                     title="Edges spanning different modalities">
+                                    <dt>Cross-Modality
+                                        <span class="sr-only">(edges spanning different modalities)</span>
+                                    </dt>
+                                    <dd id="metric-cross-modality">0</dd>
+                                </div>
+                            </dl>
+                        </div>
+
+                        <!-- RIGHT: Selection panel (swaps empty / figure / connection) -->
+                        <div id="selection-panel"
+                             class="bda-network-metrics-panel"
+                             tabindex="-1"
+                             aria-live="polite"
+                             aria-atomic="true"
+                             aria-labelledby="bda-network-selection-heading">
+                            <h2 id="bda-network-selection-heading" class="bda-network-metrics-heading">
+                                Selection
+                            </h2>
+                            <div id="selection-content">
+                                <p class="bda-network-selection-empty">
+                                    Select a figure or connection from the network to see details.
+                                </p>
+                            </div>
+                        </div>
+                    </div><!-- /metrics zone -->
+                </div><!-- /bda-network-main -->
+
+            </div><!-- /bda-network-layout -->
+        </section>
     </main>
 
     <!-- Footer (loaded by partials.js) -->
@@ -280,19 +301,11 @@
         };
 
         var edgeTypeLabels = {
-            'META': 'Meta-Creative (Creator \u2192 Creation)',
-            'P2C':  'Person to Creator',
-            'C2C':  'Creator to Creator',
+            'META': 'Creator → Creation',
+            'P2C':  'Person → Creator',
+            'C2C':  'Creator ↔ Creator',
             'ORG':  'Organizational Affiliation',
             'CC':   'Creation Continuity'
-        };
-
-        var edgeDashLabels = {
-            'META': 'Solid line',
-            'P2C':  'Long dash',
-            'C2C':  'Short dash',
-            'ORG':  'Dot-dash',
-            'CC':   'Dot-dot'
         };
 
         // =====================================================================
@@ -335,20 +348,6 @@
             if (!Array.isArray(data.sources)) return;
             data.sources.forEach(function (s) {
                 if (s && s.id) sourceIndex[s.id] = s;
-            });
-        }
-
-        function figureWithResolvedSources(figure) {
-            var ids = figure.source_ids || [];
-            var primary = [];
-            for (var i = 0; i < ids.length; i++) {
-                var src = sourceIndex[ids[i]];
-                if (src && src.category === 'primary') {
-                    primary.push(src);
-                }
-            }
-            return Object.assign({}, figure, {
-                sources: { primary: primary }
             });
         }
 
@@ -426,13 +425,17 @@
             ACTIVE_MODALITIES.forEach(function (mod) {
                 var cfg = getModalityConfig(mod);
                 var suffix = mod.replace(/_/g, '-');
-                // The network uses networkShape (diamond for revolutionary, etc.)
-                // Legend label describes the network shape specifically.
                 var shapeName = cfg.networkShape.charAt(0).toUpperCase() + cfg.networkShape.slice(1);
+                // Map our modality suffix to the .legend-node-* class convention
+                var legendNodeSuffix = suffix === 'superhero-villain' ? 'shv' :
+                                       suffix === 'folk-hero-outlaw' ? 'folk-hero' :
+                                       suffix;
                 html +=
-                    '<li class="bda-network-legend-item">' +
-                        '<span class="bda-legend-node-marker bda-legend-node-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
-                        '<span>' + escapeHtml(shapeName + ' \u2014 ' + cfg.displayLabel + ' Modality') + '</span>' +
+                    '<li class="bda-network-legend-row">' +
+                        '<span class="bda-legend-node-marker legend-node-' + escapeHtml(legendNodeSuffix) + '" aria-hidden="true"></span>' +
+                        '<span class="bda-network-legend-label">' +
+                            escapeHtml(shapeName) + ' &mdash; ' + escapeHtml(cfg.displayLabel) +
+                        '</span>' +
                     '</li>';
             });
             list.innerHTML = html;
@@ -446,12 +449,50 @@
             types.forEach(function (t) {
                 var suffix = t.toLowerCase();
                 html +=
-                    '<li class="bda-network-legend-item">' +
-                        '<span class="bda-legend-line bda-legend-edge-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
-                        '<span>' + escapeHtml(edgeDashLabels[t] + ' \u2014 ' + t + ': ' + edgeTypeLabels[t]) + '</span>' +
+                    '<li class="bda-network-legend-row">' +
+                        '<span class="legend-line legend-' + escapeHtml(suffix) + '" aria-hidden="true"></span>' +
+                        '<span class="bda-network-legend-code">' + escapeHtml(t) + '</span>' +
+                        '<span class="bda-network-legend-label">' + escapeHtml(edgeTypeLabels[t]) + '</span>' +
                     '</li>';
             });
             list.innerHTML = html;
+        }
+
+        // Wire collapse buttons on each sidebar fieldset
+        function wireFilterCollapses() {
+            var btns = document.querySelectorAll('.bda-network-filter-rail .bda-filter-collapse-btn');
+            btns.forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    var expanded = this.getAttribute('aria-expanded') === 'true';
+                    var targetId = this.getAttribute('aria-controls');
+                    var target = document.getElementById(targetId);
+                    if (!target) return;
+                    if (expanded) {
+                        target.style.display = 'none';
+                        this.setAttribute('aria-expanded', 'false');
+                    } else {
+                        target.style.display = '';
+                        this.setAttribute('aria-expanded', 'true');
+                    }
+                });
+            });
+        }
+
+        // Mobile filter toggle
+        function wireMobileFilterToggle() {
+            var btn = document.getElementById('bda-network-filter-toggle');
+            var rail = document.getElementById('bda-network-filter-rail');
+            if (!btn || !rail) return;
+            btn.addEventListener('click', function () {
+                var expanded = this.getAttribute('aria-expanded') === 'true';
+                if (expanded) {
+                    rail.classList.remove('is-open');
+                    this.setAttribute('aria-expanded', 'false');
+                } else {
+                    rail.classList.add('is-open');
+                    this.setAttribute('aria-expanded', 'true');
+                }
+            });
         }
 
         // =====================================================================
@@ -510,24 +551,9 @@
                 containerHeight = 600;
                 return;
             }
-            // Prefer getBoundingClientRect for fractional pixel accuracy,
-            // fall back to clientWidth/clientHeight, then to sensible defaults
-            // if CSS hasn't applied at all (zero-size container).
             var rect = container.getBoundingClientRect();
             containerWidth = Math.round(rect.width) || container.clientWidth || 800;
             containerHeight = Math.round(rect.height) || container.clientHeight || 600;
-
-            // Diagnostic: if this logs 0 or a tiny number for height, we know
-            // the CSS height rule isn't applying — that's a stylesheet issue,
-            // not a JS timing issue, and we need to fix .bda-network-container.
-            console.log('[Network] Container measured:', {
-                width: containerWidth,
-                height: containerHeight,
-                rectWidth: rect.width,
-                rectHeight: rect.height,
-                clientWidth: container.clientWidth,
-                clientHeight: container.clientHeight
-            });
         }
 
         // =====================================================================
@@ -536,8 +562,6 @@
 
         function setupSvg() {
             var container = document.getElementById('network-container');
-
-            // Clear any loading placeholder
             container.innerHTML = '';
 
             svg = d3.select('#network-container')
@@ -581,19 +605,13 @@
 
             svg.on('click', function () { unfocus(); });
 
-            // Establish radius scale
             radiusScale = d3.scaleSqrt().domain([0, 10]).range([0, 45]);
         }
 
         // =====================================================================
-        // Render the graph (physics, edges, nodes, labels)
+        // Node shape path generator
         // =====================================================================
 
-        /**
-         * Render the D3 node path string for a given modality.
-         * - circle / diamond / hexagon / square / triangle
-         * The radius parameter sets outer size.
-         */
         function nodeShapePath(shape, r) {
             switch (shape) {
                 case 'circle':
@@ -601,7 +619,6 @@
                 case 'diamond':
                     return 'M0,' + (-r) + ' L' + r + ',0 L0,' + r + ' L' + (-r) + ',0 Z';
                 case 'hexagon':
-                    // Flat-top hexagon
                     var h = r * 0.866;
                     return 'M' + (-r / 2) + ',' + (-h) +
                            ' L' + (r / 2) + ',' + (-h) +
@@ -618,12 +635,13 @@
             }
         }
 
+        // =====================================================================
+        // Render the graph
+        // =====================================================================
+
         function renderGraph() {
-            // Clear existing graph children from g (but not defs/title/desc on svg)
             g.selectAll('*').remove();
 
-            // Simulation — use cached dimensions (measured at setup time and
-            // re-measured at render time by the init flow).
             simulation = d3.forceSimulation(nodesData)
                 .force('link', d3.forceLink(edgesData).id(function (d) { return d.id; }).distance(150))
                 .force('charge', d3.forceManyBody().strength(-400))
@@ -647,7 +665,8 @@
                 .append('line')
                 .attr('stroke', 'transparent')
                 .attr('stroke-width', 15)
-                .style('cursor', 'pointer');
+                .style('cursor', 'pointer')
+                .style('pointer-events', 'stroke');
 
             edgeHitArea.on('click', function (event, d) {
                 event.stopPropagation();
@@ -680,7 +699,7 @@
                     return null;
                 });
 
-            // Nodes: shape-per-modality via path
+            // Nodes
             node = g.append('g')
                 .attr('class', 'nodes')
                 .selectAll('path')
@@ -768,7 +787,7 @@
         }
 
         // =====================================================================
-        // Node click → focus, detail panel, figure metrics
+        // Node activation → reset heading, render teaser + network metrics
         // =====================================================================
 
         function onNodeActivate(d) {
@@ -795,15 +814,8 @@
                 return (sId === d.id || tId === d.id) ? 1 : 0.05;
             });
 
-            // Update the shared connection panel using scripts.js's showFigureDetails
-            // — this keeps the detail surface consistent across map/network/sr-table.
-            var fullFigure = figureById[d.id];
-            if (fullFigure) {
-                showFigureDetails(figureWithResolvedSources(fullFigure), 'connection-content', 'connection-panel');
-            }
-
-            // Populate the selected-figure metrics panel
-            showFigureMetrics(d, currentYear);
+            // Render the teaser + network metrics into the selection panel
+            showNetworkFigureTeaser(d, currentYear);
         }
 
         function unfocus() {
@@ -815,66 +827,63 @@
                     return (evidenceTiers && evidenceTiers[d.tier] && evidenceTiers[d.tier].opacity) || 0.8;
                 });
             }
-            var content = document.getElementById('connection-content');
+            resetSelectionPanel();
+        }
+
+        function resetSelectionPanel() {
+            var heading = document.getElementById('bda-network-selection-heading');
+            if (heading) heading.textContent = 'Selection';
+            var content = document.getElementById('selection-content');
             if (content) {
                 content.innerHTML =
-                    '<p>Select a figure from the network or the figures list below to view relationship details.</p>';
-            }
-            var figMetrics = document.getElementById('figure-metrics-content');
-            if (figMetrics) {
-                figMetrics.innerHTML =
-                    '<p>Select a figure from the network or the figures list to view detailed metrics.</p>';
-            }
-        }
-
-        // =====================================================================
-        // Edge click → connection details into figure-metrics-panel
-        // =====================================================================
-
-        function showConnectionDetails(d) {
-            var sourceName = typeof d.source === 'object' ? d.source.name : d.source;
-            var targetName = typeof d.target === 'object' ? d.target.name : d.target;
-            var arrow = d.direction === 'mutual' ? '\u2194' : '\u2192';
-
-            var html = '';
-            html += '<h3 class="bda-network-connection-title">' +
-                        escapeHtml(sourceName) + ' ' + arrow + ' ' + escapeHtml(targetName) +
-                    '</h3>';
-            html += '<p><strong>Type:</strong> ' +
-                        '<span class="bda-network-edge-type bda-network-edge-' + escapeHtml(d.type.toLowerCase()) + '">' +
-                            escapeHtml(edgeTypeLabels[d.type] || d.type) +
-                        '</span>' +
+                    '<p class="bda-network-selection-empty">' +
+                        'Select a figure or connection from the network to see details.' +
                     '</p>';
-            html += '<p><strong>Evidence Tier:</strong> ' + tierBadge(d.tier) + '</p>';
-            if (d.evidence) {
-                html += '<p><strong>Evidence:</strong></p>';
-                html += '<blockquote class="bda-network-evidence">' + escapeHtml(d.evidence) + '</blockquote>';
+            }
+        }
+
+        // =====================================================================
+        // Figure teaser renderer (network-specific — does NOT reuse
+        // showFigureDetails from scripts.js, which emits full bio + sources)
+        // =====================================================================
+
+        function truncateBio(text, max) {
+            if (!text) return '';
+            if (text.length <= max) return text;
+            // Cut at nearest word boundary before max
+            var trimmed = text.substring(0, max);
+            var lastSpace = trimmed.lastIndexOf(' ');
+            if (lastSpace > max * 0.6) trimmed = trimmed.substring(0, lastSpace);
+            return trimmed.replace(/[.,;:\s]+$/, '') + '\u2026';
+        }
+
+        function figurePageUrl(figureId) {
+            return '/archive/figures/' + encodeURIComponent(figureId) + '.html';
+        }
+
+        // Map internal modality IDs to the slug used by .modality-badge.modality-*
+        // (defined in Phase 4). The Phase 4 slugs are: detective, revolutionary,
+        // shv, gangsta-pimp, folk-hero.
+        function modalityBadgeSlug(modality) {
+            switch (modality) {
+                case 'superhero_villain': return 'shv';
+                case 'gangsta_pimp':      return 'gangsta-pimp';
+                case 'folk_hero_outlaw':  return 'folk-hero';
+                default:                  return modality;
+            }
+        }
+
+        function showNetworkFigureTeaser(nodeDatum, year) {
+            var fullFigure = figureById[nodeDatum.id];
+            var cfg = getModalityConfig(nodeDatum.modality);
+
+            // Bio teaser — first part of biography.description, single line
+            var bioText = '';
+            if (fullFigure && fullFigure.biography && fullFigure.biography.description) {
+                bioText = truncateBio(fullFigure.biography.description, 160);
             }
 
-            var container = document.getElementById('figure-metrics-content');
-            if (container) container.innerHTML = html;
-
-            // Rewrite the heading of the right-hand panel for clarity
-            var heading = document.getElementById('bda-network-figure-metrics-heading');
-            if (heading) heading.textContent = 'Connection Details';
-
-            var panel = document.getElementById('figure-metrics-panel');
-            if (panel && typeof panel.focus === 'function') panel.focus();
-        }
-
-        function tierBadge(tier) {
-            var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
-            var tierSuffix = String(tier);
-            return '<span class="bda-network-tier-badge bda-network-tier-' + escapeHtml(tierSuffix) + '">' +
-                       escapeHtml(labels[tier] || 'Unknown') +
-                   '</span>';
-        }
-
-        // =====================================================================
-        // Selected figure metrics
-        // =====================================================================
-
-        function showFigureMetrics(nodeDatum, year) {
+            // Network metrics for this figure
             var inDegree = 0;
             var outDegree = 0;
             var connections = [];
@@ -895,7 +904,7 @@
             });
 
             var influence = getInfluenceAtYear(nodeDatum, year);
-            var justification = 'No data for this period';
+            var justification = '';
             if (nodeDatum.influence_phases && nodeDatum.influence_phases.length > 0) {
                 var matched = false;
                 for (var i = 0; i < nodeDatum.influence_phases.length; i++) {
@@ -912,48 +921,148 @@
                 }
             }
 
+            // Build teaser HTML
+            var badgeSlug = modalityBadgeSlug(nodeDatum.modality);
             var html = '';
-            html += '<h3 class="bda-network-figure-name">' + escapeHtml(nodeDatum.name) + '</h3>';
 
-            html += '<p class="bda-network-degree"><strong>Degree:</strong> ' + (inDegree + outDegree);
-            html += ' <small>(In: ' + inDegree + ' \u00b7 Out: ' + outDegree + ')</small></p>';
+            html += '<div class="bda-network-teaser-header">';
+            html +=   '<h3 class="bda-network-teaser-name">' + escapeHtml(nodeDatum.name) + '</h3>';
+            html +=   '<span class="modality-badge modality-' + escapeHtml(badgeSlug) + '">';
+            html +=     '<span class="modality-badge-label">' + escapeHtml(cfg.displayLabel) + '</span>';
+            html +=   '</span>';
+            html += '</div>';
 
-            html += '<p><strong>Influence at ' + escapeHtml(String(year)) + ':</strong> ' + influence + ' / 10</p>';
+            if (bioText) {
+                html += '<p class="bda-network-teaser-bio">' + escapeHtml(bioText) + '</p>';
+            }
+
+            html += '<a class="bda-network-teaser-link" href="' +
+                        escapeHtml(figurePageUrl(nodeDatum.id)) + '">' +
+                        'View full figure &rarr;' +
+                    '</a>';
+
+            html += '<hr class="bda-network-teaser-divider">';
+
+            // Figure network metrics
+            html += '<dl class="bda-network-figure-metrics">';
+
+            html +=   '<div class="bda-network-figure-metric-row">';
+            html +=     '<dt class="bda-network-figure-metric-label">Degree</dt>';
+            html +=     '<dd class="bda-network-figure-metric-value">' + (inDegree + outDegree) +
+                          '<span class="bda-network-figure-metric-value-faded">' +
+                              '(in ' + inDegree + ' &middot; out ' + outDegree + ')' +
+                          '</span></dd>';
+            html +=   '</div>';
+
+            html +=   '<div class="bda-network-figure-metric-row">';
+            html +=     '<dt class="bda-network-figure-metric-label">Influence at ' +
+                            escapeHtml(String(year)) + '</dt>';
+            html +=     '<dd class="bda-network-figure-metric-value">' + influence + ' / 10</dd>';
+            html +=   '</div>';
+
+            html += '</dl>';
+
+            // Influence bar
             html += '<div class="bda-network-influence-bar" role="progressbar" ' +
                         'aria-valuenow="' + influence + '" aria-valuemin="0" aria-valuemax="10" ' +
                         'aria-label="Influence score ' + influence + ' out of 10">' +
                         '<div class="bda-network-influence-bar-fill" style="width:' + (influence * 10) + '%"></div>' +
                     '</div>';
-            html += '<p class="bda-network-influence-justification"><small>' + escapeHtml(justification) + '</small></p>';
 
+            if (justification) {
+                html += '<p class="bda-network-figure-metric-justification">' +
+                            escapeHtml(justification) +
+                        '</p>';
+            }
+
+            // Connections sublist
+            html += '<h4 class="bda-network-connections-heading">Connections</h4>';
             if (connections.length === 0) {
-                html += '<p><strong>Connections:</strong> <small>None at this period.</small></p>';
+                html += '<p class="bda-network-connections-empty">None at this period.</p>';
             } else {
-                html += '<p><strong>Connections:</strong></p>';
-                html += '<ul class="bda-network-connections-list list-unstyled">';
+                html += '<ul class="bda-network-connections-list">';
                 connections.forEach(function (conn) {
-                    var arrow = conn.direction === 'out' ? '\u2192' : '\u2190';
+                    var arrow = conn.direction === 'out' ? '&rarr;' : '&larr;';
                     html +=
                         '<li class="bda-network-connection-item">' +
-                            arrow + ' ' + escapeHtml(conn.otherName) + ' ' + tierBadge(conn.tier) +
+                            '<span class="bda-network-connection-arrow">' + arrow + '</span>' +
+                            '<span class="bda-network-connection-name">' + escapeHtml(conn.otherName) + '</span>' +
+                            tierBadge(conn.tier) +
                         '</li>';
                 });
                 html += '</ul>';
             }
 
-            // Reset heading to default
-            var heading = document.getElementById('bda-network-figure-metrics-heading');
-            if (heading) heading.textContent = 'Selected Figure Metrics';
+            // Reset heading, insert content, move focus for screen readers
+            var heading = document.getElementById('bda-network-selection-heading');
+            if (heading) heading.textContent = 'Selected Figure';
 
-            var container = document.getElementById('figure-metrics-content');
+            var container = document.getElementById('selection-content');
             if (container) container.innerHTML = html;
 
-            var panel = document.getElementById('figure-metrics-panel');
+            var panel = document.getElementById('selection-panel');
             if (panel && typeof panel.focus === 'function') panel.focus();
         }
 
         // =====================================================================
-        // Network summary metrics
+        // Edge activation → connection details in same selection panel
+        // =====================================================================
+
+        function showConnectionDetails(d) {
+            var sourceName = typeof d.source === 'object' ? d.source.name : d.source;
+            var targetName = typeof d.target === 'object' ? d.target.name : d.target;
+            var arrow = d.direction === 'mutual' ? '&harr;' : '&rarr;';
+
+            var html = '';
+            html += '<p class="bda-network-connection-title">' +
+                        escapeHtml(sourceName) +
+                        ' <span class="bda-network-connection-arrow">' + arrow + '</span> ' +
+                        escapeHtml(targetName) +
+                    '</p>';
+
+            html += '<div class="bda-network-connection-meta">';
+
+            html +=   '<div class="bda-network-connection-meta-row">';
+            html +=     '<span class="bda-network-connection-meta-label">Type</span>';
+            html +=     '<span class="bda-network-edge-chip edge-' + escapeHtml(d.type) + '">' +
+                            escapeHtml(d.type) + ' &mdash; ' + escapeHtml(edgeTypeLabels[d.type] || d.type) +
+                        '</span>';
+            html +=   '</div>';
+
+            html +=   '<div class="bda-network-connection-meta-row">';
+            html +=     '<span class="bda-network-connection-meta-label">Evidence Tier</span>';
+            html +=     tierBadge(d.tier);
+            html +=   '</div>';
+
+            html += '</div>';
+
+            if (d.evidence) {
+                html += '<p class="bda-network-connection-evidence-label">Evidence</p>';
+                html += '<blockquote class="bda-network-connection-evidence">' +
+                            escapeHtml(d.evidence) +
+                        '</blockquote>';
+            }
+
+            var heading = document.getElementById('bda-network-selection-heading');
+            if (heading) heading.textContent = 'Selected Connection';
+
+            var container = document.getElementById('selection-content');
+            if (container) container.innerHTML = html;
+
+            var panel = document.getElementById('selection-panel');
+            if (panel && typeof panel.focus === 'function') panel.focus();
+        }
+
+        function tierBadge(tier) {
+            var labels = {1: 'Documented', 2: 'Evidenced', 3: 'Interpretive'};
+            var tierSuffix = String(tier);
+            return '<span class="tier-badge tier-' + escapeHtml(tierSuffix) + '">' +
+                       escapeHtml(labels[tier] || 'Unknown') +
+                   '</span>';
+        }
+
+        // =====================================================================
+        // Network summary metrics (global, timeline-driven)
         // =====================================================================
 
         function updateNetworkMetrics(year) {
@@ -1125,24 +1234,22 @@
         }
 
         // =====================================================================
-        // Rebuild visualization after filter change
+        // Rebuild after filter change
         // =====================================================================
 
         function rebuildVisualization() {
             focusedNode = null;
             measureContainer();
             buildGraphData();
-            // Rebuild the SVG entirely so width/height attrs get updated if
-            // the container changed size (e.g., sidebar collapsed, viewport resized)
             setupSvg();
             renderGraph();
             renderSrTable();
             updateNetworkMetrics(currentYear);
-            unfocus();
+            resetSelectionPanel();
         }
 
         // =====================================================================
-        // Window resize — re-measure and rebuild if container size changed
+        // Window resize
         // =====================================================================
 
         function onResize() {
@@ -1180,7 +1287,11 @@
         function init() {
             reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-            currentYear = parseInt(document.getElementById('timeline-slider').value, 10);
+            var sliderEl = document.getElementById('timeline-slider');
+            currentYear = sliderEl ? parseInt(sliderEl.value, 10) : 2020;
+
+            wireFilterCollapses();
+            wireMobileFilterToggle();
 
             loadArchiveData(DATA_URL).then(function (data) {
                 if (!data) {
@@ -1190,7 +1301,6 @@
 
                 indexSources(data);
 
-                // Build edge color lookup from top-level edge_types
                 if (data.edge_types) {
                     Object.keys(data.edge_types).forEach(function (t) {
                         if (data.edge_types[t] && data.edge_types[t].color) {
@@ -1211,14 +1321,8 @@
                 buildNodeLegend();
                 buildEdgeLegend();
 
-                // Defer SVG creation and rendering one frame so the browser
-                // completes its layout pass with the CSS applied before D3
-                // measures the container. Previously setupSvg() read
-                // clientWidth/clientHeight immediately after the fetch resolved,
-                // which could catch the container mid-layout at zero size —
-                // D3 then baked those wrong dimensions into the <svg> element's
-                // width/height attributes with no way to recover, leaving
-                // the network rendering in a cramped top-corner region.
+                // Defer SVG setup one frame so the browser completes layout
+                // with our new .bda-network-canvas-wrapper padding applied.
                 requestAnimationFrame(function () {
                     measureContainer();
                     setupSvg();
@@ -1236,7 +1340,7 @@
             });
         }
 
-        // Attach resize listener (debounced via rAF to avoid thrash during drag)
+        // Debounced resize via rAF
         var resizePending = false;
         window.addEventListener('resize', function () {
             if (resizePending) return;
