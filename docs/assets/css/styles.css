@@ -264,12 +264,12 @@ p a,
 }
 
 .nav-link.active {
-    color: var(--dba-purple);
-    font-weight: bold;  /* Non-color signal per WCAG 1.4.1 */
+    color: var(--dba-purple-light);
+    font-weight: bold;
 }
 
 .nav-link[aria-current="page"] {
-    color: var(--dba-purple);
+    color: var(--dba-purple-light);
     font-weight: bold;
 }
 
