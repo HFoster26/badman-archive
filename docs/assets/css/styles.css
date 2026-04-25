@@ -300,7 +300,39 @@ p a,
     border-top: 1px solid var(--dba-border-green);
     margin-top: 4rem;
 }
+/* ==========================================================================
+   Citation cards (cite.html)
+   Extends .cta-inner for visual containment of citation examples.
+   ========================================================================== */
 
+.bda-cite-card {
+    padding: 1.25rem 1.5rem;
+}
+
+.bda-cite-format {
+    color: var(--dba-gold);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0 0 0.5rem 0;
+}
+
+.bda-cite-example {
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--dba-text-primary);
+}
+
+/* Inline code in licensing section — tone down Bootstrap default pink */
+main code {
+    color: var(--dba-gold);
+    background-color: rgba(212, 175, 55, 0.08);
+    padding: 0.1em 0.35em;
+    border-radius: 0.25rem;
+    font-size: 0.9em;
+}
 
 /* ==========================================================================
    Page Sections & Content Boxes
