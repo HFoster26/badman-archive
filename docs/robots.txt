@@ -1,0 +1,12 @@
+# Detroit Badman Digital Archive
+# Permissive crawling — public scholarly archive
+# https://detroit.badmandigitalarchive.com/
+
+User-agent: *
+Allow: /
+
+# Disallow internal build artifacts and tooling
+Disallow: /tools/
+Disallow: /partials/
+
+Sitemap: https://detroit.badmandigitalarchive.com/sitemap.xml
