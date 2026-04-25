@@ -134,7 +134,32 @@ a:focus-visible {
     outline-offset: 2px !important;
     text-decoration: underline !important;
 }
+/* ==========================================================================
+   Prose Links — site-wide default for body content
+   Scoped to <main> so navbar/footer link styling stays untouched.
+   ========================================================================== */
 
+main a {
+    color: var(--dba-gold);
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, 0.4);
+    text-underline-offset: 0.2em;
+    transition: color 0.15s ease, text-decoration-color 0.15s ease;
+}
+
+main a:hover {
+    color: var(--dba-emerald);
+    text-decoration-color: var(--dba-emerald);
+}
+
+main a:visited {
+    color: var(--dba-gold);
+}
+
+/* mailto links get the same treatment but no "broken word" wrap on long addresses */
+main a[href^="mailto:"] {
+    word-break: break-word;
+}
 /* Reduced motion — WCAG 2.3.3 */
 @media (prefers-reduced-motion: reduce) {
     *,
