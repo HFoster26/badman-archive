@@ -333,7 +333,51 @@ main code {
     border-radius: 0.25rem;
     font-size: 0.9em;
 }
+/* ==========================================================================
+   Landing-page navigation cards (archive/, visualizations/)
+   Whole-card click target wrapping a .cta-inner.
+   ========================================================================== */
 
+.bda-archive-card {
+    display: block;
+    text-decoration: none !important;
+    color: inherit !important;
+    height: 100%;
+    transition: transform 0.15s ease;
+}
+
+.bda-archive-card:hover .cta-inner,
+.bda-archive-card:focus-visible .cta-inner {
+    border: 1px solid var(--dba-gold);
+    background-color: var(--dba-medium-green);
+}
+
+.bda-archive-card .cta-inner {
+    border: 1px solid transparent;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.bda-archive-card-title {
+    color: var(--dba-gold);
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+}
+
+.bda-archive-card-desc {
+    color: var(--dba-text-primary);
+    line-height: 1.6;
+}
+
+.bda-archive-card-link {
+    color: var(--dba-emerald);
+    font-weight: 600;
+    display: inline-block;
+}
+
+.bda-archive-card:hover .bda-archive-card-link,
+.bda-archive-card:focus-visible .bda-archive-card-link {
+    color: var(--dba-gold);
+}
 /* ==========================================================================
    Page Sections & Content Boxes
    ========================================================================== */
