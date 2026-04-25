@@ -38,7 +38,6 @@
     /* Kobe Tribute — Purple & Gold accent system */
     --dba-purple:         #552583;
     --dba-gold:           #d4af37;
-    --dba-purple:         #552583;
     --dba-purple-light:   #b48cd8;  /* Used in active nav state — needed AA contrast on dark green */
 
     /* Text Colors */
@@ -265,8 +264,11 @@ p a,
     color: var(--dba-gold);
 }
 
-.nav-link.active {
-    color: var(--dba-purple-light);
+#mainNav .nav-link.active,
+#mainNav .nav-link[aria-current="page"],
+#bda-navbar .nav-link.active,
+#bda-navbar .nav-link[aria-current="page"] {
+    color: var(--dba-purple-light) !important;
     font-weight: bold;
 }
 
