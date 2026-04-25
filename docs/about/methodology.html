@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="Research questions, theoretical framework, sources and data, analytical approach, critical approach, limitations, and transparency.">
+    <meta name="description" content="Research questions, theoretical framework, data model, evidence tiering, scoring system, and limitations of the Detroit Badman Digital Archive.">
     <meta name="author" content="Harry Foster">
     <title>Methodology | Detroit Badman Digital Archive</title>
     <link rel="canonical" href="https://detroit.badmandigitalarchive.com/about/methodology.html">
@@ -31,133 +31,209 @@
                         <h1>Methodology</h1>
 
                         <p class="lead">
-                            <!-- TODO: scholarly lede. Frames the methodology for an academic reader. -->
                             The Detroit Badman Digital Archive is a scholarly project with a
                             community-facing surface. This page documents the research apparatus
                             underneath the archive: the questions it asks, the framework it uses
-                            to answer them, the sources it draws on, and the limitations it
-                            acknowledges.
+                            to answer them, the data model that operationalizes the framework,
+                            and the limitations the archive acknowledges.
                         </p>
 
                         <h2>Research questions</h2>
                         <p>
-                            <!-- TODO: state the dissertation's core research questions. -->
-                            The archive is organized around three research questions. First: how
-                            does the badman tradition adapt when it moves from rural folklore into
+                            The archive is organized around three questions. First: how does
+                            the badman tradition adapt when it moves from rural folklore into
                             the postindustrial city? Second: what does it mean to treat real-life
-                            figures, fictional characters, and film/television figures as
-                            commensurable entities within a single analytical frame? Third: can a
-                            digital humanities archive do the work of community preservation without
-                            reproducing the extractive relationships of institutional scholarship?
+                            figures, fictional characters, and film and television figures as
+                            commensurable cultural evidence within a single analytical frame?
+                            Third: can a digital humanities archive do the work of community
+                            preservation without reproducing the extractive relationships of
+                            institutional scholarship?
                         </p>
 
                         <h2>Theoretical framework</h2>
                         <p>
-                            <!-- TODO: theoretical framing. Point to key scholars / concepts. -->
                             The archive sits at the intersection of African American folklore
                             studies, Black masculinity studies, urban cultural history, and
-                            digital humanities. The badman framework itself draws on scholars
-                            including Jerry H. Bryant, John W. Roberts, and the broader tradition
-                            of Black folklore scholarship. The archive treats semiotics, social
-                            construction theory, and the analytics of heroic narrative as its
-                            primary conceptual tools.
+                            digital humanities. Its core analytical move &mdash; treating the
+                            badman tradition as a single formation expressed through coexisting
+                            modalities &mdash; draws on Raymond Williams's distinction between
+                            residual and emergent cultural elements, which operate concurrently
+                            rather than sequentially. The badman framework itself builds on the
+                            scholarship of John W. Roberts, Jerry H. Bryant, Stephen Soitos,
+                            Jonathan Munby, and the broader tradition of Black folklore studies.
                         </p>
 
-                        <h2>Sources and data</h2>
+                        <h2>The five-criteria scoring system</h2>
                         <p>
-                            <!-- TODO: describe the source base. -->
-                            The archive draws on primary and secondary sources across multiple
-                            media: novels, films, television series, comics, court records,
-                            organizational documents, newspaper coverage, and scholarly writing.
-                            Every claim in the archive is traceable to a source documented in the
-                            Primary Sources section. Community-contributed sources &mdash;
-                            oral histories, photographs, and family memories &mdash; will enter the
-                            archive through the submission pipeline and are reviewed on a two-stage
-                            process before publication.
-                        </p>
-                        <p>
-                            The archive's data model is documented in the
-                            <a href="https://github.com/HFoster26/badman-archive" target="_blank" rel="noopener noreferrer">
-                                project repository
-                                <span class="sr-only">(opens in new tab)</span>
-                            </a>.
-                            The schema is Dublin Core crosswalkable for institutional repository
-                            submission while maintaining the custom fields required by the
-                            archive's methodology.
-                        </p>
-
-                        <h2>Analytical approach</h2>
-                        <p>
-                            <!-- TODO: how the five-criteria analysis works. -->
                             Every figure is evaluated against five criteria: outlaw relationship,
                             community authorization, violence as language, cultural preservation,
-                            and hypermasculine performance. Each criterion is scored on a 1-5
-                            scale with a justification that cites the evidence informing the
-                            score. The composite score is a sum, not an average &mdash; a figure
-                            scoring 25/25 is a figure whose story saturates every dimension of
-                            the tradition.
+                            and hypermasculine performance. Each criterion is scored on a 1&ndash;5
+                            scale with a written justification that cites the evidence informing
+                            the score. The composite is a sum, not an average &mdash; a figure
+                            scoring 25 out of 25 is a figure whose story saturates every dimension
+                            of the tradition. The criteria are described in plain language on the
+                            <a href="/about/tradition.html">Badman Tradition</a> page.
                         </p>
                         <p>
                             Modality assignment is analytically meaningful, not taxonomic. A
                             figure's modality captures how his story fits the tradition, not
-                            where he appears in a filing cabinet. The Obadele brothers are
+                            where he sits in a filing cabinet. The Obadele brothers are
                             classified as Political Revolutionary, for example, because state
                             violence was directed at their political action &mdash; not because
-                            they initiated violence.
+                            they initiated violence. The criteria scores and the modality
+                            assignment work together: scores indicate where in the tradition's
+                            shape a figure registers most strongly, and modality identifies
+                            which adaptation of the tradition the figure inhabits.
+                        </p>
+
+                        <h2>The data model</h2>
+                        <p>
+                            Every figure is documented across six structured categories:
+                            identity (core identification including real, fictional, or
+                            meta-badman designation and modality classification), scores
+                            (five-criteria evaluation with justifications), biography (narrative
+                            overview and structured event timeline), geographic (coordinates
+                            and territory polygons), network (typed and directional connections
+                            to other figures and entities), and sources (primary and secondary
+                            documentation with evidence tiering). The schema is Dublin Core
+                            crosswalkable, preserving eligibility for institutional repository
+                            submission while retaining the custom fields the methodology
+                            requires.
+                        </p>
+                        <p>
+                            Two architectural decisions in the data model carry analytical
+                            weight beyond convenience. First, connections between figures are
+                            typed relationships rather than generic links. Five edge types
+                            distinguish the kinds of relations the archive tracks:
+                        </p>
+
+                        <ul>
+                            <li>
+                                <strong>META</strong> &mdash; Creator to Creation. Donald Goines's
+                                authorship of the fictional Kenyatta is a META edge.
+                            </li>
+                            <li>
+                                <strong>P2C</strong> &mdash; Person to Creation. A real-life
+                                figure who served as the basis for or influence on a fictional
+                                figure is connected by a P2C edge.
+                            </li>
+                            <li>
+                                <strong>C2C</strong> &mdash; Creator to Creator. Authorial,
+                                editorial, or artistic relationships between people who produced
+                                badman narratives.
+                            </li>
+                            <li>
+                                <strong>ORG</strong> &mdash; Organizational or Ideological. The
+                                ties linking General Baker and the Obadele brothers through the
+                                Republic of New Afrika are ORG edges.
+                            </li>
+                            <li>
+                                <strong>CC</strong> &mdash; Creation Continuity. Connections
+                                between fictional figures across stories, series, or media
+                                adaptations.
+                            </li>
+                        </ul>
+
+                        <p>
+                            Second, every connection is flagged with one of three evidence tiers,
+                            rendered visually on the network graph as different line styles:
+                        </p>
+
+                        <ul>
+                            <li>
+                                <strong>Tier 1 (Documented)</strong> &mdash; solid line. The
+                                connection is supported by primary or peer-reviewed secondary
+                                sources.
+                            </li>
+                            <li>
+                                <strong>Tier 2 (Evidenced but unverified)</strong> &mdash; dashed
+                                line. The connection is supported by credible sources but lacks
+                                the documentary depth of a Tier 1 link.
+                            </li>
+                            <li>
+                                <strong>Tier 3 (Interpretive)</strong> &mdash; dotted line. The
+                                connection is the archive's analytical reading rather than a
+                                claim about documented historical fact.
+                            </li>
+                        </ul>
+
+                        <p>
+                            The network graph renders scholarly certainty as a visual property:
+                            a viewer sees not just that two figures are connected, but how
+                            strongly the evidence supports the connection.
+                        </p>
+
+                        <h2>Real, fictional, and meta-badman figures</h2>
+                        <p>
+                            The archive treats real-life figures, fictional characters, and
+                            film and television figures as equivalent cultural evidence in
+                            badman density analysis. This is a substantive methodological
+                            position, not a convenience. The tradition itself does not
+                            distinguish: Stagolee was a real man (Lee Shelton, 1895) whose
+                            story moved into the ballad tradition and from there into hundreds
+                            of fictional descendants, and the cultural work the figure performs
+                            is continuous across that movement. The archive's
+                            <em>meta-badman</em> designation flags figures whose lives or works
+                            shape the tradition itself &mdash; authors, organizers, and
+                            cultural producers whose influence operates at the level of the
+                            tradition rather than within a single modality.
+                        </p>
+
+                        <h2>Sources</h2>
+                        <p>
+                            The archive draws on primary and secondary sources across multiple
+                            media: novels, films, television series, comics, court records,
+                            organizational documents, newspaper coverage, interviews, archival
+                            photographs, and scholarly writing. Every claim in the archive is
+                            traceable to a source documented in the
+                            <a href="/archive/sources/sources.html">Primary Sources</a>
+                            collection. The source apparatus is a first-class component of the
+                            data model, not a bibliography appended to each figure: a single
+                            source linked to multiple figures renders correctly across all of
+                            them without duplication.
+                        </p>
+                        <p>
+                            Community-contributed sources &mdash; oral histories, photographs,
+                            and family memories &mdash; will enter the archive through a
+                            submission pipeline scheduled for activation in a future phase.
+                            All community submissions undergo review before publication, with
+                            the contributor's stated terms (anonymization, access level,
+                            permitted uses) attached to the entry.
                         </p>
 
                         <h2>Critical approach</h2>
                         <p>
-                            <!-- TODO: the critical stance the archive takes toward its own framework. -->
-                            The archive is self-critical about the framework it uses. The badman
-                            tradition is explicitly gendered &mdash; the archive documents Black
-                            male figures because that is the tradition's historical shape. This
-                            is a descriptive choice, not a prescriptive one, and the archive
-                            treats the tradition's gendering as an object of analysis rather
-                            than a fact to be naturalized.
+                            The archive is self-critical about the framework it uses. The
+                            badman tradition is explicitly gendered &mdash; the archive
+                            documents Black male figures because that is the tradition's
+                            historical shape. This is a descriptive choice, not a prescriptive
+                            one, and the archive treats the tradition's gendering as an object
+                            of analysis rather than a fact to be naturalized. Black women's
+                            heroism, queer Black heroism, and collective heroism without a
+                            named protagonist are outside the analytical scope of this archive
+                            but are acknowledged as significant traditions whose study
+                            requires their own framework.
                         </p>
                         <p>
-                            The archive also resists the temptation to resolve every figure into
-                            a single modality. Figures whose stories span multiple modalities
-                            are flagged for ongoing review rather than forced into a primary
-                            category.
+                            The archive also resists the temptation to resolve every figure
+                            into a single modality. Figures whose stories span multiple
+                            modalities are flagged for ongoing review rather than forced
+                            into a primary category.
                         </p>
 
                         <h2>Limitations</h2>
                         <p>
-                            <!-- TODO: what the archive can't do, or does imperfectly. -->
-                            The archive's reach is bounded in three significant ways. First, the
-                            framework captures Black masculine heroism specifically, which means
-                            other traditions of Black heroism &mdash; Black women's heroism,
-                            queer Black heroism, collective heroism without a named protagonist
-                            &mdash; are outside its analytical scope. A companion archive
-                            addressing these traditions is a future project, not this one.
-                            Second, the documentary record is uneven: fictional figures often have
-                            better-documented biographies than real figures whose stories survived
-                            primarily through community oral tradition. The archive compensates by
-                            surfacing community submissions alongside documented sources. Third,
-                            the scoring framework is interpretive; different readers could arrive
-                            at different scores for the same figure. The archive documents
-                            justifications alongside scores so that interpretation can be contested
-                            rather than hidden.
-                        </p>
-
-                        <h2>Transparency</h2>
-                        <p>
-                            <!-- TODO: the archive's transparency commitments. -->
-                            The archive is owned and operated by Silent Star Media LLC, a for-profit
-                            entity whose commercial activities (docuseries, licensing, consultation,
-                            and cultural authentication services) are structurally separated from
-                            the archive's community-benefit commitments. Community benefit flows
-                            through formal agreements with nonprofit institutional partners whose
-                            financials are public by law.
-                        </p>
-                        <p>
-                            Revenue structures, partnership agreements, and community benefit
-                            allocations will be publicly documented. The transparency architecture
-                            is not a feature of the model; it is the engine of the model.
-                            Community participation depends on trust, and trust depends on being
-                            able to see where the money goes.
+                            The archive's reach is bounded in three significant ways. First,
+                            the framework captures Black masculine heroism specifically &mdash;
+                            other traditions of Black heroism are outside its analytical scope.
+                            Second, the documentary record is uneven: fictional figures often
+                            have better-documented biographies than real figures whose stories
+                            survived primarily through community oral tradition. The archive
+                            compensates by surfacing community submissions alongside documented
+                            sources. Third, the scoring framework is interpretive; different
+                            readers could arrive at different scores for the same figure. The
+                            archive documents justifications alongside scores so that
+                            interpretation can be contested rather than hidden.
                         </p>
 
                         <p class="mt-4">
