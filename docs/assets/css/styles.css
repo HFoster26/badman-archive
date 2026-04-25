@@ -264,18 +264,13 @@ p a,
 }
 
 .nav-link.active {
-    color: var(--dba-gold);
+    color: var(--dba-purple);
     font-weight: bold;  /* Non-color signal per WCAG 1.4.1 */
 }
 
 .nav-link[aria-current="page"] {
-    color: var(--dba-gold);
+    color: var(--dba-purple);
     font-weight: bold;
-}
-
-.dropdown-menu {
-    background-color: var(--dba-darkest-green);
-    border: 1px solid var(--dba-border-green);
 }
 
 .dropdown-item {
