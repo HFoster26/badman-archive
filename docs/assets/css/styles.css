@@ -277,6 +277,11 @@ p a,
     color: var(--dba-text-primary);
 }
 
+.dropdown-menu {
+    background-color: var(--dba-darkest-green);
+    border: 1px solid var(--dba-border-green);
+}
+
 .dropdown-item:hover,
 .dropdown-item:focus {
     background-color: var(--dba-medium-green);
