@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Accessibility statement for the Detroit Badman Digital Archive — conformance target, known limitations, ongoing remediation, and how to report barriers.">
+    <meta name="author" content="Harry Foster">
+    <title>Accessibility | Detroit Badman Digital Archive</title>
+    <link rel="canonical" href="https://detroit.badmandigitalarchive.com/accessibility.html">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <!-- BDA styles -->
+    <link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+    <!-- Skip to content (WCAG 2.4.1) -->
+    <a href="#bda-main-content" class="bda-skip-link">Skip to main content</a>
+
+    <!-- Navbar (loaded by partials.js) -->
+    <div id="bda-navbar"></div>
+
+    <main id="bda-main-content" tabindex="-1">
+
+        <section class="page-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-xl-9 mx-auto">
+
+                        <h1>Accessibility Statement</h1>
+
+                        <p class="lead">
+                            The Detroit Badman Digital Archive is committed to providing
+                            equitable access to its content for all users, including people with
+                            disabilities. This statement describes the conformance standard the
+                            archive targets, the steps taken to meet it, the known limitations
+                            that remain, and how to report a barrier.
+                        </p>
+
+                        <h2>Conformance target</h2>
+                        <p>
+                            The archive targets conformance with the
+                            <strong>Web Content Accessibility Guidelines (WCAG) 2.2 at
+                            Level AA</strong>, the standard adopted by Michigan State University
+                            as its official Technical Guidelines effective January 1, 2026, and
+                            aligned with the federal accessibility requirements for public
+                            university digital content that took effect April 24, 2026.
+                        </p>
+                        <p>
+                            The archive additionally aligns with the
+                            <strong>MSU Digital Accessibility Basic Checklist</strong>, which
+                            covers contrast, alternative text, heading structure, list semantics,
+                            link purpose, motion and animation, and shape/size/position
+                            independence.
+                        </p>
+
+                        <h2>Conformance status</h2>
+                        <p>
+                            The archive
+                            <strong>partially conforms</strong>
+                            with WCAG 2.2 Level AA. "Partially conforms" means most parts of the
+                            site meet the standard, but specific areas &mdash; described under
+                            "Known limitations" below &mdash; do not yet fully meet it. The
+                            archive's compliance status is reviewed and updated as remediation
+                            work continues.
+                        </p>
+
+                        <h2>What has been done</h2>
+                        <p>
+                            The archive underwent a full accessibility audit in March 2026
+                            against the MSU Basic Checklist and WCAG 2.2 AA. The findings
+                            informed targeted remediation across the codebase, including:
+                        </p>
+                        <ul>
+                            <li>
+                                A site-wide skip-to-content link, sequential heading hierarchy,
+                                and visible focus indicators (3px gold outline) on every
+                                interactive element.
+                            </li>
+                            <li>
+                                Color-independent identification for the archive's five badman
+                                modalities &mdash; each modality is distinguished by a unique
+                                marker shape, network shape, and icon in addition to color, with
+                                shape-first labels in legends.
+                            </li>
+                            <li>
+                                Semantic markup for source lists, navigation, and detail panels,
+                                with ARIA live regions on dynamic content so screen readers
+                                announce updates when a figure is selected.
+                            </li>
+                            <li>
+                                Programmatic focus management on the figure detail panel, so
+                                keyboard and screen reader users are taken to new content when it
+                                appears.
+                            </li>
+                            <li>
+                                Descriptive link text and screen-reader warnings for links that
+                                open in new tabs.
+                            </li>
+                            <li>
+                                A pause-and-resume control for the network graph's force
+                                simulation, plus support for the
+                                <code>prefers-reduced-motion</code> system setting, which
+                                immediately settles the graph for users who request reduced
+                                motion at the operating-system level.
+                            </li>
+                            <li>
+                                Verified contrast ratios for body text and link text against the
+                                archive's dark green palette, with secondary text upgraded to
+                                meet the 4.5:1 minimum.
+                            </li>
+                        </ul>
+
+                        <h2>Known limitations</h2>
+                        <p>
+                            The following areas are not yet fully conformant. The archive is
+                            actively working on each, and users who encounter barriers in these
+                            areas are encouraged to report them using the contact information
+                            below so an alternative format can be arranged.
+                        </p>
+
+                        <div class="cta-inner mt-3 mb-3">
+                            <h3 class="bda-limit-heading">Interactive visualizations</h3>
+                            <p class="mb-0">
+                                The map (built with Leaflet) and network graph (built with D3)
+                                are inherently visual interfaces. The archive provides
+                                screen-reader-accessible alternatives, keyboard interaction
+                                paths, and ARIA descriptions for both, but some spatial and
+                                relational information is more readily perceived by sighted
+                                users. Users who prefer a non-visual path through the same data
+                                are encouraged to contact the project director for a tabular
+                                summary.
+                            </p>
+                        </div>
+
+                        <div class="cta-inner mb-3">
+                            <h3 class="bda-limit-heading">Third-party map tiles</h3>
+                            <p class="mb-0">
+                                Map tiles are served by OpenStreetMap and have their own
+                                contrast and labeling characteristics that the archive does not
+                                control. Where geographic information is essential to a figure's
+                                entry, that information is also conveyed in the figure's text
+                                description.
+                            </p>
+                        </div>
+
+                        <div class="cta-inner mb-4">
+                            <h3 class="bda-limit-heading">Submitted and community content</h3>
+                            <p class="mb-0">
+                                Future community-contributed material may not always meet the
+                                same accessibility standards as content authored by the project.
+                                Contributed content is reviewed before publication, and
+                                accessibility remediation is part of that review, but
+                                user-generated content carries inherent variability.
+                            </p>
+                        </div>
+
+                        <h2>Ongoing work</h2>
+                        <p>
+                            Accessibility is treated as architectural rather than a one-time
+                            audit. As new figures, modalities, and features are added, the
+                            archive's design system &mdash; including modality shapes, focus
+                            styles, and screen-reader utilities &mdash; scales with them. Future
+                            additions, including the planned docuseries integration and the
+                            community submission repository, will be evaluated against the same
+                            WCAG 2.2 AA standard before launch.
+                        </p>
+
+                        <h2>Reporting a barrier</h2>
+                        <p>
+                            If you encounter content on this site that is not accessible to you,
+                            or if you would like material in an alternative format, please
+                            contact the project director:
+                        </p>
+                        <p>
+                            Harry M. Foster<br>
+                            Doctoral Candidate, Department of English<br>
+                            Michigan State University<br>
+                            <a href="mailto:hfoster@badmandigitalarchive.com">
+                                hfoster@badmandigitalarchive.com
+                            </a>
+                        </p>
+                        <p>
+                            When reporting, please include the page URL, a description of the
+                            barrier, and the assistive technology and browser you are using if
+                            relevant. This information helps the issue get resolved more quickly.
+                        </p>
+
+                        <h2>Statement details</h2>
+                        <p>
+                            <strong>Last reviewed:</strong> April 25, 2026.<br>
+                            <strong>Audit standard:</strong> WCAG 2.2 Level AA + MSU Digital
+                            Accessibility Basic Checklist.<br>
+                            <strong>Next scheduled review:</strong> Quarterly, or sooner if a
+                            significant feature is released.
+                        </p>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer (loaded by partials.js) -->
+    <div id="bda-footer"></div>
+
+    <!-- Bootstrap 5 JS (must load before scripts.js) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- BDA partial loader -->
+    <script src="/partials/partials.js"></script>
+</body>
+</html>
